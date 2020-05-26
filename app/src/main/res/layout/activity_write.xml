@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/set_d_day"
+        android:text="디데이 설정"
+        android:layout_gravity="right"
+        android:textSize="15sp">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/todo"
+        android:text="할 일"
+        android:textSize="20dp"
+        android:layout_gravity="center">
+    </TextView>
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_black"
+        android:layout_gravity="center"
+        android:id="@+id/write_todo"
+        android:gravity="top">
+    </EditText>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/todo_detail_view"
+        android:text="상세 할 일"
+        android:textSize="20dp"
+        android:layout_gravity="center">
+    </TextView>
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_black"
+        android:layout_gravity="center"
+        android:id="@+id/write_todo_detail"
+        android:gravity="top">
+    </EditText>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:id="@+id/store"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/edge"
+            android:padding="10dp"
+            android:text="저장"
+            android:textSize="30dp"
+            android:layout_marginLeft="180dp"
+            android:textColor="#6E6E6E"
+            android:textAlignment="center">
+        </TextView>
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/undo"
+            android:text="취소"
+            android:textSize="30dp"
+            android:background="@drawable/edge"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            android:textColor="#6E6E6E"
+            android:textAlignment="center">
+        </TextView>
+    </LinearLayout>
+</LinearLayout>
