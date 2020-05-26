@@ -1,4 +1,4 @@
-package com.appsolute.org.todolist;
+package com.abbsolute.ma_livu;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,7 +18,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.provider.FirebaseInitProvider;
 
-public class MyFirebaseInstanceIdService extends FirebaseMessagingService {
+public class MyFirebaseInstanceIdService extends FirebaseMessagingService {//FCM 알림 테스트 코드
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);

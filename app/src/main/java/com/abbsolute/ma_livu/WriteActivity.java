@@ -1,4 +1,4 @@
-package com.appsolute.org.todolist;
+package com.abbsolute.ma_livu;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -21,7 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.appsolute.org.todolist.AppHelper.insertData;
+import static com.abbsolute.ma_livu.AppHelper.insertData;
+
 
 public class WriteActivity extends AppCompatActivity {
     EditText write;

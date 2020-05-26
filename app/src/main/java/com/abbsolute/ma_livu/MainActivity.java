@@ -1,4 +1,4 @@
-package com.appsolute.org.todolist;
+package com.abbsolute.ma_livu;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ToDoAdapter toDoAdapter;
     TabLayout tabLayout;
     ViewPager viewPager;
-    private GooeyMenu mGooeyMenu;
+    private GooeyMenu mGooeyMenu;//밑에 네이버와 비슷한 모양의 UI
     private Toast mToast;
 
     @Override
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
        // new AlarmHATT(getApplicationContext()).Alarm();
 //        createNotificationChannel();
         ///
-        getDays();
+        getDays();//디데이 알림을 구현하려고 시도 한 코드
         toDoAdapter=new ToDoAdapter();
         ///
         AppHelper.openDatabase(getApplicationContext(), "todo.db", 14);
@@ -257,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+    //알림 채널 생성 코드
     /*private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -286,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, cur).commit();
     }
-    //디데이 알림 기능
+    //디데이 알림 기능(수정필요!)
     public void getDays() {
         Calendar c = Calendar.getInstance();
         ArrayList<ToDoInfo> toDoInfos = AppHelper.selectTodoInfo("todoInfo");

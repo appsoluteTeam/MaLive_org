@@ -1,4 +1,4 @@
-package com.appsolute.org.todolist;
+package com.abbsolute.ma_livu;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
-public class AlarmReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {// 알람을 받는 클래스
     @Override
     public void onReceive(Context context, Intent intent) {
 

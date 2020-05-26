@@ -1,4 +1,4 @@
-package com.appsolute.org.todolist;
+package com.abbsolute.ma_livu;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import static java.sql.Types.NULL;
 
-public class AppHelper {
+public class AppHelper {//db 쿼리문 다루는 클래스 delete, select, update, insert
     private static final String TAG = "AppHelper";
     private static SQLiteDatabase database;
     public static RequestQueue requestQueue;

@@ -1,4 +1,4 @@
-package com.appsolute.org.todolist;
+package com.abbsolute.ma_livu;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -39,7 +39,7 @@ import java.util.Locale;
 import static android.app.Activity.RESULT_OK;
 
 
-public class ToDoFragment extends Fragment {
+public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 클래스
     RecyclerView recyclerView;
     ToDoAdapter toDoAdapter;
     private static int WRITE_RESULT = 100;
