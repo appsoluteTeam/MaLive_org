@@ -1,14 +1,17 @@
 package com.abbsolute.ma_livu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     OnItemClickListner listener;
     Context context;
     private static int UPDATE_RESULT=101;
+    CheckBox checkBox;
+    boolean check=false;
     public void setOnItemClickListner(OnItemClickListner listener) {
         this.listener = listener;
     }
@@ -40,10 +45,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         protected TextView dDays;
         ViewHolder(View v) {
             super(v);
-            this.Contents = v.findViewById(R.id.todo_text);
-            this.ContentsDetail=v.findViewById(R.id.todo_text_detail);
-            this.writeDates=v.findViewById(R.id.write_date);
-            this.dDays=v.findViewById(R.id.d_date);
+            this.Contents = v.findViewById(R.id.todo_text);//내용
+            this.ContentsDetail=v.findViewById(R.id.todo_text_detail);//상세내용
+            this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
+            this.dDays=v.findViewById(R.id.d_date);//디데이
+            checkBox=v.findViewById(R.id.check_complete);//체크 박스
         }
 
     }
@@ -65,9 +71,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.todolist, parent, false);
+
         return new ViewHolder(itemView);
     }
-
+    public void getCheckState(boolean is){
+        check=is;
+    }
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final ToDoInfo toDoInfo = arrayList.get(position);
@@ -85,6 +94,20 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
+        holder.ContentsDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(context,WriteActivity.class);
+                intent.putExtra("modify",toDoInfo.getContent());
+                context.startActivity(intent);
+            }
+        });
+        ///데이터 저장
+        SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("chk", checkBox.isChecked());
+        editor.commit();
+        checkBox.setChecked(check);
     }
     @Override
     public int getItemCount() {

@@ -1,12 +1,16 @@
 package com.abbsolute.ma_livu;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 public class ToDoInfo {
 
     String content;
     String detailContent;
     String dates;
     String dDay;
-
+    Context context;
     public ToDoInfo(){
 
     }
@@ -15,6 +19,7 @@ public class ToDoInfo {
         this.detailContent=detailContent;
         this.dates=dates;
         this.dDay=dDay;
+
     }
 
     public String getdDay() {
@@ -45,4 +50,5 @@ public class ToDoInfo {
     public void setDetailContent(String detailContent){
         this.detailContent=detailContent;
     }
+
 }

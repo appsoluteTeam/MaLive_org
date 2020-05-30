@@ -21,7 +21,7 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 
-    <com.appsolute.org.todolist.GooeyMenu
+    <com.abbsolute.ma_livu.GooeyMenu
         android:id="@+id/gooey_menu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -32,6 +32,6 @@
         app:menu_drawable="@array/drawable_array"
         android:layout_weight="0.5"
         android:layout_marginBottom="300dp">
-    </com.appsolute.org.todolist.GooeyMenu>
+    </com.abbsolute.ma_livu.GooeyMenu>
 
 </androidx.drawerlayout.widget.DrawerLayout>

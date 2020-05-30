@@ -1,14 +1,11 @@
 package com.abbsolute.ma_livu;
 
+import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,40 +13,26 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,6 +69,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ///
         getDays();//디데이 알림을 구현하려고 시도 한 코드
         toDoAdapter=new ToDoAdapter();
+        //===데이터 불러오기
+        SharedPreferences pf=getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        Boolean chk=pf.getBoolean("chk",false);
+        toDoAdapter.getCheckState(chk);
+        Toast.makeText(getApplicationContext(), ""+chk, Toast.LENGTH_SHORT).show();
         ///
         AppHelper.openDatabase(getApplicationContext(), "todo.db", 14);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -239,10 +227,73 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void menuClose() {
         showToast( "Menu Close");
     }
+    public void repaint(){
+        final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        toDoFragment=new ToDoFragment();
+        fragmentTransaction.replace(R.id.main_frame,toDoFragment).commit();
+    }
+
 
     @Override
-    public void menuItemClicked(int menuNumber) {
+    public void menuItemClicked(int menuNumber) {// 1 청소 2 요리 3 빨래 4 책상정리 5 설거지
         showToast( "Menu item clicked : " + menuNumber);
+        if(menuNumber==1){
+            long systemTime = System.currentTimeMillis();
+            SimpleDateFormat formatter= null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            }
+            String date=formatter.format(systemTime);
+            String dDate="디데이";
+            ToDoInfo toDoInfo=new ToDoInfo("청소","집안청소",date,dDate);
+            AppHelper.insertData("todoInfo",toDoInfo);
+            repaint();//화면 다시 그리기
+        }else if(menuNumber==2) {
+            long systemTime = System.currentTimeMillis();
+            SimpleDateFormat formatter = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            }
+            String date = formatter.format(systemTime);
+            String dDate = "디데이";
+            ToDoInfo toDoInfo = new ToDoInfo("요리", "자취생간편요리", date, dDate);
+            AppHelper.insertData("todoInfo", toDoInfo);
+            repaint();
+        }else if(menuNumber==3){
+            long systemTime = System.currentTimeMillis();
+            SimpleDateFormat formatter= null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            }
+            String date=formatter.format(systemTime);
+            String dDate="디데이";
+            ToDoInfo toDoInfo=new ToDoInfo("빨래","",date,dDate);
+            AppHelper.insertData("todoInfo",toDoInfo);
+            repaint();
+        }else if(menuNumber==4){
+            long systemTime = System.currentTimeMillis();
+            SimpleDateFormat formatter= null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            }
+            String date=formatter.format(systemTime);
+            String dDate="디데이";
+            ToDoInfo toDoInfo=new ToDoInfo("책상정리","",date,dDate);
+            AppHelper.insertData("todoInfo",toDoInfo);
+            repaint();
+        }else if(menuNumber==5){
+            long systemTime = System.currentTimeMillis();
+            SimpleDateFormat formatter= null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            }
+            String date=formatter.format(systemTime);
+            String dDate="디데이";
+            ToDoInfo toDoInfo=new ToDoInfo("설거지","",date,dDate);
+            AppHelper.insertData("todoInfo",toDoInfo);
+            repaint();
+        }
+
     }
     private void showToast(String msg){
         if(mToast!=null){
