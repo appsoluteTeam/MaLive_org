@@ -18,7 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
@@ -28,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
 
     //파이어베이스 인증 객체
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     //
     private EditText email_sign;
@@ -112,12 +118,23 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private void createUser(String email, String password) {
+    private void createUser(final String email, final String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            //파이어스토어에 정보 저장
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if(user != null){
+                                Map<String,Object> userMap = new HashMap<>();
+                                userMap.put(FirebaseID.documentID,user.getUid());
+                                userMap.put(FirebaseID.Email,email);
+                                userMap.put(FirebaseID.Password,password);
+                                firestore.collection(FirebaseID.user).document(user.getUid()).set(userMap, SetOptions.merge());
+                                finish();
+                            }
+
                             // 회원가입 성공
                             Toast.makeText(SignupActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
