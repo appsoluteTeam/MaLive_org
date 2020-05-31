@@ -1,5 +1,6 @@
 package com.abbsolute.ma_livu;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
@@ -7,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -53,7 +56,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     int Year, Month, Day;
     int Hour, Min;
     AlarmManager alarmManager;
-
+    //CheckBox checkBox;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,6 +66,9 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
+
+
+
 
 
 
