@@ -45,12 +45,13 @@ public class WriteActivity extends AppCompatActivity {
         storing=findViewById(R.id.store);
         setDday=findViewById(R.id.set_d_day);
         SQLiteDatabase todo;
+        //저장
         storing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent1=getIntent();
                 String word=intent1.getStringExtra("modify");
-                if(word!=null){
+                if(word!=null){//수정작업
                     String res=write.getText().toString();
                     String resDetailTodo=detailWrite.getText().toString();
                     long systemTime = System.currentTimeMillis();
@@ -67,7 +68,7 @@ public class WriteActivity extends AppCompatActivity {
                     Intent intent=new Intent();
                     setResult(RESULT_OK,intent);
                     finish();
-                }else{
+                }else{//추가
                     ToDoFragment toDoFragment=new ToDoFragment();
                     Bundle bundle=new Bundle(1);
                     String res=write.getText().toString();

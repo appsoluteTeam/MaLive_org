@@ -102,6 +102,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 return true;
             }
         });
+        //수정
         holder.Contents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

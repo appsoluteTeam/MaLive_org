@@ -67,12 +67,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
 
-
-
-
-
-
-        FloatingActionButton fab = view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.fab);//추가
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +80,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         toDoAdapter.GetContext(getContext());
         toDoAdapter.notifyDataSetChanged();
         recyclerView.setItemAnimator(null);
+        //밀어서 할일 삭제
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -105,7 +101,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
 
         return view;
     }
-
+    //다시 그리기
     @Override
     public void onResume() {
         super.onResume();
@@ -114,7 +110,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         toDoAdapter.setItem(toDoInfos);
         recyclerView.setAdapter(toDoAdapter);
     }
-
+    //작성하기 내용 보여주기
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
