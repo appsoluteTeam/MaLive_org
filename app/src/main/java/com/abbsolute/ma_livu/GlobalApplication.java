@@ -46,7 +46,7 @@ public class GlobalApplication extends Application {
                 // 로그인 시 인증 타입 지정
                 @Override
                 public AuthType[] getAuthTypes() {
-                    return new AuthType[] {AuthType.KAKAO_ACCOUNT};
+                    return new AuthType[] {AuthType.KAKAO_LOGIN_ALL};
                 }
 
                 // pause와 resume시에 타이머를 설정/ CPU의 소모를 절약 할 지의 여부를 지정
@@ -79,8 +79,6 @@ public class GlobalApplication extends Application {
         @Override
         public IApplicationConfig getApplicationConfig() {
             return new IApplicationConfig() {
-                public Activity getTopActivity() { return null;
-                }
                 @Override
                 public Context getApplicationContext() {
                     return GlobalApplication.getGlobalApplicationContext();
