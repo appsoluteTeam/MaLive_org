@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -28,6 +29,18 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.kakao.auth.ApiErrorCode;
+import com.kakao.auth.AuthType;
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.usermgmt.response.model.Profile;
+import com.kakao.usermgmt.response.model.UserAccount;
+import com.kakao.util.OptionalBoolean;
+import com.kakao.util.exception.KakaoException;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -45,18 +58,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient; //구글API클라이언트
     private static final int REQ_SIGN_GOOGLE = 100; //구글 로그인 결과 코드
 
+    //카카오 로그인에 필요한 변수들
+    private Button btn_custom_login;
+    private SessionCallback sessionCallback = new SessionCallback();
+    Session session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
-        email_login =(EditText) findViewById(R.id.email_login);
-        pass_login =(EditText) findViewById(R.id.pass_login);
-        btn_login =(Button) findViewById(R.id.btn_login);
-        btn_signup =(Button)findViewById(R.id.btn_signup);
+
+        email_login =(EditText) findViewById(R.id.email_login); //이메일 입력
+        pass_login =(EditText) findViewById(R.id.pass_login); // 패스워드 입력
 
         //회원가입 버튼을 눌렀을 때
+        btn_signup =(Button)findViewById(R.id.btn_signup);
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,8 +83,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-
         //로그인 버튼을 눌렀을 때
+        btn_login =(Button) findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +119,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions)
                 .build();
 
-
         //구글 로그인 버튼을 눌렀을 때
         btn_google = findViewById(R.id.btn_google);
         btn_google.setOnClickListener(new View.OnClickListener() {
@@ -111,13 +128,25 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivityForResult(intent,REQ_SIGN_GOOGLE);
             }
         });
-    }
 
+        //카카오 로그인 설정
+        session = Session.getCurrentSession();
+        session.addCallback(sessionCallback);
+
+        //카카오 로그인 버튼을 눌렀을 때
+        btn_custom_login = (Button) findViewById(R.id.btn_custom_login);
+        btn_custom_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
+
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
+        //구글 로그인 과정
         if(requestCode == REQ_SIGN_GOOGLE){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if(result.isSuccess()){ //인증결과가 성공적 인지
@@ -125,6 +154,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 resultLogin(account); //로그인 결과값 출력하라는 메소드
             }
         }
+
+        // 카카오톡로그인 과정 : 간편로그인 실행 결과를 받아서 SDK로 전달
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void resultLogin(final GoogleSignInAccount account) {
@@ -152,6 +188,88 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+    //카카오 로그인에 필요한 메소드&클래스
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // 세션 콜백 삭제
+        Session.getCurrentSession().removeCallback(sessionCallback);
+    }
+
+    public class SessionCallback implements ISessionCallback {
+
+        // 로그인에 성공한 상태
+        @Override
+        public void onSessionOpened() {
+            requestMe();
+        }
+
+        // 로그인에 실패한 상태
+        @Override
+        public void onSessionOpenFailed(KakaoException exception) {
+            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.getMessage());
+            Toast.makeText(LoginActivity.this, "카카오 로그인 실패", Toast.LENGTH_SHORT).show();
+        }
+
+        // 사용자 정보 요청
+        public void requestMe() {
+            UserManagement.getInstance()
+                    .me(new MeV2ResponseCallback() {
+                        @Override
+                        public void onSessionClosed(ErrorResult errorResult) {
+                            Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult);
+
+                        }
+
+                        @Override
+                        public void onFailure(ErrorResult errorResult) {
+                            int result = errorResult.getErrorCode();
+
+                            if(result == ApiErrorCode.CLIENT_ERROR_CODE) {
+                                Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(),"로그인 도중 오류가 발생했습니다: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onSuccess(MeV2Response result) {
+                            Log.i("KAKAO_API", "사용자 아이디: " + result.getId());
+                            Toast.makeText(LoginActivity.this, "카카오 로그인 성공", Toast.LENGTH_SHORT).show();
+
+                            UserAccount kakaoAccount = result.getKakaoAccount();
+                            if (kakaoAccount != null) {
+                                // 프로필
+                                Profile profile = kakaoAccount.getProfile();
+
+                                if (profile != null) {
+                                    Log.d("KAKAO_API", "nickname: " + profile.getNickname());
+                                    Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
+                                    Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
+
+                                } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
+                                    // 동의 요청 후 프로필 정보 획득 가능
+
+                                } else {
+                                    // 프로필 획득 불가
+                                }
+                            }
+
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            intent.putExtra("nickname", result.getNickname());
+                            intent.putExtra("photo", result.getProfileImagePath());
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+        }
+    }
+
+
+
 
 
 }
