@@ -55,6 +55,7 @@ public class SignupActivity extends AppCompatActivity {
         email_sign =(EditText) findViewById(R.id.email_sign);
         pass_sign =(EditText) findViewById(R.id.pass_sign);
         pwd_check =(EditText) findViewById(R.id.pwd_check);
+        img_check =(ImageView)findViewById(R.id.img_check);
         btn_sign =(Button) findViewById(R.id.btn_sign);
 
 
@@ -69,9 +70,14 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(pass_sign.getText().toString().equals(pwd_check.getText().toString())) {
+                    img_check.setImageResource(R.drawable.check);
+                } else {
+                    img_check.setImageResource(R.drawable.x);
+                }
+
 
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 
