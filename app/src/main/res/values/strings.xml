@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MaLive</string>
+    <string name="kakao_app_key">422f55fe5b5bbb7bec3d1b1aa0d365b0</string>
 </resources>
+

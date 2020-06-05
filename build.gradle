@@ -19,7 +19,11 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        maven{
+            url "https://maven.google.com"
+        }
+        /*카카오 로그인을 위해서! 추가!*/
+        maven { url 'http://devrepo.kakao.com:8088/nexus/content/groups/public/'}
     }
 }
 
