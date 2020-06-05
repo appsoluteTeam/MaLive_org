@@ -63,5 +63,17 @@
 
     </com.google.android.gms.common.SignInButton>
 
+    <Button
+        android:id="@+id/btn_custom_login"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/selector_login_button"
+        android:text="kakao Login"
+        app:layout_constraintEnd_toEndOf="@+id/btn_google"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_google"
+        app:layout_constraintTop_toBottomOf="@+id/btn_google" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
