@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.abbsolute.ma_livu.Fragments.CommunityFragment;
+import com.abbsolute.ma_livu.Fragments.HomeFragment;
+import com.abbsolute.ma_livu.Fragments.ProfileFragment;
+import com.abbsolute.ma_livu.Fragments.TitleFragment;
+
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
     private int tabCount;
     public TabPagerAdapter(@NonNull FragmentManager fm, int tabCount) {

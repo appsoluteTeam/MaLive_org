@@ -192,7 +192,7 @@ public class GooeyMenu extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mCenterX = w / 2;
-        mCenterY = h-PLUS_HEIGHT;
+        mCenterY = h/2+mFabButtonRadius*11;
         //h - mFabButtonRadius
         for (int i = 0; i < mNumberOfMenu; i++) {
             CirclePoint circlePoint = new CirclePoint();

@@ -4,15 +4,11 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Canvas;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -20,11 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.abbsolute.ma_livu.Activities.WriteActivity;
+import com.abbsolute.ma_livu.Interfaces.OnItemClickListner;
 
 import java.util.ArrayList;
 
@@ -48,6 +43,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         protected TextView writeDates;
         protected TextView dDays;
         protected CheckBox checkBox;
+        protected ImageView shareImage;
+        protected ImageView copyTextImage;
         ViewHolder(View v) {
             super(v);
             this.Contents = v.findViewById(R.id.todo_text);//내용
@@ -55,6 +52,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
             this.dDays=v.findViewById(R.id.d_date);//디데이
             this.checkBox=v.findViewById(R.id.check_complete);
+            this.shareImage=v.findViewById(R.id.share_image);
+            this.copyTextImage=v.findViewById(R.id.copy_text);
         }
 
     }
@@ -106,7 +105,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.Contents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context,WriteActivity.class);
+                Intent intent=new Intent(context, WriteActivity.class);
                 intent.putExtra("modify",toDoInfo.getContent());
                 context.startActivity(intent);
             }
@@ -134,7 +133,53 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 editor.commit();
             }
         });
+        //클립보드 복사
+        /*holder.Contents.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                String copyText=toDoInfo.getContent();
+                ClipData clip = ClipData.newPlainText("복사할 데이터",copyText);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "클립보드에 내용을 복사하였습니다.", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        holder.ContentsDetail.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                String copyText=toDoInfo.getDetailContent();
+                ClipData clip = ClipData.newPlainText("복사할 데이터",copyText);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "클립보드에 상세내용을 복사하였습니다.", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });*/
+        holder.copyTextImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+                String copyText="할일: "+toDoInfo.getContent()+", "+"상세할일: "+toDoInfo.getDetailContent();
+                ClipData clip = ClipData.newPlainText("복사할 데이터",copyText);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "클립보드에 내용을 복사하였습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        holder.shareImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Sharing_intent = new Intent(Intent.ACTION_SEND);
+                Sharing_intent.setType("text/plain");
 
+                String Text_Message1 = toDoInfo.getContent();
+                String Text_Message2=toDoInfo.getDetailContent();
+                Sharing_intent.putExtra(Intent.EXTRA_SUBJECT, Text_Message1);
+                Sharing_intent.putExtra(Intent.EXTRA_TEXT,Text_Message2);
+                Intent Sharing = Intent.createChooser(Sharing_intent, "공유하기");
+                context.startActivity(Sharing);
+            }
+        });
     }
     @Override
     public int getItemCount() {

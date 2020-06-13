@@ -14,7 +14,7 @@ public class ToDoInfo {
     public ToDoInfo(){
 
     }
-    ToDoInfo(String content,String detailContent,String dates,String dDay){
+    public ToDoInfo(String content, String detailContent, String dates, String dDay){
         this.content=content;
         this.detailContent=detailContent;
         this.dates=dates;
