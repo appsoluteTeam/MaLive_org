@@ -13,6 +13,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.abbsolute.ma_livu.Activities.MainActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -31,7 +32,7 @@ public class MyFirebaseInstanceIdService extends FirebaseMessagingService {//FCM
             Log.d("FCM Log","알림 메시지:"+remoteMessage.getNotification().getBody());
             String messageBody=remoteMessage.getNotification().getBody();
             String messageTitle=remoteMessage.getNotification().getTitle();
-            Intent intent=new Intent(this,MainActivity.class);
+            Intent intent=new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
             String channelId="Channel ID";

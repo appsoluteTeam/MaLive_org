@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.abbsolute.ma_livu.Activities.MainActivity;
+
 public class HelpFragment extends Fragment  {
     @Nullable
     @Override
@@ -22,7 +24,7 @@ public class HelpFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 getActivity().finish();
-                startActivity(new Intent(getContext(),MainActivity.class));
+                startActivity(new Intent(getContext(), MainActivity.class));
             }
         });
         return view;
