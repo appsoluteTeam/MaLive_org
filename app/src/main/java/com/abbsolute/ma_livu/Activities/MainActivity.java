@@ -476,6 +476,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     PackageManager.DONT_KILL_APP);
 
         }
-
+    ////
     }
 }
