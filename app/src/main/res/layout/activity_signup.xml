@@ -8,23 +8,23 @@
 
     <EditText
         android:id="@+id/email_sign"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="60dp"
         android:ems="10"
-        android:hint="E-mail"
+        android:hint="malive@malive.com"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
         android:id="@+id/pass_sign"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="PassWord"
+        android:hint="비밀번호 (영문, 숫자 조합 8자 이상)"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/email_sign"
         app:layout_constraintStart_toStartOf="@+id/email_sign"
@@ -32,11 +32,11 @@
 
     <EditText
         android:id="@+id/pwd_check"
-        android:layout_width="250dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="PassWord check"
+        android:hint="비밀번호 재입력"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/pass_sign"
         app:layout_constraintStart_toStartOf="@+id/pass_sign"
@@ -53,14 +53,59 @@
         app:layout_constraintTop_toBottomOf="@+id/pass_sign"
         />
 
+    <ImageView
+        android:id="@+id/img_check2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/pass_sign"
+        app:layout_constraintTop_toBottomOf="@+id/email_sign" />
+
     <Button
         android:id="@+id/btn_sign"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Sign Up"
+        android:layout_marginTop="10dp"
+        android:text="다음"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_wanning"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/tv_wanning"
+        app:layout_constraintTop_toBottomOf="@+id/tv_wanning" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="100dp"
+        android:text="가입할 \n이메일을 인증해주세요"
+        android:textSize="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_please"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="인증요청"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/email_sign"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/tv_wanning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textColor="#F44336"
         app:layout_constraintEnd_toEndOf="@+id/pwd_check"
-        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="@+id/pwd_check"
         app:layout_constraintTop_toBottomOf="@+id/pwd_check" />
 
