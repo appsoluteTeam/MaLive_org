@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login2Activity"></activity>
-        <!-- GlobalApplication 객체를 공유하기 위함 -->
+        <activity android:name=".FindpwdActivity"></activity>
+        <activity android:name=".Login2Activity" /> <!-- GlobalApplication 객체를 공유하기 위함 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />

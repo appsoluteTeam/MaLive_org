@@ -17,12 +17,12 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login2Activity extends AppCompatActivity {
 
-    //이메일 로그인에 필요한 변수들
     private Button btn_login;
     private EditText email_login;
     private EditText pass_login;
+    private Button btn_findpwd;
 
-    private FirebaseAuth auth; //파이어베이즈 인증 객체
+    private FirebaseAuth auth; //파이어베이스 인증 객체
 
 
     @Override
@@ -56,6 +56,16 @@ public class Login2Activity extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+
+        //비밀번호 찾기 버튼을 눌렀을 떄
+        btn_findpwd =(Button)findViewById(R.id.btn_findpwd);
+        btn_findpwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login2Activity.this,FindpwdActivity.class);
+                startActivity(intent);
             }
         });
     }
