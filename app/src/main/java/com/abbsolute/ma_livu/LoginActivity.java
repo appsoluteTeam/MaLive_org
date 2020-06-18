@@ -45,12 +45,8 @@ import com.kakao.util.exception.KakaoException;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-    //이메일 로그인에 필요한 변수들
-    private Button btn_login;
+    private Button btn_email_login;
     private Button btn_signup;
-    private EditText email_login;
-    private EditText pass_login;
-
 
     //구글 로그인에 필요한 변수들
     private SignInButton btn_google; //구글 로그인 버튼
@@ -70,8 +66,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
 
-        email_login =(EditText) findViewById(R.id.email_login); //이메일 입력
-        pass_login =(EditText) findViewById(R.id.pass_login); // 패스워드 입력
+        //이메일로 로그인 버튼을 눌렀을 때
+        btn_email_login =(Button) findViewById(R.id.btn_email_login);
+        btn_email_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, Login2Activity.class);
+                startActivity(intent);
+            }
+        });
 
         //회원가입 버튼을 눌렀을 때
         btn_signup =(Button)findViewById(R.id.btn_signup);
@@ -83,30 +86,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        //로그인 버튼을 눌렀을 때
-        btn_login =(Button) findViewById(R.id.btn_login);
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = email_login.getText().toString();
-                String pwd = pass_login.getText().toString().trim();
-
-                auth.signInWithEmailAndPassword(email, pwd)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-            }
-        });
 
         //구글 로그인 설정
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -163,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //구글 로그인 과정
     private void resultLogin(final GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
         auth.signInWithCredential(credential)
@@ -193,13 +173,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         // 세션 콜백 삭제
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
     public class SessionCallback implements ISessionCallback {
-
         // 로그인에 성공한 상태
         @Override
         public void onSessionOpened() {
@@ -222,7 +200,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult);
 
                         }
-
                         @Override
                         public void onFailure(ErrorResult errorResult) {
                             int result = errorResult.getErrorCode();
@@ -257,7 +234,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                     // 프로필 획득 불가
                                 }
                             }
-
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             intent.putExtra("nickname", result.getNickname());
                             intent.putExtra("photo", result.getProfileImagePath());
