@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Login;
+package com.abbsolute.ma_livu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
