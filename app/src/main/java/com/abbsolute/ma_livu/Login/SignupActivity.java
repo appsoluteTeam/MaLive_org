@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.abbsolute.ma_livu.FirebaseID;
+import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
@@ -63,7 +65,7 @@ public class SignupActivity extends AppCompatActivity {
         pwd_check =(EditText) findViewById(R.id.pwd_check);
         img_check =(ImageView)findViewById(R.id.img_check);
         img_check2 =(ImageView)findViewById(R.id.img_check2);
-        btn_sign =(Button) findViewById(R.id.btn_sign);
+        btn_sign =(Button) findViewById(R.id.btn_next1);
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
 
 
@@ -199,7 +201,7 @@ public class SignupActivity extends AppCompatActivity {
                             startActivity(intent);
                         } else {
                             // 회원가입 실패
-                            Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                            tv_wanning.setText("이미 등록된 계정입니다.");
                         }
                     }
                 });

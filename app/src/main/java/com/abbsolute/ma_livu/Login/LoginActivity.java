@@ -1,21 +1,18 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.Login;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.abbsolute.ma_livu.HomeActivity;
+import com.abbsolute.ma_livu.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -151,7 +148,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     public void onComplete(@NonNull Task<AuthResult> task) { //로그인 성공했을 때
                         if(task.isSuccessful()){
                             Toast.makeText(LoginActivity.this,"로그인 성공",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
 
                             intent.putExtra("nickname",account.getDisplayName());
                             intent.putExtra("photo",String.valueOf(account.getPhotoUrl())); //특정 자료형은 String 상태로 변형

@@ -1,6 +1,5 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.Login;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 

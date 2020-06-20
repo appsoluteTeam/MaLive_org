@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.Community;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class CommunityActivity extends AppCompatActivity {
