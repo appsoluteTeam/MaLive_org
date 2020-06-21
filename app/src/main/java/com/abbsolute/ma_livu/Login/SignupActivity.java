@@ -47,12 +47,12 @@ public class SignupActivity extends AppCompatActivity {
     private EditText pwd_check;
     private ImageView img_check;
     private ImageView img_check2;
-    private Button btn_sign;
+    private Button btn_next1;
     private TextView tv_wanning;
 
     //
-    private String email = "";
-    private String password = "";
+    public String email = "";
+    public String password = "";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +65,23 @@ public class SignupActivity extends AppCompatActivity {
         pwd_check =(EditText) findViewById(R.id.pwd_check);
         img_check =(ImageView)findViewById(R.id.img_check);
         img_check2 =(ImageView)findViewById(R.id.img_check2);
-        btn_sign =(Button) findViewById(R.id.btn_next1);
+        btn_next1 =(Button) findViewById(R.id.btn_next1);
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
 
+
+        //버튼을 눌렀을 때
+        btn_next1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email = email_sign.getText().toString();
+                password = pass_sign.getText().toString();
+
+                if(isValidEmail() && isValidPasswd() && isSamePasswd()) {
+                    createUser(email, password);
+
+                }
+            }
+        });
 
         //비밀번호 형식이 어긋날 때
         pass_sign.addTextChangedListener(new TextWatcher() {
@@ -91,7 +105,6 @@ public class SignupActivity extends AppCompatActivity {
         pwd_check.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -103,24 +116,9 @@ public class SignupActivity extends AppCompatActivity {
             }
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
-
-
-        //버튼을 눌렀을 때
-        btn_sign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                email = email_sign.getText().toString();
-                password = pass_sign.getText().toString();
-
-                if(isValidEmail() && isValidPasswd() && isSamePasswd()) {
-                    createUser(email, password);
-                }
-            }
-        });
 
         //이메일 인증 방법을 지침하는 객체
         ActionCodeSettings actionCodeSettings =
@@ -192,12 +190,12 @@ public class SignupActivity extends AppCompatActivity {
                                 userMap.put(FirebaseID.documentID,user.getUid());
                                 userMap.put(FirebaseID.Email,email);
                                 userMap.put(FirebaseID.Password,password);
-                                firestore.collection(FirebaseID.user).document(user.getUid()).set(userMap, SetOptions.merge());
+                                firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
                                 finish();
                             }
                             // 회원가입 성공
-                            Toast.makeText(SignupActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+                            intent.putExtra("email",email);
                             startActivity(intent);
                         } else {
                             // 회원가입 실패
