@@ -3,7 +3,9 @@ package com.abbsolute.ma_livu.Fragments;
 import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -43,6 +45,12 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     int Hour, Min;
     AlarmManager alarmManager;
     //CheckBox checkBox;
+    ///
+    private static final int SWIPE_MIN_DISTANCE = 120;
+    private static final int SWIPE_MAX_OFF_PATH = 250;
+    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+    ///
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -75,10 +83,17 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                final int position = viewHolder.getAdapterPosition();
-                AppHelper.deleteData(getContext(), "todoInfo", position, toDoInfos.get(position));
-                toDoInfos.remove(position);
-                toDoAdapter.notifyItemRemoved(position);
+                if(direction==ItemTouchHelper.LEFT){
+                    final int position = viewHolder.getAdapterPosition();
+                    AppHelper.deleteData(getContext(), "todoInfo", position, toDoInfos.get(position));
+                    toDoInfos.remove(position);
+                    toDoAdapter.notifyItemRemoved(position);
+                }else if(direction==ItemTouchHelper.RIGHT){
+                    toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+                    // toDoAdapter.clearData();
+                    toDoAdapter.setItem(toDoInfos);
+                    recyclerView.setAdapter(toDoAdapter);
+                }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);

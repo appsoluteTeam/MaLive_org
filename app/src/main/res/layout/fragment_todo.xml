@@ -20,37 +20,39 @@
         android:text="today 11"
         android:layout_gravity="center">
     </TextView>
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/todo_border"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ToDoList"
-            android:textSize="17sp"
-            android:layout_marginBottom="5sp"
-            android:layout_marginStart="10sp">
-        </TextView>
-        <androidx.recyclerview.widget.RecyclerView
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/todo_recyclerview">
+            android:orientation="vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ToDoList"
+                android:textSize="17sp"
+                android:layout_marginBottom="5sp"
+                android:layout_marginStart="10sp">
+            </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/todo_recyclerview">
 
-        </androidx.recyclerview.widget.RecyclerView>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_marginLeft="100dp"
-            app:srcCompat="@drawable/plus" />
-
-    </LinearLayout>
+            </androidx.recyclerview.widget.RecyclerView>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_marginLeft="100dp"
+                app:srcCompat="@drawable/plus" />
+        </LinearLayout>
+    </ScrollView>
 
 
 

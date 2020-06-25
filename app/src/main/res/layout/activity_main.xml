@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:alpha="0.7">
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
