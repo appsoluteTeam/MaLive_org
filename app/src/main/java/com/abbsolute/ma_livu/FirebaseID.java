@@ -14,6 +14,8 @@ public class FirebaseID {
     public static String Nickname ="nickname";
     public static String Email = "email";
     public static String Password = "password";
+    public static String Test1 ="test1";
+    public static String Test2 ="test2";
 
     //파이어스토어 Community 컬렉션 필드 이름
     public static String title ="title";
