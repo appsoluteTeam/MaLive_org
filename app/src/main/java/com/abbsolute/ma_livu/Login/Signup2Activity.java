@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -56,6 +57,7 @@ public class Signup2Activity extends AppCompatActivity {
 
     }
 
+    //파이어스토어에 닉네임 저장
     public void Savenickname(){
         if (firebaseAuth.getCurrentUser() != null){
             Map<String,Object> userMap = new HashMap<>();
@@ -65,5 +67,12 @@ public class Signup2Activity extends AppCompatActivity {
             intent.putExtra("email",email);
             startActivity(intent);
         }
+    }
+
+    //TODO 닉네임 중복검사해야합니다........... 아직 못했읍니다...
+    private boolean isSameNickname(){
+        Query samenickname = firestore.collection("user").whereEqualTo("nickname", et_nickname.getText().toString());
+
+        return false;
     }
 }

@@ -7,7 +7,7 @@
     tools:context=".Login.Signup3Activity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
@@ -35,8 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        app:layout_constraintStart_toStartOf="@+id/tv_top"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top">
 
         <RadioButton
             android:id="@+id/radioButton5"

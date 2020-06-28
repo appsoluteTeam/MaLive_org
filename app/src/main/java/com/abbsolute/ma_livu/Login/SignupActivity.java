@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.kakao.auth.authorization.accesstoken.AccessToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,17 +37,21 @@ public class SignupActivity extends AppCompatActivity {
     private String password_pattern ="^[a-zA-Z0-9]{8,30}$" ; // 영문,숫자 혼용하여 8~30 글자
     private Pattern PASSWORD_PATTERN = Pattern.compile(password_pattern);
 
-
     //파이어베이스 인증 객체
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseUser user;
 
     //
     private EditText email_sign;
+    private Button btn_please;
+    private TextView tv_top;
+
     private EditText pass_sign;
     private EditText pwd_check;
     private ImageView img_check;
     private ImageView img_check2;
+
     private Button btn_next1;
     private TextView tv_wanning;
 
@@ -67,9 +72,29 @@ public class SignupActivity extends AppCompatActivity {
         img_check2 =(ImageView)findViewById(R.id.img_check2);
         btn_next1 =(Button) findViewById(R.id.btn_next1);
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
+        tv_top=(TextView)findViewById(R.id.tv_top);
 
 
-        //버튼을 눌렀을 때
+        //인증요청 버튼을 눌렀을 때
+        btn_please =(Button)findViewById(R.id.btn_please);
+        btn_please.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                user = firebaseAuth.getCurrentUser();
+                user.sendEmailVerification()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(SignupActivity.this,"인증메일 발송",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                tv_top.setText("비밀번호를\n설정하세요");
+                btn_please.setText("인증완료");
+            }
+
+        });
+
+       //다음 버튼을 눌렀을 때
         btn_next1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +103,6 @@ public class SignupActivity extends AppCompatActivity {
 
                 if(isValidEmail() && isValidPasswd() && isSamePasswd()) {
                     createUser(email, password);
-
                 }
             }
         });
@@ -119,19 +143,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-
-        //이메일 인증 방법을 지침하는 객체
-        ActionCodeSettings actionCodeSettings =
-                ActionCodeSettings.newBuilder()
-                        .setUrl("https://www.example.com/finishSignUp?cartId=1234")
-                        .setHandleCodeInApp(true)
-                        .setAndroidPackageName(
-                                "com.abbsolute.ma_livu",
-                                true,
-                                "12" )
-                        .build();
     }
-
 
     // 이메일 유효성 검사
     private boolean isValidEmail() {
@@ -145,6 +157,16 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         } else {
             return true;
+        }
+    }
+
+    private boolean isEmailVerified(){
+        if(user.isEmailVerified()){
+            tv_top.setText("비밀번호를\n설정해주세요");
+            return true;
+        }else{
+            tv_wanning.setText("이메일을 인증해주세요");
+            return false;
         }
     }
 
@@ -184,19 +206,18 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //파이어스토어에 정보 저장
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            if(user != null){
-                                Map<String,Object> userMap = new HashMap<>();
-                                userMap.put(FirebaseID.documentID,user.getUid());
-                                userMap.put(FirebaseID.Email,email);
-                                userMap.put(FirebaseID.Password,password);
-                                firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
-                                finish();
-                            }
-                            // 회원가입 성공
-                            Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
-                            intent.putExtra("email",email);
-                            startActivity(intent);
+                                if(user != null){
+                                    Map<String,Object> userMap = new HashMap<>();
+                                    userMap.put(FirebaseID.documentID,user.getUid());
+                                    userMap.put(FirebaseID.Email,email);
+                                    userMap.put(FirebaseID.Password,password);
+                                    firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
+                                    finish();
+                                }
+                                // 회원가입 성공
+                                Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+                                intent.putExtra("email",email);
+                                startActivity(intent);
                         } else {
                             // 회원가입 실패
                             tv_wanning.setText("이미 등록된 계정입니다.");
