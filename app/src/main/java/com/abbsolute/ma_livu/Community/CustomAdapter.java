@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.Community;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     public CustomAdapter(ArrayList<bringData> arrayList){
         this.arrayList =arrayList;
     }
-
 
     @NonNull
     @Override

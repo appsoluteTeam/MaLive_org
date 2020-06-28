@@ -7,61 +7,47 @@
     tools:context=".MainActivity">
 
 
-    <EditText
-        android:id="@+id/email_login"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:hint="E-mail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/pass_login"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/email_login"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="@+id/email_login"
-        app:layout_constraintTop_toBottomOf="@+id/email_login" />
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Login"
-        app:layout_constraintStart_toStartOf="@+id/pass_login"
-        app:layout_constraintTop_toBottomOf="@+id/pass_login" />
-
     <Button
         android:id="@+id/btn_signup"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="16dp"
-        android:text="Sign up"
-        app:layout_constraintEnd_toEndOf="@+id/pass_login"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btn_login"
-        app:layout_constraintTop_toBottomOf="@+id/pass_login" />
+        android:layout_marginTop="20dp"
+        android:text="회원가입"
+        app:layout_constraintEnd_toEndOf="@+id/btn_custom_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_custom_login" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/btn_google"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/btn_signup"
-        app:layout_constraintHorizontal_bias="0.554"
-        app:layout_constraintStart_toStartOf="@+id/btn_login"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login">
+        app:layout_constraintEnd_toEndOf="@+id/btn_email_login"
+        app:layout_constraintStart_toStartOf="@+id/btn_email_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_email_login">
 
     </com.google.android.gms.common.SignInButton>
+
+    <Button
+        android:id="@+id/btn_custom_login"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/selector_login_button"
+        android:text="카카오로 로그인"
+        app:layout_constraintEnd_toEndOf="@+id/btn_google"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/btn_google"
+        app:layout_constraintTop_toBottomOf="@+id/btn_google" />
+
+    <Button
+        android:id="@+id/btn_email_login"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="280dp"
+        android:text="이메일로 로그인"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
