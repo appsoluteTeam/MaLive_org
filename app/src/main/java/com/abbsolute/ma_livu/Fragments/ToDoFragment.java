@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ import com.abbsolute.ma_livu.Activities.WriteActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -46,9 +49,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     AlarmManager alarmManager;
     //CheckBox checkBox;
     ///
-    private static final int SWIPE_MIN_DISTANCE = 120;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
 
     ///
     @Nullable
@@ -60,8 +61,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
-
-        FloatingActionButton fab = view.findViewById(R.id.fab);//추가
+        Button fab = view.findViewById(R.id.fab);//추가
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +69,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
                 startActivityForResult(intent, WRITE_RESULT);
             }
         });
+
         toDoInfos = AppHelper.selectTodoInfo("todoInfo");
         toDoAdapter.setItem(toDoInfos);
         toDoAdapter.GetContext(getContext());
@@ -118,7 +119,15 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         if (requestCode == WRITE_RESULT) {
             if (resultCode == RESULT_OK) {
                 toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+                Comparator<ToDoInfo> cmpAsc = new Comparator<ToDoInfo>() {
+
+                    @Override
+                    public int compare(ToDoInfo o1, ToDoInfo o2) {
+                        return o2.getDates().compareTo(o1.getDates()) ;
+                    }
+                } ;
                 // toDoAdapter.clearData();
+                Collections.sort(toDoInfos,cmpAsc);
                 toDoAdapter.setItem(toDoInfos);
                 recyclerView.setAdapter(toDoAdapter);
             }

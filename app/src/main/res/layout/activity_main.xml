@@ -22,17 +22,4 @@
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
 
-    <com.abbsolute.ma_livu.GooeyMenu
-        android:id="@+id/gooey_menu"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:fab_radius="@dimen/big_circle_radius"
-        app:gap_between_menu_fab="@dimen/min_gap"
-        app:menu_radius="@dimen/small_circle_radius"
-        app:no_of_menu="5"
-        app:menu_drawable="@array/drawable_array"
-        android:layout_weight="0.5"
-        android:layout_marginBottom="300dp">
-    </com.abbsolute.ma_livu.GooeyMenu>
-
 </androidx.drawerlayout.widget.DrawerLayout>

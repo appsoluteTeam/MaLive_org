@@ -42,6 +42,7 @@ import com.abbsolute.ma_livu.ToDoAdapter;
 import com.abbsolute.ma_livu.ToDoInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -52,12 +53,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GooeyMenu.GooeyMenuInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String CHANNEL_ID = "101" ;
     private static final String TAG = "FCM";
     private AppBarConfiguration mAppBarConfiguration;
-
+    private static int WRITE_RESULT = 100;
     private ToDoFragment toDoFragment;
     private NotiFragment notiFragment;
     private HelpFragment helpFragment;
@@ -183,10 +184,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-        mGooeyMenu = (GooeyMenu) findViewById(R.id.gooey_menu);
-        mGooeyMenu.setOnMenuListener(this);
+      //  mGooeyMenu = (GooeyMenu) findViewById(R.id.gooey_menu);
+       // mGooeyMenu.setOnMenuListener(this);
 
-    }
+    }//Oncreate()
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -231,15 +232,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    @Override
-    public void menuOpen() {
 
-    }
 
-    @Override
-    public void menuClose() {
-        showToast( "Menu Close");
-    }
+
     public void repaint(){
         final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         toDoFragment=new ToDoFragment();
@@ -247,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    @Override
+  /*  @Override
     public void menuItemClicked(int menuNumber) {// 1 청소 2 요리 3 빨래 4 책상정리 5 설거지
         showToast( "Menu item clicked : " + menuNumber);
         if(menuNumber==1){
@@ -307,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             repaint();
         }
 
-    }
+    }*/
     private void showToast(String msg){
         if(mToast!=null){
             mToast.cancel();

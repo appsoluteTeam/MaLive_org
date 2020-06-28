@@ -1,48 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/set_d_day"
-        android:text="디데이 설정"
-        android:layout_gravity="right"
-        android:textSize="15sp">
-    </TextView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/todo"
-        android:text="할 일"
-        android:textSize="20dp"
-        android:layout_gravity="center">
-    </TextView>
-    <EditText
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_black"
-        android:layout_gravity="center"
-        android:id="@+id/write_todo"
-        android:gravity="top">
-    </EditText>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/todo_detail_view"
-        android:text="상세 할 일"
-        android:textSize="20dp"
-        android:layout_gravity="center">
-    </TextView>
-    <EditText
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_black"
-        android:layout_gravity="center"
-        android:id="@+id/write_todo_detail"
-        android:gravity="top">
-    </EditText>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="To DO LIST\n  하루 할 일"
+            android:layout_gravity="center"
+            android:textSize="14sp"
+            android:textColor="#2E2E2E">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카테고리"
+            android:textColor="#2E2E2E">
+        </TextView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_black"
+            android:layout_gravity="center"
+            android:id="@+id/todo_list_category"
+            android:gravity="top">
+        </androidx.recyclerview.widget.RecyclerView>
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="할 일"
+            android:layout_gravity="center"
+            android:textSize="20sp">
+        </TextView>
+        <EditText
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/write_todo"
+            android:layout_gravity="center"
+            android:background="@drawable/edit_black">
+        </EditText>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/todo_detail_view"
+            android:text="상세 할 일"
+            android:textSize="20dp"
+            android:layout_gravity="center">
+        </TextView>
+        <EditText
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_black"
+            android:layout_gravity="center"
+            android:id="@+id/write_todo_detail"
+            android:gravity="top">
+        </EditText>
+    </LinearLayout>
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
@@ -71,5 +88,69 @@
             android:textColor="#6E6E6E"
             android:textAlignment="center">
         </TextView>
+    </LinearLayout>-->
+    <View
+        android:layout_marginTop="10sp"
+        android:layout_width="50sp"
+        android:layout_height="1sp"
+        android:layout_gravity="center"
+        android:background="#000000">
+    </View>
+    <TextView
+        android:layout_marginTop="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:textColor="#2E2E2E"
+        android:layout_gravity="center">
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/set_year"
+            android:layout_weight="1">
+        </NumberPicker>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="|"
+            android:textSize="30sp"
+            android:textColor="#BDBDBD"
+            android:elegantTextHeight="true">
+        </TextView>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/set_month">
+        </NumberPicker>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="|"
+            android:textSize="30sp"
+            android:textColor="#BDBDBD"
+            android:elegantTextHeight="true">
+        </TextView>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/set_day">
+        </NumberPicker>
     </LinearLayout>
+    <Button
+        android:layout_width="120sp"
+        android:layout_height="wrap_content"
+        android:id="@+id/store"
+        android:layout_gravity="center"
+        android:text="등록하기"
+        android:background="@drawable/button_background"
+        android:textColor="#FFFFFF">
+    </Button>
 </LinearLayout>

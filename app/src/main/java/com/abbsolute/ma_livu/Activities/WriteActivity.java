@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,10 @@ public class WriteActivity extends AppCompatActivity {
     private int day=0;
     int val=0;
     private int UPDATE_OK=5;
+    ///NumberPicker 정의
+    NumberPicker yearPicker;
+    NumberPicker monthPicker;
+    NumberPicker dayPicker;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +48,38 @@ public class WriteActivity extends AppCompatActivity {
         write=findViewById(R.id.write_todo);
         detailWrite=findViewById(R.id.write_todo_detail);
         storing=findViewById(R.id.store);
-        setDday=findViewById(R.id.set_d_day);
+        yearPicker=findViewById(R.id.set_year);
+        monthPicker=findViewById(R.id.set_month);
+        dayPicker=findViewById(R.id.set_day);
+        ////////////
+        yearPicker.setMinValue(2020);
+        yearPicker.setMaxValue(2030);
+        monthPicker.setMinValue(1);
+        monthPicker.setMaxValue(12);
+        dayPicker.setMinValue(1);
+        dayPicker.setMaxValue(31);
+        ///////////
+        ///
+        long systemTime = System.currentTimeMillis();
+        SimpleDateFormat formatter= null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        }
+        String date=formatter.format(systemTime);
+        String[] splitData=date.split("-");
+        String tmp1=splitData[0];
+        String tmp2=splitData[1];
+        String tmp3=splitData[2];
+        int splitYear=Integer.parseInt(tmp1);
+        int splitMonth=Integer.parseInt(tmp2);
+        int splitDay=Integer.parseInt(tmp3);
+        ///
+        yearPicker.setValue(splitYear);
+        monthPicker.setValue(splitMonth);
+        dayPicker.setValue(splitDay);
+        year=yearPicker.getValue();
+        month=monthPicker.getValue();
+        day=dayPicker.getValue();
         SQLiteDatabase todo;
         //저장
         storing.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +97,7 @@ public class WriteActivity extends AppCompatActivity {
                     }
                     String date=formatter.format(systemTime);
                     String dDate=date;
-                    if(year>0&&month>0&&day>0)
+                    if(year!=2020&&month!=1&&day!=1)
                     {
                         String months="0"+month;
                         dDate=year+"-"+months+"-"+day;
@@ -93,22 +129,27 @@ public class WriteActivity extends AppCompatActivity {
 
             }
         });
-        cancel=findViewById(R.id.undo);
+        /*cancel=findViewById(R.id.undo);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });
-        setDday.setOnClickListener(new View.OnClickListener() {
+        });*/
+
+        /*setDday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 checkDate();
             }
-        });
-
-
+        });*/
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     public void checkDate(){
         DatePickerDialog datePickerDialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -130,7 +171,7 @@ public class WriteActivity extends AppCompatActivity {
         }
         String date=formatter.format(systemTime);
         String dDate=date;
-        if(year>0&&month>0&&day>0)
+        if(year!=2020&&month!=1&&day!=1)
         {
             String months="0"+month;
             dDate=year+"-"+months+"-"+day;
