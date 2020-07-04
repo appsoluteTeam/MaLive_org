@@ -229,12 +229,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-
-
-
-
-
-
     public void repaint(){
         final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         toDoFragment=new ToDoFragment();
