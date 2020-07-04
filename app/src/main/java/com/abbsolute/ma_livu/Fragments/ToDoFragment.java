@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.AppHelper;
+import com.abbsolute.ma_livu.CategoryAdapter;
 import com.abbsolute.ma_livu.R;
 import com.abbsolute.ma_livu.ToDoAdapter;
 import com.abbsolute.ma_livu.ToDoInfo;
@@ -36,6 +37,7 @@ import static android.app.Activity.RESULT_OK;
 public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 클래스
     RecyclerView recyclerView;
     ToDoAdapter toDoAdapter;
+
     private static int WRITE_RESULT = 100;
     String res;
     Bundle bundle;
@@ -57,10 +59,12 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
         recyclerView = view.findViewById(R.id.todo_recyclerview);
+
 //  fragmentTransaction.add(R.id.contentMain,FirstFragment.newInstance());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
+
         Button fab = view.findViewById(R.id.fab);//추가
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,12 +73,12 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
                 startActivityForResult(intent, WRITE_RESULT);
             }
         });
-
         toDoInfos = AppHelper.selectTodoInfo("todoInfo");
         toDoAdapter.setItem(toDoInfos);
         toDoAdapter.GetContext(getContext());
         toDoAdapter.notifyDataSetChanged();
         recyclerView.setItemAnimator(null);
+
         //밀어서 할일 삭제
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

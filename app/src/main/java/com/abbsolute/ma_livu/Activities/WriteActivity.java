@@ -1,7 +1,9 @@
 package com.abbsolute.ma_livu.Activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
@@ -14,12 +16,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.AppHelper;
+import com.abbsolute.ma_livu.CategoryAdapter;
+import com.abbsolute.ma_livu.CategoryInfo;
 import com.abbsolute.ma_livu.Fragments.ToDoFragment;
 import com.abbsolute.ma_livu.R;
 import com.abbsolute.ma_livu.ToDoInfo;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.abbsolute.ma_livu.AppHelper.insertData;
@@ -41,12 +48,28 @@ public class WriteActivity extends AppCompatActivity {
     NumberPicker yearPicker;
     NumberPicker monthPicker;
     NumberPicker dayPicker;
+    ///
+    CategoryAdapter categoryAdapter;
+    RecyclerView categoryRecyclerview;
+    ArrayList<CategoryInfo> categoryInfos=new ArrayList<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write);
+        categoryRecyclerview=findViewById(R.id.todo_list_category);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
+        categoryRecyclerview.setLayoutManager(linearLayoutManager);
+        categoryAdapter=new CategoryAdapter();
+        categoryInfos.add(new CategoryInfo(R.drawable.house_cleaning,"청소하기"));
+        categoryInfos.add(new CategoryInfo(R.drawable.laundry,"빨래하기"));
+        categoryInfos.add(new CategoryInfo(R.drawable.trash,"쓰레기"));
+        categoryInfos.add(new CategoryInfo(R.drawable.user1,"기타"));
+        categoryAdapter.setItem(categoryInfos);
+        categoryAdapter.getCategoryContext(getApplicationContext());
+        categoryRecyclerview.setAdapter(categoryAdapter);
+        ///intent 얻기
         write=findViewById(R.id.write_todo);
-        detailWrite=findViewById(R.id.write_todo_detail);
+
         storing=findViewById(R.id.store);
         yearPicker=findViewById(R.id.set_year);
         monthPicker=findViewById(R.id.set_month);
@@ -87,9 +110,10 @@ public class WriteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1=getIntent();
                 String word=intent1.getStringExtra("modify");
+                SharedPreferences pf=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 if(word!=null){//수정작업
-                    String res=write.getText().toString();
-                    String resDetailTodo=detailWrite.getText().toString();
+                    String res=pf.getString("toDo","");
+                    String resDetailTodo=write.getText().toString();
                     long systemTime = System.currentTimeMillis();
                     SimpleDateFormat formatter= null;
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -110,8 +134,8 @@ public class WriteActivity extends AppCompatActivity {
                 }else{//추가
                     ToDoFragment toDoFragment=new ToDoFragment();
                     Bundle bundle=new Bundle(1);
-                    String res=write.getText().toString();
-                    String resDetailTodo=detailWrite.getText().toString();
+                    String res=pf.getString("toDo","");
+                    String resDetailTodo=write.getText().toString();
                     bundle.putString("write_result_detail",resDetailTodo);
                     bundle.putString("write_result",res);
                     toDoFragment.setArguments(bundle);
@@ -162,8 +186,9 @@ public class WriteActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
     public void addData(){
-        String data=write.getText().toString();
-        String detailData=detailWrite.getText().toString();
+        SharedPreferences pf=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        String data=pf.getString("toDo","");
+        String detailData=write.getText().toString();
         long systemTime = System.currentTimeMillis();
         SimpleDateFormat formatter= null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
