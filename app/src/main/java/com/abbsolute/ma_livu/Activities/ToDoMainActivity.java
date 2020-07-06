@@ -29,11 +29,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.viewpager.widget.ViewPager;
 
-import com.abbsolute.ma_livu.AlarmReceiver;
-import com.abbsolute.ma_livu.AppHelper;
-import com.abbsolute.ma_livu.DeviceBootReceiver;
+import com.abbsolute.ma_livu.ToDoAlarmReceiver;
+import com.abbsolute.ma_livu.ToDoAppHelper;
+import com.abbsolute.ma_livu.ToDoDeviceBootReceiver;
 import com.abbsolute.ma_livu.Fragments.HelpFragment;
-import com.abbsolute.ma_livu.Fragments.NotiFragment;
+import com.abbsolute.ma_livu.Fragments.ToDoNotiFragment;
 import com.abbsolute.ma_livu.Fragments.ToDoFragment;
 import com.abbsolute.ma_livu.GooeyMenu;
 import com.abbsolute.ma_livu.R;
@@ -42,7 +42,6 @@ import com.abbsolute.ma_livu.ToDoAdapter;
 import com.abbsolute.ma_livu.ToDoInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -50,17 +49,16 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ToDoMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String CHANNEL_ID = "101" ;
     private static final String TAG = "FCM";
     private AppBarConfiguration mAppBarConfiguration;
     private static int WRITE_RESULT = 100;
     private ToDoFragment toDoFragment;
-    private NotiFragment notiFragment;
+    private ToDoNotiFragment toDoNotiFragment;
     private HelpFragment helpFragment;
     Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toDoAdapter.getCheckState(chk);
         Toast.makeText(getApplicationContext(), ""+chk, Toast.LENGTH_SHORT).show();
         ///
-        AppHelper.openDatabase(getApplicationContext(), "todo.db", 14);
+        ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 14);
         getDays();//디데이 알림을 구현하려고 시도 한 코드
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -120,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         // Log and toast
                         String msg = task.getResult().getToken();
                         Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ToDoMainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         //도움말기능
@@ -332,8 +330,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             cur = new ToDoFragment();
             toDoFragment = (ToDoFragment)cur;
         } else if (pos == 1) {
-            cur=new NotiFragment();
-            notiFragment=(NotiFragment)cur;
+            cur=new ToDoNotiFragment();
+            toDoNotiFragment =(ToDoNotiFragment)cur;
         }else if(pos==2){
            cur=new HelpFragment();
            helpFragment=(HelpFragment)cur;
@@ -346,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Toast.makeText(getApplicationContext(),"getDays실행!!!!!",Toast.LENGTH_SHORT).show();
 
         //Calendar c = Calendar.getInstance();
-        ArrayList<ToDoInfo> toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+        ArrayList<ToDoInfo> toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
         Log.d("toDoInfoSize",Integer.toString(toDoInfos.size()));
         long systemTime = System.currentTimeMillis();
         SimpleDateFormat formatter = null;
@@ -440,8 +438,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Boolean dailyNotify = true; // 무조건 알람을 사용
 
         PackageManager pm = this.getPackageManager();
-        ComponentName receiver = new ComponentName(this, DeviceBootReceiver.class);
-        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        ComponentName receiver = new ComponentName(this, ToDoDeviceBootReceiver.class);
+        Intent intent = new Intent(ToDoMainActivity.this, ToDoAlarmReceiver.class);
         intent.putExtra("alarmContents",contents);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 30, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.abbsolute.ma_livu.R;
 
-public class NotiFragment extends Fragment {
+public class ToDoNotiFragment extends Fragment {
     SwitchCompat switchCompat;
     private static final String CHANNEL_ID = "101" ;
     @Nullable

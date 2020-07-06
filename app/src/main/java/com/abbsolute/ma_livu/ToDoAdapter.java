@@ -1,24 +1,17 @@
 package com.abbsolute.ma_livu;
 
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.Activities.WriteActivity;
+import com.abbsolute.ma_livu.Fragments.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Interfaces.OnItemClickListner;
 
 import java.util.ArrayList;
@@ -90,7 +83,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.Contents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context, WriteActivity.class);
+                Intent intent=new Intent(context, ToDoWriteFragment.class);
                 intent.putExtra("modify",toDoInfo.getContent());
                 context.startActivity(intent);
             }

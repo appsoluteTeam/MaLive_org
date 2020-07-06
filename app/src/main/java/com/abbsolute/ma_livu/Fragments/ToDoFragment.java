@@ -3,9 +3,7 @@ package com.abbsolute.ma_livu.Fragments;
 import android.app.AlarmManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,13 +17,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.AppHelper;
-import com.abbsolute.ma_livu.CategoryAdapter;
+import com.abbsolute.ma_livu.Activities.ToDoWriteMainActivity;
+import com.abbsolute.ma_livu.ToDoAppHelper;
 import com.abbsolute.ma_livu.R;
 import com.abbsolute.ma_livu.ToDoAdapter;
 import com.abbsolute.ma_livu.ToDoInfo;
-import com.abbsolute.ma_livu.Activities.WriteActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,11 +65,11 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), WriteActivity.class);
+                Intent intent = new Intent(getContext(), ToDoWriteMainActivity.class);
                 startActivityForResult(intent, WRITE_RESULT);
             }
         });
-        toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+        toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
         toDoAdapter.setItem(toDoInfos);
         toDoAdapter.GetContext(getContext());
         toDoAdapter.notifyDataSetChanged();
@@ -90,11 +86,11 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 if(direction==ItemTouchHelper.LEFT){
                     final int position = viewHolder.getAdapterPosition();
-                    AppHelper.deleteData(getContext(), "todoInfo", position, toDoInfos.get(position));
+                    ToDoAppHelper.deleteData(getContext(), "todoInfo", position, toDoInfos.get(position));
                     toDoInfos.remove(position);
                     toDoAdapter.notifyItemRemoved(position);
                 }else if(direction==ItemTouchHelper.RIGHT){
-                    toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+                    toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
                     // toDoAdapter.clearData();
                     toDoAdapter.setItem(toDoInfos);
                     recyclerView.setAdapter(toDoAdapter);
@@ -111,7 +107,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     @Override
     public void onResume() {
         super.onResume();
-        toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+        toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
         // toDoAdapter.clearData();
         toDoAdapter.setItem(toDoInfos);
         recyclerView.setAdapter(toDoAdapter);
@@ -122,7 +118,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == WRITE_RESULT) {
             if (resultCode == RESULT_OK) {
-                toDoInfos = AppHelper.selectTodoInfo("todoInfo");
+                toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
                 Comparator<ToDoInfo> cmpAsc = new Comparator<ToDoInfo>() {
 
                     @Override

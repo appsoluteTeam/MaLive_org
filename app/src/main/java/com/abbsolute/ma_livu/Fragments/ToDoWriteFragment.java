@@ -1,38 +1,40 @@
-package com.abbsolute.ma_livu.Activities;
+package com.abbsolute.ma_livu.Fragments;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.DatePicker;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.AppHelper;
-import com.abbsolute.ma_livu.CategoryAdapter;
-import com.abbsolute.ma_livu.CategoryInfo;
-import com.abbsolute.ma_livu.Fragments.ToDoFragment;
+import com.abbsolute.ma_livu.ToDoAppHelper;
+import com.abbsolute.ma_livu.ToDoCategoryAdapter;
+import com.abbsolute.ma_livu.ToDoCategoryInfo;
 import com.abbsolute.ma_livu.R;
 import com.abbsolute.ma_livu.ToDoInfo;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.abbsolute.ma_livu.AppHelper.insertData;
+import static android.app.Activity.RESULT_OK;
+import static com.abbsolute.ma_livu.ToDoAppHelper.insertData;
 
 
-public class WriteActivity extends AppCompatActivity {
+public class ToDoWriteFragment extends Fragment implements OnBackPressedListener{
+
     EditText write;
     EditText detailWrite;
     TextView storing;
@@ -49,31 +51,32 @@ public class WriteActivity extends AppCompatActivity {
     NumberPicker monthPicker;
     NumberPicker dayPicker;
     ///
-    CategoryAdapter categoryAdapter;
+    ToDoCategoryAdapter categoryAdapter;
     RecyclerView categoryRecyclerview;
-    ArrayList<CategoryInfo> categoryInfos=new ArrayList<>();
+    ArrayList<ToDoCategoryInfo> categoryInfos=new ArrayList<>();
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write);
-        categoryRecyclerview=findViewById(R.id.todo_list_category);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.activity_write,container,false);
+        categoryRecyclerview=view.findViewById(R.id.todo_list_category);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         categoryRecyclerview.setLayoutManager(linearLayoutManager);
-        categoryAdapter=new CategoryAdapter();
-        categoryInfos.add(new CategoryInfo(R.drawable.house_cleaning,"청소하기"));
-        categoryInfos.add(new CategoryInfo(R.drawable.laundry,"빨래하기"));
-        categoryInfos.add(new CategoryInfo(R.drawable.trash,"쓰레기"));
-        categoryInfos.add(new CategoryInfo(R.drawable.user1,"기타"));
+        categoryAdapter=new ToDoCategoryAdapter();
+        categoryInfos.add(new ToDoCategoryInfo(R.drawable.house_cleaning,"청소하기"));
+        categoryInfos.add(new ToDoCategoryInfo(R.drawable.laundry,"빨래하기"));
+        categoryInfos.add(new ToDoCategoryInfo(R.drawable.trash,"쓰레기"));
+        categoryInfos.add(new ToDoCategoryInfo(R.drawable.user1,"기타"));
         categoryAdapter.setItem(categoryInfos);
-        categoryAdapter.getCategoryContext(getApplicationContext());
+        categoryAdapter.getCategoryContext(getContext());
         categoryRecyclerview.setAdapter(categoryAdapter);
         ///intent 얻기
-        write=findViewById(R.id.write_todo);
+        write=view.findViewById(R.id.write_todo);
 
-        storing=findViewById(R.id.store);
-        yearPicker=findViewById(R.id.set_year);
-        monthPicker=findViewById(R.id.set_month);
-        dayPicker=findViewById(R.id.set_day);
+        storing=view.findViewById(R.id.store);
+        yearPicker=view.findViewById(R.id.set_year);
+        monthPicker=view.findViewById(R.id.set_month);
+        dayPicker=view.findViewById(R.id.set_day);
         ////////////
         yearPicker.setMinValue(2020);
         yearPicker.setMaxValue(2030);
@@ -108,9 +111,9 @@ public class WriteActivity extends AppCompatActivity {
         storing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1=getIntent();
+                Intent intent1=getActivity().getIntent();
                 String word=intent1.getStringExtra("modify");
-                SharedPreferences pf=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                SharedPreferences pf=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 if(word!=null){//수정작업
                     String res=pf.getString("toDo","");
                     String resDetailTodo=write.getText().toString();
@@ -127,10 +130,10 @@ public class WriteActivity extends AppCompatActivity {
                         dDate=year+"-"+months+"-"+day;
                     }
                     ToDoInfo toDoInfo=new ToDoInfo(res,resDetailTodo,date,dDate);
-                    AppHelper.updateData(getApplicationContext(),"todoInfo",toDoInfo,word);
+                    ToDoAppHelper.updateData(getContext(),"todoInfo",toDoInfo,word);
                     Intent intent=new Intent();
-                    setResult(RESULT_OK,intent);
-                    finish();
+                    getActivity().setResult(RESULT_OK,intent);
+                    getActivity().finish();
                 }else{//추가
                     ToDoFragment toDoFragment=new ToDoFragment();
                     Bundle bundle=new Bundle(1);
@@ -140,15 +143,15 @@ public class WriteActivity extends AppCompatActivity {
                     bundle.putString("write_result",res);
                     toDoFragment.setArguments(bundle);
                     Intent intent=new Intent();
-                    setResult(RESULT_OK,intent);
+                    getActivity().setResult(RESULT_OK,intent);
                     //sqlite쓰기
                     if(!res.equals("")&&!resDetailTodo.equals(""))
                     {
                         addData();
                     }else{
-                        Toast.makeText(getApplicationContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
                     }
-                    finish();
+                    getActivity().finish();
                 }
 
             }
@@ -167,26 +170,16 @@ public class WriteActivity extends AppCompatActivity {
                 checkDate();
             }
         });*/
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        return view;
     }
 
-    public void checkDate(){
-        DatePickerDialog datePickerDialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-                year=y;
-                month=m+1;
-                day=d;
-            }
-        },2020,1,1);
-        datePickerDialog.show();
+
+    @Override
+    public void onBackPressed() {
+        getActivity().finish();
     }
     public void addData(){
-        SharedPreferences pf=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        SharedPreferences pf=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String data=pf.getString("toDo","");
         String detailData=write.getText().toString();
         long systemTime = System.currentTimeMillis();

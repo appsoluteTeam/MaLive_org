@@ -2,9 +2,7 @@ package com.abbsolute.ma_livu;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +12,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.Activities.WriteActivity;
-
 import java.util.ArrayList;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    ArrayList<CategoryInfo> arrayList=new ArrayList<>();
+public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapter.ViewHolder> {
+    ArrayList<ToDoCategoryInfo> arrayList=new ArrayList<>();
     Context context;
     public class ViewHolder extends RecyclerView.ViewHolder{
         protected ImageView todoImg;
@@ -31,7 +27,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             this.todoText=v.findViewById(R.id.todo_image_text);
         }
     }
-    public void setItem(ArrayList<CategoryInfo> arrayList){
+    public void setItem(ArrayList<ToDoCategoryInfo> arrayList){
         this.arrayList=arrayList;
     }
     public void getCategoryContext(Context context){
@@ -39,16 +35,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
     @NonNull
     @Override
-    public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ToDoCategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.category_list, parent, false);
 
-        return new CategoryAdapter.ViewHolder(itemView);
+        return new ToDoCategoryAdapter.ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CategoryInfo categoryInfo=arrayList.get(position);
+        ToDoCategoryInfo categoryInfo=arrayList.get(position);
         int img=categoryInfo.getToDoImage();
         final String text=categoryInfo.getToDoText();
         holder.todoImg.setImageResource(img);

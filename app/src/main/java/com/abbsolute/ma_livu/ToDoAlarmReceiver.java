@@ -1,7 +1,5 @@
 package com.abbsolute.ma_livu;
 
-import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,16 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import com.abbsolute.ma_livu.Activities.MainActivity;
+import com.abbsolute.ma_livu.Activities.ToDoMainActivity;
 
-import java.util.Date;
-
-public class AlarmReceiver extends BroadcastReceiver {// 알람을 받는 클래스
+public class ToDoAlarmReceiver extends BroadcastReceiver {// 알람을 받는 클래스
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -30,7 +24,7 @@ public class AlarmReceiver extends BroadcastReceiver {// 알람을 받는 클래
         Log.d("alarmContents",alarmContents);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent notiIntent = new Intent(context, MainActivity.class);
+        Intent notiIntent = new Intent(context, ToDoMainActivity.class);
 
         notiIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);

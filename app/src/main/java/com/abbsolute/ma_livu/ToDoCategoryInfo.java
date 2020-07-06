@@ -1,9 +1,9 @@
 package com.abbsolute.ma_livu;
 
-public class CategoryInfo {
+public class ToDoCategoryInfo {
     int toDoImage;
     String toDoText;
-    public CategoryInfo(int toDoImage, String toDoText){
+    public ToDoCategoryInfo(int toDoImage, String toDoText){
         this.toDoImage=toDoImage;
         this.toDoText=toDoText;
     }

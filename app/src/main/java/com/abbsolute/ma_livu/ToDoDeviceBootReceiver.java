@@ -13,13 +13,13 @@ import java.util.Objects;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class DeviceBootReceiver extends BroadcastReceiver {
+public class ToDoDeviceBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Objects.equals(intent.getAction(), "android.intent.action.BOOT_COMPLETED")) {
 
             // on device boot complete, reset the alarm
-            Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+            Intent alarmIntent = new Intent(context, ToDoAlarmReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
 
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
