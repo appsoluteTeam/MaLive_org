@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,11 +17,39 @@
         android:textSize="15sp">
     </TextView>
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="3sp"
+        android:layout_marginTop="2sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fix_list">
     </androidx.recyclerview.widget.RecyclerView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#BDBDBD">
+    </View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2sp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수정"
+            android:layout_gravity="end"
+            android:layout_marginStart="300sp">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="|">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제"
+            android:layout_gravity="right">
+        </TextView>
+    </LinearLayout>
     <TextView
         android:layout_marginTop="3sp"
         android:layout_width="wrap_content"
@@ -37,10 +65,25 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5sp">
     </androidx.recyclerview.widget.RecyclerView>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="할 일 추가하기"
+        android:textSize="14sp"
+        android:textColor="#2E2E2E">
+    </TextView>
+    <EditText
+        android:layout_marginStart="2sp"
+        android:layout_marginEnd="2sp"
+        android:layout_marginTop="3sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/todo_write2"
+        android:layout_gravity="center">
+    </EditText>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100sp">
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

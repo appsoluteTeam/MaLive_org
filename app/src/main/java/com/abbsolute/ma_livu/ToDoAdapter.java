@@ -1,11 +1,15 @@
 package com.abbsolute.ma_livu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,19 +34,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.listener = listener;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView ContentsDetail;
         protected TextView Contents;
         protected TextView writeDates;
         protected TextView dDays;
-
-        ViewHolder(View v) {
+        protected FrameLayout toDoFrame;
+        protected FrameLayout toDoDetailFrame;
+        public ViewHolder(View v) {
             super(v);
             this.Contents = v.findViewById(R.id.todo_text);//내용
             this.ContentsDetail=v.findViewById(R.id.todo_text_detail);//상세내용
             this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
             this.dDays=v.findViewById(R.id.d_date);//디데이
-
+            this.toDoFrame=v.findViewById(R.id.todo_frame);
+            this.toDoDetailFrame=v.findViewById(R.id.todo_detail_frame);
         }
 
     }
@@ -88,6 +94,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
+        //고정 할 일 데이터는 뒷배경 회색으로
 
 
     }

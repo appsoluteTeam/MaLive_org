@@ -26,7 +26,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abbsolute.ma_livu.ToDoAlarmReceiver;
@@ -55,7 +54,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
 
     private static final String CHANNEL_ID = "101" ;
     private static final String TAG = "FCM";
-    private AppBarConfiguration mAppBarConfiguration;
+
     private static int WRITE_RESULT = 100;
     private ToDoFragment toDoFragment;
     private ToDoNotiFragment toDoNotiFragment;

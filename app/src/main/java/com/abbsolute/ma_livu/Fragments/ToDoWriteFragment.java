@@ -34,7 +34,12 @@ import static com.abbsolute.ma_livu.ToDoAppHelper.insertData;
 
 
 public class ToDoWriteFragment extends Fragment implements OnBackPressedListener{
+    // newInstance constructor for creating fragment with arguments
+    public static ToDoWriteFragment newInstance() {
+        ToDoWriteFragment fragment = new ToDoWriteFragment();
 
+        return fragment;
+    }
     EditText write;
     EditText detailWrite;
     TextView storing;
@@ -196,6 +201,10 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
         }
         ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate);
         insertData("todoInfo",toDoInfo);
+        SharedPreferences pref = getContext().getSharedPreferences("set_theme", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("theme1",2);
+        editor.commit();
     }
     final static int req1=1;
     public String a = "0"; // initialize this globally at the top of your class.
