@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">proto</string>
+    <string name="experience_capability">혼자살기 경력 %d년차 | 자취 능력 %d%%</string>
+    <string name="clean_capability">청소 %d%%</string>
+    <string name="wash_capability">빨래 %d%%</string>
+    <string name="recycling_capability">분리수거 %d%%</string>
+    <string name="etc_capability">기타 %d%%</string>
+</resources>
