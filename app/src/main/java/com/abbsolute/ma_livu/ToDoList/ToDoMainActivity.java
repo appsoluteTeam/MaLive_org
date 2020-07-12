@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class ToDoMainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ToDoMainActivity extends AppCompatActivity  {
 
     private static final String CHANNEL_ID = "101" ;
     private static final String TAG = "FCM";
@@ -110,9 +110,14 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
                     }
                 });
         //도움말기능
+
         ImageView button=findViewById(R.id.help_image);
 
         ///
+=======
+
+        ///todo: 하단 탭 사용
+
         viewPager=findViewById(R.id.main_pager);
         tabLayout=findViewById(R.id.main_tab);//하단 탭
         TabPagerAdapter tabPagerAdapter=new TabPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
@@ -167,21 +172,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
        // mGooeyMenu.setOnMenuListener(this);
 
     }//Oncreate()
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        int id=menuItem.getItemId();
-        if(id==R.id.nav_home){
-            Toast.makeText(getApplicationContext(), "클릭!", Toast.LENGTH_SHORT).show();
-            onFragmentSelected(0,null);
-        }else if(id==R.id.nav_notification){
-            onFragmentSelected(1,null);
-        }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
 
-        return true;
-    }
 
 
     public void onBackPressed() {
@@ -207,6 +198,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
 
     }
     //알림 채널 생성 코드
+    //todo: firebase 메시지 보내는 기능(필요한 사람있으면 쓰세요)
     /*private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -222,6 +214,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
             notificationManager.createNotificationChannel(channel);
         }
     }*/
+
     public void onFragmentSelected(int pos, Bundle bundle) {
         Fragment cur = null;
         if (pos == 0) {
@@ -233,6 +226,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, cur).commit();
     }
+
     //디데이 알림 기능(수정필요!)
     public void getDays() {
         Log.d("alarm2"," method start");
