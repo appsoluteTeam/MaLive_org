@@ -110,7 +110,6 @@ public class ToDoMainActivity extends AppCompatActivity  {
                     }
                 });
         //도움말기능
-        ImageView button=findViewById(R.id.help_image);
 
         ///todo: 하단 탭 사용
         viewPager=findViewById(R.id.main_pager);
