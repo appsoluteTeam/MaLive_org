@@ -17,7 +17,7 @@ public class Mypage extends AppCompatActivity {
 
     public DBHelper dbhelper;
     private SQLiteDatabase db;
-    TextView cleanNum;
+    TextView cleanNum;  // 나중에 지워야 함
     TextView recylingNum;
     TextView washNum;
     TextView etcNum;
