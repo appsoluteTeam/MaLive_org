@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.abbsolute.ma_livu.Activities.ToDoMainActivity;
 import com.abbsolute.ma_livu.Community.HotCommuActivity;
 import com.abbsolute.ma_livu.Login.LoginActivity;
+import com.abbsolute.ma_livu.VisitorBoard.GuestBookActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,8 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button btn_logout; //로그아웃 버튼
     private Button btn_community; //커뮤니티 버튼
     private Button btn_todo; // 투두버튼
-    private Button btn_visitor; // 방명록
-
+    private Button btn_guestBook; // 방명록 버튼
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,27 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, HotCommuActivity.class);
                 startActivity(intent);
                 Toast.makeText(HomeActivity.this, "커뮤니티 입성!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //투두리스트 버튼을 눌렀을 때
+        btn_todo = (Button) findViewById(R.id.goto_todo_button);
+        btn_todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ToDoMainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //방명록 버튼을 눌렀을 때
+        btn_guestBook = (Button) findViewById(R.id.btn_guestBook);
+        btn_guestBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, GuestBookActivity.class);
+                startActivity(intent);
+                Toast.makeText(HomeActivity.this, "방명록으로 이동!", Toast.LENGTH_SHORT).show();
             }
         });
 

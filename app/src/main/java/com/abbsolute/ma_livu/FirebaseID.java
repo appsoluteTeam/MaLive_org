@@ -21,4 +21,13 @@ public class FirebaseID {
     public static String title ="title";
     public static String writer ="writer";
     public static String content ="content";
+
+    //파이어스토어 GuestBook 컬렉션 필드 이름
+    public static String GuestBook = "GuestBook";
+    public static String ReportComment = "GuestBook_ReportComment";
+    public static String num = "num";
+    public static String name = "name";
+    public static String date = "date";
+    public static String comment = "comment";
+    public static String icon = "icon";
 }
