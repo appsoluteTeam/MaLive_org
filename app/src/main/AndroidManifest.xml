@@ -16,38 +16,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< Updated upstream
+
         <activity android:name=".myPageMain.result">
         </activity>
         <activity android:name=".title.titleActivity"></activity>
-=======
-        <activity android:name=".MainActivity" />
-        <activity android:name=".Activities.ToDoMainActivity"></activity>
-        <activity android:name=".Activities.ToDoAlarmActivity"></activity>
-        <activity android:name=".Activities.ToDoWriteMainActivity"></activity>
 
-        <activity android:name=".VisitorBoard.CommentWriteActivity"></activity>
-        <activity android:name=".VisitorBoard.GuestBookActivity" />
+
 
         <activity android:name=".result">
         </activity>
         <activity android:name=".titleActivity"></activity>
         <activity android:name=".myPage"></activity>
-        <receiver android:name=".ToDoAlarmReceiver"></receiver>
-        <service
-            android:name=".FirebaseMessages.ToDoMyFirebaseInstanceIdService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <receiver android:name=".ToDoDeviceBootReceiver"
-            android:enabled="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
->>>>>>> Stashed changes
+
+
     </application>
 
 </manifest>
