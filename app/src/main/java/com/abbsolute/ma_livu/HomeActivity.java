@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.abbsolute.ma_livu.Community.HotCommuActivity;
 import com.abbsolute.ma_livu.Login.LoginActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
