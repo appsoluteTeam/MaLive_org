@@ -37,6 +37,10 @@
         <activity android:name=".Activities.ToDoMainActivity"></activity>
         <activity android:name=".Activities.ToDoAlarmActivity"></activity>
         <activity android:name=".Activities.ToDoWriteMainActivity"></activity>
+
+        <activity android:name=".VisitorBoard.CommentWriteActivity"></activity>
+        <activity android:name=".VisitorBoard.GuestBookActivity" />
+
         <receiver android:name=".ToDoAlarmReceiver"></receiver>
         <service
             android:name=".FirebaseMessages.ToDoMyFirebaseInstanceIdService"
