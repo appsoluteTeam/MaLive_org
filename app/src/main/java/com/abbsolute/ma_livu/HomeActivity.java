@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.abbsolute.ma_livu.Community.CommunityActivity;
+
 import com.abbsolute.ma_livu.Community.HotCommuActivity;
 import com.abbsolute.ma_livu.Login.LoginActivity;
 import com.bumptech.glide.Glide;
@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView iv_profile; //이미지 뷰
     private Button btn_logout; //로그아웃 버튼
     private Button btn_community; //커뮤니티 버튼
+    private Button btn_todo; // 투두버튼
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,17 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "커뮤니티 입성!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //투두리스트 버튼 눌렀을 때
+        /*
+        btn_todo =(Button) findViewById(R.id.btn_todo);
+        btn_todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ToDoMainActivity.class);
+                startActivity(intent);
+            }
+        });*/
 
         //로그아웃 버튼을 눌렀을 때
         btn_logout = (Button) findViewById(R.id.btn_logout);
