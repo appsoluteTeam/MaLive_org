@@ -200,7 +200,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
             String months="0"+month;
             dDate=year+"-"+months+"-"+day;
         }
-        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
+        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate,R.drawable.todo_border);
         insertData("todoInfo",toDoInfo);
         SharedPreferences pref = getContext().getSharedPreferences("set_theme", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();

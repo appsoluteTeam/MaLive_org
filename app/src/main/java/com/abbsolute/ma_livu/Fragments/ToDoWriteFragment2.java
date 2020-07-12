@@ -128,7 +128,7 @@ public class ToDoWriteFragment2 extends Fragment {
         }
         String date=formatter.format(systemTime);
         String dDate=date;
-        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
+        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate,R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);
         SharedPreferences pref = getContext().getSharedPreferences("set_theme", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,8 +96,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             }
         });
         //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
+
         holder.Contents.setBackgroundResource(toDoInfo.getColor());
         holder.ContentsDetail.setBackgroundResource(toDoInfo.getColor());
+
 
     }
     @Override
