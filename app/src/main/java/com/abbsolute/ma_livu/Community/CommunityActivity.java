@@ -2,6 +2,8 @@ package com.abbsolute.ma_livu.Community;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class CommunityActivity extends AppCompatActivity {
 
+    private Toolbar commu_toolbar; // 툴바
     private BottomNavigationView top_navigation; //네비게이션바
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -28,6 +31,12 @@ public class CommunityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
+
+        commu_toolbar = (Toolbar)findViewById(R.id.hot_commu_toolbar);
+        setSupportActionBar(commu_toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // 기본텍스트 보여주기 x
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 설정
+
 
         btn_write = (Button)findViewById(R.id.btn_write);
         btn_write.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +71,19 @@ public class CommunityActivity extends AppCompatActivity {
         fragment3 = new CommunityFragment3();
         setFragment(1); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
 
+    }
+
+
+    //툴바에서 버튼을 눌렀을 때 사용되는 함수
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     // 프래그먼트 교체가 일어나는 함수

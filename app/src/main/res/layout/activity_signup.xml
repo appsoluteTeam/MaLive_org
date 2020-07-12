@@ -13,7 +13,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginLeft="56dp"
         android:layout_marginTop="64dp"
-        android:text="●    ○    ○    ○  "
+        android:text="●    ○    ○      "
         android:textSize="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -93,23 +93,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginLeft="56dp"
-        android:layout_marginTop="56dp"
-        android:text="가입할 \n이메일을 인증해주세요"
+        android:layout_marginTop="40dp"
+        android:text="가입할 \n이메일과 비밀번호를 \n입력해주세요"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <Button
-        android:id="@+id/btn_please"
-        android:layout_width="60dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="인증요청"
-        android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/email_sign"
-        app:layout_constraintTop_toBottomOf="@+id/tv_top" />
 
     <TextView
         android:id="@+id/tv_wanning"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/what_eat"
+        android:enabled="true"
+        android:title="오늘의 글"
+        />
+
+    <item
+        android:id="@+id/what_do"
+        android:enabled="true"
+        android:title="오늘의 방"
+        />
+
+</menu>

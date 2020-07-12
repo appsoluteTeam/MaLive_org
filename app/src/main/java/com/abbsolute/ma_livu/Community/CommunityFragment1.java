@@ -27,7 +27,6 @@ import java.util.Map;
 public class CommunityFragment1 extends Fragment {
 
     private View view;
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     //리사이클러뷰
@@ -35,7 +34,6 @@ public class CommunityFragment1 extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
-
 
     @Nullable
     @Override
@@ -50,13 +48,14 @@ public class CommunityFragment1 extends Fragment {
     public void onStart() {
         super.onStart();
         arrayList = new ArrayList<>();
-        firestore.collection(FirebaseID.Community)
+        firestore.collection("Community")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             if(task.getResult() != null){
+                                // 파이어스토어에서 데이터 가져오기
                                 for(DocumentSnapshot snapshot : task.getResult()){
                                     Map<String,Object> shot = snapshot.getData();
                                     String documentID = String.valueOf(shot.get(FirebaseID.documentID));
@@ -66,7 +65,7 @@ public class CommunityFragment1 extends Fragment {
                                     bringData data = new bringData(documentID,title,writer,content);
                                     arrayList.add(data);
                                 }
-
+                                // 리사이클러뷰에 가져온 정보 넣기
                                 recycler_what_eat = (RecyclerView)view.findViewById(R.id.recycler_what_eat);
                                 recycler_what_eat.setHasFixedSize(true);
 
