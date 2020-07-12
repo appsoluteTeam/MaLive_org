@@ -48,4 +48,14 @@
         app:layout_constraintStart_toStartOf="@+id/tv_result"
         app:layout_constraintTop_toBottomOf="@+id/tv_result" />
 
+    <Button
+        android:id="@+id/btn_guestBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VisitorBoard"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btn_logout"
+        app:layout_constraintStart_toStartOf="@+id/btn_logout"
+        app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

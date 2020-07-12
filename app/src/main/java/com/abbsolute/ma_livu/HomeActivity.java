@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.abbsolute.ma_livu.Community.CommunityActivity;
 import com.abbsolute.ma_livu.Login.LoginActivity;
+import com.abbsolute.ma_livu.VisitorBoard.GuestBookActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +22,8 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView iv_profile; //이미지 뷰
     private Button btn_logout; //로그아웃 버튼
     private Button btn_community; //커뮤니티 버튼
+    private Button btn_guestBook; // 방명록 버튼
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,17 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, CommunityActivity.class);
                 startActivity(intent);
                 Toast.makeText(HomeActivity.this, "커뮤니티 입성!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //방명록 버튼을 눌렀을 때
+        btn_guestBook = (Button) findViewById(R.id.btn_guestBook);
+        btn_guestBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, GuestBookActivity.class);
+                startActivity(intent);
+                Toast.makeText(HomeActivity.this, "방명록으로 이동!", Toast.LENGTH_SHORT).show();
             }
         });
 
