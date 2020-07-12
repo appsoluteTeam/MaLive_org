@@ -6,17 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".Community.CommunityActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/hot_commu_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="커뮤니티"
+            android:textSize="28dp"
+            android:textStyle="bold" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/top_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:itemIconTint="#000000"
         app:itemTextColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/community_top_menu" >
+        app:layout_constraintTop_toBottomOf="@+id/hot_commu_toolbar"
+        app:menu="@menu/community_top_menu">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
@@ -48,5 +70,15 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_write"
         app:layout_constraintVertical_bias="0.0">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
