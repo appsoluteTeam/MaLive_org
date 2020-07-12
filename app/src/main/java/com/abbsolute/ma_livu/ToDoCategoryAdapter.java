@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,14 +56,17 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                 SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 if(text.equals("청소하기")){
+                    Toast.makeText(context, "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo", "청소");
                     editor.commit();
                 }
                 else if(text.equals("빨래하기")){
+                    Toast.makeText(context, "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","빨래");
                     editor.commit();
                 }
                 else if(text.equals("쓰레기")){
+                    Toast.makeText(context, "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","쓰레기");
                     editor.commit();
                 }

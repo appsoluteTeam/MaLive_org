@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,7 +35,12 @@ import static com.abbsolute.ma_livu.ToDoAppHelper.insertData;
 
 
 public class ToDoWriteFragment extends Fragment implements OnBackPressedListener{
+    // newInstance constructor for creating fragment with arguments
+    public static ToDoWriteFragment newInstance() {
+        ToDoWriteFragment fragment = new ToDoWriteFragment();
 
+        return fragment;
+    }
     EditText write;
     EditText detailWrite;
     TextView storing;
@@ -58,7 +64,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.activity_todo_write,container,false);
+        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_activity_write,container,false);
         categoryRecyclerview=view.findViewById(R.id.todo_list_category);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         categoryRecyclerview.setLayoutManager(linearLayoutManager);
@@ -129,7 +135,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
                         String months="0"+month;
                         dDate=year+"-"+months+"-"+day;
                     }
-                    ToDoInfo toDoInfo=new ToDoInfo(res,resDetailTodo,date,dDate);
+                    ToDoInfo toDoInfo=new ToDoInfo(res,resDetailTodo,date,dDate,Color.WHITE);
                     ToDoAppHelper.updateData(getContext(),"todoInfo",toDoInfo,word);
                     Intent intent=new Intent();
                     getActivity().setResult(RESULT_OK,intent);
@@ -194,8 +200,13 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
             String months="0"+month;
             dDate=year+"-"+months+"-"+day;
         }
-        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate);
+        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
         insertData("todoInfo",toDoInfo);
+        SharedPreferences pref = getContext().getSharedPreferences("set_theme", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("theme",1);
+        editor.commit();
+        //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
     }
     final static int req1=1;
     public String a = "0"; // initialize this globally at the top of your class.

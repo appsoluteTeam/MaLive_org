@@ -25,7 +25,8 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
             "content text, "+
             "detailcontent text," +
             "dates text, "+
-            "d_day text "+
+            "d_day text, "+
+            "colors integer"+
             ")";
     private static String SQL="drop table todoInfo";
     public static void openDatabase(Context context, String databaseName, int version) {
@@ -52,9 +53,9 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
     }
     public static void insertData(String tableName, ToDoInfo toDoInfo) {
         if (database != null) {
-            String sql = "insert into " + tableName + "(content,detailcontent,dates,d_day) " +
-                    "values(?, ?,?,?)";
-            Object[] params = {toDoInfo.content,toDoInfo.detailContent,toDoInfo.dates,toDoInfo.dDay};
+            String sql = "insert into " + tableName + "(content,detailcontent,dates,d_day,colors) " +
+                    "values(?, ?,?,?,?)";
+            Object[] params = {toDoInfo.content,toDoInfo.detailContent,toDoInfo.dates,toDoInfo.dDay,toDoInfo.color};
             database.execSQL(sql, params);
             println("할일 정보들 추가함.");
         } else {
@@ -62,7 +63,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
         }
     }
     public static void updateData(Context context,String tableName,ToDoInfo toDoInfo,String contents){
-        DatabaseHelper helper = new DatabaseHelper(context, "todo.db", null, 14);
+        DatabaseHelper helper = new DatabaseHelper(context, "todo.db", null, 15);
         database = helper.getWritableDatabase();
         String sql="update "+ tableName +" set content='"+toDoInfo.getContent()+"',detailcontent='"+toDoInfo.getDetailContent()+"',dates='"+toDoInfo.getDates()+"'" +
                 ",d_day='"+toDoInfo.getdDay()+"'"+
@@ -75,7 +76,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
             id++;
             String tmp=Integer.toString(id);
             // 헬퍼이용
-            DatabaseHelper helper = new DatabaseHelper(context, "todo.db", null, 14);
+            DatabaseHelper helper = new DatabaseHelper(context, "todo.db", null, 15);
             database = helper.getWritableDatabase();
             String sql="delete from "+ tableName +" where content='" + toDoInfo.getContent() + "';";
             database.execSQL(sql);
@@ -88,7 +89,8 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 String detailContent=cursor.getString(1);
                 String dates=cursor.getString(2);
                 String dDay=cursor.getString(3);
-                toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay));
+                int colors=cursor.getInt(4);
+                toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay,colors));
             }
             cursor.close();
         }
@@ -98,7 +100,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
         println("selectToDoInfo() 호출됨.");
         ArrayList<ToDoInfo> toDoInfos=new ArrayList<>();
         if (database != null) {
-            String sql = "select content,detailcontent,dates,d_day " +
+            String sql = "select content,detailcontent,dates,d_day,colors " +
                     "from " + tableName;
             Log.d("Database",sql);
             Cursor cursor = database.rawQuery(sql, null);
@@ -109,7 +111,8 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 String detailContent = cursor.getString(1);
                 String dates=cursor.getString(2);
                 String dDay=cursor.getString(3);
-                toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay));
+                int colors=cursor.getInt(4);
+                toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay,colors));
             }
             cursor.close();
         }
