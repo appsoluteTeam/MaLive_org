@@ -201,23 +201,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    /*public class AlarmHATT{
-        private Context context;
-        AlarmHATT(Context context){
-            this.context=context;
-        }
-        public void Alarm(){
-            AlarmManager am=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
-            Intent intent=new Intent(MainActivity.this,BroadcastD.class);
 
-            PendingIntent sender=PendingIntent.getBroadcast(MainActivity.this,0,intent,0);
-            Calendar calendar=Calendar.getInstance();
-
-            calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DATE),18,40,0);
-
-            am.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),sender);
-        }
-    }*/
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -233,75 +217,8 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
     }
 
 
-  /*  @Override
-    public void menuItemClicked(int menuNumber) {// 1 청소 2 요리 3 빨래 4 책상정리 5 설거지
-        showToast( "Menu item clicked : " + menuNumber);
-        if(menuNumber==1){
-            long systemTime = System.currentTimeMillis();
-            SimpleDateFormat formatter= null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            }
-            String date=formatter.format(systemTime);
-            String dDate=date;
-            ToDoInfo toDoInfo=new ToDoInfo("청소","집안청소",date,dDate);
-            AppHelper.insertData("todoInfo",toDoInfo);
-            repaint();//화면 다시 그리기
-        }else if(menuNumber==2) {
-            long systemTime = System.currentTimeMillis();
-            SimpleDateFormat formatter = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            }
-            String date = formatter.format(systemTime);
-            String dDate = date;
-            ToDoInfo toDoInfo = new ToDoInfo("요리", "자취생간편요리", date, dDate);
-            AppHelper.insertData("todoInfo", toDoInfo);
-            repaint();
-        }else if(menuNumber==3){
-            long systemTime = System.currentTimeMillis();
-            SimpleDateFormat formatter= null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            }
-            String date=formatter.format(systemTime);
-            String dDate=date;
-            ToDoInfo toDoInfo=new ToDoInfo("빨래","",date,dDate);
-            AppHelper.insertData("todoInfo",toDoInfo);
-            repaint();
-        }else if(menuNumber==4){
-            long systemTime = System.currentTimeMillis();
-            SimpleDateFormat formatter= null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            }
-            String date=formatter.format(systemTime);
-            String dDate=date;//"디데이"
-            ToDoInfo toDoInfo=new ToDoInfo("책상정리","",date,dDate);
-            AppHelper.insertData("todoInfo",toDoInfo);
-            repaint();
-        }else if(menuNumber==5){
-            long systemTime = System.currentTimeMillis();
-            SimpleDateFormat formatter= null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            }
-            String date=formatter.format(systemTime);
-            String dDate=date;
-            ToDoInfo toDoInfo=new ToDoInfo("설거지","",date,dDate);
-            AppHelper.insertData("todoInfo",toDoInfo);
-            repaint();
-        }
 
-    }*/
-    private void showToast(String msg){
-        if(mToast!=null){
-            mToast.cancel();
-        }
-        mToast= Toast.makeText(this,msg,Toast.LENGTH_SHORT);
-        mToast.setGravity(Gravity.CENTER,0,0);
-        mToast.show();
-    }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
