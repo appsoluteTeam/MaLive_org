@@ -34,9 +34,9 @@
         android:layout_height="39dp"
         android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/btn_guestBook"
+        app:layout_constraintEnd_toEndOf="@+id/myPage"
         app:layout_constraintHorizontal_bias="0.526"
-        app:layout_constraintStart_toStartOf="@id/btn_guestBook"
+        app:layout_constraintStart_toStartOf="@+id/myPage"
         app:layout_constraintTop_toBottomOf="@+id/btn_guestBook"
         app:layout_constraintVertical_bias="0.484" />
 
@@ -72,4 +72,14 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/goto_todo_button"
         app:layout_constraintTop_toBottomOf="@+id/goto_todo_button" />
+
+    <Button
+        android:id="@+id/myPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="myPage"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logout"
+        app:layout_constraintEnd_toEndOf="@+id/btn_guestBook"
+        app:layout_constraintStart_toStartOf="@+id/btn_guestBook"
+        app:layout_constraintTop_toBottomOf="@+id/btn_guestBook" />
 </androidx.constraintlayout.widget.ConstraintLayout>

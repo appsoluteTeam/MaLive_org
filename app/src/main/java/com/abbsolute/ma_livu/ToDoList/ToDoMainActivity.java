@@ -111,7 +111,13 @@ public class ToDoMainActivity extends AppCompatActivity  {
                 });
         //도움말기능
 
+        ImageView button=findViewById(R.id.help_image);
+
+        ///
+=======
+
         ///todo: 하단 탭 사용
+
         viewPager=findViewById(R.id.main_pager);
         tabLayout=findViewById(R.id.main_tab);//하단 탭
         TabPagerAdapter tabPagerAdapter=new TabPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
@@ -208,6 +214,18 @@ public class ToDoMainActivity extends AppCompatActivity  {
             notificationManager.createNotificationChannel(channel);
         }
     }*/
+
+    public void onFragmentSelected(int pos, Bundle bundle) {
+        Fragment cur = null;
+        if (pos == 0) {
+            cur = new ToDoFragment();
+            toDoFragment = (ToDoFragment)cur;
+        } else if (pos == 1) {
+            cur=new ToDoNotiFragment();
+            toDoNotiFragment =(ToDoNotiFragment)cur;
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, cur).commit();
+    }
 
     //디데이 알림 기능(수정필요!)
     public void getDays() {

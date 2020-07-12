@@ -25,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button btn_community; //커뮤니티 버튼
     private Button btn_todo; // 투두버튼
     private Button btn_guestBook; // 방명록 버튼
+    private Button btn_myPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,17 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, GuestBookActivity.class);
                 startActivity(intent);
                 Toast.makeText(HomeActivity.this, "방명록으로 이동!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //마이페이지 버튼을 눌렀을 때
+        btn_myPage = (Button)findViewById(R.id.myPage);
+        btn_myPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, myPage.class);
+                startActivity(intent);
+                Toast.makeText(HomeActivity.this, "마이페이지로 이동!", Toast.LENGTH_SHORT).show();
             }
         });
 
