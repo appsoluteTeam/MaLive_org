@@ -18,7 +18,7 @@
             android:background="@drawable/editfinish"
             android:onClick="onClick"
             android:text="완료"
-            android:textColor="#7FFFD4" />
+            android:textColor="	#00CED1" />
 
         <ScrollView
         android:layout_width="match_parent"

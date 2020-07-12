@@ -22,13 +22,6 @@
         <activity android:name=".title.titleActivity"></activity>
 
 
-
-        <activity android:name=".result">
-        </activity>
-        <activity android:name=".titleActivity"></activity>
-        <activity android:name=".myPage"></activity>
-
-
     </application>
 
 </manifest>
