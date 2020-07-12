@@ -1,5 +1,6 @@
-package com.abbsolute.ma_livu.Fragments;
+package com.abbsolute.ma_livu.ToDoList;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.ViewHolder> {
     ArrayList<ToDoFixInfo> arrayList=new ArrayList<>();
+    Context context;
     public class ViewHolder extends RecyclerView.ViewHolder{
         protected TextView fixToDoTextView;
         protected TextView fixPeriodTextView;
@@ -23,6 +25,10 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
             fixPeriodTextView=v.findViewById(R.id.todo_date);
         }
     }
+    public void getFixContext(Context context){
+        this.context=context;
+    }
+
     public void addFixItem(ToDoFixInfo fixInfo){
         arrayList.add(fixInfo);
     }

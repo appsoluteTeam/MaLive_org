@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Activities;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -12,14 +12,12 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -28,17 +26,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.abbsolute.ma_livu.ToDoAlarmReceiver;
-import com.abbsolute.ma_livu.ToDoAppHelper;
-import com.abbsolute.ma_livu.ToDoDeviceBootReceiver;
 import com.abbsolute.ma_livu.Fragments.HelpFragment;
-import com.abbsolute.ma_livu.Fragments.ToDoNotiFragment;
-import com.abbsolute.ma_livu.Fragments.ToDoFragment;
 import com.abbsolute.ma_livu.GooeyMenu;
 import com.abbsolute.ma_livu.R;
 import com.abbsolute.ma_livu.TabPagerAdapter;
-import com.abbsolute.ma_livu.ToDoAdapter;
-import com.abbsolute.ma_livu.ToDoInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;

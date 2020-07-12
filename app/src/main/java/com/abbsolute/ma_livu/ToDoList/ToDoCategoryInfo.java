@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.ToDoList;
 
 public class ToDoCategoryInfo {
     int toDoImage;

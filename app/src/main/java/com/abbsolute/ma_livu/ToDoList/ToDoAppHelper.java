@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,8 +12,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
-
-import static java.sql.Types.NULL;
 
 public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, update, insert
     private static final String TAG = "AppHelper";

@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Fragments;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,20 +21,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.ToDoAppHelper;
-import com.abbsolute.ma_livu.ToDoCategoryAdapter;
-import com.abbsolute.ma_livu.ToDoCategoryInfo;
+import com.abbsolute.ma_livu.Fragments.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
-import com.abbsolute.ma_livu.ToDoInfo;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
-import static com.abbsolute.ma_livu.ToDoAppHelper.insertData;
+import static com.abbsolute.ma_livu.ToDoList.ToDoAppHelper.insertData;
 
 
-public class ToDoWriteFragment extends Fragment implements OnBackPressedListener{
+public class ToDoWriteFragment extends Fragment implements OnBackPressedListener {
     // newInstance constructor for creating fragment with arguments
     public static ToDoWriteFragment newInstance() {
         ToDoWriteFragment fragment = new ToDoWriteFragment();
@@ -112,6 +109,25 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
         year=yearPicker.getValue();
         month=monthPicker.getValue();
         day=dayPicker.getValue();
+        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                year=newVal;
+                Toast.makeText(getContext(), ""+newVal, Toast.LENGTH_SHORT).show();
+            }
+        });
+        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                month=newVal;
+            }
+        });
+        dayPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                day=newVal;
+            }
+        });
         SQLiteDatabase todo;
         //저장
         storing.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +211,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
         }
         String date=formatter.format(systemTime);
         String dDate=date;
-        if(year!=2020&&month!=1&&day!=1)
+        if(year>=2020&&month>=1&&day>=1)
         {
             String months="0"+month;
             dDate=year+"-"+months+"-"+day;

@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Activities;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.os.Bundle;
 
@@ -9,8 +9,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abbsolute.ma_livu.Fragments.OnBackPressedListener;
-import com.abbsolute.ma_livu.Fragments.ToDoWriteFragment;
-import com.abbsolute.ma_livu.Fragments.ToDoWriteFragment2;
 import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;

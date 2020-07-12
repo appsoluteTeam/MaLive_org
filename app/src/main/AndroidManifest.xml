@@ -34,10 +34,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".Activities.ToDoMainActivity"></activity>
-        <activity android:name=".Activities.ToDoAlarmActivity"></activity>
-        <activity android:name=".Activities.ToDoWriteMainActivity"></activity>
-        <receiver android:name=".ToDoAlarmReceiver"></receiver>
+        <activity android:name=".ToDoList.ToDoMainActivity"></activity>
+        <activity android:name=".ToDoList.ToDoAlarmActivity"></activity>
+        <activity android:name=".ToDoList.ToDoWriteMainActivity"></activity>
+        <receiver android:name=".ToDoList.ToDoAlarmReceiver"></receiver>
         <service
             android:name=".FirebaseMessages.ToDoMyFirebaseInstanceIdService"
             android:exported="false">
@@ -45,7 +45,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <receiver android:name=".ToDoDeviceBootReceiver"
+        <receiver android:name=".ToDoList.ToDoDeviceBootReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

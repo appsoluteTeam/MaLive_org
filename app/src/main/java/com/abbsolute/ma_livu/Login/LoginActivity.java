@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Intent intent =Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
                 startActivityForResult(intent,REQ_SIGN_GOOGLE);
                 startActivity(new Intent(getApplicationContext(),HomeActivity.class));//다음화면이 안나와서 임시로 함
+
             }
         });
 

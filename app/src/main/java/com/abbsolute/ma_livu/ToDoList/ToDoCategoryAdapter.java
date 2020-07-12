@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;
 

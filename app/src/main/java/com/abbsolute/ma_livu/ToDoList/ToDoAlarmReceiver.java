@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,7 +11,8 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.abbsolute.ma_livu.Activities.ToDoMainActivity;
+import com.abbsolute.ma_livu.R;
+import com.abbsolute.ma_livu.ToDoList.ToDoMainActivity;
 
 public class ToDoAlarmReceiver extends BroadcastReceiver {// 알람을 받는 클래스
 

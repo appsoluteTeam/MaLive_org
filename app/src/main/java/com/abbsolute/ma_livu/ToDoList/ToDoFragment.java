@@ -1,10 +1,7 @@
-package com.abbsolute.ma_livu.Fragments;
+package com.abbsolute.ma_livu.ToDoList;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.Activities.ToDoWriteMainActivity;
-import com.abbsolute.ma_livu.ToDoAppHelper;
 import com.abbsolute.ma_livu.R;
-import com.abbsolute.ma_livu.ToDoAdapter;
-import com.abbsolute.ma_livu.ToDoInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;

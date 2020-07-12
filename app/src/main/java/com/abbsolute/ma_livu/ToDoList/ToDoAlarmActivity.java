@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Activities;
+package com.abbsolute.ma_livu.ToDoList;
 
 import android.os.Bundle;
 
