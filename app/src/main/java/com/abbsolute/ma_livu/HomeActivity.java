@@ -23,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
     private Button btn_logout; //로그아웃 버튼
     private Button btn_community; //커뮤니티 버튼
     private Button btn_todo; // 투두버튼
+    private Button btn_visitor; // 방명록
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +54,24 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         //투두리스트 버튼 눌렀을 때
-        /*
         btn_todo =(Button) findViewById(R.id.btn_todo);
         btn_todo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ToDoMainActivity.class);
+                Intent intent = new Intent(HomeActivity.this, HomeActivity.class); // 투두리스트 클래스로 옮겨주세용
                 startActivity(intent);
             }
-        });*/
+        });
+
+        //방명록 버튼
+        btn_visitor =(Button) findViewById(R.id.btn_visitor);
+        btn_visitor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this,HomeActivity.class); // 방명록 클래스로 옮겨주세용
+                startActivity(intent);
+            }
+        });
 
         //로그아웃 버튼을 눌렀을 때
         btn_logout = (Button) findViewById(R.id.btn_logout);
