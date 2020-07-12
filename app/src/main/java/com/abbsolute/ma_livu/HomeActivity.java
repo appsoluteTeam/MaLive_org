@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView iv_profile; //이미지 뷰
     private Button btn_logout; //로그아웃 버튼
     private Button btn_community; //커뮤니티 버튼
+    private Button btn_todo; // 투두 버튼
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,16 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, CommunityActivity.class);
                 startActivity(intent);
                 Toast.makeText(HomeActivity.this, "커뮤니티 입성!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //투두리스트 버튼 눌렀을 때
+        btn_todo =( Button) findViewById(R.id.btn_todo);
+        btn_todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (HomeActivity.this,ToDoMainActivity.class);
+                startActivity(intent);
             }
         });
         
