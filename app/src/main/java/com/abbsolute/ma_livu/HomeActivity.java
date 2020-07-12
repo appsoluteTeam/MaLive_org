@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        //마이페이지 버튼을 눌렀을 때
         btn_myPage = (Button)findViewById(R.id.myPage);
         btn_myPage.setOnClickListener(new View.OnClickListener() {
             @Override
