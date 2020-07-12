@@ -13,7 +13,7 @@ import com.abbsolute.ma_livu.R;
 import java.util.ArrayList;
 
 public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.ViewHolder> {
-    ArrayList<FixInfo> arrayList=new ArrayList<>();
+    ArrayList<ToDoFixInfo> arrayList=new ArrayList<>();
     public class ViewHolder extends RecyclerView.ViewHolder{
         protected TextView fixToDoTextView;
         protected TextView fixPeriodTextView;
@@ -23,20 +23,20 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
             fixPeriodTextView=v.findViewById(R.id.todo_date);
         }
     }
-    public void addFixItem(FixInfo fixInfo){
+    public void addFixItem(ToDoFixInfo fixInfo){
         arrayList.add(fixInfo);
     }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.fix_list, parent, false);
+        View itemView = inflater.inflate(R.layout.todo_fix_list, parent, false);
         return new ToDoFixListAdapter.ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        FixInfo info=arrayList.get(position);
+        ToDoFixInfo info=arrayList.get(position);
         holder.fixToDoTextView.setText(info.getFixToDo());
         holder.fixPeriodTextView.setText(info.getFixPeriod());
     }

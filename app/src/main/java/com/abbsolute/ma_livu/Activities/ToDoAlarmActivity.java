@@ -11,7 +11,7 @@ public class ToDoAlarmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm);
+        setContentView(R.layout.todo_activity_alarm);
         getSupportActionBar().setTitle("Alarm Activity");
     }
 }

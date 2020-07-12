@@ -1,6 +1,6 @@
 package com.abbsolute.ma_livu.Fragments;
 
-public class FixInfo {
+public class ToDoFixInfo {
     String fixToDo;
     String fixPeriod;
 

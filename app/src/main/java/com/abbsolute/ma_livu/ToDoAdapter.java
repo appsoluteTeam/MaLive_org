@@ -94,8 +94,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 context.startActivity(intent);
             }
         });
-        //고정 할 일 데이터는 뒷배경 회색으로
-
+        //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
+        holder.Contents.setBackgroundResource(toDoInfo.getColor());
+        holder.ContentsDetail.setBackgroundResource(toDoInfo.getColor());
 
     }
     @Override

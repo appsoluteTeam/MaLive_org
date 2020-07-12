@@ -1,16 +1,11 @@
 package com.abbsolute.ma_livu.Activities;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.abbsolute.ma_livu.Fragments.OnBackPressedListener;
@@ -25,7 +20,7 @@ public class ToDoWriteMainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.write_main);
+        setContentView(R.layout.todo_write_main);
         ViewPager pager=findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());

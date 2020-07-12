@@ -71,7 +71,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.todo_activity_main);
 
 
         /////
@@ -85,7 +85,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
         toDoAdapter.getCheckState(chk);
         Toast.makeText(getApplicationContext(), ""+chk, Toast.LENGTH_SHORT).show();
         ///
-        ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 14);
+        ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 15);
         getDays();//디데이 알림을 구현하려고 시도 한 코드
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

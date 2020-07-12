@@ -11,15 +11,24 @@ public class ToDoInfo {
     String dates;
     String dDay;
     Context context;
+    int color;
     public ToDoInfo(){
 
     }
-    public ToDoInfo(String content, String detailContent, String dates, String dDay){
+    public ToDoInfo(String content, String detailContent, String dates, String dDay,int color){
         this.content=content;
         this.detailContent=detailContent;
         this.dates=dates;
         this.dDay=dDay;
+        this.color=color;
+    }
 
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     public String getdDay() {

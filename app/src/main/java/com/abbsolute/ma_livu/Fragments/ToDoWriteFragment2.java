@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,7 +48,7 @@ public class ToDoWriteFragment2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.activity_write2,container,false);
+        ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_activity_write2,container,false);
         //기본 카테고리
         categoryRecyclerview=view.findViewById(R.id.todo_list_category2);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
@@ -78,14 +76,19 @@ public class ToDoWriteFragment2 extends Fragment {
         setPeriodDay.setDisplayedValues(day);
         //
         NumberPicker.OnScrollListener onScrollListener=new NumberPicker.OnScrollListener(){
-
             @Override
             public void onScrollStateChange(NumberPicker view, int scrollState) {
                 NumberPicker picker=view;
 
                 if(scrollState==SCROLL_STATE_IDLE){
                     if(view.getId()==R.id.set_period){
-
+                        int val=picker.getValue();
+                        if(val==values.length-1){
+                            setPeriodDay.setDisplayedValues(null);
+                            setPeriodDay.setMinValue(1);
+                            setPeriodDay.setMaxValue(30);
+                            setPeriodDay.setWrapSelectorWheel(true);
+                        }
                     }
                     Toast.makeText(getContext(), ""+picker.getValue(), Toast.LENGTH_SHORT).show();
                 }
@@ -125,11 +128,12 @@ public class ToDoWriteFragment2 extends Fragment {
         }
         String date=formatter.format(systemTime);
         String dDate=date;
-        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate);
+        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);
         SharedPreferences pref = getContext().getSharedPreferences("set_theme", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("theme2",3);
+        editor.putInt("theme",2);
         editor.commit();
+        //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
     }
 }
