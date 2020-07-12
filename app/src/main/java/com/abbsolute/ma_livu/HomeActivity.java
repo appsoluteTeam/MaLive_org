@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.Community.CommunityActivity;
+import com.abbsolute.ma_livu.Community.HotCommuActivity;
 import com.abbsolute.ma_livu.Login.LoginActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         btn_community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, CommunityActivity.class);
+                Intent intent = new Intent(HomeActivity.this, HotCommuActivity.class);
                 startActivity(intent);
                 Toast.makeText(HomeActivity.this, "커뮤니티 입성!", Toast.LENGTH_SHORT).show();
             }
