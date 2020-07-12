@@ -109,15 +109,8 @@ public class ToDoMainActivity extends AppCompatActivity  {
                         Toast.makeText(ToDoMainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-        //도움말기능
-
-        ImageView button=findViewById(R.id.help_image);
-
-        ///
-=======
 
         ///todo: 하단 탭 사용
-
         viewPager=findViewById(R.id.main_pager);
         tabLayout=findViewById(R.id.main_tab);//하단 탭
         TabPagerAdapter tabPagerAdapter=new TabPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
