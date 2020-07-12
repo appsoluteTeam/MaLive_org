@@ -32,9 +32,10 @@
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="112dp"
         android:text="Logout"
         app:layout_constraintEnd_toEndOf="@+id/btn_community"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="@+id/btn_community"
         app:layout_constraintTop_toBottomOf="@+id/btn_community" />
 
@@ -47,5 +48,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_result"
         app:layout_constraintStart_toStartOf="@+id/tv_result"
         app:layout_constraintTop_toBottomOf="@+id/tv_result" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

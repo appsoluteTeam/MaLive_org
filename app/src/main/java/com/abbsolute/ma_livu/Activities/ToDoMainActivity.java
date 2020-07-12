@@ -87,11 +87,11 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
         ///
         ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 15);
         getDays();//디데이 알림을 구현하려고 시도 한 코드
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+/*        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("내가 할 일");
+        toolbar.setTitle("내가 할 일");*/
         final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         toDoFragment=new ToDoFragment();
         fragmentTransaction.add(R.id.main_frame,toDoFragment).commit();
