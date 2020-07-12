@@ -13,7 +13,7 @@ import com.abbsolute.ma_livu.title.titleActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class Mypage extends AppCompatActivity {
 
     public DBHelper dbhelper;
     private SQLiteDatabase db;
