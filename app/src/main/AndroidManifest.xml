@@ -37,6 +37,8 @@
         <activity android:name=".result"></activity>
         <activity android:name=".titleActivity"></activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".VisitorBoard.GuestBookActivity" />
+        <activity android:name=".VisitorBoard.CommentWriteActivity" />
         <activity android:name=".ToDoList.ToDoMainActivity"></activity>
         <activity android:name=".ToDoList.ToDoAlarmActivity"></activity>
         <activity android:name=".ToDoList.ToDoWriteMainActivity"></activity>
