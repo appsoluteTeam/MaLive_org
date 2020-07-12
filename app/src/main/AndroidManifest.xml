@@ -33,6 +33,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".myPage"></activity>
+        <activity android:name=".result"></activity>
+        <activity android:name=".titleActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".ToDoList.ToDoMainActivity"></activity>
         <activity android:name=".ToDoList.ToDoAlarmActivity"></activity>

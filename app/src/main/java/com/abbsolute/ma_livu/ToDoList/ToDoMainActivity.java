@@ -48,7 +48,6 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
     private static int WRITE_RESULT = 100;
     private ToDoFragment toDoFragment;
     private ToDoNotiFragment toDoNotiFragment;
-    private HelpFragment helpFragment;
     Toolbar toolbar;
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
@@ -112,14 +111,7 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
                 });
         //도움말기능
         ImageView button=findViewById(R.id.help_image);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                HelpFragment helpFragment=new HelpFragment();
-                FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame,helpFragment).commit();
-            }
-        });
+
         ///
         viewPager=findViewById(R.id.main_pager);
         tabLayout=findViewById(R.id.main_tab);//하단 탭
@@ -238,9 +230,6 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
         } else if (pos == 1) {
             cur=new ToDoNotiFragment();
             toDoNotiFragment =(ToDoNotiFragment)cur;
-        }else if(pos==2){
-           cur=new HelpFragment();
-           helpFragment=(HelpFragment)cur;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, cur).commit();
     }
