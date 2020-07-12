@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 Intent intent =Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
                 startActivityForResult(intent,REQ_SIGN_GOOGLE);
+                startActivity(new Intent(getApplicationContext(),HomeActivity.class));//다음화면이 안나와서 임시로 함
             }
         });
 
@@ -116,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 session.open(AuthType.KAKAO_LOGIN_ALL, LoginActivity.this);
-
+                startActivity(new Intent(getApplicationContext(),HomeActivity.class));//다음화면이 안나와서 임시로 함
             }
         });
     }

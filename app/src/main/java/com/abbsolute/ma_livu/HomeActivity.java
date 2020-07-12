@@ -10,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.abbsolute.ma_livu.Community.HotCommuActivity;
 import com.abbsolute.ma_livu.Login.LoginActivity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,26 +48,6 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, HotCommuActivity.class);
                 startActivity(intent);
                 Toast.makeText(HomeActivity.this, "커뮤니티 입성!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //투두리스트 버튼 눌렀을 때
-        btn_todo =(Button) findViewById(R.id.btn_todo);
-        btn_todo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, HomeActivity.class); // 투두리스트 클래스로 옮겨주세용
-                startActivity(intent);
-            }
-        });
-
-        //방명록 버튼
-        btn_visitor =(Button) findViewById(R.id.btn_visitor);
-        btn_visitor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this,HomeActivity.class); // 방명록 클래스로 옮겨주세용
-                startActivity(intent);
             }
         });
 
