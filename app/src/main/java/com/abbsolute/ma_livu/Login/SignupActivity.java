@@ -44,7 +44,6 @@ public class SignupActivity extends AppCompatActivity {
 
     //
     private EditText email_sign;
-    private Button btn_please;
     private TextView tv_top;
 
     private EditText pass_sign;
@@ -74,25 +73,6 @@ public class SignupActivity extends AppCompatActivity {
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
         tv_top=(TextView)findViewById(R.id.tv_top);
 
-
-        //인증요청 버튼을 눌렀을 때
-        btn_please =(Button)findViewById(R.id.btn_please);
-        btn_please.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                user = firebaseAuth.getCurrentUser();
-                user.sendEmailVerification()
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(SignupActivity.this,"인증메일 발송",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                tv_top.setText("비밀번호를\n설정하세요");
-                btn_please.setText("인증완료");
-            }
-
-        });
 
        //다음 버튼을 눌렀을 때
         btn_next1.setOnClickListener(new View.OnClickListener() {
