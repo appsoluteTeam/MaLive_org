@@ -96,13 +96,13 @@ public class ToDoMainActivity extends AppCompatActivity implements NavigationVie
         toDoFragment=new ToDoFragment();
         fragmentTransaction.add(R.id.main_frame,toDoFragment).commit();
 
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger_menu);
+/*        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger_menu);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);*/
         ////////
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {

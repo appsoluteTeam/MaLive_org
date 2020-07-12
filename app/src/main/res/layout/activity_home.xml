@@ -49,5 +49,15 @@
         app:layout_constraintStart_toStartOf="@+id/tv_result"
         app:layout_constraintTop_toBottomOf="@+id/tv_result" />
 
-
+    <Button
+        android:id="@+id/goto_todo_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_result"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="@+id/tv_result"
+        app:layout_constraintTop_toBottomOf="@+id/tv_result"
+        android:text="ToDoList">
+    </Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
