@@ -44,9 +44,9 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
     TextView cancel;
     TextView setDday;
     /////
-    private int year=0;
-    private int month=0;
-    private int day=0;
+    private int year=0;// 작성년도, 디데이 년도
+    private int month=0;// 작성월, 디데이 월
+    private int day=0;// 작성일, 디데이 일
     int val=0;
     private int UPDATE_OK=5;
     ///NumberPicker 정의
@@ -62,6 +62,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_activity_write,container,false);
+        //todo : 페이지 1 카테고리 리스트 어뎁터 생성
         categoryRecyclerview=view.findViewById(R.id.todo_list_category);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
         categoryRecyclerview.setLayoutManager(linearLayoutManager);

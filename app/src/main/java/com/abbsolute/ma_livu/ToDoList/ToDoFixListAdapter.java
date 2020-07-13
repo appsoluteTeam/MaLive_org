@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,8 +30,8 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
         this.context=context;
     }
 
-    public void addFixItem(ToDoFixInfo fixInfo){
-        arrayList.add(fixInfo);
+    public void setFixItem(ArrayList<ToDoFixInfo> fixInfos){
+        arrayList=fixInfos;
     }
     @NonNull
     @Override
@@ -42,9 +43,10 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ToDoFixInfo info=arrayList.get(position);
-        holder.fixToDoTextView.setText(info.getFixToDo());
-        holder.fixPeriodTextView.setText(info.getFixPeriod());
+        ToDoFixInfo toDoFixInfo=arrayList.get(position);
+        Toast.makeText(context, ""+toDoFixInfo.getFixPeriod(), Toast.LENGTH_SHORT).show();
+        holder.fixToDoTextView.setText(toDoFixInfo.getFixToDo());//고정 할 일
+        holder.fixPeriodTextView.setText(toDoFixInfo.getFixPeriod());//고정 할 일 주기
     }
 
     @Override

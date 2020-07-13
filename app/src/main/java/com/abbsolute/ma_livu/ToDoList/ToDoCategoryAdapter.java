@@ -1,5 +1,5 @@
 package com.abbsolute.ma_livu.ToDoList;
-
+//todo: 카테고리 어뎁터 클래스
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;

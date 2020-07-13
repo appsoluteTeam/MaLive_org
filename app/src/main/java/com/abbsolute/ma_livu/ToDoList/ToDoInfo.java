@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class ToDoInfo {
+public class ToDoInfo {//할 일 정보 클래스
 
     String content;
     String detailContent;

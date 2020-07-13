@@ -69,18 +69,15 @@ public class ToDoMainActivity extends AppCompatActivity  {
         ///
         toDoAdapter=new ToDoAdapter();
         //===데이터 불러오기
-        SharedPreferences pf=getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        Boolean chk=pf.getBoolean("chk",false);
-        toDoAdapter.getCheckState(chk);
-        Toast.makeText(getApplicationContext(), ""+chk, Toast.LENGTH_SHORT).show();
-        ///
-        ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 15);
+        /// todo: 데이터 베이스 open
+        ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 16);
         getDays();//디데이 알림을 구현하려고 시도 한 코드
 /*        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("내가 할 일");*/
+        // todo: todoFragment 장착
         final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         toDoFragment=new ToDoFragment();
         fragmentTransaction.add(R.id.main_frame,toDoFragment).commit();
@@ -92,7 +89,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);*/
-        ////////
+        // todo: 파이어베이스 메시지 전송 코드
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -168,7 +165,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
     }//Oncreate()
 
 
-
+    // todo: 뒤로가기 이벤트
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {

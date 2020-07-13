@@ -26,6 +26,8 @@ import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 import static com.abbsolute.ma_livu.ToDoList.ToDoAppHelper.insertData;
+import static com.abbsolute.ma_livu.ToDoList.ToDoAppHelper.insertFixData;
+import static com.abbsolute.ma_livu.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
 public class ToDoWriteFragment2 extends Fragment {
     ToDoCategoryAdapter categoryAdapter;
@@ -54,7 +56,7 @@ public class ToDoWriteFragment2 extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_activity_write2,container,false);
-        //기본 카테고리
+        //todo : 페이지 2 카테고리 리스트 어뎁터 생성
         categoryRecyclerview=view.findViewById(R.id.todo_list_category2);
         fixTodoRecyclerview=view.findViewById(R.id.fix_list);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
@@ -85,15 +87,14 @@ public class ToDoWriteFragment2 extends Fragment {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 periodPos=newVal;
-                if(newVal==2){
+                if(newVal==2){//매달
                     setPeriodDay.setDisplayedValues(null);
                     setPeriodDay.setMinValue(1);
                     setPeriodDay.setMaxValue(dates.length);
                     setPeriodDay.setWrapSelectorWheel(true);
                     setPeriodDay.setDisplayedValues(dates);
-
                 }
-                if(newVal==0||newVal==1){
+                if(newVal==0||newVal==1){// 매주 혹은 격주
                     setPeriodDay.setDisplayedValues(null);
                     setPeriodDay.setMinValue(0);
                     setPeriodDay.setMaxValue(day.length-1);
@@ -106,14 +107,14 @@ public class ToDoWriteFragment2 extends Fragment {
         setPeriodDay.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                dayPos=newVal;
+                dayPos=newVal;//현재 요일의 위치
             }
         });
         //
-        toDoFixListAdapter=new ToDoFixListAdapter();
-        toDoFixListAdapter.getFixContext(getContext());
+
         Button save=view.findViewById(R.id.write);
         fixWrite=view.findViewById(R.id.todo_write2);
+        // todo: 등록하기 버튼
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,28 +127,38 @@ public class ToDoWriteFragment2 extends Fragment {
                 if(!res.equals("")&&!resDetailTodo.equals(""))
                 {
                     fixAddData();
-                    fixPeriodData();
+                    fixPeriodAddData();
                 }else{
                     Toast.makeText(getContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
                 }
                 getActivity().finish();
             }
         });
+        // todo: 고정리스트 어뎁터 생성 및 적용
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        fixTodoRecyclerview.setLayoutManager(layoutManager);
+        toDoFixListAdapter=new ToDoFixListAdapter();
+        toDoFixListAdapter.getFixContext(getContext());
+        ArrayList<ToDoFixInfo> toDoFixInfos=selectFixTodoInfo("fixToDoInfo");
+        toDoFixListAdapter.setFixItem(toDoFixInfos);
+        fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
         return view;
     }
-    private void fixPeriodData(){
+    // todo: 고정 리스트 데이터 추가 함수
+    private void fixPeriodAddData(){
         String fixDate="";
         String detailData=fixWrite.getText().toString();
-        if(periodPos==0||periodPos==1){
+        if(periodPos==0||periodPos==1){// 매주, 격주 요일 ex) 매주 월요일
             fixDate=values[periodPos]+" "+day[dayPos];
-        }else if(periodPos==2){
-            fixDate=values[periodPos]+" "+dates[dayPos];
+        }else if(periodPos==2){// 매달 ex) 매달 3일
+            fixDate=values[periodPos]+" "+dates[dayPos]+"일";
         }
-        ToDoFixInfo toDoFixInfo=new ToDoFixInfo(fixDate,detailData);
+
+        ToDoFixInfo toDoFixInfo=new ToDoFixInfo(detailData,fixDate);
         // toDoFixInfos.add(toDoFixInfo);
-        toDoFixListAdapter.addFixItem(toDoFixInfo);
-        fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
+        insertFixData("fixToDoInfo",toDoFixInfo);//고정리스트 데이터 db 삽입
     }
+    //todo: 고정 할 일 데이터 추가 함수
     private void fixAddData() {
         SharedPreferences pf=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String data=pf.getString("toDo","");
@@ -172,10 +183,5 @@ public class ToDoWriteFragment2 extends Fragment {
         //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        SharedPreferences pf=getContext().getSharedPreferences("set_period", Activity.MODE_PRIVATE);
 
-    }
 }

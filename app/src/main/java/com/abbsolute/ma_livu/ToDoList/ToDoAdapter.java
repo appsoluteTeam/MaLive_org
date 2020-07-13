@@ -1,5 +1,5 @@
 package com.abbsolute.ma_livu.ToDoList;
-
+//할 일 어뎁터 클래스
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

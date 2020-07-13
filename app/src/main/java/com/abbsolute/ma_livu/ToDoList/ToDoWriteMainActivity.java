@@ -19,6 +19,7 @@ public class ToDoWriteMainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_write_main);
+        //todo 할 일 페이지 생성(뷰페이저)
         ViewPager pager=findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
