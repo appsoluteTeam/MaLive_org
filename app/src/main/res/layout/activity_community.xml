@@ -32,6 +32,7 @@
         android:id="@+id/top_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         app:itemIconTint="#000000"
         app:itemTextColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"

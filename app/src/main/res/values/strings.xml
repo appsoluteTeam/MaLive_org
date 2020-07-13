@@ -20,5 +20,11 @@
     //방명록 푸쉬 기능
     <string name="default_notification_channel_id">Push Test</string>
     <string name="default_notification_channel_name" translatable="true">콕 찌르기!</string>
+
+    <string name="experience_capability">혼자살기 경력 %d년차 | 자취 능력 %d%%</string>
+    <string name="clean_capability">청소 %d%%</string>
+    <string name="wash_capability">빨래 %d%%</string>
+    <string name="recycling_capability">분리수거 %d%%</string>
+    <string name="etc_capability">기타 %d%%</string>
 </resources>
 
