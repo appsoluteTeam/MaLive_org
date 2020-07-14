@@ -44,7 +44,6 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ToDoFixInfo toDoFixInfo=arrayList.get(position);
-        Toast.makeText(context, ""+toDoFixInfo.getFixPeriod(), Toast.LENGTH_SHORT).show();
         holder.fixToDoTextView.setText(toDoFixInfo.getFixToDo());//고정 할 일
         holder.fixPeriodTextView.setText(toDoFixInfo.getFixPeriod());//고정 할 일 주기
     }

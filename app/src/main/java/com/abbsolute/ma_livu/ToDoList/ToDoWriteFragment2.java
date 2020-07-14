@@ -172,13 +172,7 @@ public class ToDoWriteFragment2 extends Fragment {
         String dDate=date;
         ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);
-        //고정리스트에 고정 할 일 데이터 추가하는 코드 작성
-        SharedPreferences pref = getContext().getSharedPreferences("set_period", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("fixToDo",detailData);
-
-      //  editor.putString("fixToDoDate",fixDate);
-       // editor.commit();
+      
 
         //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
     }

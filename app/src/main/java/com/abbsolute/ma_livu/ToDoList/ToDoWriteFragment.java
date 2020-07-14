@@ -114,7 +114,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 year=newVal;
-                Toast.makeText(getContext(), ""+newVal, Toast.LENGTH_SHORT).show();
+
             }
         });
         monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -219,10 +219,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
         }
         ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
         insertData("todoInfo",toDoInfo);
-        SharedPreferences pref = getContext().getSharedPreferences("set_theme", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("theme",1);
-        editor.commit();
+
         //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
     }
     final static int req1=1;

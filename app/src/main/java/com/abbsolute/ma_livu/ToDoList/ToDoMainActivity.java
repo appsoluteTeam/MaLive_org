@@ -61,34 +61,15 @@ public class ToDoMainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todo_activity_main);
-
-
-        /////
-       // new AlarmHATT(getApplicationContext()).Alarm();
-//        createNotificationChannel();
-        ///
         toDoAdapter=new ToDoAdapter();
         //===데이터 불러오기
         /// todo: 데이터 베이스 open
         ToDoAppHelper.openDatabase(getApplicationContext(), "todo.db", 16);
         getDays();//디데이 알림을 구현하려고 시도 한 코드
-/*        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("내가 할 일");*/
         // todo: todoFragment 장착
         final FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         toDoFragment=new ToDoFragment();
         fragmentTransaction.add(R.id.main_frame,toDoFragment).commit();
-
-/*        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger_menu);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);*/
         // todo: 파이어베이스 메시지 전송 코드
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -103,7 +84,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
                         // Log and toast
                         String msg = task.getResult().getToken();
                         Log.d(TAG, msg);
-                        Toast.makeText(ToDoMainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(ToDoMainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -220,9 +201,6 @@ public class ToDoMainActivity extends AppCompatActivity  {
     //디데이 알림 기능(수정필요!)
     public void getDays() {
         Log.d("alarm2"," method start");
-        //Toast.makeText(getApplicationContext(),"getDays실행!!!!!",Toast.LENGTH_SHORT).show();
-
-        //Calendar c = Calendar.getInstance();
         ArrayList<ToDoInfo> toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
         Log.d("toDoInfoSize",Integer.toString(toDoInfos.size()));
         long systemTime = System.currentTimeMillis();
@@ -237,7 +215,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
         String d = r[2];
 
 
-        //Toast.makeText(getApplicationContext(), ""+y+" "+m+" "+d, Toast.LENGTH_SHORT).show();
+
         Log.d("currentTime",y + "," + m + "," + d);
         //디데이 알림 체크
         /*
@@ -262,17 +240,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
             String month = res[1];
             String day = days[1];
 
-//            int int_month = Integer.parseInt(month);
-          //  int int_day = Integer.parseInt(day);
 
-            //1월부터 9월일 때 앞에 0 붙여주기 ex)01월 이런식
-            //day도 마찬가지
-            /*if(int_month > 0 && int_month < 10){
-                month = "0" + month;
-            }
-            if(int_day > 0 && int_day < 10){
-                day = "0" + day;
-            }*/
 
             Log.d("d-day",year + "," + month + "," + day);
             Log.d("c-day",y + "," + m + "," + d);
