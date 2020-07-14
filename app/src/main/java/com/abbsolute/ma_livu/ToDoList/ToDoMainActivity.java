@@ -228,6 +228,8 @@ public class ToDoMainActivity extends AppCompatActivity  {
         }
         */
 
+        int alarm_second = 0;
+        int flag = 0;
 
         for (int i = 0; i < toDoInfos.size(); i++) {
             String dates = toDoInfos.get(i).getDates();//d-day 등록한 날짜
@@ -249,6 +251,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
 
             //d-day는 한자리 수일 때 앞에 0이 안붙고 c-day는 한자리 수일 때 앞에 0이 붙어서 둘이 일치할수가 없음!
             if (y.equals(year) && m.equals(month) && d.equals(day)) {
+                flag += 1;
                 Log.d("correct","날짜일치...");
                 int sendYear = Integer.parseInt(year);
                 int sendMonth = Integer.parseInt(month);
@@ -256,15 +259,17 @@ public class ToDoMainActivity extends AppCompatActivity  {
                 //선택한 날짜와 시간으로 알람 설정
                 //GregorianCalendar calendar = new GregorianCalendar(sendYear, sendMonth, sendDay, 18, 44);
 //알람시간에 AlarmActivity 실행되도록.
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 //UTC시간으로 지정시
                 calendar.set(Calendar.DAY_OF_YEAR,sendYear);
                 calendar.set(Calendar.DAY_OF_MONTH,sendMonth);
                 calendar.set(Calendar.DATE,sendDay);
-                calendar.set(Calendar.HOUR,10);
+                calendar.set(Calendar.HOUR,8);
                 calendar.set(Calendar.MINUTE,0);
-                calendar.set(Calendar.SECOND,0);
+                calendar.set(Calendar.SECOND,alarm_second);
+                alarm_second += 3;//하루에 여러개 일 때 3초 간격
 
                 //  Preference에 설정한 값 저장
                 /////데이터 저장
@@ -275,21 +280,22 @@ public class ToDoMainActivity extends AppCompatActivity  {
                 editor.putLong("nextNotifyTime", (long)calendar.getTimeInMillis());
                 editor.commit();
 
-                AlarmNotification(calendar,contents);
+                AlarmNotification(calendar,contents,flag);
 
             }
 
         }
     }//getDays()
 
-    void AlarmNotification(Calendar calendar,String contents){
+    void AlarmNotification(Calendar calendar,String contents,int flag){
         Boolean dailyNotify = true; // 무조건 알람을 사용
 
         PackageManager pm = this.getPackageManager();
         ComponentName receiver = new ComponentName(this, ToDoDeviceBootReceiver.class);
         Intent intent = new Intent(ToDoMainActivity.this, ToDoAlarmReceiver.class);
         intent.putExtra("alarmContents",contents);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 30, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.putExtra("notificationId",flag);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, flag, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
@@ -309,7 +315,6 @@ public class ToDoMainActivity extends AppCompatActivity  {
             pm.setComponentEnabledSetting(receiver,
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP);
-
         }
     ////
     }

@@ -172,7 +172,7 @@ public class ToDoWriteFragment2 extends Fragment {
         String dDate=date;
         ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);
-      
+
 
         //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
     }
