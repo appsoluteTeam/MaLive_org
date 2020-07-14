@@ -215,7 +215,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
         if(year>=2020&&month>=1&&day>=1)
         {
             String months="0"+month;
-            dDate=year+"-"+months+"-"+day;
+            dDate=year+"년"+months+"월"+day+"일";
         }
         ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
         insertData("todoInfo",toDoInfo);

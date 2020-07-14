@@ -117,7 +117,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         if (requestCode == WRITE_RESULT) {
             if (resultCode == RESULT_OK) {
                 toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
-               
+
 
                 toDoAdapter.setItem(toDoInfos);
                 recyclerView.setAdapter(toDoAdapter);
