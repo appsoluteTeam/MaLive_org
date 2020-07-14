@@ -54,6 +54,8 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
 
 //  fragmentTransaction.add(R.id.contentMain,FirstFragment.newInstance());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
 
@@ -115,15 +117,7 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         if (requestCode == WRITE_RESULT) {
             if (resultCode == RESULT_OK) {
                 toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
-                Comparator<ToDoInfo> cmpAsc = new Comparator<ToDoInfo>() {
-
-                    @Override
-                    public int compare(ToDoInfo o1, ToDoInfo o2) {
-                        return o2.getDates().compareTo(o1.getDates()) ;
-                    }
-                } ;
-                // toDoAdapter.clearData();
-                Collections.sort(toDoInfos,cmpAsc);
+               
 
                 toDoAdapter.setItem(toDoInfos);
                 recyclerView.setAdapter(toDoAdapter);
