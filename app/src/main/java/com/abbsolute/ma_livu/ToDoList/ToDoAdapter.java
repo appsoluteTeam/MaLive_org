@@ -34,7 +34,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView ContentsDetail;
         protected TextView Contents;
-        protected TextView writeDates;
+       // protected TextView writeDates;
         protected TextView dDays;
         protected FrameLayout toDoFrame;
         protected FrameLayout toDoDetailFrame;
@@ -42,7 +42,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             super(v);
             this.Contents = v.findViewById(R.id.todo_text);//내용
             this.ContentsDetail=v.findViewById(R.id.todo_text_detail);//상세내용
-            this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
+          //  this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
             this.dDays=v.findViewById(R.id.d_date);//디데이
             this.toDoFrame=v.findViewById(R.id.todo_frame);
             this.toDoDetailFrame=v.findViewById(R.id.todo_detail_frame);
@@ -78,7 +78,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         final ToDoInfo toDoInfo = arrayList.get(position);
         holder.Contents.setText(toDoInfo.getContent());
         holder.ContentsDetail.setText(toDoInfo.getDetailContent());
-        holder.writeDates.setText(toDoInfo.getDates());
+       // holder.writeDates.setText(toDoInfo.getDates());
         if(toDoInfo.getdDay()!=null){
             holder.dDays.setText(toDoInfo.getdDay());
         }

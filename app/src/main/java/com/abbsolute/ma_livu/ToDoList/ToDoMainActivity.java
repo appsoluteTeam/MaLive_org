@@ -256,13 +256,14 @@ public class ToDoMainActivity extends AppCompatActivity  {
             String dDay = toDoInfos.get(i).getdDay();
             String contents = toDoInfos.get(i).getContent();
 
-            String[] res = dDay.split("-");
+            String[] res = dDay.split("년");
+            String[] days=dDay.split("월");
             String year = res[0];
             String month = res[1];
-            String day = res[2];
+            String day = days[1];
 
-            int int_month = Integer.parseInt(month);
-            int int_day = Integer.parseInt(day);
+//            int int_month = Integer.parseInt(month);
+          //  int int_day = Integer.parseInt(day);
 
             //1월부터 9월일 때 앞에 0 붙여주기 ex)01월 이런식
             //day도 마찬가지
