@@ -60,6 +60,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4' //파이어스토어 데이터베이스
     implementation 'de.hdodenhof:circleimageview:3.0.0' //동그란 이미지 위젯 추가
     implementation 'com.google.firebase:firebase-messaging:20.2.0' //푸쉬 메시지 보내기
-
-    //카카오톡 SDK 추가
 }
