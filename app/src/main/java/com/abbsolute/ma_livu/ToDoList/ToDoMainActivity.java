@@ -233,6 +233,7 @@ public class ToDoMainActivity extends AppCompatActivity  {
 
         for (int i = 0; i < toDoInfos.size(); i++) {
             String dates = toDoInfos.get(i).getDates();//d-day 등록한 날짜
+
             String dDay = toDoInfos.get(i).getdDay();
             String contents = toDoInfos.get(i).getContent();
 
