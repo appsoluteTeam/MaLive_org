@@ -37,7 +37,7 @@
                 android:text="ToDoList"
                 android:textSize="17sp"
                 android:layout_marginBottom="5sp"
-                android:layout_marginStart="10sp">
+                android:layout_marginLeft="10sp">
             </TextView>
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"

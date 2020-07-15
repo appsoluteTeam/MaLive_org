@@ -34,8 +34,9 @@
             android:textSize="20sp">
         </TextView>
         <EditText
+            android:layout_marginTop="3sp"
             android:layout_width="380dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40sp"
             android:id="@+id/write_todo"
             android:layout_gravity="center"
             android:background="@drawable/edit_black">
@@ -128,7 +129,7 @@
         </NumberPicker>
     </LinearLayout>
     <Button
-        android:layout_marginTop="50sp"
+        android:layout_marginTop="150sp"
         android:layout_width="120sp"
         android:layout_height="wrap_content"
         android:id="@+id/store"

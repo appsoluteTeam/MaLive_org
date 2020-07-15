@@ -2,6 +2,7 @@ package com.abbsolute.ma_livu.ToDoList;
 
 import android.app.AlarmManager;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ import com.abbsolute.ma_livu.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -54,8 +57,8 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
 
 //  fragmentTransaction.add(R.id.contentMain,FirstFragment.newInstance());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
+       // layoutManager.setReverseLayout(true);
+        // layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
 
@@ -68,6 +71,13 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
             }
         });
         toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
+        Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+            @Override
+            public int compare(ToDoInfo o1, ToDoInfo o2) {
+                return o1.getdDay().compareTo(o2.getdDay());
+            }
+        };
+        Collections.sort(toDoInfos,comparator);
         toDoAdapter.setItem(toDoInfos);
         toDoAdapter.GetContext(getContext());
         toDoAdapter.notifyDataSetChanged();
@@ -106,6 +116,13 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     public void onResume() {
         super.onResume();
         toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
+        Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+            @Override
+            public int compare(ToDoInfo o1, ToDoInfo o2) {
+                return o1.getdDay().compareTo(o2.getdDay());
+            }
+        };
+        Collections.sort(toDoInfos,comparator);
         // toDoAdapter.clearData();
         toDoAdapter.setItem(toDoInfos);
         recyclerView.setAdapter(toDoAdapter);
@@ -117,6 +134,13 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         if (requestCode == WRITE_RESULT) {
             if (resultCode == RESULT_OK) {
                 toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
+                Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                    @Override
+                    public int compare(ToDoInfo o1, ToDoInfo o2) {
+                        return o1.getdDay().compareTo(o2.getdDay());
+                    }
+                };
+                Collections.sort(toDoInfos,comparator);
                 toDoAdapter.setItem(toDoInfos);
                 recyclerView.setAdapter(toDoAdapter);
             }

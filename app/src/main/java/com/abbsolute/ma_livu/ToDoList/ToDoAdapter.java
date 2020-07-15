@@ -82,7 +82,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         if(toDoInfo.getdDay()!=null){
             holder.dDays.setText(toDoInfo.getdDay());
         }
-        
+        if(position>=1){
+            ToDoInfo tmp=arrayList.get(position-1);
+            if(tmp.getdDay().equals(toDoInfo.getdDay())){
+                holder.dDays.setVisibility(View.GONE);
+            }
+        }
         //수정
         holder.Contents.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -169,6 +169,11 @@ public class ToDoWriteFragment2 extends Fragment {
             formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         }
         String date=formatter.format(systemTime);
+        String dates[]=date.split("-");
+        String dYear=dates[0];
+        String dMonth=dates[1];
+        String dDay=dates[2];
+        date=dYear+"년"+dMonth+"월"+dDay+"일";
         String dDate=date;
         ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);

@@ -221,6 +221,7 @@ public class ToDoWriteFragment extends Fragment implements OnBackPressedListener
         insertData("todoInfo",toDoInfo);
 
         //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
+
     }
     final static int req1=1;
     public String a = "0"; // initialize this globally at the top of your class.
