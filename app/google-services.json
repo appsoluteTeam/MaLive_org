@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "696969032271",
+    "firebase_url": "https://malive-5bf10.firebaseio.com",
+    "project_id": "malive-5bf10",
+    "storage_bucket": "malive-5bf10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696969032271:android:653f9b107aaedf1811f03a",
+        "android_client_info": {
+          "package_name": "com.abbsolute.ma_livu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696969032271-1h1v1pg1e6iatpjencm3492ecqsoh2lf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abbsolute.ma_livu",
+            "certificate_hash": "d49d2be1fb079f85e63b4bc5d73e8a4f78e16f8a"
+          }
+        },
+        {
+          "client_id": "696969032271-n0n1ja36608ch9met0s8se6vmsg79u0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiDTElMJXtGFMXTNXF_30KTbxoHY0TIIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696969032271-n0n1ja36608ch9met0s8se6vmsg79u0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
