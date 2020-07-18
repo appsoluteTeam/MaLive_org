@@ -24,12 +24,12 @@ public class Hot_CommunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.hot_community_fragment,container,false);
 
-        //커뮤니티에서 버튼을 눌렀을 때
+        //커뮤니티에서 더 많은 글 버튼을 눌렀을 때
         btn_text_more = (Button)view.findViewById(R.id.btn_more_text);
         btn_text_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).onClickButton(0);
+                ((HomeActivity)getActivity()).setFragment(50);
             }
         });
         return view;

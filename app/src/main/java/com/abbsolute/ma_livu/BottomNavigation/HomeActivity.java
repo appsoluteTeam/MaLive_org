@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
+import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
@@ -25,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentTransaction fragmentTransaction;
     private HomeFragment homeFragment;
     private Hot_CommunityFragment hotCommunityFragment;
+    private Commu_WriteFragment commu_writeFragment;
     private CommunityFragment communityFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
@@ -36,10 +38,13 @@ public class HomeActivity extends AppCompatActivity {
 
         //fragment
         homeFragment = new HomeFragment();
-        hotCommunityFragment = new Hot_CommunityFragment();
-        communityFragment = new CommunityFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
+
+        //커뮤니티 프래그먼트
+        hotCommunityFragment = new Hot_CommunityFragment();
+        communityFragment = new CommunityFragment();
+        commu_writeFragment = new Commu_WriteFragment();
 
         //bottom navigation 설정
         main_bottom =findViewById(R.id.main_bottom);
@@ -62,20 +67,21 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.bottom_alarm:
                         setFragment(3);
                         break;
+                    case R.id.btn_more_text:
+                        setFragment(50);
+                    case R.id. btn_commu_write:
+                        setFragment(51);
                 }
                 return true;
             }
         });
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
-
-
     }
 
-    // 홈프래그먼트 교체가 일어나는 함수
-    private void setFragment(int n){
+    // 프래그먼트 교체가 일어나는 함수
+    public void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-
         switch (n){
             case 0:
                 fragmentTransaction.replace(R.id.main_frame,homeFragment);
@@ -84,28 +90,27 @@ public class HomeActivity extends AppCompatActivity {
             case 1:
                 fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment);
                 fragmentTransaction.commit();
+
                 break;
             case 2:
                 fragmentTransaction.replace(R.id.main_frame,myPageFragment);
                 fragmentTransaction.commit();
+
                 break;
             case 3:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
                 break;
-        }
-    }
 
-    public void onClickButton(int n) {
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-
-        switch (n){
-            case 0:
+            // 핫 커뮤니티 프래그먼트에서 더많은글보기 눌렀을 때
+            case 50:
                 fragmentTransaction.replace(R.id.main_frame,communityFragment);
                 fragmentTransaction.commit();
                 break;
-
+            case 51:
+                fragmentTransaction.replace(R.id.main_frame,commu_writeFragment);
+                fragmentTransaction.commit();
+                break;
         }
     }
 }
