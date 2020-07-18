@@ -18,7 +18,7 @@ public class CommunityFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_community,container,false);
+        view = inflater.inflate(R.layout.community_fragment,container,false);
 
         return view;
     }

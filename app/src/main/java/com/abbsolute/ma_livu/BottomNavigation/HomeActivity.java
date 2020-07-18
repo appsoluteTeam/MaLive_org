@@ -2,6 +2,8 @@ package com.abbsolute.ma_livu.BottomNavigation;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
+import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.R;
@@ -21,6 +24,7 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private HomeFragment homeFragment;
+    private Hot_CommunityFragment hotCommunityFragment;
     private CommunityFragment communityFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
@@ -30,9 +34,17 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //fragment
+        homeFragment = new HomeFragment();
+        hotCommunityFragment = new Hot_CommunityFragment();
+        communityFragment = new CommunityFragment();
+        myPageFragment = new MyPageFragment();
+        alarmFragment = new AlarmFragment();
 
+        //bottom navigation 설정
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
+
         // 하단바를 눌렀을 때 프래그먼트가 변경되게 함
         main_bottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -54,14 +66,12 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
-        homeFragment = new HomeFragment();
-        communityFragment = new CommunityFragment();
-        myPageFragment = new MyPageFragment();
-        alarmFragment = new AlarmFragment();
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
+
+
     }
 
-    // 프래그먼트 교체가 일어나는 함수
+    // 홈프래그먼트 교체가 일어나는 함수
     private void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -72,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.main_frame,communityFragment);
+                fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment);
                 fragmentTransaction.commit();
                 break;
             case 2:
@@ -83,6 +93,19 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
                 break;
+        }
+    }
+
+    public void onClickButton(int n) {
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        switch (n){
+            case 0:
+                fragmentTransaction.replace(R.id.main_frame,communityFragment);
+                fragmentTransaction.commit();
+                break;
+
         }
     }
 }
