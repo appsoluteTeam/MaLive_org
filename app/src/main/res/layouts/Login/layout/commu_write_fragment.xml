@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Community.Commu_WriteFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <EditText
+        android:id="@+id/et_title"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="top"
+        android:inputType="textPersonName"
+        android:maxLength="100"
+        android:padding="15dp"
+        android:hint="제목"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginLeft="12dp"
+        android:textSize="30dp" />
+
+    <EditText
+        android:id="@+id/et_writer"
+        android:layout_width="380dp"
+        android:layout_height="70dp"
+        android:layout_margin="12dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="작성자"
+        android:inputType="textPersonName"
+        android:maxLength="100"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/et_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/yellow_edge"
+        android:gravity="top"
+        android:hint="내용을 입력해 주세요"
+        android:padding="15dp"
+        android:textColor="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/btn_commu_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        android:layout_margin="10dp"/>
+</LinearLayout>

@@ -4,7 +4,7 @@ public class FirebaseID {
 
     //파이어스토어 컬렉션 이름
     public static String user = "user";
-    public static String Community = "com/abbsolute/ma_livu/Community";
+    public static String Community = "Community";
     public static String documentID = "documentID";
 
     //파이어스토어 user컬렉션 필드 이름

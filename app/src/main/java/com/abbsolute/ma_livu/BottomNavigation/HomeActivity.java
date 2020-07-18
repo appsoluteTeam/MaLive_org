@@ -67,10 +67,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.bottom_alarm:
                         setFragment(3);
                         break;
-                    case R.id.btn_more_text:
-                        setFragment(50);
-                    case R.id. btn_commu_write:
-                        setFragment(51);
                 }
                 return true;
             }
@@ -110,6 +106,10 @@ public class HomeActivity extends AppCompatActivity {
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment);
                 fragmentTransaction.commit();
+                break;
+            case 52:
+                fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
+                finish();
                 break;
         }
     }
