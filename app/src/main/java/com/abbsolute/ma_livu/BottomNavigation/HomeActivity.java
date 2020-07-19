@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.R;
@@ -24,12 +26,15 @@ public class HomeActivity extends AppCompatActivity {
     private CommunityFragment communityFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
+    private GuestBookFragment guestBookFragment;
+    private GuestBookWriteFragment guestBookWriteFragment;
+
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
 
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
@@ -58,11 +63,14 @@ public class HomeActivity extends AppCompatActivity {
         communityFragment = new CommunityFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
+        guestBookFragment = new GuestBookFragment();
+        guestBookWriteFragment = new GuestBookWriteFragment();
+
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
     }
 
     // 프래그먼트 교체가 일어나는 함수
-    private void setFragment(int n){
+    public void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -83,6 +91,15 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
                 break;
+            case 4:
+                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
+                fragmentTransaction.commit();
+                break;
+            case 5:
+                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
+                fragmentTransaction.commit();
+                break;
+
         }
     }
 }
