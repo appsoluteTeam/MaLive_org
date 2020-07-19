@@ -80,36 +80,24 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (n){
             case 0:
-                fragmentTransaction.replace(R.id.main_frame,homeFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.main_frame,homeFragment).commit();
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment);
-                fragmentTransaction.commit();
-
+                fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.main_frame,myPageFragment);
-                fragmentTransaction.commit();
-
+                fragmentTransaction.replace(R.id.main_frame,myPageFragment).commit();
                 break;
             case 3:
-                fragmentTransaction.replace(R.id.main_frame,alarmFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
 
-            // 핫 커뮤니티 프래그먼트에서 더많은글보기 눌렀을 때
+            // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
-                fragmentTransaction.replace(R.id.main_frame,communityFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
                 break;
             case 51:
-                fragmentTransaction.replace(R.id.main_frame,commu_writeFragment);
-                fragmentTransaction.commit();
-                break;
-            case 52:
-                fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
-                finish();
+                fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
                 break;
         }
     }

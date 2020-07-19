@@ -54,7 +54,7 @@ public class Commu_WriteFragment extends Fragment {
                     firestore.collection(FirebaseID.Community)
                             .document(et_title.getText().toString()).set(data, SetOptions.merge()); // Community 라는 컬렉션에 title를 문서로 설정해서 저장
                 }
-                ((HomeActivity)getActivity()).setFragment(52);
+                ((HomeActivity)getActivity()).setFragment(50);
             }
         });
         return view;
