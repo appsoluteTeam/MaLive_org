@@ -11,7 +11,7 @@
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="5dp"
         android:background="@android:color/white"
         app:itemTextColor="#000000"
         app:labelVisibilityMode="labeled"
@@ -26,7 +26,7 @@
     <FrameLayout
         android:id="@+id/main_frame"
         android:layout_width="412dp"
-        android:layout_height="600dp"
+        android:layout_height="605dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
