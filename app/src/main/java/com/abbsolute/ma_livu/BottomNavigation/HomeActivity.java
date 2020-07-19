@@ -13,7 +13,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
+
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.R;
@@ -30,6 +34,10 @@ public class HomeActivity extends AppCompatActivity {
     private CommunityFragment communityFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
+    private GuestBookFragment guestBookFragment;
+    private GuestBookWriteFragment guestBookWriteFragment;
+
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
         communityFragment = new CommunityFragment();
         commu_writeFragment = new Commu_WriteFragment();
 
-        //bottom navigation 설정
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
 
@@ -71,6 +78,14 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        homeFragment = new HomeFragment();
+        communityFragment = new CommunityFragment();
+        myPageFragment = new MyPageFragment();
+        alarmFragment = new AlarmFragment();
+        guestBookFragment = new GuestBookFragment();
+        guestBookWriteFragment = new GuestBookWriteFragment();
+
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
     }
 
@@ -91,6 +106,16 @@ public class HomeActivity extends AppCompatActivity {
             case 3:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
+            
+            // 방명록 프래그먼트에서 버튼 눌렀을 
+            case 4:
+                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
+                fragmentTransaction.commit();
+                break;
+            case 5:
+                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
+                fragmentTransaction.commit();
+                break;
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
@@ -99,6 +124,8 @@ public class HomeActivity extends AppCompatActivity {
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
                 break;
+            
+
         }
     }
 }
