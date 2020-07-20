@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="좌우를 손가락으로 밀어서 삭제"
+        android:padding="3sp"
+        android:textSize="15sp">
+    </TextView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="#2E2E2E">
+    </View>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="플러스 버튼 눌러서 할일을 추가"
+        android:textSize="15sp"
+        android:padding="3sp">
+    </TextView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="#2E2E2E">
+    </View>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="좌측 체크박스를 체크하여 완료여부 확인"
+        android:textSize="15sp"
+        android:padding="3sp">
+    </TextView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="#2E2E2E">
+    </View>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="작성하기 화면에서 캘린더를 통한 디데이 설정"
+        android:textSize="15sp"
+        android:padding="3sp">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="3sp"
+        android:text="할일 클릭시 할일을 수정할 수 있음">
+    </TextView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="뒤로가기"
+        android:id="@+id/back">
+    </Button>
+</LinearLayout>

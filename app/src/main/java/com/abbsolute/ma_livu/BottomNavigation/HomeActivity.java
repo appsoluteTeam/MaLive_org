@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
+
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -62,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     // 프래그먼트 교체가 일어나는 함수
-    private void setFragment(int n){
+    public void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -83,6 +85,13 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
                 break;
+            //투두리스트 프래그먼트에서 버튼 눌렀을 때
+            case 100:
+                ToDoFragment toDoFragment=new ToDoFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFragment);
+                fragmentTransaction.commit();
+                break;
+
         }
     }
 }
