@@ -19,10 +19,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertData;
@@ -30,6 +40,8 @@ import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertFixData;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
 public class ToDoWriteFragment2 extends Fragment {
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     ToDoCategoryAdapter categoryAdapter;
     ToDoFixListAdapter toDoFixListAdapter;
     ArrayList<ToDoFixInfo> toDoFixInfos=new ArrayList<>();
@@ -175,11 +187,23 @@ public class ToDoWriteFragment2 extends Fragment {
         String dDay=dates[2];
         date=dYear+"년"+dMonth+"월"+dDay+"일";
         String dDate=date;
-        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
+        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);
-
-
-        //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
+        //파이어베이스에 FixTodo데이터 올리기
+        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document("FixTodo");
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("contents",toDoInfo.content);
+                    data.put("detailContents",toDoInfo.detailContent);
+                    data.put("dates",toDoInfo.dates);
+                    data.put("dDates", toDoInfo.dDay);
+                    firestore.collection(FirebaseID.ToDoLists).document("FixTodo").set(data, SetOptions.merge());
+                }
+            }
+        });
     }
 
 

@@ -21,10 +21,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertData;
@@ -32,6 +42,9 @@ import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertData;
 
 public class ToDoWriteFragment extends Fragment {
     // newInstance constructor for creating fragment with arguments
+    //파이버베이스 인증 변수
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public static ToDoWriteFragment newInstance() {
         ToDoWriteFragment fragment = new ToDoWriteFragment();
 
@@ -198,23 +211,37 @@ public class ToDoWriteFragment extends Fragment {
     public void addData(){
         SharedPreferences pf=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String data=pf.getString("toDo","");
-        String detailData=write.getText().toString();
+        final String detailData=write.getText().toString();
         long systemTime = System.currentTimeMillis();
         SimpleDateFormat formatter= null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         }
-        String date=formatter.format(systemTime);
+        final String date=formatter.format(systemTime);
         String dDate=date;
         if(year>=2020&&month>=1&&day>=1)
         {
             String months="0"+month;
             dDate=year+"년"+months+"월"+day+"일";
         }
-        ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
+        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
         insertData("todoInfo",toDoInfo);
-
-        //파이어베이스에 카테고리 클릭 할 때 마다 특정 점수 올라가는 코드 작성
+        //파이어베이스에 todo데이터 올리기
+        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document("Todo");
+        final String finalDDate = dDate;
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("contents",toDoInfo.content);
+                    data.put("detailContents",toDoInfo.detailContent);
+                    data.put("dates",toDoInfo.dates);
+                    data.put("dDates", toDoInfo.dDay);
+                    firestore.collection(FirebaseID.ToDoLists).document("Todo").set(data, SetOptions.merge());
+                }
+            }
+        });
 
     }
     final static int req1=1;
