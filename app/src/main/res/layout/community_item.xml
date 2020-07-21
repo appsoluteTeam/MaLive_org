@@ -5,11 +5,8 @@
     android:orientation="vertical">
 
     <TextView
-<<<<<<< HEAD
+
         android:id="@+id/commu_title"
-=======
-        android:id="@+id/what_eat_title"
->>>>>>> cheer-up-ToDoList2
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -20,11 +17,7 @@
         android:textSize="25dp" />
 
     <TextView
-<<<<<<< HEAD
         android:id="@+id/commu_writer"
-=======
-        android:id="@+id/what_eat_writer"
->>>>>>> cheer-up-ToDoList2
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -34,11 +27,7 @@
         android:textSize="10dp" />
 
     <TextView
-<<<<<<< HEAD
         android:id="@+id/commu_content"
-=======
-        android:id="@+id/what_eat_content"
->>>>>>> cheer-up-ToDoList2
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
