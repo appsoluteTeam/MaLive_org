@@ -19,6 +19,7 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private AlarmFragment alarmFragment;
     private GuestBookFragment guestBookFragment;
     private GuestBookWriteFragment guestBookWriteFragment;
+    private ToDoFragment toDoFragment;
 
     private int count;
 
@@ -85,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         alarmFragment = new AlarmFragment();
         guestBookFragment = new GuestBookFragment();
         guestBookWriteFragment = new GuestBookWriteFragment();
+        toDoFragment = new ToDoFragment();
 
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
     }
@@ -107,7 +110,7 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
             
-            // 방명록 프래그먼트에서 버튼 눌렀을 
+            // 방명록 프래그먼트에서 버튼 눌렀을 때
             case 4:
                 fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
@@ -124,7 +127,11 @@ public class HomeActivity extends AppCompatActivity {
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
                 break;
-            
+
+            // 투두리스트 프래그먼트에서 버튼 눌렀을 때
+            case 100:
+                fragmentTransaction.replace(R.id.main_frame, toDoFragment).commit();
+                break;
 
         }
     }
