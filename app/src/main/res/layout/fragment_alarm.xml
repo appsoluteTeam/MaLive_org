@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:text="알람프래그먼트"
         android:textColor="#000000"
-        android:textSize="20sp">
-    </TextView>
+        android:textSize="20sp"></TextView>
 
 </LinearLayout>
