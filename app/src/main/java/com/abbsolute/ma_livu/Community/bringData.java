@@ -7,13 +7,13 @@ public class bringData {
     private String documentID;
     private String title;
     private String content;
-    private String writer;
+    private String category;
 
-    public bringData(String documentID, String title, String writer, String content) {
+    public bringData(String documentID, String title, String category, String content) {
         this.documentID = documentID;
         this.title = title;
         this.content = content;
-        this.writer = writer;
+        this.category =category;
     }
 
     public String getTitle() {
@@ -40,13 +40,12 @@ public class bringData {
         this.documentID = documentID;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getCategory() {
+        return category;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setCategory(String category) {
+        this.category = category;
     }
-
 
 }

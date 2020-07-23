@@ -2,38 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
+    android:background="#F6F6F6"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/commu_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="5dp"
-        android:text="글 제목"
-        android:textSize="25dp" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="3dp"
+        android:background="@drawable/radious_border"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:id="@+id/commu_writer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:padding="5dp"
-        android:text="작성자"
-        android:textSize="10dp" />
+        <TextView
+            android:id="@+id/commu_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:text="뭐 먹지?"
+            android:textSize="10dp" />
 
-    <TextView
-        android:id="@+id/commu_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:padding="5dp"
-        android:text="내용"
-        android:textSize="20dp" />
+        <TextView
+            android:id="@+id/commu_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="5dp"
+            android:text="글 제목"
+            android:textSize="25dp" />
+    </LinearLayout>
 
 </LinearLayout>

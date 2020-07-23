@@ -36,7 +36,7 @@ public class CommunityFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     //리사이클러뷰
-    private RecyclerView recycler_what_eat;
+    private RecyclerView recycler_community;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
@@ -93,40 +93,43 @@ public class CommunityFragment extends Fragment {
 //                // 어떻게 하지 프래그먼트가 선택 됐을 때
 //                break;
 //        }
-//        arrayList = new ArrayList<>();
-//        firestore.collection("Community")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if(task.isSuccessful()){
-//                            if(task.getResult() != null){
-//                                arrayList.clear();
-//                                for(DocumentSnapshot snapshot : task.getResult()){
-//                                    Map<String,Object> shot = snapshot.getData();
-//                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-//                                    String title = String.valueOf(shot.get(FirebaseID.title));
-//                                    String content =String.valueOf(shot.get(FirebaseID.content));
-//                                    bringData data = new bringData(documentID,title,category,content);
-//                                    arrayList.add(data);
-//                                }
-//                                adapter.notifyDataSetChanged();
-//                            }
-//                        }
-//                    }
-//                });
-//
-//        // 리사이클러뷰에 가져온 정보 넣기
-//        recycler_what_eat = (RecyclerView)view.findViewById(R.id.recycler_community);
-//        recycler_what_eat.setHasFixedSize(true);
-//
-//        adapter = new CommunityAdapter(arrayList);
-//        layoutManager = new LinearLayoutManager(getActivity());
-//        recycler_what_eat.setLayoutManager(layoutManager);
-//        recycler_what_eat.scrollToPosition(0);
-//        recycler_what_eat.setItemAnimator(new DefaultItemAnimator());
-//        recycler_what_eat.setAdapter(adapter);
-//    }
 
+        //어레이리스트에 파이어베이스 값 가져오기
+        arrayList = new ArrayList<>();
+        firestore.collection("Community")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult() != null){
+                                arrayList.clear();
+                                for(DocumentSnapshot snapshot : task.getResult()){
+                                    Map<String,Object> shot = snapshot.getData();
+                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                    String title = String.valueOf(shot.get(FirebaseID.title));
+                                    String content =String.valueOf(shot.get(FirebaseID.content));
+                                    String category = String.valueOf(shot.get(FirebaseID.category));
+                                    bringData data = new bringData(documentID,title,category,content);
+                                    arrayList.add(data);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                });
+
+        // 리사이클러뷰에 가져온 정보 넣기
+        recycler_community = (RecyclerView)view.findViewById(R.id.recycler_community);
+        recycler_community.setHasFixedSize(true);
+
+        adapter = new CommunityAdapter(arrayList);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recycler_community.setLayoutManager(layoutManager);
+        recycler_community.scrollToPosition(0);
+        recycler_community.setItemAnimator(new DefaultItemAnimator());
+        recycler_community.setAdapter(adapter);
     }
+
+
 }
