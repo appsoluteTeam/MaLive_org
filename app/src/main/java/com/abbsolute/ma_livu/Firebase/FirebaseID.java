@@ -16,7 +16,7 @@ public class FirebaseID {
 
     //파이어스토어 Community 컬렉션 필드 이름
     public static String title ="title";
-    public static String writer ="writer";
+    public static String category ="category";
     public static String content ="content";
 
     //파이어스토어 GuestBook 컬렉션 필드 이름

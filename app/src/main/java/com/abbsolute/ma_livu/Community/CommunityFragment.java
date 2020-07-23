@@ -93,41 +93,40 @@ public class CommunityFragment extends Fragment {
 //                // 어떻게 하지 프래그먼트가 선택 됐을 때
 //                break;
 //        }
-        arrayList = new ArrayList<>();
-        firestore.collection("Community")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            if(task.getResult() != null){
-                                arrayList.clear();
-                                for(DocumentSnapshot snapshot : task.getResult()){
-                                    Map<String,Object> shot = snapshot.getData();
-                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                    String title = String.valueOf(shot.get(FirebaseID.title));
-                                    String writer = String.valueOf(shot.get(FirebaseID.writer));
-                                    String content =String.valueOf(shot.get(FirebaseID.content));
-                                    bringData data = new bringData(documentID,title,writer,content);
-                                    arrayList.add(data);
-                                }
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
+//        arrayList = new ArrayList<>();
+//        firestore.collection("Community")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if(task.isSuccessful()){
+//                            if(task.getResult() != null){
+//                                arrayList.clear();
+//                                for(DocumentSnapshot snapshot : task.getResult()){
+//                                    Map<String,Object> shot = snapshot.getData();
+//                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+//                                    String title = String.valueOf(shot.get(FirebaseID.title));
+//                                    String content =String.valueOf(shot.get(FirebaseID.content));
+//                                    bringData data = new bringData(documentID,title,category,content);
+//                                    arrayList.add(data);
+//                                }
+//                                adapter.notifyDataSetChanged();
+//                            }
+//                        }
+//                    }
+//                });
+//
+//        // 리사이클러뷰에 가져온 정보 넣기
+//        recycler_what_eat = (RecyclerView)view.findViewById(R.id.recycler_community);
+//        recycler_what_eat.setHasFixedSize(true);
+//
+//        adapter = new CommunityAdapter(arrayList);
+//        layoutManager = new LinearLayoutManager(getActivity());
+//        recycler_what_eat.setLayoutManager(layoutManager);
+//        recycler_what_eat.scrollToPosition(0);
+//        recycler_what_eat.setItemAnimator(new DefaultItemAnimator());
+//        recycler_what_eat.setAdapter(adapter);
+//    }
 
-        // 리사이클러뷰에 가져온 정보 넣기
-        recycler_what_eat = (RecyclerView)view.findViewById(R.id.recycler_community);
-        recycler_what_eat.setHasFixedSize(true);
-
-        adapter = new CommunityAdapter(arrayList);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recycler_what_eat.setLayoutManager(layoutManager);
-        recycler_what_eat.scrollToPosition(0);
-        recycler_what_eat.setItemAnimator(new DefaultItemAnimator());
-        recycler_what_eat.setAdapter(adapter);
     }
-
-
 }
