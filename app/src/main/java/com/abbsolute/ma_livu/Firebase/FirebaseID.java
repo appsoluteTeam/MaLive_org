@@ -7,6 +7,7 @@ public class FirebaseID {
     public static String Community = "Community";
     public static String documentID = "documentID";
 
+
     //파이어스토어 user컬렉션 필드 이름
     public static String Nickname ="nickname";
     public static String Email = "email";

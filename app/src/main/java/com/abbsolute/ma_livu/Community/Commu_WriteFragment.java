@@ -42,9 +42,7 @@ public class Commu_WriteFragment extends Fragment {
     private EditText et_title;
     private EditText et_content;
 
-
     private Button btn_commu_upload;
-
 
     @Nullable
     @Override
@@ -62,26 +60,28 @@ public class Commu_WriteFragment extends Fragment {
         category_eat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                category ="뭐 먹지?";
+                category ="what_eat";
                 category_eat.setBackgroundResource(R.drawable.categort_select);
                 category_do.setBackgroundResource(R.drawable.categort_basic);
                 category_how.setBackgroundResource(R.drawable.categort_basic);
+
             }
         });
         category_do.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                category ="뭐 하지?";
+                category ="what_do";
                 category_do.setBackgroundResource(R.drawable.categort_select);
                 category_eat.setBackgroundResource(R.drawable.categort_basic);
                 category_how.setBackgroundResource(R.drawable.categort_basic);
+
             }
         });
 
         category_how.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                category ="어떻게 하지?";
+                category ="how_do";
                 category_how.setBackgroundResource(R.drawable.categort_select);
                 category_do.setBackgroundResource(R.drawable.categort_basic);
                 category_eat.setBackgroundResource(R.drawable.categort_basic);
@@ -99,8 +99,9 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.category,category);
                     data.put(FirebaseID.title,et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content,et_content.getText().toString());
-                    firestore.collection(FirebaseID.Community)
-                            .document(et_title.getText().toString()).set(data, SetOptions.merge()); // Community 라는 컬렉션에 title를 문서로 설정해서 저장
+                    firestore.collection(FirebaseID.Community).document(category)
+                            .collection("sub_Community").document(firebaseAuth.getCurrentUser().getUid())
+                            .set(data, SetOptions.merge());
                 }
                 ((HomeActivity)getActivity()).setFragment(50);
             }

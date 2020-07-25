@@ -46,25 +46,91 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.community_fragment,container,false);
 
-        // 쓸꺼임 무조건 쓸꺼임... 진ㅉ ㅏ쓸꺼임
-//        commu_navigation = view.findViewById(R.id.commu_navigation);
-//        commu_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()){
-//                    case R.id.what_eat:
-//                        callRecycler();
-//                        break;
-//                    case R.id.what_do:
-//                        //callRecycler();
-//                        break;
-//                    case R.id.how_do:
-//                        //callRecycler();
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
+        arrayList = new ArrayList<>();
+        commu_navigation = view.findViewById(R.id.commu_navigation);
+        commu_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    //뭐 먹지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
+                    case R.id.what_eat:
+                        firestore.collection("Community").document("what_eat").collection("sub_Community")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            if(task.getResult() != null){
+                                                arrayList.clear();
+                                                for(DocumentSnapshot snapshot : task.getResult()){
+                                                    Map<String,Object> shot = snapshot.getData();
+                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                                    String title = String.valueOf(shot.get(FirebaseID.title));
+                                                    String content =String.valueOf(shot.get(FirebaseID.content));
+                                                    String category = String.valueOf(shot.get(FirebaseID.category));
+                                                    bringData data = new bringData(documentID,title,category,content);
+                                                    arrayList.add(data);
+                                                }
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+                                });
+                        break;
+                    //뭐 하지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
+                    case R.id.what_do:
+                        firestore.collection("Community").document("what_do").collection("sub_Community")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            if(task.getResult() != null){
+                                                arrayList.clear();
+                                                for(DocumentSnapshot snapshot : task.getResult()){
+                                                    Map<String,Object> shot = snapshot.getData();
+                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                                    String title = String.valueOf(shot.get(FirebaseID.title));
+                                                    String content =String.valueOf(shot.get(FirebaseID.content));
+                                                    String category = String.valueOf(shot.get(FirebaseID.category));
+                                                    bringData data = new bringData(documentID,title,category,content);
+                                                    arrayList.add(data);
+                                                }
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+                                });
+                        break;
+                    //어떻게 하지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
+                    case R.id.how_do:
+                        firestore.collection("Community").document("how_do").collection("sub_Community")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            if(task.getResult() != null){
+                                                arrayList.clear();
+                                                for(DocumentSnapshot snapshot : task.getResult()){
+                                                    Map<String,Object> shot = snapshot.getData();
+                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                                    String title = String.valueOf(shot.get(FirebaseID.title));
+                                                    String content =String.valueOf(shot.get(FirebaseID.content));
+                                                    String category = String.valueOf(shot.get(FirebaseID.category));
+                                                    bringData data = new bringData(documentID,title,category,content);
+                                                    arrayList.add(data);
+                                                }
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+                                });
+                        break;
+                }
+                return true;
+            }
+        });
 
         //커뮤니티에서 글 작성하기 버튼을 눌렀을 때
         btn_commu_write =(Button)view.findViewById(R.id.btn_commu_write);
@@ -79,55 +145,21 @@ public class CommunityFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-//       쓸꺼임 진짜 쓸꺼임 쓸꺼임~~~
-//        switch (n) {
-//            case 0:
-//                // 뭐먹지 프래그먼트가 선택 됐을 때
-//                // 파이어스토어에서 데이터 가져오기
-//                break;
-//            case 1:
-//                // 뭐하지 프래그먼트가 선택 됐을 때
-//
-//                break;
-//            case 2:
-//                // 어떻게 하지 프래그먼트가 선택 됐을 때
-//                break;
-//        }
-
-        //어레이리스트에 파이어베이스 값 가져오기
-        arrayList = new ArrayList<>();
-        firestore.collection("Community")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            if(task.getResult() != null){
-                                arrayList.clear();
-                                for(DocumentSnapshot snapshot : task.getResult()){
-                                    Map<String,Object> shot = snapshot.getData();
-                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                    String title = String.valueOf(shot.get(FirebaseID.title));
-                                    String content =String.valueOf(shot.get(FirebaseID.content));
-                                    String category = String.valueOf(shot.get(FirebaseID.category));
-                                    bringData data = new bringData(documentID,title,category,content);
-                                    arrayList.add(data);
-                                }
-                                adapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
 
         // 리사이클러뷰에 가져온 정보 넣기
         recycler_community = (RecyclerView)view.findViewById(R.id.recycler_community);
         recycler_community.setHasFixedSize(true);
-
         adapter = new CommunityAdapter(arrayList);
         layoutManager = new LinearLayoutManager(getActivity());
-        recycler_community.setLayoutManager(layoutManager);
+
+        // 리사이클러뷰 역순 출력
+        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
+
         recycler_community.scrollToPosition(0);
         recycler_community.setItemAnimator(new DefaultItemAnimator());
+
+        recycler_community.setLayoutManager(layoutManager);
         recycler_community.setAdapter(adapter);
     }
 
