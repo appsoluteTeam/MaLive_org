@@ -54,78 +54,15 @@ public class CommunityFragment extends Fragment {
                 switch (item.getItemId()){
                     //뭐 먹지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
                     case R.id.what_eat:
-                        firestore.collection("Community").document("what_eat").collection("sub_Community")
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            if(task.getResult() != null){
-                                                arrayList.clear();
-                                                for(DocumentSnapshot snapshot : task.getResult()){
-                                                    Map<String,Object> shot = snapshot.getData();
-                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                                    String title = String.valueOf(shot.get(FirebaseID.title));
-                                                    String content =String.valueOf(shot.get(FirebaseID.content));
-                                                    String category = String.valueOf(shot.get(FirebaseID.category));
-                                                    bringData data = new bringData(documentID,title,category,content);
-                                                    arrayList.add(data);
-                                                }
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    }
-                                });
+                        callRecycler(0);
                         break;
                     //뭐 하지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
                     case R.id.what_do:
-                        firestore.collection("Community").document("what_do").collection("sub_Community")
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            if(task.getResult() != null){
-                                                arrayList.clear();
-                                                for(DocumentSnapshot snapshot : task.getResult()){
-                                                    Map<String,Object> shot = snapshot.getData();
-                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                                    String title = String.valueOf(shot.get(FirebaseID.title));
-                                                    String content =String.valueOf(shot.get(FirebaseID.content));
-                                                    String category = String.valueOf(shot.get(FirebaseID.category));
-                                                    bringData data = new bringData(documentID,title,category,content);
-                                                    arrayList.add(data);
-                                                }
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    }
-                                });
+                        callRecycler(1);
                         break;
                     //어떻게 하지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
                     case R.id.how_do:
-                        firestore.collection("Community").document("how_do").collection("sub_Community")
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            if(task.getResult() != null){
-                                                arrayList.clear();
-                                                for(DocumentSnapshot snapshot : task.getResult()){
-                                                    Map<String,Object> shot = snapshot.getData();
-                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                                    String title = String.valueOf(shot.get(FirebaseID.title));
-                                                    String content =String.valueOf(shot.get(FirebaseID.content));
-                                                    String category = String.valueOf(shot.get(FirebaseID.category));
-                                                    bringData data = new bringData(documentID,title,category,content);
-                                                    arrayList.add(data);
-                                                }
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        }
-                                    }
-                                });
+                        callRecycler(2);
                         break;
                 }
                 return true;
@@ -146,6 +83,7 @@ public class CommunityFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        callRecycler(0);
         // 리사이클러뷰에 가져온 정보 넣기
         recycler_community = (RecyclerView)view.findViewById(R.id.recycler_community);
         recycler_community.setHasFixedSize(true);
@@ -163,5 +101,81 @@ public class CommunityFragment extends Fragment {
         recycler_community.setAdapter(adapter);
     }
 
+    public void callRecycler(int n){
+        switch (n){
+            case 0:
+                firestore.collection("Community").document("what_eat").collection("sub_Community")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    if(task.getResult() != null){
+                                        arrayList.clear();
+                                        for(DocumentSnapshot snapshot : task.getResult()){
+                                            Map<String,Object> shot = snapshot.getData();
+                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                            String title = String.valueOf(shot.get(FirebaseID.title));
+                                            String content =String.valueOf(shot.get(FirebaseID.content));
+                                            String category = String.valueOf(shot.get(FirebaseID.category));
+                                            bringData data = new bringData(documentID,title,category,content);
+                                            arrayList.add(data);
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }
+                        });
+                break;
+            case 1:
+                firestore.collection("Community").document("what_do").collection("sub_Community")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    if(task.getResult() != null){
+                                        arrayList.clear();
+                                        for(DocumentSnapshot snapshot : task.getResult()){
+                                            Map<String,Object> shot = snapshot.getData();
+                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                            String title = String.valueOf(shot.get(FirebaseID.title));
+                                            String content =String.valueOf(shot.get(FirebaseID.content));
+                                            String category = String.valueOf(shot.get(FirebaseID.category));
+                                            bringData data = new bringData(documentID,title,category,content);
+                                            arrayList.add(data);
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }
+                        });
+                break;
+            case 2:
+                firestore.collection("Community").document("how_do").collection("sub_Community")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    if(task.getResult() != null){
+                                        arrayList.clear();
+                                        for(DocumentSnapshot snapshot : task.getResult()){
+                                            Map<String,Object> shot = snapshot.getData();
+                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                            String title = String.valueOf(shot.get(FirebaseID.title));
+                                            String content =String.valueOf(shot.get(FirebaseID.content));
+                                            String category = String.valueOf(shot.get(FirebaseID.category));
+                                            bringData data = new bringData(documentID,title,category,content);
+                                            arrayList.add(data);
+                                        }
+                                        adapter.notifyDataSetChanged();
+                                    }
+                                }
+                            }
+                        });
+                break;
+        }
+    }
 
 }

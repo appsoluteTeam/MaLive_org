@@ -77,7 +77,6 @@ public class Commu_WriteFragment extends Fragment {
 
             }
         });
-
         category_how.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +86,7 @@ public class Commu_WriteFragment extends Fragment {
                 category_eat.setBackgroundResource(R.drawable.categort_basic);
             }
         });
+
 
         //저장하기 버튼을 눌렀을 때 파이어스토어로 저장
         btn_commu_upload = view.findViewById(R.id.btn_commu_upload);
@@ -99,8 +99,9 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.category,category);
                     data.put(FirebaseID.title,et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content,et_content.getText().toString());
+                    // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
-                            .collection("sub_Community").document(firebaseAuth.getCurrentUser().getUid())
+                            .collection("sub_Community").document(et_title.getText().toString())
                             .set(data, SetOptions.merge());
                 }
                 ((HomeActivity)getActivity()).setFragment(50);
