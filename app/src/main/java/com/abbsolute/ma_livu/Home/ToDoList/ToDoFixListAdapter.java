@@ -1,6 +1,8 @@
 package com.abbsolute.ma_livu.Home.ToDoList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 
 public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.ViewHolder> {
     static ArrayList<ToDoFixInfo> arrayList=new ArrayList<>();
-    Context context;
+    static Context context;
     static String text;
     static String fixDate;
     private static FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -39,6 +41,11 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
                     if(flag==false)
                     {
                         linearLayout.setBackgroundColor(Color.GRAY);
+                        SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pref.edit();
+                        String upDateText=fixToDoTextView.getText().toString();
+                        editor.putString("upDateToDo",upDateText);
+                        editor.commit();
                         flag=true;
                     }else if(flag==true) {
                         linearLayout.setBackgroundColor(Color.WHITE);

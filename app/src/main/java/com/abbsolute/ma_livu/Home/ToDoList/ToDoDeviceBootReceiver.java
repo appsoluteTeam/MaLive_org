@@ -38,12 +38,10 @@ public class ToDoDeviceBootReceiver extends BroadcastReceiver {
                 if (current_calendar.after(nextNotifyTime)) {
                     nextNotifyTime.add(Calendar.DATE, 1);
                 }
-
        /*         Date currentDateTime = nextNotifyTime.getTime();
                 String date_text = new SimpleDateFormat("yyyy년 MM월 dd일 EE요일 a hh시 mm분 ", Locale.getDefault()).format(currentDateTime);
                 Toast.makeText(context.getApplicationContext(),"[재부팅후] 다음 알람은 " + date_text + "으로 알람이 설정되었습니다!", Toast.LENGTH_SHORT).show();
         */
-
                 if (manager != null) {
                     manager.set(AlarmManager.RTC_WAKEUP, nextNotifyTime.getTimeInMillis(),pendingIntent);
                 }

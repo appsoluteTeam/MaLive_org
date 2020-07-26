@@ -83,7 +83,14 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
             println("데이터베이시를 오픈하세요!");
         }
     }
-
+    public static void updateFixData(String tableName,ToDoFixInfo toDoFixInfo,String upDateContents){
+        if(database!=null){
+            String sql="update "+ tableName +" set todo='"+toDoFixInfo.getFixToDo()+"', period='"+
+                    toDoFixInfo.getFixPeriod()+"'"+
+                    "where todo='"+upDateContents+"';";
+            database.execSQL(sql);
+        }
+    }
     public static void updateData(Context context, String tableName, ToDoInfo toDoInfo, String contents){
         DatabaseHelper helper = new DatabaseHelper(context, "todo.db", null, 16);
         database = helper.getWritableDatabase();

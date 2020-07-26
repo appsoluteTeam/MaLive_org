@@ -19,6 +19,7 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
@@ -43,6 +44,8 @@ public class HomeActivity extends AppCompatActivity {
     private ToDoFragment toDoFragment;
     //투두 작성 메인 화면
     private ToDoWriteMainFragment toDoWriteMainFragment;
+    //고정리스트 작성 화면
+    private ToDoFixModifyingFragment toDoFixModifyingFragment;
     private int count;
 
     @Override
@@ -95,7 +98,8 @@ public class HomeActivity extends AppCompatActivity {
         toDoFragment=new ToDoFragment();
         //투두 작성 메인 화면
         toDoWriteMainFragment=new ToDoWriteMainFragment();
-
+        //고정리스트 수정 화면
+        toDoFixModifyingFragment=new ToDoFixModifyingFragment();
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
     }
 
@@ -142,7 +146,10 @@ public class HomeActivity extends AppCompatActivity {
             case 101:
                 fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment).commit();
                 break;
-
+            //고정리스트
+            case 102:
+                fragmentTransaction.replace(R.id.main_frame,toDoFixModifyingFragment).commit();
+                break;
         }
     }
 }
