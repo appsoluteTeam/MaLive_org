@@ -110,7 +110,30 @@ public class CommunityFragment extends Fragment {
 
         recycler_community.setLayoutManager(layoutManager);
         recycler_community.setAdapter(adapter);
+
+        // 리사이클러뷰 클릭 이벤트
+        adapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                bringData item = adapter.getItem(position);
+
+                // CommunityPostsFragment로 데이터 넘기기
+                Bundle bundle = new Bundle();
+                bundle.putString("Title", item.getTitle());
+                bundle.putString("Content", item.getContent());
+                bundle.putString("Date", item.getDate());
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
+                communityPostsFragment.setArguments(bundle);
+
+                // 버튼 누르면 화면 전환
+                transaction.replace(R.id.main_frame, communityPostsFragment);
+                transaction.commit();
+            }
+        });
     }
+
 
     public void callRecycler(int n){
         switch (n){
@@ -196,28 +219,5 @@ public class CommunityFragment extends Fragment {
         }
     }
 
-        // 리사이클러뷰 클릭 이벤트
-        adapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                bringData item = adapter.getItem(position);
-
-                // CommunityPostsFragment로 데이터 넘기기
-                Bundle bundle = new Bundle();
-                bundle.putString("Title", item.getTitle());
-                bundle.putString("Writer", item.getWriter());
-                bundle.putString("Content", item.getContent());
-                bundle.putString("Date", item.getDate());
-
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
-                communityPostsFragment.setArguments(bundle);
-
-                // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityPostsFragment);
-                transaction.commit();
-            }
-        });
-    }
 }
 

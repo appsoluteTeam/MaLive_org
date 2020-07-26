@@ -77,8 +77,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
                     }
                 }
             });
-            this.what_eat_writer = itemView.findViewById(R.id.commu_writer);
-            this.what_eat_content = itemView.findViewById(R.id.commu_content);
+
             this.community_category = itemView.findViewById(R.id.commu_category);
             this.community_title = itemView.findViewById(R.id.commu_title);
 
