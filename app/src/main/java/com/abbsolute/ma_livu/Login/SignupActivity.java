@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,6 +39,9 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseUser user;
+
+    //MyPage title fragment
+    private TitleFragment titleFragment;
 
     //
     private EditText email_sign;
@@ -69,6 +73,7 @@ public class SignupActivity extends AppCompatActivity {
         btn_next1 =(Button) findViewById(R.id.btn_next1);
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
         tv_top=(TextView)findViewById(R.id.tv_top);
+        titleFragment = new TitleFragment();
 
 
         //다음 버튼을 눌렀을 때
@@ -194,6 +199,10 @@ public class SignupActivity extends AppCompatActivity {
                             // 회원가입 성공
                             Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
                             intent.putExtra("email",email);
+
+                            //HomeActivity로 email 전달? 아니면 아예 titleFragment로 전달
+
+
                             startActivity(intent);
                         } else {
                             // 회원가입 실패
