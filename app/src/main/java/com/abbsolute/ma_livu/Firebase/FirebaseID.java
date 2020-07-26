@@ -27,4 +27,20 @@ public class FirebaseID {
     public static String date = "date";
     public static String comment = "comment";
     public static String icon = "icon";
+
+    //파이어스토어 MyPage 컬렉션 필드 이름
+    public static String myPage = "myPage";
+    public static String id = "id";
+    public static String isLocked = "isLocked";
+    public static String TODO = "TODO";
+    public static String clean = "clean";
+    public static String dish = "dish";
+    public static String trash = "trash";
+    public static String wash = "wash";
+    public static String attendance = "attendance";
+    public static String room = "room";
+    public static String today = "today";
+    public static String reptitle = "reptitle";
+    public static String category = "category";
+    public static String index = "index";
 }
