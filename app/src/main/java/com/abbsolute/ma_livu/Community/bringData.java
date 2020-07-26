@@ -8,12 +8,14 @@ public class bringData {
     private String title;
     private String content;
     private String writer;
+    private String date;
 
-    public bringData(String documentID, String title, String writer, String content) {
+    public bringData(String documentID, String title, String writer, String content, String date) {
         this.documentID = documentID;
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.date = date;
     }
 
     public String getTitle() {
@@ -48,5 +50,11 @@ public class bringData {
         this.writer = writer;
     }
 
+    public String getDate() {
+        return date;
+    }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
 }

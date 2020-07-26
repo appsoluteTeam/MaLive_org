@@ -14,6 +14,7 @@ import com.abbsolute.ma_livu.Alarm.AlarmFragment;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
 
+import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
@@ -32,12 +33,12 @@ public class HomeActivity extends AppCompatActivity {
     private Hot_CommunityFragment hotCommunityFragment;
     private Commu_WriteFragment commu_writeFragment;
     private CommunityFragment communityFragment;
+    private CommunityPostsFragment communityPostsFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
     private GuestBookFragment guestBookFragment;
     private GuestBookWriteFragment guestBookWriteFragment;
 
-    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         hotCommunityFragment = new Hot_CommunityFragment();
         communityFragment = new CommunityFragment();
         commu_writeFragment = new Commu_WriteFragment();
+        communityPostsFragment = new CommunityPostsFragment();
 
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
@@ -123,6 +125,9 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
+                break;
+            case 52:
+                fragmentTransaction.replace(R.id.main_frame,communityPostsFragment).commit();
                 break;
             
 

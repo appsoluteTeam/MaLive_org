@@ -18,6 +18,7 @@ public class FirebaseID {
     public static String title ="title";
     public static String writer ="writer";
     public static String content ="content";
+    public static String commu_date ="commu_date";
 
     //파이어스토어 GuestBook 컬렉션 필드 이름
     public static String GuestBook = "GuestBook";
