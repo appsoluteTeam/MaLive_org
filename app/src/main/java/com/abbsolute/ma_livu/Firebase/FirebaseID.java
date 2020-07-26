@@ -30,6 +30,12 @@ public class FirebaseID {
     public static String comment = "comment";
     public static String icon = "icon";
 
+    //파이어스토어 ToDoList 컬렉션 필드 이름
+    public static String ToDoLists="ToDoList";
+    public static String cleaning="cleaning";
+    public static String laundry="laundry";
+    public static String ToDoTrash="trash";
+
     //파이어스토어 MyPage 컬렉션 필드 이름
     public static String myPage = "myPage";
     public static String id = "id";
@@ -45,4 +51,5 @@ public class FirebaseID {
     public static String reptitle = "reptitle";
     public static String titleCategory = "category";
     public static String index = "index";
+
 }
