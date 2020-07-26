@@ -161,11 +161,18 @@ public class ToDoFixWriteFragment extends Fragment {
         ///fixToDoList 수정, 삭제 변수 정의
         modifying=(TextView)view.findViewById(R.id.fix_todo_modify);
         removing=(TextView)view.findViewById(R.id.fix_todo_remove);
-        //todo: fixToDoList 수정 기능 정의
+        // fixToDoList 수정 기능 정의
         modifying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeActivity)getActivity()).setFragment(102);//ToDoFixModifyingFragment
+            }
+        });
+        // 고정리스트 삭제 버튼 정의 및 클릭시 이벤트 처리
+        removing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         return view;
