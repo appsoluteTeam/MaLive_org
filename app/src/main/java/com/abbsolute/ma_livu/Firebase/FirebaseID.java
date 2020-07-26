@@ -43,6 +43,6 @@ public class FirebaseID {
     public static String room = "room";
     public static String today = "today";
     public static String reptitle = "reptitle";
-    public static String category = "category";
+    public static String titleCategory = "category";
     public static String index = "index";
 }
