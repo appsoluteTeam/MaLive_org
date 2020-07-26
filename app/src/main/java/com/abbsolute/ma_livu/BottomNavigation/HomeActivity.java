@@ -4,13 +4,23 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
+import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
+
+import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
+import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.EmailListener;
@@ -26,22 +36,44 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private HomeFragment homeFragment;
+    private Hot_CommunityFragment hotCommunityFragment;
+    private Commu_WriteFragment commu_writeFragment;
     private CommunityFragment communityFragment;
+    private CommunityPostsFragment communityPostsFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
+
     private TitleFragment titleFragment;
 
     /* myPage관련 변수 */
     private int myPageCategoryIndex;  //  마이페이지 카테고리 인덱스
     private String email;
 
+    private GuestBookFragment guestBookFragment;
+    private GuestBookWriteFragment guestBookWriteFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
+        //fragment
+        homeFragment = new HomeFragment();
+        myPageFragment = new MyPageFragment();
+        alarmFragment = new AlarmFragment();
+
+        //커뮤니티 프래그먼트
+        hotCommunityFragment = new Hot_CommunityFragment();
+        communityFragment = new CommunityFragment();
+        commu_writeFragment = new Commu_WriteFragment();
+        communityPostsFragment = new CommunityPostsFragment();
+
+
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
+
         // 하단바를 눌렀을 때 프래그먼트가 변경되게 함
         main_bottom.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -63,37 +95,62 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 return true;
             }
         });
+
         homeFragment = new HomeFragment();
         communityFragment = new CommunityFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
+
         titleFragment = new TitleFragment();
+
+        guestBookFragment = new GuestBookFragment();
+        guestBookWriteFragment = new GuestBookWriteFragment();
+
 
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
     }
 
     // 프래그먼트 교체가 일어나는 함수
-    private void setFragment(int n){
+    public void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-
         switch (n){
             case 0:
-                fragmentTransaction.replace(R.id.main_frame,homeFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.main_frame,homeFragment).commit();
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.main_frame,communityFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.main_frame,myPageFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.replace(R.id.main_frame,myPageFragment).commit();
                 break;
             case 3:
-                fragmentTransaction.replace(R.id.main_frame,alarmFragment);
+                fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
+                break;
+            
+            // 방명록 프래그먼트에서 버튼 눌렀을 
+            case 4:
+                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
                 break;
+            case 5:
+                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
+                fragmentTransaction.commit();
+                break;
+
+            // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
+            case 50:
+                fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
+
+                break;
+            case 51:
+                fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
+                break;
+            case 52:
+                fragmentTransaction.replace(R.id.main_frame,communityPostsFragment).commit();
+                break;
+            
+
         }
     }
 
