@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+<!--    8번째 줄부터 45번째 줄까지 back 버튼-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
