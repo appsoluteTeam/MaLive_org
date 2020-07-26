@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,10 +38,17 @@ public class CommunityFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     //리사이클러뷰
+
+    public CommunityAdapter adapter;
     private RecyclerView recycler_community;
-    private RecyclerView.Adapter adapter;
+
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
+
+    private String title;
+    private String writer;
+    private String content;
+    private String date;
 
     @Nullable
     @Override
@@ -82,13 +91,15 @@ public class CommunityFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-
+      
         callRecycler(0);
+      
         // 리사이클러뷰에 가져온 정보 넣기
         recycler_community = (RecyclerView)view.findViewById(R.id.recycler_community);
         recycler_community.setHasFixedSize(true);
         adapter = new CommunityAdapter(arrayList);
         layoutManager = new LinearLayoutManager(getActivity());
+
 
         // 리사이클러뷰 역순 출력
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
@@ -118,7 +129,9 @@ public class CommunityFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.title));
                                             String content =String.valueOf(shot.get(FirebaseID.content));
                                             String category = String.valueOf(shot.get(FirebaseID.category));
-                                            bringData data = new bringData(documentID,title,category,content);
+                                            date = String.valueOf(shot.get(FirebaseID.commu_date));
+                         
+                                            bringData data = new bringData(documentID,title,category,content,date);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -142,7 +155,10 @@ public class CommunityFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.title));
                                             String content =String.valueOf(shot.get(FirebaseID.content));
                                             String category = String.valueOf(shot.get(FirebaseID.category));
-                                            bringData data = new bringData(documentID,title,category,content);
+                                            date = String.valueOf(shot.get(FirebaseID.commu_date));
+                         
+                                            bringData data = new bringData(documentID,title,category,content,date);
+                                          
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -166,7 +182,9 @@ public class CommunityFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.title));
                                             String content =String.valueOf(shot.get(FirebaseID.content));
                                             String category = String.valueOf(shot.get(FirebaseID.category));
-                                            bringData data = new bringData(documentID,title,category,content);
+                                            date = String.valueOf(shot.get(FirebaseID.commu_date));
+                         
+                                            bringData data = new bringData(documentID,title,category,content,date);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -178,4 +196,28 @@ public class CommunityFragment extends Fragment {
         }
     }
 
+        // 리사이클러뷰 클릭 이벤트
+        adapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                bringData item = adapter.getItem(position);
+
+                // CommunityPostsFragment로 데이터 넘기기
+                Bundle bundle = new Bundle();
+                bundle.putString("Title", item.getTitle());
+                bundle.putString("Writer", item.getWriter());
+                bundle.putString("Content", item.getContent());
+                bundle.putString("Date", item.getDate());
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
+                communityPostsFragment.setArguments(bundle);
+
+                // 버튼 누르면 화면 전환
+                transaction.replace(R.id.main_frame, communityPostsFragment);
+                transaction.commit();
+            }
+        });
+    }
 }
+

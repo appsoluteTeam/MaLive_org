@@ -24,8 +24,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
-import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +45,10 @@ public class Commu_WriteFragment extends Fragment {
     private EditText et_content;
 
     private Button btn_commu_upload;
+
+    //날짜 받아오기
+    private SimpleDateFormat dateform;
+    private Calendar date;
 
     @Nullable
     @Override
@@ -94,11 +100,19 @@ public class Commu_WriteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (firebaseAuth.getCurrentUser() != null) {
+
+                    // 게시글 작성 시간 받아오기
+                    long now = System.currentTimeMillis();
+                    dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    date = Calendar.getInstance();
+
                     Map<String,Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
                     data.put(FirebaseID.category,category);
                     data.put(FirebaseID.title,et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content,et_content.getText().toString());
+                    data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
+                  
                     // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
                             .collection("sub_Community").document(et_title.getText().toString())
