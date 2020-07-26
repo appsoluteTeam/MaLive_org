@@ -7,49 +7,129 @@
     android:orientation="vertical"
     tools:context=".Community.Commu_WriteFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/commuwrite_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="글쓰기  "
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="9dp" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:text="  카테고리"
+            android:textSize="20dp"
+            tools:layout_marginRight="15dp"
+            tools:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/category_eat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/categort_basic"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="뭐 먹지?"
+            android:textColor="@android:color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/category_do"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/categort_basic"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="뭐 하지?"
+            android:textColor="@android:color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/category_how"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:layout_weight="1"
+            android:background="@drawable/categort_basic"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="어떻게 하지?"
+            android:textColor="#FFFFFF"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:background="@android:color/darker_gray"
+        tools:layout_marginRight="15dp" />
+
     <EditText
         android:id="@+id/et_title"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:gravity="top"
-        android:inputType="textPersonName"
-        android:maxLength="100"
-        android:padding="15dp"
-        android:hint="제목"
-        android:layout_marginTop="20dp"
-        android:textColor="@android:color/darker_gray"
         android:layout_marginLeft="12dp"
-        android:textSize="30dp" />
-
-    <EditText
-        android:id="@+id/et_writer"
-        android:layout_width="380dp"
-        android:layout_height="70dp"
-        android:layout_margin="12dp"
         android:ems="10"
         android:gravity="top"
-        android:hint="작성자"
+        android:hint="제목"
         android:inputType="textPersonName"
         android:maxLength="100"
+        android:padding="17dp"
         android:textColor="@android:color/darker_gray"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        tools:textStyle="bold" />
 
     <EditText
         android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_margin="15dp"
-        android:background="@drawable/yellow_edge"
         android:gravity="top"
-        android:hint="내용을 입력해 주세요"
+        android:hint="본문 내용을 입력하세요."
         android:padding="15dp"
-        android:textColor="@android:color/darker_gray" />
+        android:textColor="@android:color/darker_gray"
+        android:background="@android:color/transparent"/>
 
     <Button
         android:id="@+id/btn_commu_upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="저장"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:text="저장" />
+
 </LinearLayout>

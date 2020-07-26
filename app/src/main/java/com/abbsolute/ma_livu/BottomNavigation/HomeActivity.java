@@ -120,6 +120,7 @@ public class HomeActivity extends AppCompatActivity {
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
                 fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
+
                 break;
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
