@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,9 +39,15 @@ public class CommunityFragment extends Fragment {
 
     //리사이클러뷰
     private RecyclerView recycler_what_eat;
-    private RecyclerView.Adapter adapter;
+//    private RecyclerView.Adapter adapter;
+    public CommunityAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
+
+    private String title;
+    private String writer;
+    private String content;
+    private String date;
 
     @Nullable
     @Override
@@ -92,7 +100,6 @@ public class CommunityFragment extends Fragment {
 //            case 2:
 //                // 어떻게 하지 프래그먼트가 선택 됐을 때
 //                break;
-//        }
         arrayList = new ArrayList<>();
         firestore.collection("Community")
                 .get()
@@ -105,10 +112,11 @@ public class CommunityFragment extends Fragment {
                                 for(DocumentSnapshot snapshot : task.getResult()){
                                     Map<String,Object> shot = snapshot.getData();
                                     String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                    String title = String.valueOf(shot.get(FirebaseID.title));
-                                    String writer = String.valueOf(shot.get(FirebaseID.writer));
-                                    String content =String.valueOf(shot.get(FirebaseID.content));
-                                    bringData data = new bringData(documentID,title,writer,content);
+                                    title = String.valueOf(shot.get(FirebaseID.title));
+                                    writer = String.valueOf(shot.get(FirebaseID.writer));
+                                    content = String.valueOf(shot.get(FirebaseID.content));
+                                    date = String.valueOf(shot.get(FirebaseID.commu_date));
+                                    bringData data = new bringData(documentID,title,writer,content,date);
                                     arrayList.add(data);
                                 }
                                 adapter.notifyDataSetChanged();
@@ -127,7 +135,29 @@ public class CommunityFragment extends Fragment {
         recycler_what_eat.scrollToPosition(0);
         recycler_what_eat.setItemAnimator(new DefaultItemAnimator());
         recycler_what_eat.setAdapter(adapter);
+
+        // 리사이클러뷰 클릭 이벤트
+        adapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                bringData item = adapter.getItem(position);
+
+                // CommunityPostsFragment로 데이터 넘기기
+                Bundle bundle = new Bundle();
+                bundle.putString("Title", item.getTitle());
+                bundle.putString("Writer", item.getWriter());
+                bundle.putString("Content", item.getContent());
+                bundle.putString("Date", item.getDate());
+
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
+                communityPostsFragment.setArguments(bundle);
+
+                // 버튼 누르면 화면 전환
+                transaction.replace(R.id.main_frame, communityPostsFragment);
+                transaction.commit();
+            }
+        });
     }
-
-
 }
+
