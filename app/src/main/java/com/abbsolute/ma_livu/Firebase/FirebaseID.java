@@ -7,6 +7,7 @@ public class FirebaseID {
     public static String Community = "Community";
     public static String documentID = "documentID";
 
+
     //파이어스토어 user컬렉션 필드 이름
     public static String Nickname ="nickname";
     public static String Email = "email";
@@ -16,8 +17,9 @@ public class FirebaseID {
 
     //파이어스토어 Community 컬렉션 필드 이름
     public static String title ="title";
-    public static String writer ="writer";
+    public static String category ="category";
     public static String content ="content";
+    public static String commu_date ="commu_date";
 
     //파이어스토어 GuestBook 컬렉션 필드 이름
     public static String GuestBook = "GuestBook";
@@ -27,9 +29,27 @@ public class FirebaseID {
     public static String date = "date";
     public static String comment = "comment";
     public static String icon = "icon";
+
     //파이어스토어 ToDoList 컬렉션 필드 이름
     public static String ToDoLists="ToDoList";
     public static String cleaning="cleaning";
     public static String laundry="laundry";
     public static String trash="trash";
+
+    //파이어스토어 MyPage 컬렉션 필드 이름
+    public static String myPage = "myPage";
+    public static String id = "id";
+    public static String isLocked = "isLocked";
+    public static String TODO = "TODO";
+    public static String clean = "clean";
+    public static String dish = "dish";
+    public static String trash = "trash";
+    public static String wash = "wash";
+    public static String attendance = "attendance";
+    public static String room = "room";
+    public static String today = "today";
+    public static String reptitle = "reptitle";
+    public static String titleCategory = "category";
+    public static String index = "index";
+
 }
