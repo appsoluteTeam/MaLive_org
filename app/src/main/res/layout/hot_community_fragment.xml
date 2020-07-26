@@ -7,7 +7,7 @@
     tools:context=".Community.Hot_CommunityFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/commuwrite_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/commuwrite_toolbar"
         app:menu="@menu/hotcommu_botom_navigation">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

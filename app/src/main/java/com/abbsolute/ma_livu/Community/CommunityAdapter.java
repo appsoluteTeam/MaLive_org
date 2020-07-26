@@ -46,9 +46,9 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
 
     @Override
     public void onBindViewHolder(@NonNull CommunityAdapter.CustomViewHolder holder, int position) {
-        holder.what_eat_title.setText(arrayList.get(position).getTitle());
-        holder.what_eat_writer.setText(arrayList.get(position).getWriter());
-        holder.what_eat_content.setText(arrayList.get(position).getContent());
+        holder.community_category.setText(arrayList.get(position).getCategory());
+        holder.community_title.setText(arrayList.get(position).getTitle());
+
     }
 
     @Override
@@ -57,9 +57,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder{
-        TextView what_eat_title;
-        TextView what_eat_writer;
-        TextView what_eat_content;
+        TextView community_category;
+        TextView community_title;
 
 
         public CustomViewHolder(@NonNull View itemView) {
@@ -78,9 +77,11 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
                     }
                 }
             });
-            this.what_eat_title = itemView.findViewById(R.id.commu_title);
             this.what_eat_writer = itemView.findViewById(R.id.commu_writer);
             this.what_eat_content = itemView.findViewById(R.id.commu_content);
+            this.community_category = itemView.findViewById(R.id.commu_category);
+            this.community_title = itemView.findViewById(R.id.commu_title);
+
         }
     }
 
