@@ -179,7 +179,7 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                                     if(!newTrashNum.equals("1")){
                                         Map<String, Object> data = new HashMap<>();
                                         // data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                        data.put(FirebaseID.trash, newTrashNum);
+                                        data.put(FirebaseID.ToDoTrash, newTrashNum);
                                         firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
                                         Toast.makeText(context, "쓰레기 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
                                     }
@@ -187,7 +187,7 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                                     newtrashNum[0]="1";
                                     Map<String, Object> data = new HashMap<>();
                                     //data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                    data.put(FirebaseID.trash, newtrashNum[0]);
+                                    data.put(FirebaseID.ToDoTrash, newtrashNum[0]);
                                     firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
                                     Toast.makeText(context, "쓰레기 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
                                 }
