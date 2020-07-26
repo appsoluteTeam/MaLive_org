@@ -34,7 +34,13 @@ public class HomeFragment extends Fragment {
                 ((HomeActivity)getActivity()).setFragment(4);
             }
         });
-
+        go_Todo=view.findViewById(R.id.go_Todo);
+        go_Todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).setFragment(100);
+            }
+        });
         return view;
     }
 }
