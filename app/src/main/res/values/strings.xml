@@ -2,4 +2,8 @@
     <string name="app_name">MaLive</string>
     <string name="myPage">마이페이지</string>
     <string name="mypage_information_set">정보 설정</string>
+
+    // 방명록 String
+    <string name="guestBook">방명록</string>
+    <string name="guestBookWrite">방명록 작성</string>
 </resources>

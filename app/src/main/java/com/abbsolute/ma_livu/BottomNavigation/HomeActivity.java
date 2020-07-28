@@ -147,7 +147,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
             
-            // 방명록 프래그먼트에서 버튼 눌렀을 
+            // 방명록 프래그먼트에서 버튼 눌렀을 때
             case 4:
                 fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
@@ -160,7 +160,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
                 fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
-
                 break;
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
