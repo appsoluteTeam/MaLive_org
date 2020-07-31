@@ -169,10 +169,11 @@ public class ToDoFixWriteFragment extends Fragment {
             }
         });
         // 고정리스트 삭제 버튼 정의 및 클릭시 이벤트 처리
+        //fixToDoList(고정리스트) 삭제 기능
         removing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((HomeActivity)getActivity()).setFragment(104);
             }
         });
         return view;

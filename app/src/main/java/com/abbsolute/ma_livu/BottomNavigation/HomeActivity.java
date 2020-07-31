@@ -23,7 +23,9 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixListRemoveFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
@@ -179,6 +181,15 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             //고정리스트
             case 102:
                 fragmentTransaction.replace(R.id.main_frame,toDoFixModifyingFragment).commit();
+                break;
+            //고정 할 일 프레그먼트
+            case 103:
+                ToDoFixWriteFragment toDoFixWriteFragment=new ToDoFixWriteFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFixWriteFragment).commit();
+                break;
+            case 104:
+                ToDoFixListRemoveFragment toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
                 break;
 
         }
