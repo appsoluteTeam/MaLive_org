@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder{
         protected TextView fixToDoTextView;
         protected TextView fixPeriodTextView;
+
         boolean flag=false;// 고정리스트 눌렀을때 회색->흰색, 흰색->회색
 
         public ViewHolder(View v){
@@ -40,6 +42,7 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
             final LinearLayout linearLayout=v.findViewById(R.id.fix_list_layout);
             fixToDoTextView=v.findViewById(R.id.todo);
             fixPeriodTextView=v.findViewById(R.id.todo_date);
+
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

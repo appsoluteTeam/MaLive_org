@@ -1,13 +1,17 @@
 package com.abbsolute.ma_livu.Home.ToDoList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,11 +35,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         protected TextView dDays;
         protected FrameLayout toDoFrame;
         protected FrameLayout toDoDetailFrame;
+        protected CheckBox checkToDo;//할 일 체크 하는 오른쪽 라디오 버튼
         public ViewHolder(View v) {
             super(v);
             this.Contents = v.findViewById(R.id.todo_text);//내용
             this.ContentsDetail=v.findViewById(R.id.todo_text_detail);//상세내용
             //  this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
+            checkToDo=v.findViewById(R.id.chk_btn);
             this.dDays=v.findViewById(R.id.d_date);//디데이
             this.toDoFrame=v.findViewById(R.id.todo_frame);
             this.toDoDetailFrame=v.findViewById(R.id.todo_detail_frame);
@@ -89,6 +95,22 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         }catch (Resources.NotFoundException e){
             e.printStackTrace();
         }
+        ///할 일 완료 체크
+       holder.checkToDo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+               SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
+               if(isChecked==false){
+                   SharedPreferences.Editor editor = pref.edit();
+                   editor.putBoolean("chk",true);
+                   editor.commit();
+               }else{
+                   SharedPreferences.Editor editor = pref.edit();
+                   editor.putBoolean("chk",false);
+                   editor.commit();
+               }
+           }
+       });
     }
     @Override
     public int getItemCount() {
