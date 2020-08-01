@@ -73,7 +73,8 @@ public class ToDoFixListRemoveFragment extends Fragment {
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(103);
+                //완료버튼 누르면 작성메인 프레그먼트로 넘어감
+                ((HomeActivity)getActivity()).setFragment(101);
             }
         });
         ///요일 설정하기 디자인 만 구성하기
