@@ -1,5 +1,6 @@
 package com.abbsolute.ma_livu.Home.ToDoList;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -28,18 +29,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 클래스
+public class ToDoFragment extends Fragment implements OnTextClick{//ToDoList 추가, 삭제, 수정 클래스
     RecyclerView recyclerView;
     public ToDoAdapter toDoAdapter;
 
@@ -56,7 +68,9 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
     AlarmManager alarmManager;
     //CheckBox checkBox;
     ///
-
+//파이버베이스 인증 변수
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     ///
     @Nullable
@@ -79,6 +93,10 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("modify",false);
+                editor.commit();
                 ((HomeActivity)getActivity()).setFragment(101);//toDoWriteFragment로 화면전환
                 //Intent intent = new Intent(getContext(), ToDoWriteMainFragment.class);
                 //startActivityForResult(intent, WRITE_RESULT);
@@ -93,17 +111,23 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         };
         Collections.sort(toDoInfos,comparator);
         toDoAdapter.setItem(toDoInfos);
-        toDoAdapter.GetContext(getContext());
+        toDoAdapter.GetContext(getContext(),this);
         toDoAdapter.notifyDataSetChanged();
         recyclerView.setItemAnimator(null);
-
+        ///뒤로가기 버튼 이벤트 처리
+        Button back=view.findViewById(R.id.btn_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).setFragment(0);//뒤로가기 누르면 homeFragment로 이동
+            }
+        });
         //밀어서 할일 삭제
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
-
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 if(direction== ItemTouchHelper.LEFT){
@@ -281,7 +305,13 @@ public class ToDoFragment extends Fragment {//ToDoList 추가, 삭제, 수정 �
         }
         ////
     }
-
+    //투두리스트 수정하기 이벤트처리
+    @Override
+    public void onClick(int go) {
+        if(go==3){
+            ((HomeActivity)getActivity()).setFragment(101);// 투두 메인 작성화면으로 이동
+        }
+    }
 
 }
 

@@ -146,10 +146,11 @@ public class ToDoWriteFragment extends Fragment {
         storing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1=getActivity().getIntent();
-                String word=intent1.getStringExtra("modify");
+                SharedPreferences pfModify=getContext().getSharedPreferences("pref2",Activity.MODE_PRIVATE);
+                boolean isUpdated=pfModify.getBoolean("modify",false);
+                String word=pfModify.getString("modifyContent","");
                 SharedPreferences pf=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                if(word!=null){//수정작업
+                if(isUpdated==true){//수정작업
                     String res=pf.getString("toDo","");
                     String resDetailTodo=write.getText().toString();
                     long systemTime = System.currentTimeMillis();
@@ -159,24 +160,33 @@ public class ToDoWriteFragment extends Fragment {
                     }
                     String date=formatter.format(systemTime);
                     String dDate=date;
-                    if(year!=2020&&month!=1&&day!=1)
+                    if(year>=2020&&month>=1&&day>=1)
                     {
-                        String months="0"+month;
-                        dDate=year+"-"+months+"-"+day;
+                        String months="";
+                        if(month<10){
+                            months="0"+month;
+                        }else{
+                            months=Integer.toString(month);
+                        }
+                        dDate=year+"년"+months+"월"+day+"일";
                     }
                     ToDoInfo toDoInfo=new ToDoInfo(res,resDetailTodo,date,dDate, Color.WHITE);
                     ToDoAppHelper.updateData(getContext(),"todoInfo",toDoInfo,word);
                     Intent intent=new Intent();
                     getActivity().setResult(RESULT_OK,intent);
+                    SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("modify",false);
+                    editor.commit();
                     ((HomeActivity)getActivity()).setFragment(100);//ToDoFragment로 전환
                 }else{//추가
                     ToDoFragment toDoFragment=new ToDoFragment();
-                    Bundle bundle=new Bundle(1);
+                    Bundle bundle2=new Bundle(1);
                     String res=pf.getString("toDo","");
                     String resDetailTodo=write.getText().toString();
-                    bundle.putString("write_result_detail",resDetailTodo);
-                    bundle.putString("write_result",res);
-                    toDoFragment.setArguments(bundle);
+                    bundle2.putString("write_result_detail",resDetailTodo);
+                    bundle2.putString("write_result",res);
+                    toDoFragment.setArguments(bundle2);
                     Intent intent=new Intent();
                     getActivity().setResult(RESULT_OK,intent);
                     //sqlite쓰기
@@ -186,6 +196,10 @@ public class ToDoWriteFragment extends Fragment {
                     }else{
                         Toast.makeText(getContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
                     }
+                    SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2",Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("modify",false);
+                    editor.commit();
                     ((HomeActivity)getActivity()).setFragment(100);//ToDoFragment로 전환
                 }
 
@@ -221,7 +235,12 @@ public class ToDoWriteFragment extends Fragment {
         String dDate=date;
         if(year>=2020&&month>=1&&day>=1)
         {
-            String months="0"+month;
+            String months="";
+            if(month<10){
+                months="0"+month;
+            }else{
+                months=Integer.toString(month);
+            }
             dDate=year+"년"+months+"월"+day+"일";
         }
         final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
