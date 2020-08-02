@@ -205,20 +205,6 @@ public class ToDoWriteFragment extends Fragment {
 
             }
         });
-        /*cancel=findViewById(R.id.undo);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
-
-        /*setDday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkDate();
-            }
-        });*/
         return view;
     }
 
@@ -278,15 +264,6 @@ public class ToDoWriteFragment extends Fragment {
         });
 
     }
-    final static int req1=1;
-    public String a = "0"; // initialize this globally at the top of your class.
-
-    /*public void setAlarm(Calendar target){
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getBaseContext(), req1, intent, 0);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, target.getTimeInMillis(), pendingIntent);
-        a ="1";
-    }*/
+    
 }
 
