@@ -15,7 +15,7 @@
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/Back_key"
+            android:background="@drawable/back_key"
             android:visibility="visible"/>
         <LinearLayout
             android:layout_width="match_parent"

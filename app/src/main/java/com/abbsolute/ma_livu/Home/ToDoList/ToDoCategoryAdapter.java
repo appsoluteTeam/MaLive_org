@@ -71,130 +71,21 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                     Toast.makeText(context, "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo", "청소");
                     editor.commit();
-                    final String[] newCleaningNum = {""};
-                    final boolean[] flag = {false};
-                    DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid());
-                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
-                                DocumentSnapshot snapshot=task.getResult();
-                                String tmp= (String) snapshot.getData().get("cleaning");
-                                int tmpNum=Integer.parseInt(tmp);
-                                if(tmpNum>=1){
-                                    String cleaningNum= (String) snapshot.getData().get("cleaning");
-                                    Toast.makeText(context, cleaningNum, Toast.LENGTH_SHORT).show();
-                                    int tmpCleaningNum=0;
-                                    try {
-                                        tmpCleaningNum=Integer.parseInt(cleaningNum)+1;
-                                    }catch (NumberFormatException e){
-                                        e.printStackTrace();
-                                    }
-                                    String newCleaningNum=Integer.toString(tmpCleaningNum);
-                                    if(!newCleaningNum.equals("1")){
-                                        Map<String, Object> data = new HashMap<>();
-                                        //data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                        data.put(FirebaseID.cleaning, newCleaningNum);
-                                        firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
-                                        Toast.makeText(context, "청소 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }else{
-                                    newCleaningNum[0]="1";
-                                    Map<String, Object> data = new HashMap<>();
-                                    // data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                    data.put(FirebaseID.cleaning, newCleaningNum[0]);
-                                    firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
-                                    Toast.makeText(context, "청소 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
-                }
+
+                }//청소하기
                 else if(text.equals("빨래하기")){
                     Toast.makeText(context, "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","빨래");
                     editor.commit();
-                    final String[] newLaundryNum = {""};
-                    final boolean[] flag = {false};
-                    DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid());
-                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
-                                DocumentSnapshot snapshot=task.getResult();
-                                String tmp= (String) snapshot.getData().get("laundry");//횟수가 1이상인지 확인하는 코드
-                                int tmpNum=Integer.parseInt(tmp);
-                                if(tmpNum>=1){
-                                    String laundryNum= (String) snapshot.getData().get("laundry");
-                                    Toast.makeText(context, laundryNum, Toast.LENGTH_SHORT).show();
-                                    int tmpLaundryNum=0;
-                                    try{
-                                        tmpLaundryNum=Integer.parseInt(laundryNum)+1;
-                                    }catch (NumberFormatException e){
-                                        e.printStackTrace();
-                                    }
-                                    String newLaundryNum=Integer.toString(tmpLaundryNum);
-                                    if(!newLaundryNum.equals("1")){
-                                        Map<String, Object> data = new HashMap<>();
-                                        //data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                        data.put(FirebaseID.laundry, newLaundryNum);
-                                        firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
-                                        Toast.makeText(context, "빨래하기 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }else{
-                                    newLaundryNum[0]="1";
-                                    Map<String, Object> data = new HashMap<>();
-                                    // data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                    data.put(FirebaseID.laundry, newLaundryNum[0]);
-                                    firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
-                                    Toast.makeText(context, "빨래하기 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
-                }
+
+                }//빨래하기
                 else if(text.equals("쓰레기")){
                     Toast.makeText(context, "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","쓰레기");
                     editor.commit();
-                    final String[] newtrashNum = {""};
-                    DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid());
-                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()){
-                                DocumentSnapshot snapshot=task.getResult();
-                                String tmp= (String) snapshot.getData().get("trash");//횟수가 1이상인지 확인하는 코드
-                                int tmpNum=Integer.parseInt(tmp);
-                                if(tmpNum>=1){
-                                    String trashNum= (String) snapshot.getData().get("trash");
-                                    Toast.makeText(context, trashNum, Toast.LENGTH_SHORT).show();
-                                    int tmpTrashNum=0;
-                                    try{
-                                        tmpTrashNum=Integer.parseInt(trashNum)+1;
-                                    }catch (NumberFormatException e){
-                                        e.printStackTrace();
-                                    }
-                                    String newTrashNum=Integer.toString(tmpTrashNum);
-                                    if(!newTrashNum.equals("1")){
-                                        Map<String, Object> data = new HashMap<>();
-                                        // data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                        data.put(FirebaseID.ToDoTrash, newTrashNum);
-                                        firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
-                                        Toast.makeText(context, "쓰레기 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }else{
-                                    newtrashNum[0]="1";
-                                    Map<String, Object> data = new HashMap<>();
-                                    //data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                    data.put(FirebaseID.ToDoTrash, newtrashNum[0]);
-                                    firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()).set(data, SetOptions.merge());
-                                    Toast.makeText(context, "쓰레기 칭호 카운트 업!!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
-                }
+
+                }//쓰레기
+
             }
         });
     }

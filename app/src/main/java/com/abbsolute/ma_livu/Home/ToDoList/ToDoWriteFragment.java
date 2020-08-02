@@ -163,12 +163,18 @@ public class ToDoWriteFragment extends Fragment {
                     if(year>=2020&&month>=1&&day>=1)
                     {
                         String months="";
+                        String days="";
                         if(month<10){
                             months="0"+month;
                         }else{
                             months=Integer.toString(month);
                         }
-                        dDate=year+"년"+months+"월"+day+"일";
+                        if(day<10){
+                            days="0"+day;
+                        }else{
+                            days=Integer.toString(day);
+                        }
+                        dDate=year+"년"+months+"월"+days+"일";
                     }
                     ToDoInfo toDoInfo=new ToDoInfo(res,resDetailTodo,date,dDate, Color.WHITE);
                     ToDoAppHelper.updateData(getContext(),"todoInfo",toDoInfo,word);
@@ -233,8 +239,10 @@ public class ToDoWriteFragment extends Fragment {
         final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border);
         insertData("todoInfo",toDoInfo);
         //파이어베이스에 todo데이터 올리기
-        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" ToDo");
-        final String finalDDate = dDate;
+        SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
+        final String email=sharedPreferences.getString("email_id","");
+        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo");
+        //final String finalDDate = dDate;
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -244,7 +252,7 @@ public class ToDoWriteFragment extends Fragment {
                     DocumentSnapshot snapshot=task.getResult();
                     String tmp="";
                     int tmpNumber=0;
-                    tmp= (String) snapshot.getData().get("Count");
+                    tmp=(String) snapshot.getData().get("Count");
                     tmpNumber=Integer.parseInt(tmp);
                     String newCount="";
                     if(tmpNumber>=1){
@@ -259,8 +267,7 @@ public class ToDoWriteFragment extends Fragment {
                     data.put("dates"+newCount,toDoInfo.dates);
                     data.put("dDates"+newCount, toDoInfo.dDay);
                     data.put("Count",newCount);
-                    Toast.makeText(getContext(), ""+firebaseAuth.getCurrentUser(), Toast.LENGTH_SHORT).show();
-                    firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" ToDo").set(data, SetOptions.merge());
+                    firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo").set(data, SetOptions.merge());
                 }
             }
         });

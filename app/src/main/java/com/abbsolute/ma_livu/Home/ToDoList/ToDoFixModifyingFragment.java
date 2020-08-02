@@ -192,8 +192,10 @@ public class ToDoFixModifyingFragment extends Fragment {
         String dDate=date;
         final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         updateData(getContext(),"todoInfo",toDoInfo,detailData);
-        //파이어베이스에 FixTodo데이터 올리기
-        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" FixToDo");
+        //파이어베이스에 FixTodo 수정 데이터 올리기
+        SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
+        final String email=sharedPreferences.getString("email_id","");
+        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -215,7 +217,8 @@ public class ToDoFixModifyingFragment extends Fragment {
                     data.put("dates"+newCount,toDoInfo.dates);
                     data.put("dDates"+newCount, toDoInfo.dDay);
                     data.put("Count",newCount);
-                    firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" FixToDo").update(data);
+
+                    firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo").update(data);
                 }
             }
         });

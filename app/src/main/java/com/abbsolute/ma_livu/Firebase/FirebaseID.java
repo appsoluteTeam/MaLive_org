@@ -35,6 +35,7 @@ public class FirebaseID {
     public static String cleaning="cleaning";
     public static String laundry="laundry";
     public static String ToDoTrash="trash";
+    public static String etc="todo";
 
     //파이어스토어 MyPage 컬렉션 필드 이름
     public static String myPage = "myPage";

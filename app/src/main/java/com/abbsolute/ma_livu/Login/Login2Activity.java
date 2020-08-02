@@ -3,7 +3,9 @@ package com.abbsolute.ma_livu.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +42,7 @@ public class Login2Activity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = email_login.getText().toString();
+                final String email = email_login.getText().toString();
                 String pwd = pass_login.getText().toString().trim();
 
                 auth.signInWithEmailAndPassword(email, pwd)
@@ -50,6 +52,10 @@ public class Login2Activity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login2Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
+                                    SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("email_id",email);
+                                    editor.commit();
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(Login2Activity.this, "로그인 오류", Toast.LENGTH_SHORT).show();

@@ -207,12 +207,21 @@ public class ToDoFixWriteFragment extends Fragment {
         String dYear=dates[0];
         String dMonth=dates[1];
         String dDay=dates[2];
-        date=dYear+"년"+dMonth+"월"+dDay+"일";
+        int tmp=Integer.parseInt(dDay);
+        String days="";
+        if(tmp<10){
+            days="0"+tmp;
+        }else{
+            days=Integer.toString(tmp);
+        }
+        date=dYear+"년"+dMonth+"월"+days+"일";
         String dDate=date;
         final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         insertData("todoInfo",toDoInfo);
         //파이어베이스에 FixTodo데이터 올리기
-        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" FixToDo");
+        SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
+        final String email=sharedPreferences.getString("email_id","");
+        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -223,7 +232,7 @@ public class ToDoFixWriteFragment extends Fragment {
                     String tmp="";
                     int tmpNumber=0;
                     try {
-                        tmp= (String) snapshot.getData().get("Count");
+                         tmp= (String) snapshot.getData().get("Count");
                         tmpNumber=Integer.parseInt(tmp);
                     }catch (NullPointerException e){
                         e.printStackTrace();
@@ -241,7 +250,7 @@ public class ToDoFixWriteFragment extends Fragment {
                     data.put("dates"+newCount,toDoInfo.dates);
                     data.put("dDates"+newCount, toDoInfo.dDay);
                     data.put("Count",newCount);
-                    firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" FixToDo").set(data, SetOptions.merge());
+                    firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo").set(data, SetOptions.merge());
                 }
             }
         });
