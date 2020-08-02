@@ -173,6 +173,7 @@ public class ToDoWriteFragment extends Fragment {
                     ToDoInfo toDoInfo=new ToDoInfo(res,resDetailTodo,date,dDate, Color.WHITE);
                     ToDoAppHelper.updateData(getContext(),"todoInfo",toDoInfo,word);
                     Intent intent=new Intent();
+                    ///수정후 작업을 false로 돌림
                     getActivity().setResult(RESULT_OK,intent);
                     SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -258,12 +259,13 @@ public class ToDoWriteFragment extends Fragment {
                     data.put("dates"+newCount,toDoInfo.dates);
                     data.put("dDates"+newCount, toDoInfo.dDay);
                     data.put("Count",newCount);
+                    Toast.makeText(getContext(), ""+firebaseAuth.getCurrentUser(), Toast.LENGTH_SHORT).show();
                     firestore.collection(FirebaseID.ToDoLists).document(firebaseAuth.getCurrentUser().getUid()+" ToDo").set(data, SetOptions.merge());
                 }
             }
         });
 
     }
-    
+
 }
 

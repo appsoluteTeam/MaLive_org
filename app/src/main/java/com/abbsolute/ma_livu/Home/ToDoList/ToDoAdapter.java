@@ -2,25 +2,20 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;
@@ -32,7 +27,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     private static int UPDATE_RESULT = 101;
     // CheckBox checkBox;
     boolean check = false;
-    private OnTextClick onCallBack;
+    private OnToDoTextClick onCallBack;
     public class ViewHolder extends RecyclerView.ViewHolder {
         protected TextView ContentsDetail;
         protected TextView Contents;
@@ -63,7 +58,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         this.arrayList = arrayList;
     }
 
-    public void GetContext(Context context, OnTextClick listener) {
+    public void GetContext(Context context, OnToDoTextClick listener) {
         this.context = context;
         this.onCallBack=listener;
     }
@@ -96,7 +91,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.Contents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String sendData=toDoInfo.getDetailContent();
                 SharedPreferences sharedPreferences=context.getSharedPreferences("pref2",Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
