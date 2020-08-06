@@ -71,8 +71,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        //fragment
+        //기본 fragment
         homeFragment = new HomeFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
@@ -82,6 +81,18 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         communityFragment = new CommunityFragment();
         commu_writeFragment = new Commu_WriteFragment();
         communityPostsFragment = new CommunityPostsFragment();
+
+        //타이틀 프래그먼트
+        titleFragment = new TitleFragment();
+
+        //방명록 프래그먼트
+        guestBookFragment = new GuestBookFragment();
+        guestBookWriteFragment = new GuestBookWriteFragment();
+
+        /* 투두리스트 프래그먼트들 */
+        toDoFragment=new ToDoFragment(); //투두 리스트 화면
+        toDoWriteMainFragment=new ToDoWriteMainFragment();//투두 작성 메인 화면
+        toDoFixModifyingFragment=new ToDoFixModifyingFragment();//고정리스트 수정 화면
 
 
         main_bottom =findViewById(R.id.main_bottom);
@@ -108,23 +119,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 return true;
             }
         });
-
-        homeFragment = new HomeFragment();
-        communityFragment = new CommunityFragment();
-        myPageFragment = new MyPageFragment();
-        alarmFragment = new AlarmFragment();
-
-        titleFragment = new TitleFragment();
-
-        guestBookFragment = new GuestBookFragment();
-        guestBookWriteFragment = new GuestBookWriteFragment();
-
-        //투두 리스트 화면
-        toDoFragment=new ToDoFragment();
-        //투두 작성 메인 화면
-        toDoWriteMainFragment=new ToDoWriteMainFragment();
-        //고정리스트 수정 화면
-        toDoFixModifyingFragment=new ToDoFixModifyingFragment();
 
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
     }
@@ -160,7 +154,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
                 fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
-
                 break;
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
