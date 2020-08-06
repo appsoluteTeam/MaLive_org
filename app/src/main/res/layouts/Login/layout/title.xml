@@ -11,10 +11,12 @@
 
         <Button
             android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="35dp"
             android:layout_gravity="left|center_vertical"
-            android:background="?attr/actionModeCloseDrawable"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/back_key"
             android:visibility="visible" />
 
         <LinearLayout

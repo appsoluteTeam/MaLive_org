@@ -14,8 +14,12 @@
 
     <item
         android:id="@+id/how_do"
-        android:enabled="true"
-        android:title="어떻게 하지?"
-        />
+        android:title="어떻게 하지?" />
+
+    <item
+        android:id="@+id/community_sort"
+        android:icon="@drawable/icon_sort"
+        android:title=""
+        android:visible="true" />
 
 </menu>

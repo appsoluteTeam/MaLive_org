@@ -6,23 +6,27 @@
     <item
         android:id="@+id/bottom_home"
         android:enabled="true"
-        android:title="홈" />
+        android:icon="@drawable/icon_home"
+        android:title="홈"/>
 
     <item
         android:id="@+id/bottom_community"
         android:enabled="true"
+        android:icon="@drawable/icon_community"
         android:title="커뮤니티"
         />
 
     <item
+        android:id="@+id/bottom_alarm"
+        android:icon="@drawable/icon_alarm"
+        android:title="알람" />
+
+    <item
         android:id="@+id/bottom_mypage"
         android:enabled="true"
+        android:icon="@drawable/icon_mypage"
         android:title="마이페이지"
         />
 
-    <item
-        android:id="@+id/bottom_alarm"
-        android:enabled="true"
-        android:title="알람"
-        />
+
 </menu>
