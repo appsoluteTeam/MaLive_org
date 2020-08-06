@@ -66,19 +66,19 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
-                    case R.id.what_eat:
+                    case R.id.what_eat: //뭐 먹지 카테고리 선택
                         callRecycler(0);
                         break;
-                    case R.id.what_do:
+                    case R.id.what_do: //뭐 하지 카테고리 선택
                         callRecycler(1);
                         break;
-                    case R.id.how_do:
+                    case R.id.how_do: //어떻게 하지 카테고리 선택
                         callRecycler(2);
                         break;
-                    case R.id.btn_commu_write:
+                    case R.id.btn_commu_write: // 작성하기 아이콘 클릭
                         ((HomeActivity)getActivity()).setFragment(51);
                         break;
-                    case R.id.btn_back:
+                    case R.id.btn_back: // 뒤로가기 아이콘 클릭
                         ((HomeActivity)getActivity()).setFragment(1);
                         break;
                 }
