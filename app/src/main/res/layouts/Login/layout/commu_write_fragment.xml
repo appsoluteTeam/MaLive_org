@@ -7,30 +7,57 @@
     android:orientation="vertical"
     tools:context=".Community.Commu_WriteFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/commuwrite_toolbar"
+    <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="20dp"
+            android:layout_height="28dp"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/back_key"
+            android:visibility="visible" />
+
+
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/btn_commu_upload"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="글쓰기  "
-            android:textColor="@color/design_default_color_on_secondary"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="9dp" />
+            android:layout_gravity="right"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="25dp"
+            android:text="등록"
+            android:textAllCaps="false"
+            android:textColor="#9F9F9F"
+            android:textSize="20dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    </androidx.appcompat.widget.Toolbar>
+            <TextView
+                android:id="@+id/top_bar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="@string/commu_write"
+                android:textColor="@android:color/black"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 
     <LinearLayout
@@ -124,12 +151,5 @@
         android:padding="15dp"
         android:textColor="@android:color/darker_gray"
         android:background="@android:color/transparent"/>
-
-    <Button
-        android:id="@+id/btn_commu_upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="저장" />
 
 </LinearLayout>

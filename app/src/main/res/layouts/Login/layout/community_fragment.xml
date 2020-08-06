@@ -26,7 +26,7 @@
             android:visibility="visible" />
 
         <ImageButton
-            android:id="@+id/btn_commu_search"
+            android:id="@+id/btn_commu_upload"
             android:layout_width="20dp"
             android:layout_height="25dp"
             android:layout_gravity="right"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -44,7 +45,8 @@ public class Commu_WriteFragment extends Fragment {
     private EditText et_title;
     private EditText et_content;
 
-    private Button btn_commu_upload;
+    private TextView btn_commu_upload;
+    private ImageButton btn_back;
 
     //날짜 받아오기
     private SimpleDateFormat dateform;
@@ -118,6 +120,14 @@ public class Commu_WriteFragment extends Fragment {
                             .collection("sub_Community").document(et_title.getText().toString())
                             .set(data, SetOptions.merge());
                 }
+                ((HomeActivity)getActivity()).setFragment(50);
+            }
+        });
+
+        btn_back=(ImageButton)view.findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 ((HomeActivity)getActivity()).setFragment(50);
             }
         });
