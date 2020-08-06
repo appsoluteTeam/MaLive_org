@@ -1,11 +1,13 @@
 package com.abbsolute.ma_livu.Community;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,15 +35,13 @@ import java.util.Map;
 public class CommunityFragment extends Fragment {
 
     private View view;
-    private Button btn_commu_write;
-    private BottomNavigationView commu_navigation; // 쓸꺼임
+    private ImageButton btn_commu_write,btn_back;
+    private Button btn_what_eat,btn_what_do,btn_how_do;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     //리사이클러뷰
-
     public CommunityAdapter adapter;
     private RecyclerView recycler_community;
-
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
 
@@ -55,43 +55,49 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.community_fragment,container,false);
 
-        arrayList = new ArrayList<>();
-        commu_navigation = view.findViewById(R.id.commu_navigation);
-        commu_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        // 카테고리 버튼 눌렸을 때 버튼리스너
+        btn_what_eat=(Button)view.findViewById(R.id.what_eat);
+        btn_what_do=(Button)view.findViewById(R.id.what_do);
+        btn_how_do=(Button)view.findViewById(R.id.how_do);
+        btn_commu_write =(ImageButton)view.findViewById(R.id.btn_commu_write);
+        btn_back = (ImageButton)view.findViewById(R.id.btn_back);
+
+        Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    //뭐 먹지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
+            public void onClick(View v) {
+                switch (v.getId()){
                     case R.id.what_eat:
                         callRecycler(0);
                         break;
-                    //뭐 하지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
                     case R.id.what_do:
                         callRecycler(1);
                         break;
-                    //어떻게 하지? 버튼이 눌렸을 경우 어레이리스트에 저장되는 값
                     case R.id.how_do:
                         callRecycler(2);
                         break;
+                    case R.id.btn_commu_write:
+                        ((HomeActivity)getActivity()).setFragment(51);
+                        break;
+                    case R.id.btn_back:
+                        ((HomeActivity)getActivity()).setFragment(1);
+                        break;
                 }
-                return true;
             }
-        });
+        };
 
-        //커뮤니티에서 글 작성하기 버튼을 눌렀을 때
-        btn_commu_write =(Button)view.findViewById(R.id.btn_commu_write);
-        btn_commu_write.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(51);
-            }
-        });
+        btn_what_eat.setOnClickListener(onClickListener);
+        btn_what_do.setOnClickListener(onClickListener);
+        btn_how_do.setOnClickListener(onClickListener);
+        btn_commu_write.setOnClickListener(onClickListener);
+        btn_back.setOnClickListener(onClickListener);
+
         return view;
     }
 
     public void onStart() {
         super.onStart();
-      
+
+        arrayList = new ArrayList<>();
         callRecycler(0);
       
         // 리사이클러뷰에 가져온 정보 넣기

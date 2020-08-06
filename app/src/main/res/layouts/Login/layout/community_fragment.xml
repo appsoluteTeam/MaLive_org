@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="20dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginRight="50dp"
-        android:background="@drawable/icon_search"
-        app:layout_constraintEnd_toEndOf="@+id/frame"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_search" />
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/frame"
@@ -26,15 +15,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="25dp"
-            android:layout_height="35dp"
+            android:layout_width="20dp"
+            android:layout_height="28dp"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/back_key"
             android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btn_commu_search"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="28dp"
+            android:layout_marginRight="75dp"
+            android:background="@drawable/icon_search"
+            app:srcCompat="@drawable/icon_search" />
+
+        <ImageButton
+            android:id="@+id/btn_commu_write"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/icon_write" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,28 +59,55 @@
                 android:gravity="center"
                 android:text="@string/Community"
                 android:textColor="@android:color/black"
-                android:textSize="30sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
     </FrameLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/commu_navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        app:itemIconTint="#90DCEE"
-        app:itemTextColor="@android:color/black"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frame"
-        app:menu="@menu/commu_navigation" >
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/what_eat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="뭐 먹지?" />
+
+        <Button
+            android:id="@+id/what_do"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="뭐 하지?" />
+
+        <Button
+            android:id="@+id/how_do"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:text="어떻게 하지?" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="25dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/icon_sort" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -102,25 +138,5 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_commu_write"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="글쓰기"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_write" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
