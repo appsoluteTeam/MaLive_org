@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#F1F1F1"
     android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -70,10 +71,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:background="#FFFFFF"
         android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
         <Button
             android:id="@+id/what_eat"
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:stateListAnimator="@null"
             android:text="뭐 먹지?" />
 
         <Button
@@ -89,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:stateListAnimator="@null"
             android:text="뭐 하지?" />
 
         <Button
@@ -97,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#FFFFFF"
+            android:stateListAnimator="@null"
             android:text="어떻게 하지?" />
 
         <ImageButton
@@ -106,7 +110,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="30dp"
-            android:background="@drawable/icon_sort" />
+            android:background="@drawable/icon_sort"
+            android:stateListAnimator="@null" />
     </LinearLayout>
 
     <LinearLayout
