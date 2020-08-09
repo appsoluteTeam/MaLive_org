@@ -6,4 +6,7 @@
     // 방명록 String
     <string name="guestBook">방명록</string>
     <string name="guestBookWrite">방명록 작성</string>
+
+    // 커뮤니티 String
+    <string name="communityComment">댓글</string>
 </resources>

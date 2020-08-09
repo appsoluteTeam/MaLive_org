@@ -122,6 +122,7 @@ public class CommunityFragment extends Fragment {
                 bundle.putString("Title", item.getTitle());
                 bundle.putString("Content", item.getContent());
                 bundle.putString("Date", item.getDate());
+                bundle.putString("Category", item.getCategory());
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
