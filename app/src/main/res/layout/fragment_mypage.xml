@@ -35,7 +35,7 @@
         tools:srcCompat="@android:mipmap/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/rep_title"
+        android:id="@+id/nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -57,10 +57,13 @@
     <Button
         android:id="@+id/btnMyPage_informationSet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="31dp"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:text="@string/mypage_information_set" />
+        android:background="@drawable/mint_rectangle"
+        android:onClick="onClick"
+        android:text="@string/mypage_information_set"
+        android:textColor="@android:color/white" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -85,21 +88,23 @@
 
                 <Button
                     android:id="@+id/btnMyPage_title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="50dp"
                     android:layout_weight="1"
-                    android:onClick="onClick"
-                    android:text="칭호" />
+                    android:background="@drawable/title_total_icon"
+                    android:onClick="onClick" />
 
                 <Button
                     android:id="@+id/btnMyPage_pay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginRight="50dp"
                     android:layout_weight="1"
-                    android:onClick="onClick"
-                    android:text="결제" />
+                    android:background="@drawable/pay_total_icon"
+                    android:onClick="onClick" />
             </LinearLayout>
 
             <LinearLayout
@@ -110,21 +115,23 @@
 
                 <Button
                     android:id="@+id/btnMyPage_active"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="50dp"
                     android:layout_weight="1"
-                    android:onClick="onClick"
-                    android:text="활동" />
+                    android:background="@drawable/active_total_icon"
+                    android:onClick="onClick" />
 
                 <Button
                     android:id="@+id/btnMyPage_friend"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginRight="50dp"
                     android:layout_weight="1"
-                    android:onClick="onClick"
-                    android:text="친구" />
+                    android:background="@drawable/friend_total_icon"
+                    android:onClick="onClick" />
             </LinearLayout>
         </LinearLayout>
 

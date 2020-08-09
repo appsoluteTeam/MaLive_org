@@ -28,15 +28,15 @@ public class TODOtitleFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
 
-    private String[] cleanTitleList,washTitleList,dishTitleList,trashTitleList;
+    private String[] cleanTitleList,washTitleList,trashTitleList,todoTitleList;
     private String[] totalTitleList;
     private ConstraintLayout[] titleList;
     private ConstraintLayout cleanTitle1,cleanTitle2,cleanTitle3,cleanTitle4;
     private ConstraintLayout washTitle1,washTitle2,washTitle3,washTitle4;
-    private ConstraintLayout dishTitle1,dishTitle2,dishTitle3,dishTitle4;
     private ConstraintLayout trashTitle1,trashTitle2,trashTitle3,trashTitle4;
+    private ConstraintLayout todoTitle1,todoTitle2,todoTitle3;
 
-    private boolean[] clean,wash,dish,trash; //각 목표 달성여부 우선은 다 false로 둠
+    private boolean[] clean,wash,trash,todo; //각 목표 달성여부 우선은 다 false로 둠
     private String repTitle;
     private Boolean isedit,isNull=false,editFinish;
     public static boolean isClicked = false;
@@ -59,7 +59,6 @@ public class TODOtitleFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            Log.d("rightttt", "right");
             repTitle = getArguments().getString("title");
             isedit = getArguments().getBoolean("edit");
             editFinish = getArguments().getBoolean("editFinish");
@@ -77,18 +76,18 @@ public class TODOtitleFragment extends Fragment {
 
         cleanTitleList = new String[]{"인간돌돌이", "인간빗자루", "인간청소기", "50회는아직안정함"};
         washTitleList = new String[]{"다듬이", "빨래판", "드럼세탁기", "스타일러"};
-        dishTitleList = new String[]{"수세미","퐁퐁","고무장갑","식기세척기"};
         trashTitleList = new String[]{"5L","10L","50L","100L"};
+        todoTitleList = new String[]{"todo1","todo2","todo3"};
 
         totalTitleList = new String[]{"인간돌돌이", "인간빗자루", "인간청소기", "50회는아직안정함","다듬이", "빨래판", "드럼세탁기", "스타일러",
-                "수세미","퐁퐁","고무장갑","식기세척기","5L","10L","50L","100L"};
+               "5L","10L","50L","100L","todo1","todo2","todo3"};
 
         clean = new boolean[]{true,false,false,true};
         wash = new boolean[]{false,false,true,false};
-        dish = new boolean[]{false,true,false,false};
         trash = new boolean[]{true,false,false,false};
+        todo = new boolean[]{false,true,false};
 
-        boolean[] islocked = new boolean[]{true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,false};
+        boolean[] islocked = new boolean[]{true,false,false,true,false,false,true,false,true,false,false,false,false,true,false};
 
         //setSelected는 default가 false -> 흰색 배경
         //true -> 회색배경
@@ -102,24 +101,20 @@ public class TODOtitleFragment extends Fragment {
         washTitle3 = v.findViewById(R.id.washTitle3);
         washTitle4 = v.findViewById(R.id.washTitle4);
 
-        dishTitle1 = v.findViewById(R.id.dishTitle1);
-        dishTitle2 = v.findViewById(R.id.dishTitle2);
-        dishTitle3 = v.findViewById(R.id.dishTitle3);
-        dishTitle4 = v.findViewById(R.id.dishTitle4);
-
         trashTitle1 = v.findViewById(R.id.trashTitle1);
         trashTitle2 = v.findViewById(R.id.trashTitle2);
         trashTitle3 = v.findViewById(R.id.trashTitle3);
         trashTitle4 = v.findViewById(R.id.trashTitle4);
 
+        todoTitle1 = v.findViewById(R.id.todoTitle1);
+        todoTitle2 = v.findViewById(R.id.todoTitle2);
+        todoTitle3 = v.findViewById(R.id.todoTitle3);
 
-        titleList = new ConstraintLayout[]{cleanTitle1,cleanTitle2,cleanTitle3,cleanTitle4,washTitle1,washTitle2,washTitle3,washTitle4,
-                dishTitle1,dishTitle2,dishTitle3,dishTitle4,trashTitle1,trashTitle2,trashTitle3,trashTitle4};
+       titleList = new ConstraintLayout[]{cleanTitle1,cleanTitle2,cleanTitle3,cleanTitle4,washTitle1,washTitle2,washTitle3,washTitle4,
+               trashTitle1,trashTitle2,trashTitle3,trashTitle4,todoTitle1,todoTitle2,todoTitle3};
 
 
         if(isedit == true) {
-            //refresh();
-            Log.d("editISTRUE","editTRUE");
             if(category == 1) {//TODO category 일때
                 for (int i = 0; i < titleList.length; i++) {
                     if (i == repIndex) {//대표칭호 선택되어있던것만 흰바탕
@@ -162,20 +157,29 @@ public class TODOtitleFragment extends Fragment {
 
         TextView[] cleanTitleIdList = new TextView[]{cleanTitle1.findViewById(R.id.name),cleanTitle2.findViewById(R.id.name),cleanTitle3.findViewById(R.id.name),cleanTitle4.findViewById(R.id.name)};
         TextView[] washTitleIdList = new TextView[]{washTitle1.findViewById(R.id.name),washTitle2.findViewById(R.id.name),washTitle3.findViewById(R.id.name),washTitle4.findViewById(R.id.name)};
-        TextView[] dishTitleIdList = new TextView[]{dishTitle1.findViewById(R.id.name),dishTitle2.findViewById(R.id.name),dishTitle3.findViewById(R.id.name),dishTitle4.findViewById(R.id.name)};
         TextView[] trashTitleIdList = new TextView[]{trashTitle1.findViewById(R.id.name),trashTitle2.findViewById(R.id.name),trashTitle3.findViewById(R.id.name),trashTitle4.findViewById(R.id.name)};
+        TextView[] todoTitleIdList = new TextView[]{todoTitle1.findViewById(R.id.name),todoTitle2.findViewById(R.id.name),todoTitle3.findViewById(R.id.name)};
+
 
         ImageView[] cleanImageIdList = new ImageView[]{cleanTitle1.findViewById(R.id.image),cleanTitle2.findViewById(R.id.image),cleanTitle3.findViewById(R.id.image),cleanTitle4.findViewById(R.id.image)};
         ImageView[] washImageIdList = new ImageView[]{washTitle1.findViewById(R.id.image),washTitle2.findViewById(R.id.image),washTitle3.findViewById(R.id.image),washTitle4.findViewById(R.id.image)};
-        ImageView[] dishImageIdList = new ImageView[]{dishTitle1.findViewById(R.id.image),dishTitle2.findViewById(R.id.image),dishTitle3.findViewById(R.id.image),dishTitle4.findViewById(R.id.image)};
         ImageView[] trashImageIdList = new ImageView[]{trashTitle1.findViewById(R.id.image),trashTitle2.findViewById(R.id.image),trashTitle3.findViewById(R.id.image),trashTitle4.findViewById(R.id.image)};
+        ImageView[] todoImageIdList = new ImageView[]{todoTitle1.findViewById(R.id.image),todoTitle2.findViewById(R.id.image),todoTitle3.findViewById(R.id.image)};
 
-
+        //TODO: 아이콘 적용
         Drawable drawable = getResources().getDrawable(R.drawable.lock);
+        //각 칭호 아이콘
+        Drawable[] cleanImage = new Drawable[]{getResources().getDrawable(R.drawable.clean1),getResources().getDrawable(R.drawable.clean2),getResources().getDrawable(R.drawable.clean3),getResources().getDrawable(R.drawable.clean4)};
+        Drawable[] washImage = new Drawable[]{getResources().getDrawable(R.drawable.wash1),getResources().getDrawable(R.drawable.wash2),getResources().getDrawable(R.drawable.wash3),getResources().getDrawable(R.drawable.wash4)};
+        Drawable[] trashImage = new Drawable[]{getResources().getDrawable(R.drawable.trash1),getResources().getDrawable(R.drawable.trash2),getResources().getDrawable(R.drawable.trash3),getResources().getDrawable(R.drawable.trash4)};
+        Drawable[] todoImage = new Drawable[]{getResources().getDrawable(R.drawable.todo1),getResources().getDrawable(R.drawable.todo2),getResources().getDrawable(R.drawable.todo3)};
+
 
         for(int i = 0; i < clean.length; i++){
+
             if(clean[i] == true){//목표 달성할 시 칭호 부여
                 cleanTitleIdList[i].setText(cleanTitleList[i]);
+                cleanImageIdList[i].setImageDrawable(cleanImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 cleanTitleIdList[i].setText("");
                 cleanImageIdList[i].setImageDrawable(drawable);
@@ -185,24 +189,28 @@ public class TODOtitleFragment extends Fragment {
         for(int i = 0; i < wash.length; i++){
             if(wash[i] == true){
                 washTitleIdList[i].setText(washTitleList[i]);
+                washImageIdList[i].setImageDrawable(washImage[i]);
             }else{
                 washTitleIdList[i].setText("");
                 washImageIdList[i].setImageDrawable(drawable);
             }
         }
 
-        for(int i = 0; i < dish.length; i++){
-            if(dish[i] == true){
-                dishTitleIdList[i].setText(dishTitleList[i]);
+        for(int i = 0; i < todo.length; i++){
+            if(todo[i] == true){
+                todoTitleIdList[i].setText(todoTitleList[i]);
+                todoImageIdList[i].setImageDrawable(todoImage[i]);
             }else{
-                dishTitleIdList[i].setText("");
-                dishImageIdList[i].setImageDrawable(drawable);
+                todoTitleIdList[i].setText("");
+                todoImageIdList[i].setImageDrawable(drawable);
             }
         }
+
 
         for(int i = 0; i < trash.length; i++) {
             if (trash[i] == true) {
                 trashTitleIdList[i].setText(trashTitleList[i]);
+                trashImageIdList[i].setImageDrawable(trashImage[i]);
             } else {
                 trashTitleIdList[i].setText("");
                 trashImageIdList[i].setImageDrawable(drawable);
@@ -216,14 +224,4 @@ public class TODOtitleFragment extends Fragment {
         dataListener = null;
     }
 
-    /*
-    public void saveTODOIsLocked(){
-        if(firebaseAuth.getCurrentUser() != null){
-            Map<String, Object> myPageTitle = new HashMap<>();
-            Map<String, Object> TODO = new HashMap<>();
-            myPageTitle.put()
-        }
-    }
-    */
-    //TitleFragment로 보내고 모아서 한번에 커스텀클래스 만든 뒤 저장해주기?
 }
