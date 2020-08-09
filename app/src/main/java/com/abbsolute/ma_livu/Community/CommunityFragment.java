@@ -76,7 +76,10 @@ public class CommunityFragment extends Fragment {
                         callRecycler(2);
                         break;
                     case R.id.btn_commu_write: // 작성하기 아이콘 클릭
-                        ((HomeActivity)getActivity()).setFragment(51);
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        Commu_WriteFragment Commu_WriteFragment = new Commu_WriteFragment();
+                        transaction.replace(R.id.main_frame, Commu_WriteFragment);
+                        transaction.commit();
                         break;
                     case R.id.btn_back: // 뒤로가기 아이콘 클릭
                         ((HomeActivity)getActivity()).setFragment(1);
