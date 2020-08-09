@@ -132,6 +132,7 @@ public class Commu_WriteFragment extends Fragment {
             }
         });
         return view;
+
     }
 
 }

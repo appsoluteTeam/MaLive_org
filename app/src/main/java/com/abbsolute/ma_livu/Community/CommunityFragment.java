@@ -46,8 +46,8 @@ public class CommunityFragment extends Fragment {
     private ArrayList<bringData> arrayList;
 
     private String title;
-    private String writer;
     private String content;
+    private String category;
     private String date;
 
     @Nullable
@@ -155,9 +155,9 @@ public class CommunityFragment extends Fragment {
                                         for(DocumentSnapshot snapshot : task.getResult()){
                                             Map<String,Object> shot = snapshot.getData();
                                             String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                            String title = String.valueOf(shot.get(FirebaseID.title));
-                                            String content =String.valueOf(shot.get(FirebaseID.content));
-                                            String category = String.valueOf(shot.get(FirebaseID.category));
+                                            title = String.valueOf(shot.get(FirebaseID.title));
+                                            content =String.valueOf(shot.get(FirebaseID.content));
+                                            category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
                          
                                             bringData data = new bringData(documentID,title,category,content,date);
@@ -181,9 +181,9 @@ public class CommunityFragment extends Fragment {
                                         for(DocumentSnapshot snapshot : task.getResult()){
                                             Map<String,Object> shot = snapshot.getData();
                                             String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                            String title = String.valueOf(shot.get(FirebaseID.title));
-                                            String content =String.valueOf(shot.get(FirebaseID.content));
-                                            String category = String.valueOf(shot.get(FirebaseID.category));
+                                            title = String.valueOf(shot.get(FirebaseID.title));
+                                            content =String.valueOf(shot.get(FirebaseID.content));
+                                            category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
                          
                                             bringData data = new bringData(documentID,title,category,content,date);
@@ -208,9 +208,9 @@ public class CommunityFragment extends Fragment {
                                         for(DocumentSnapshot snapshot : task.getResult()){
                                             Map<String,Object> shot = snapshot.getData();
                                             String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                            String title = String.valueOf(shot.get(FirebaseID.title));
-                                            String content =String.valueOf(shot.get(FirebaseID.content));
-                                            String category = String.valueOf(shot.get(FirebaseID.category));
+                                            title = String.valueOf(shot.get(FirebaseID.title));
+                                            content =String.valueOf(shot.get(FirebaseID.content));
+                                            category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
                          
                                             bringData data = new bringData(documentID,title,category,content,date);
