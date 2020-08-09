@@ -1,13 +1,20 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -25,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.w3c.dom.Text;
@@ -37,18 +45,28 @@ public class Commu_WriteFragment extends Fragment {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); // 작성자UID를 가져오기 위해서 선언
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // 파이어스토어를 사용하기 위해서 선언
 
+    //카테고리 클릭
     private TextView category_eat;
     private TextView category_do;
     private TextView category_how;
     private String category;
+
+    //작성한 글
     private EditText et_title;
     private EditText et_content;
 
-    private Button btn_commu_upload;
+    //버튼
+    private TextView btn_commu_upload;
+    private ImageButton btn_back;
+    private ImageButton btn_image;
 
     //날짜 받아오기
     private SimpleDateFormat dateform;
     private Calendar date;
+
+    //사진
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
+    private ImageView image_test;
 
     @Nullable
     @Override
@@ -62,36 +80,37 @@ public class Commu_WriteFragment extends Fragment {
         category_do=(TextView)view.findViewById(R.id.category_do);
         category_how=(TextView)view.findViewById(R.id.category_how);
 
+
         //카테고리 선택되었을 때 클릭리스너
-        category_eat.setOnClickListener(new View.OnClickListener() {
+        TextView.OnClickListener categoryListener = new TextView.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                category ="what_eat";
-                category_eat.setBackgroundResource(R.drawable.categort_select);
-                category_do.setBackgroundResource(R.drawable.categort_basic);
-                category_how.setBackgroundResource(R.drawable.categort_basic);
+            public void onClick(View v){
+                switch (v.getId()) {
+                    case R.id.category_eat: //뭐 먹지 카테고리 선택
+                        category = "what_eat";
+                        category_eat.setBackgroundResource(R.drawable.categort_select);
+                        category_do.setBackgroundResource(R.drawable.categort_basic);
+                        category_how.setBackgroundResource(R.drawable.categort_basic);
+                        break;
+                    case R.id.category_do: //뭐 하지 카테고리 선택
+                        category = "what_do";
+                        category_do.setBackgroundResource(R.drawable.categort_select);
+                        category_eat.setBackgroundResource(R.drawable.categort_basic);
+                        category_how.setBackgroundResource(R.drawable.categort_basic);
+                        break;
+                    case R.id.category_how: //어떻게 하지 카테고리 선택
+                        category = "how_do";
+                        category_how.setBackgroundResource(R.drawable.categort_select);
+                        category_eat.setBackgroundResource(R.drawable.categort_basic);
+                        category_do.setBackgroundResource(R.drawable.categort_basic);
+                        break;
+                }
+            }
+        };
 
-            }
-        });
-        category_do.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                category ="what_do";
-                category_do.setBackgroundResource(R.drawable.categort_select);
-                category_eat.setBackgroundResource(R.drawable.categort_basic);
-                category_how.setBackgroundResource(R.drawable.categort_basic);
-
-            }
-        });
-        category_how.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                category ="how_do";
-                category_how.setBackgroundResource(R.drawable.categort_select);
-                category_do.setBackgroundResource(R.drawable.categort_basic);
-                category_eat.setBackgroundResource(R.drawable.categort_basic);
-            }
-        });
+        category_eat.setOnClickListener(categoryListener);
+        category_do.setOnClickListener(categoryListener);
+        category_how.setOnClickListener(categoryListener);
 
 
         //저장하기 버튼을 눌렀을 때 파이어스토어로 저장
@@ -121,7 +140,51 @@ public class Commu_WriteFragment extends Fragment {
                 ((HomeActivity)getActivity()).setFragment(50);
             }
         });
+
+        //사진 업로드드 눌렀을 때
+       btn_image=(ImageButton)view.findViewById(R.id.btn_image);
+        btn_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+                startActivityForResult(intent,
+                        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+        //뒤로가기 버튼 눌렀을 때
+        btn_back=(ImageButton)view.findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).setFragment(50);
+            }
+        });
         return view;
+
     }
 
+
+    //사진 올리기
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                Bitmap bmp = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
+                        byteArray.length);
+
+                image_test=(ImageView)view.findViewById(R.id.image_test);
+                image_test.setImageBitmap(bitmap);
+            }
+        }
+    }
 }

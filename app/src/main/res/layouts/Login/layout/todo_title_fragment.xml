@@ -98,54 +98,6 @@
                 android:onClick="onClick" />
 
             <include
-                android:id="@+id/dishTitle1"
-                layout="@layout/titile_icon_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:onClick="onClick" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0">
-
-            <include
-                android:id="@+id/dishTitle2"
-                layout="@layout/titile_icon_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:onClick="onClick" />
-
-            <include
-                android:id="@+id/dishTitle3"
-                layout="@layout/titile_icon_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:onClick="onClick" />
-
-            <include
-                android:id="@+id/dishTitle4"
-                layout="@layout/titile_icon_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:onClick="onClick" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0">
-
-            <include
                 android:id="@+id/trashTitle1"
                 layout="@layout/titile_icon_name"
                 android:layout_width="wrap_content"
@@ -153,6 +105,12 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:onClick="onClick" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0">
 
             <include
                 android:id="@+id/trashTitle2"
@@ -167,7 +125,16 @@
                 android:id="@+id/trashTitle3"
                 layout="@layout/titile_icon_name"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
+
+            <include
+                android:id="@+id/trashTitle4"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:onClick="onClick" />
@@ -179,7 +146,7 @@
             android:layout_weight="0">
 
             <include
-                android:id="@+id/trashTitle4"
+                android:id="@+id/todoTitle1"
                 layout="@layout/titile_icon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -188,20 +155,22 @@
                 android:onClick="onClick" />
 
             <include
-                layout="@layout/titile_icon_name"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:visibility="invisible" />
-
-            <include
+                android:id="@+id/todoTitle2"
                 layout="@layout/titile_icon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:visibility="invisible" />
+                android:onClick="onClick" />
+
+            <include
+                android:id="@+id/todoTitle3"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
         </TableRow>
     </TableLayout>
 

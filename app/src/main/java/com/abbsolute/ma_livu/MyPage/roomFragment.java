@@ -48,7 +48,7 @@ public class roomFragment extends Fragment {
             repIndex = getArguments().getInt("repIndex");
             editFinish = getArguments().getBoolean("editFinish");
             category = getArguments().getInt("category");
-            Log.d("AT11","데이터전달완료");
+
         }
 
     }
@@ -70,10 +70,13 @@ public class roomFragment extends Fragment {
         ImageView[] roomImageIdList = new ImageView[]{roomTitle1.findViewById(R.id.image),roomTitle2.findViewById(R.id.image),roomTitle3.findViewById(R.id.image)};
 
         Drawable drawable = getResources().getDrawable(R.drawable.lock);
+       // Drawable[] roomImage = new Drawable[]{getResources().getDrawable(R.drawable.contest1),getResources().getDrawable(R.drawable.contest2),getResources().getDrawable(R.drawable.contest3)};
+
 
         for(int i = 0; i < titleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
                 roomTitleIdList[i].setText(roomTitleList[i]);
+              //  roomImageIdList[i].setImageDrawable(roomImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 roomTitleIdList[i].setText("");
                 roomImageIdList[i].setImageDrawable(drawable);

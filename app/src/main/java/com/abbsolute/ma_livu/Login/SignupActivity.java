@@ -40,9 +40,6 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseUser user;
 
-    //MyPage title fragment
-    private TitleFragment titleFragment;
-
     //
     private EditText email_sign;
     private TextView tv_top;
@@ -73,8 +70,6 @@ public class SignupActivity extends AppCompatActivity {
         btn_next1 =(Button) findViewById(R.id.btn_next1);
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
         tv_top=(TextView)findViewById(R.id.tv_top);
-        titleFragment = new TitleFragment();
-
 
         //다음 버튼을 눌렀을 때
         btn_next1.setOnClickListener(new View.OnClickListener() {
@@ -199,8 +194,6 @@ public class SignupActivity extends AppCompatActivity {
                             // 회원가입 성공
                             Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
                             intent.putExtra("email",email);
-
-                            //HomeActivity로 email 전달? 아니면 아예 titleFragment로 전달
 
 
                             startActivity(intent);
