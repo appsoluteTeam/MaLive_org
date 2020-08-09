@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +18,8 @@ import com.abbsolute.ma_livu.R;
 public class Hot_CommunityFragment extends Fragment {
 
     private View view;
-    private Button btn_text_more;
+    private Button btn_more_text;
+    private ImageButton btn_commu_write;
 
     @Nullable
     @Override
@@ -25,13 +27,22 @@ public class Hot_CommunityFragment extends Fragment {
         view = inflater.inflate(R.layout.hot_community_fragment,container,false);
 
         //커뮤니티에서 더 많은 글 버튼을 눌렀을 때
-        btn_text_more = (Button)view.findViewById(R.id.btn_more_text);
-        btn_text_more.setOnClickListener(new View.OnClickListener() {
+        btn_more_text=view.findViewById(R.id.btn_more_text);
+        btn_more_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((HomeActivity)getActivity()).setFragment(50);
             }
         });
+
+        btn_commu_write=(ImageButton)view.findViewById(R.id.btn_commu_write);
+        btn_commu_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).setFragment(51);
+            }
+        });
+
         return view;
     }
 }
