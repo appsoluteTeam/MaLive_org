@@ -47,7 +47,6 @@ public class todayFragment extends Fragment {
             repIndex = getArguments().getInt("repIndex");
             editFinish = getArguments().getBoolean("editFinish");
             category = getArguments().getInt("category");
-            Log.d("AT11","데이터전달완료");
         }
 
     }

@@ -50,7 +50,6 @@ public class attendanceFragment extends Fragment {
             repIndex = getArguments().getInt("repIndex");
             editFinish = getArguments().getBoolean("editFinish");
             category = getArguments().getInt("category");
-            Log.d("AT11","데이터전달완료");
         }
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,9 +68,12 @@ public class attendanceFragment extends Fragment {
 
         Drawable drawable = getResources().getDrawable(R.drawable.lock);
 
+        Drawable[] attendanceImage = new Drawable[]{getResources().getDrawable(R.drawable.attendance1),getResources().getDrawable(R.drawable.attendance2),getResources().getDrawable(R.drawable.attendance3)};
+
         for(int i = 0; i < attendanceTitleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
                 atTitleIdList[i].setText(attendanceTitleList[i]);
+                atImageIdList[i].setImageDrawable(attendanceImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 atTitleIdList[i].setText("");
                 atImageIdList[i].setImageDrawable(drawable);
@@ -79,7 +81,6 @@ public class attendanceFragment extends Fragment {
         }
 
         if(isedit == true) {
-            Log.d("ATeditISTRUE","editTRUE");
 
             if(category == 2) {//TODO category 일때
                 for (int i = 0; i < titleList.length; i++) {
