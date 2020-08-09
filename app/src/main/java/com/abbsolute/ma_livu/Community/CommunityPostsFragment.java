@@ -13,18 +13,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CommunityPostsFragment extends Fragment {
+    //프래그먼트 전환 변수
+    FragmentTransaction transaction;
 
     // 값 받아오는 변수들
     private String title;
     private String writer;
     private String content;
     private String date;
+    private String category;
 
     private TextView commu_title;
     private TextView commu_writer;
@@ -54,6 +58,7 @@ public class CommunityPostsFragment extends Fragment {
             writer = getArguments().getString("Writer");
             content = getArguments().getString("Content");
             date = getArguments().getString("Date");
+            category = getArguments().getString("Category");
         }
 
         commu_title.setText(title);
@@ -65,7 +70,7 @@ public class CommunityPostsFragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityFragment communityFragment = new CommunityFragment();
 
                 // 버튼 누르면 화면 전환
@@ -78,7 +83,20 @@ public class CommunityPostsFragment extends Fragment {
         btn_commu_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // CommunityCommentFragment로 데이터 넘기기
+                Bundle bundle = new Bundle();
+                bundle.putString("Category", category);
+                bundle.putString("Title", title);
+                bundle.putString("Content", content);
+                bundle.putString("Date", date);
 
+                transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                CommunityCommentFragment communityCommentFragment = new CommunityCommentFragment();
+                communityCommentFragment.setArguments(bundle);
+
+                // 버튼 누르면 화면 전환
+                transaction.replace(R.id.main_frame, communityCommentFragment);
+                transaction.commit();
             }
         });
 

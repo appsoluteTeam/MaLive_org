@@ -37,6 +37,7 @@ public class GuestBookWriteFragment extends Fragment {
     private ArrayList<CommentItem> arrayList;
 
     private EditText Comment;
+    private Button btn_back;
     private Button btn_insert;
 
     // 값 받아오는 변수들
@@ -52,11 +53,23 @@ public class GuestBookWriteFragment extends Fragment {
 
         Comment = view.findViewById(R.id.WriteComment);
         btn_insert = view.findViewById(R.id.btn_insert);
+        btn_back = view.findViewById(R.id.btn_back);
 
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // '뒤로가기' 버튼 누를 시 화면 전환
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                GuestBookFragment guestBookFragment = new GuestBookFragment();
+
+                transaction.replace(R.id.main_frame, guestBookFragment);
+                transaction.commit();
+            }
+        });
+
+        // 게시글 Count 받아오기
         if(getArguments() != null){
-            // 게시글 Count 받아오기
             CommentCount = getArguments().getInt("CommentCount");
-
         }
 
         // 글 작성 시 DB에 데이터 추가하기

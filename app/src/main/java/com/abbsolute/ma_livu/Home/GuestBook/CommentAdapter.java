@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,14 +19,13 @@ import java.util.ArrayList;
 
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private ArrayList<CommentItem> arrayList;
     private OnItemClick callback;
 
 
     public CommentAdapter(ArrayList<CommentItem> arrayList, OnItemClick listener) {
-            this.arrayList = arrayList;
-            this.callback = listener;
+        this.arrayList = arrayList;
+        this.callback = listener;
     }
 
     @NonNull
@@ -96,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         Button btn_delete;
         Button btn_report;
-        Button btn_like;
+        ImageButton btn_like;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,11 +109,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             this.btn_delete = itemView.findViewById(R.id.btn_delete);
             this.btn_report = itemView.findViewById(R.id.btn_report);
             this.btn_like = itemView.findViewById(R.id.btn_like);
+
         }
     }
-
-//    public void addItem(CommentItem item){
-//        arrayList.add(item);
-//    }
 }
 

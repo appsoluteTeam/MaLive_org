@@ -4,6 +4,14 @@
     <string name="Community">커뮤니티</string>
     <string name="commu_write">글쓰기</string>
     <string name="mypage_information_set">정보 설정</string>
+
+    // 방명록 String
+    <string name="guestBook">방명록</string>
+    <string name="guestBookWrite">방명록 작성</string>
+
+    // 커뮤니티 String
+    <string name="communityComment">댓글</string>
+
     <string name="mypage_title">칭호</string>
     <string name="account">계정</string>
     <string name="changeNickname">닉네임 변경</string>
