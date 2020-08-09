@@ -47,7 +47,6 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-    private GuestBookWriteFragment guestBookWriteFragment;
 
 
     private RecyclerView recyclerView;
@@ -88,6 +87,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
         btn_back = view.findViewById(R.id.btn_back);
         btn_guestbook_write = (Button)view.findViewById(R.id.btn_guestbook_write);
 
+        // '뒤로가기' 버튼 누를 시
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -67,8 +67,8 @@ public class GuestBookWriteFragment extends Fragment {
             }
         });
 
+        // 게시글 Count 받아오기
         if(getArguments() != null){
-            // 게시글 Count 받아오기
             CommentCount = getArguments().getInt("CommentCount");
         }
 
