@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,7 +26,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -39,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private GoogleApiClient googleApiClient; //구글API클라이언트
     private static final int REQ_SIGN_GOOGLE = 100; //구글 로그인 결과 코드
 
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +95,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onClick(View v) {
                 Intent intent =Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
                 startActivityForResult(intent,REQ_SIGN_GOOGLE);
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));//다음화면이 안나와서 임시로 함
-
             }
         });
     }
@@ -98,8 +105,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if(requestCode == REQ_SIGN_GOOGLE){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if(result.isSuccess()){ //인증결과가 성공적 인지
-                GoogleSignInAccount account = result.getSignInAccount(); //account 는 구글 로그인 정보를 담고 있음
+                GoogleSignInAccount account = result.getSignInAccount(); //account는 구글 로그인 정보를 담고 있음
                 resultLogin(account); //로그인 결과값 출력하라는 메소드
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -113,10 +121,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) { //로그인 성공했을 때
                         if(task.isSuccessful()){
+                            if (firebaseAuth.getCurrentUser() != null){
+                                Map<String,Object> userMap = new HashMap<>();
+                                userMap.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
+                                userMap.put(FirebaseID.Email,account.getEmail());
+                                userMap.put(FirebaseID.Nickname,account.getDisplayName());
+                                String email=account.getEmail();
+                                firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
+                                finish();
+                            }
                             Toast.makeText(LoginActivity.this,"로그인 성공",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            intent.putExtra("nickname",account.getDisplayName());
-                            intent.putExtra("photo",String.valueOf(account.getPhotoUrl())); //특정 자료형은 String 상태로 변형
                             startActivity(intent);
                         }else{ //로그인 실패 했을 때
                             Toast.makeText(LoginActivity.this,"로그인 실패",Toast.LENGTH_SHORT).show();
