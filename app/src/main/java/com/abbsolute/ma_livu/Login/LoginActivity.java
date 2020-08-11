@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
@@ -30,7 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private Button btn_email_login;
-    private Button btn_signup;
+    private TextView btn_signup;
 
     //구글 로그인에 필요한 변수들
     private SignInButton btn_google; //구글 로그인 버튼
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         //회원가입 버튼을 눌렀을 때
-        btn_signup =(Button)findViewById(R.id.btn_signup);
+        btn_signup =(TextView)findViewById(R.id.btn_signup);
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,8 +102,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 resultLogin(account); //로그인 결과값 출력하라는 메소드
             }
         }
-
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -116,10 +115,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         if(task.isSuccessful()){
                             Toast.makeText(LoginActivity.this,"로그인 성공",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-
                             intent.putExtra("nickname",account.getDisplayName());
                             intent.putExtra("photo",String.valueOf(account.getPhotoUrl())); //특정 자료형은 String 상태로 변형
-
                             startActivity(intent);
                         }else{ //로그인 실패 했을 때
                             Toast.makeText(LoginActivity.this,"로그인 실패",Toast.LENGTH_SHORT).show();
