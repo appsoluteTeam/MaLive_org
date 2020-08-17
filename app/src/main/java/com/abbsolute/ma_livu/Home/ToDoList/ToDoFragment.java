@@ -190,34 +190,54 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                             if (cnt >= 1)
                                                 cnt--;
                                             count = Integer.toString(cnt);
+                                            if(position==0){
+                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
+                                                        .delete()
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.w(TAG, "Error deleting document", e);
+                                                            }
+                                                        });
+
+                                            }else{
+                                                Map<String, Object> updates = new HashMap<>();
+                                                int moveIdx = position + 1;
+                                                //ex) 2번 지우면 3->2
+                                                Map<String, Object> data = new HashMap<>();
+                                                content = (String) snapshot.getData().get("contents" + moveIdx);
+                                                detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
+                                                dates = (String) snapshot.getData().get("dates" + moveIdx);
+                                                dDay = (String) snapshot.getData().get("dDates" + moveIdx);
+                                                colors = (String) snapshot.getData().get("color" + moveIdx);
+                                                data.put("contents" + position, content);
+                                                data.put("detailContents" + position, detailContent);
+                                                data.put("dates" + position, dates);
+                                                data.put("dDates" + position, dDay);
+                                                data.put("color" + position, colors);
+                                                data.put("Count", count);
+                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
+                                                ////
+                                                updates.put("contents" + moveIdx, FieldValue.delete());
+                                                updates.put("detailContents" + moveIdx, FieldValue.delete());
+                                                updates.put("dates" + moveIdx, FieldValue.delete());
+                                                updates.put("dDates" + moveIdx, FieldValue.delete());
+                                                updates.put("color" + moveIdx, FieldValue.delete());
+                                                updates.put("Count", count);
+                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
+                                                ////
+                                                if (!count.equals("0"))
+                                                    refresh();
+                                            }
                                         }
-                                        Map<String, Object> updates = new HashMap<>();
-                                        int moveIdx = position + 1;
-                                        //ex) 2번 지우면 3->2
-                                        Map<String, Object> data = new HashMap<>();
-                                        content = (String) snapshot.getData().get("contents" + moveIdx);
-                                        detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
-                                        dates = (String) snapshot.getData().get("dates" + moveIdx);
-                                        dDay = (String) snapshot.getData().get("dDates" + moveIdx);
-                                        colors = (String) snapshot.getData().get("color" + moveIdx);
-                                        data.put("contents" + position, content);
-                                        data.put("detailContents" + position, detailContent);
-                                        data.put("dates" + position, dates);
-                                        data.put("dDates" + position, dDay);
-                                        data.put("color" + position, colors);
-                                        data.put("Count", count);
-                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
-                                        ////
-                                        updates.put("contents" + moveIdx, FieldValue.delete());
-                                        updates.put("detailContents" + moveIdx, FieldValue.delete());
-                                        updates.put("dates" + moveIdx, FieldValue.delete());
-                                        updates.put("dDates" + moveIdx, FieldValue.delete());
-                                        updates.put("color" + moveIdx, FieldValue.delete());
-                                        updates.put("Count", count);
-                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
-                                        ////
-                                        if (!count.equals("0"))
-                                            refresh();
+
+
                                         SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
                                         SharedPreferences.Editor editor = pfComplete.edit();
                                         editor.putBoolean("chk" + position, false);
@@ -244,50 +264,53 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                             if (cnt >= 1)
                                                                 cnt--;
                                                             count = Integer.toString(cnt);
+                                                            if(position==0){
+                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
+                                                                        .delete()
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Log.w(TAG, "Error deleting document", e);
+                                                                            }
+                                                                        });
+                                                            }else{
+                                                                Map<String, Object> updates = new HashMap<>();
+                                                                int moveIdx = position + 1;
+                                                                //ex) 2번 지우면 3->2
+                                                                Map<String, Object> data = new HashMap<>();
+                                                                content = (String) snapshot.getData().get("contents" + moveIdx);
+                                                                detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
+                                                                dates = (String) snapshot.getData().get("dates" + moveIdx);
+                                                                dDay = (String) snapshot.getData().get("dDates" + moveIdx);
+                                                                colors = (String) snapshot.getData().get("color" + moveIdx);
+                                                                data.put("contents" + position, content);
+                                                                data.put("detailContents" + position, detailContent);
+                                                                data.put("dates" + position, dates);
+                                                                data.put("dDates" + position, dDay);
+                                                                data.put("color" + position, colors);
+                                                                data.put("Count", count);
+                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
+                                                                ////
+                                                                updates.put("contents" + moveIdx, FieldValue.delete());
+                                                                updates.put("detailContents" + moveIdx, FieldValue.delete());
+                                                                updates.put("dates" + moveIdx, FieldValue.delete());
+                                                                updates.put("dDates" + moveIdx, FieldValue.delete());
+                                                                updates.put("color" + moveIdx, FieldValue.delete());
+                                                                updates.put("Count", count);
+                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
+                                                                ////
+                                                                if (!count.equals("0"))
+                                                                    refresh();
+                                                            }
                                                         }
-                                                        Map<String, Object> updates = new HashMap<>();
-                                                        int moveIdx = position + 1;
-                                                        //ex) 2번 지우면 3->2
-                                                        Map<String, Object> data = new HashMap<>();
-                                                        content = (String) snapshot.getData().get("contents" + moveIdx);
-                                                        detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
-                                                        dates = (String) snapshot.getData().get("dates" + moveIdx);
-                                                        dDay = (String) snapshot.getData().get("dDates" + moveIdx);
-                                                        colors = (String) snapshot.getData().get("color" + moveIdx);
-                                                        data.put("contents" + position, content);
-                                                        data.put("detailContents" + position, detailContent);
-                                                        data.put("dates" + position, dates);
-                                                        data.put("dDates" + position, dDay);
-                                                        data.put("color" + position, colors);
-                                                        data.put("Count", count);
-                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
-                                                        ////
-                                                        updates.put("contents" + moveIdx, FieldValue.delete());
-                                                        updates.put("detailContents" + moveIdx, FieldValue.delete());
-                                                        updates.put("dates" + moveIdx, FieldValue.delete());
-                                                        updates.put("dDates" + moveIdx, FieldValue.delete());
-                                                        updates.put("color" + moveIdx, FieldValue.delete());
-                                                        updates.put("Count", count);
-                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
-                                                        ////
-                                                        if (!count.equals("0"))
-                                                            refresh();
-                                                        if (count.equals("0")) {
-                                                            firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
-                                                                    .delete()
-                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                        @Override
-                                                                        public void onSuccess(Void aVoid) {
-                                                                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                                        }
-                                                                    })
-                                                                    .addOnFailureListener(new OnFailureListener() {
-                                                                        @Override
-                                                                        public void onFailure(@NonNull Exception e) {
-                                                                            Log.w(TAG, "Error deleting document", e);
-                                                                        }
-                                                                    });
-                                                        }
+
+
                                                     }
                                                 });
                                         builder.setNegativeButton("아니오",
