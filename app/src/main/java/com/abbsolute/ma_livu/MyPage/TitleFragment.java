@@ -245,7 +245,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             Map<String, Object> myPageTitle = new HashMap<>();
             //isLocked Custom Class 호출
             isLocked isLocked = new isLocked(1,TODOIslocked,attendanceIslocked,todayIslocked,roomIslocked,category,repTitleIndex);
-
             myPageRef.set(isLocked);
         }
     }

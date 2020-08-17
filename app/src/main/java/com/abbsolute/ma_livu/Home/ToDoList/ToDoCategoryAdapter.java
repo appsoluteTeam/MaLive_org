@@ -71,7 +71,6 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                     Toast.makeText(context, "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo", "청소");
                     editor.commit();
-
                 }//청소하기
                 else if(text.equals("빨래하기")){
                     Toast.makeText(context, "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
@@ -85,6 +84,11 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                     editor.commit();
 
                 }//쓰레기
+                else if(text.equals("기타")){
+                    Toast.makeText(context, "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
+                    editor.putString("toDo","기타");
+                    editor.commit();
+                }
 
             }
         });

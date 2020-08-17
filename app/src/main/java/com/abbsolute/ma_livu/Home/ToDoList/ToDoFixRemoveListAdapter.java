@@ -15,11 +15,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.deleteFixData;
 
@@ -35,12 +42,13 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
         protected TextView fixPeriodTextView;
         boolean flag=false;// 고정리스트 눌렀을때 회색->흰색, 흰색->회색
         protected ImageButton removingBtn;//삭제 버튼
+        protected LinearLayout removeLayout;//삭제리스트 레이아웃
         public ViewHolder(View v){
             super(v);
             fixToDoTextView=v.findViewById(R.id.todo_remove);
             fixPeriodTextView=v.findViewById(R.id.todo_date_remove);
             removingBtn=v.findViewById(R.id.removingButton);
-
+            removeLayout=v.findViewById(R.id.fix_remove_layout);
         }
     }
     public void getFixContext(Context context){
@@ -62,6 +70,10 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final ToDoFixInfo toDoFixInfo=arrayList.get(position);
+        String chkStr=toDoFixInfo.getFixPeriod();
+        if(chkStr==null){
+           holder.removeLayout.setVisibility(View.GONE);
+        }
         holder.fixToDoTextView.setText(toDoFixInfo.getFixToDo());//고정 할 일
         holder.fixPeriodTextView.setText(toDoFixInfo.getFixPeriod());//고정 할 일 주기
         holder.removingBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +83,32 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,arrayList.size());
                 deleteFixData("fixToDoInfo",toDoFixInfo.getFixToDo());
+                SharedPreferences sharedPreferences=context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                final String id=sharedPreferences.getString("email_id","");
+                firestore.collection(FirebaseID.ToDoLists).document(id+" FixToDo")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task!=null){
+                                    DocumentSnapshot snapshot=task.getResult();
+                                    if(snapshot.exists()){
+                                        String counts=(String)snapshot.getData().get("Count");
+                                        int cnt=Integer.parseInt(counts);
+                                        if(cnt>0)
+                                            cnt--;
+                                        counts=Integer.toString(cnt);
+                                        Map<String,Object> updates = new HashMap<>();
+                                        updates.put("period"+position, FieldValue.delete());
+                                        updates.put("todo"+position,FieldValue.delete());
+                                        updates.put("Count",counts);
+                                        firestore.collection(FirebaseID.ToDoLists).document(id+" FixToDo")
+                                                .update(updates);
+                                    }
+                                }
+                            }
+                        });
+
             }
         });
     }

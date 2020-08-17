@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Home.ToDoList;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
@@ -30,6 +40,7 @@ public class ToDoFixListRemoveFragment extends Fragment {
     ArrayList<ToDoFixInfo> toDoFixInfos=new ArrayList<>();
     ToDoFixRemoveListAdapter toDoFixRemoveListAdapter;
     //완료 버튼
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     TextView completeBtn;
     ////매주, 요일 설정
     NumberPicker setPeriodDay;
@@ -66,7 +77,35 @@ public class ToDoFixListRemoveFragment extends Fragment {
         toDoRemovingFixListView.setLayoutManager(linearLayoutManager1);
         //삭제할 리스트 어뎁터
         toDoFixRemoveListAdapter=new ToDoFixRemoveListAdapter();
-        toDoFixInfos=selectFixTodoInfo("fixToDoInfo");
+        toDoFixRemoveListAdapter.getFixContext(getContext());
+        SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        final String email=sharedPreferences.getString("email_id","");
+        final DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    Map<String, Object> data = new HashMap<>();
+                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
+                    DocumentSnapshot snapshot=task.getResult();
+                    if(snapshot.exists()){
+                        toDoFixInfos.clear();
+                        String cnt= (String) snapshot.getData().get("Count");
+                        int siz=Integer.parseInt(cnt);
+                        for(int i=0;i<=siz;i++){
+                            String period=(String)snapshot.getData().get("period"+i);
+                            String todo=(String)snapshot.getData().get("todo"+i);
+                            ToDoFixInfo toDoFixInfo=new ToDoFixInfo(period,todo);
+                            toDoFixInfos.add(toDoFixInfo);
+                        }
+                        toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
+                        toDoFixRemoveListAdapter.notifyDataSetChanged();
+                        toDoRemovingFixListView.setAdapter(toDoFixRemoveListAdapter);
+
+                    }
+                }
+            }
+        });
         toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
         toDoRemovingFixListView.setAdapter(toDoFixRemoveListAdapter);
         completeBtn=view.findViewById(R.id.complete);
