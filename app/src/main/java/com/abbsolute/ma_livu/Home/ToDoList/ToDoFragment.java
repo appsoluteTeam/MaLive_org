@@ -133,6 +133,13 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, dates, dDay, backgrounds);
                                         toDoInfos.add(toDoInfo);
                                     }
+                                    Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                                        @Override
+                                        public int compare(ToDoInfo o1, ToDoInfo o2) {
+                                            return o1.getdDay().compareTo(o2.getdDay());
+                                        }
+                                    };
+                                    Collections.sort(toDoInfos,comparator);
                                     toDoAdapter.setItem(toDoInfos);
 
                                 }
@@ -411,6 +418,16 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         int backgrounds = Integer.parseInt(color);
                                         ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, dates, dDay, backgrounds);
                                         toDoInfos.add(toDoInfo);
+                                    }
+                                    Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                                        @Override
+                                        public int compare(ToDoInfo o1, ToDoInfo o2) {
+                                            return o1.getdDay().compareTo(o2.getdDay());
+                                        }
+                                    };
+                                    Collections.sort(toDoInfos,comparator);
+                                    for(ToDoInfo toDoInfo : toDoInfos){
+                                        Toast.makeText(getContext(), ""+toDoInfo.getdDay(), Toast.LENGTH_SHORT).show();
                                     }
                                     toDoAdapter.setItem(toDoInfos);
 

@@ -88,6 +88,47 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        ToDoInfo toDoInfo=arrayList.get(position);
+        final String detailContent=toDoInfo.getDetailContent();
+        String dDay=toDoInfo.getdDay();
+        holder.Contents.setText(toDoInfo.getContent());
+        holder.ContentsDetail.setText(toDoInfo.getDetailContent());
+        if (dDay != null) {
+            holder.dDays.setText(dDay);
+        }
+        if (position >= 1) {
+            int pos = position;
+            if (pos > 0)
+                pos--;
+            String tmp = arrayList.get(pos).dDay;
+            ;
+            if (tmp.equals(dDay)) {
+                holder.dDays.setVisibility(View.GONE);
+            }
+        }
+        //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
+        try {
+            int backs=arrayList.get(position).color;
+            holder.Contents.setBackgroundResource(backs);
+            holder.ContentsDetail.setBackgroundResource(backs);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+        //수정
+        holder.Contents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String sendData = detailContent;
+                SharedPreferences sharedPreferences = context.getSharedPreferences("pref2", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("modify", true);
+                editor.putString("modifyContent", sendData);
+                editor.putInt("pos",position);
+                editor.commit();
+                onCallBack.onClick(3);//수정하기 이벤트처리
+
+            }
+        });
         SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
         final String id = sharedPreferences.getString("email_id", "");
         firestore.collection("ToDoList").document(id + " ToDo")
@@ -105,45 +146,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                                 holder.Contents.setText(content);
                                 holder.ContentsDetail.setText(detailContent);
                                 // holder.writeDates.setText(toDoInfo.getDates());
-                                if (dDay != null) {
-                                    holder.dDays.setText(dDay);
-                                }
-                                if (position >= 1) {
-                                    int pos = position;
-                                    if (pos > 0)
-                                        pos--;
-                                    String tmp = (String) snapshot.getData().get("dDates" + pos);
-                                    ;
-                                    if (tmp.equals(dDay)) {
-                                        holder.dDays.setVisibility(View.GONE);
-                                    }
-                                }
-                                //수정
-                                holder.Contents.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        String sendData = detailContent;
-                                        SharedPreferences sharedPreferences = context.getSharedPreferences("pref2", Activity.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putBoolean("modify", true);
-                                        editor.putString("modifyContent", sendData);
-                                        editor.putInt("pos",position);
-                                        editor.commit();
-                                        onCallBack.onClick(3);//수정하기 이벤트처리
 
-                                    }
-                                });
-                                //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
-                                try {
-                                    if(snapshot.exists()){
-                                        final String color = (String) snapshot.getData().get("color"+position);
-                                        int backs = Integer.parseInt(color);
-                                        holder.Contents.setBackgroundResource(backs);
-                                        holder.ContentsDetail.setBackgroundResource(backs);
-                                    }
-                                } catch (Resources.NotFoundException e) {
-                                    e.printStackTrace();
-                                }
+
                                 ///할 일 완료 체크여부 설정하기
 
                             }
