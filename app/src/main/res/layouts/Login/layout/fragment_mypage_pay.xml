@@ -18,6 +18,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/back_key"
+            android:onClick="onClick"
             android:visibility="visible" />
 
         <LinearLayout
@@ -143,7 +144,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btn_pay_sort"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_margin="20dp"
@@ -151,9 +152,81 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pay_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/layout_pay_sort"
+                android:layout_width="150dp"
+                android:layout_height="170dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background_white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_background_mint"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center"
+                        android:text="정렬 기준"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+                    <RadioButton
+                        android:id="@+id/pay_sort_deposit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="입금" />
+
+                    <RadioButton
+                        android:id="@+id/pay_sort_withdraw"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="출금" />
+
+                    <RadioButton
+                        android:id="@+id/pay_sort_total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="전체" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
     </LinearLayout>
 
 </LinearLayout>

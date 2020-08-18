@@ -77,7 +77,7 @@
             android:text="오늘의 글" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btn_pay_sort"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="70dp"

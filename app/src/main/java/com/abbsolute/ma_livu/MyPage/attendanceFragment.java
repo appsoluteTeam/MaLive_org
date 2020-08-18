@@ -66,7 +66,7 @@ public class attendanceFragment extends Fragment {
         TextView[] atTitleIdList = new TextView[]{atTitle1.findViewById(R.id.name),atTitle2.findViewById(R.id.name),atTitle3.findViewById(R.id.name)};
         ImageView[] atImageIdList = new ImageView[]{atTitle1.findViewById(R.id.image),atTitle2.findViewById(R.id.image),atTitle3.findViewById(R.id.image)};
 
-        Drawable drawable = getResources().getDrawable(R.drawable.lock);
+        Drawable lock_title = getResources().getDrawable(R.drawable.lock_title);
 
         Drawable[] attendanceImage = new Drawable[]{getResources().getDrawable(R.drawable.attendance1),getResources().getDrawable(R.drawable.attendance2),getResources().getDrawable(R.drawable.attendance3)};
 
@@ -76,7 +76,7 @@ public class attendanceFragment extends Fragment {
                 atImageIdList[i].setImageDrawable(attendanceImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 atTitleIdList[i].setText("");
-                atImageIdList[i].setImageDrawable(drawable);
+                atImageIdList[i].setImageDrawable(lock_title);
             }
         }
 

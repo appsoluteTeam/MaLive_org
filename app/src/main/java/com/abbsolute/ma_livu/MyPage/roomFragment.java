@@ -3,7 +3,6 @@ package com.abbsolute.ma_livu.MyPage;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,8 @@ public class roomFragment extends Fragment {
     private String[] roomTitleList;
     private boolean[] islocked;
     private String repTitle;
-    private ConstraintLayout roomTitle1,roomTitle2,roomTitle3;
-    private ConstraintLayout[] titleList;//todayTitle담음 현재는 한개지만 언제또 추가 될지 모르니깡
+    private ConstraintLayout roomTitle1,roomTitle2,roomTitle3,roomTitle4,roomTitle5,roomTitle6,roomTitle7;
+    private ConstraintLayout[] titleList;
     private boolean isedit,editFinish;
     private int repIndex,category;
     private static int a = 0;
@@ -56,30 +55,38 @@ public class roomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.room_title_fragment, container, false);
-        islocked = new boolean[]{true,false,false};
+        islocked = new boolean[]{true,false,false,true,true,true,false};
 
         roomTitle1 = v.findViewById(R.id.roomTitle1);
         roomTitle2 = v.findViewById(R.id.roomTitle2);
         roomTitle3 = v.findViewById(R.id.roomTitle3);
+        roomTitle4 = v.findViewById(R.id.roomTitle4);
+        roomTitle5 = v.findViewById(R.id.roomTitle5);
+        roomTitle6 = v.findViewById(R.id.roomTitle6);
+        roomTitle7 = v.findViewById(R.id.roomTitle7);
 
-        titleList = new ConstraintLayout[]{roomTitle1,roomTitle2,roomTitle3};
 
-        roomTitleList = new String[]{"미니멀리스트","살림부자","맥시멈리스트"};
+        titleList = new ConstraintLayout[]{roomTitle1,roomTitle2,roomTitle3,roomTitle4,roomTitle5,roomTitle6,roomTitle7};
 
-        TextView[] roomTitleIdList = new TextView[]{roomTitle1.findViewById(R.id.name),roomTitle2.findViewById(R.id.name),roomTitle3.findViewById(R.id.name)};
-        ImageView[] roomImageIdList = new ImageView[]{roomTitle1.findViewById(R.id.image),roomTitle2.findViewById(R.id.image),roomTitle3.findViewById(R.id.image)};
+        roomTitleList = new String[]{"금","은","동","미니멀리스트","살림부자","아직X","맥시멈리스트"};
 
-        Drawable drawable = getResources().getDrawable(R.drawable.lock);
-       // Drawable[] roomImage = new Drawable[]{getResources().getDrawable(R.drawable.contest1),getResources().getDrawable(R.drawable.contest2),getResources().getDrawable(R.drawable.contest3)};
+        TextView[] roomTitleIdList = new TextView[]{roomTitle1.findViewById(R.id.name),roomTitle2.findViewById(R.id.name),roomTitle3.findViewById(R.id.name),roomTitle4.findViewById(R.id.name),
+                roomTitle5.findViewById(R.id.name),roomTitle6.findViewById(R.id.name),roomTitle7.findViewById(R.id.name)};
+        ImageView[] roomImageIdList = new ImageView[]{roomTitle1.findViewById(R.id.image),roomTitle2.findViewById(R.id.image),roomTitle3.findViewById(R.id.image),roomTitle4.findViewById(R.id.image),
+                roomTitle5.findViewById(R.id.image),roomTitle6.findViewById(R.id.image),roomTitle7.findViewById(R.id.image)};
+
+        Drawable lock_title = getResources().getDrawable(R.drawable.lock_title);
+        Drawable[] roomImage = new Drawable[]{getResources().getDrawable(R.drawable.room1),getResources().getDrawable(R.drawable.room2),getResources().getDrawable(R.drawable.room3),getResources().getDrawable(R.drawable.room4),
+                getResources().getDrawable(R.drawable.room5),getResources().getDrawable(R.drawable.room6),getResources().getDrawable(R.drawable.room7)};
 
 
         for(int i = 0; i < titleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
                 roomTitleIdList[i].setText(roomTitleList[i]);
-              //  roomImageIdList[i].setImageDrawable(roomImage[i]);
+                roomImageIdList[i].setImageDrawable(roomImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 roomTitleIdList[i].setText("");
-                roomImageIdList[i].setImageDrawable(drawable);
+                roomImageIdList[i].setImageDrawable(lock_title);
             }
         }
 

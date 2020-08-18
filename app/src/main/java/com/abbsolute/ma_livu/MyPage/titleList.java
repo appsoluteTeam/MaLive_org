@@ -12,7 +12,7 @@ public class titleList {
            "5L","10L","50L","100L","todo1","todo2","todo3"};
     private String[] today_titleList = {"말리브 influencer"};
     private String[] attendance_titleList = {"말리브새내기","말리브정든내기","말리브껌딱지"};
-    private String[] room_titleList = {"미니멀리스트","살림부자","맥시멈리스트"};
+    private String[] room_titleList = {"금","은","동","미니멀리스트","살림부자","?","맥시멈리스트"};
 
   //  Drawable drawable = Resources.
     public String getTODO_titleList(int index) {

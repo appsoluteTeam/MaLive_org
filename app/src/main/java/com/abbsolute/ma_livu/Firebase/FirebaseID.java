@@ -62,5 +62,15 @@ public class FirebaseID {
     public static String reptitle = "reptitle";
     public static String titleCategory = "category";
     public static String index = "index";
+    public static String pay = "pay";
+    public static String amount = "amount";
+    public static String balance = "balance";
+    public static String pay_date = "date";
+    public static String inout = "inout";
+    public static String pay_title = "title";
+    public static String wash_complete = "빨래complete";
+    public static String clean_complete = "청소complete";
+    public static String trash_complete = "쓰레기complete";
+    public static String todo_complete = "투두complete";
 
 }
