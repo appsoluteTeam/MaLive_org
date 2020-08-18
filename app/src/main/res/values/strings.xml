@@ -11,6 +11,7 @@
 
     // 커뮤니티 String
     <string name="communityComment">댓글</string>
+    <string name="communityCommentComment">답글</string>
 
     <string name="mypage_title">칭호</string>
     <string name="account">계정</string>
