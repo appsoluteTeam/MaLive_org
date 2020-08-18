@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +23,7 @@ import android.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
@@ -33,7 +35,9 @@ import com.google.firebase.firestore.SetOptions;
 
 
 import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import org.w3c.dom.Text;
 import java.util.HashMap;
@@ -67,6 +71,10 @@ public class Commu_WriteFragment extends Fragment {
     //사진
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     private ImageView image_test;
+    public CommunityAdapter adapter;
+    private RecyclerView recycler_community;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<bringData> arrayList;
 
     @Nullable
     @Override
@@ -131,7 +139,7 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.title,et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content,et_content.getText().toString());
                     data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
-                  
+
                     // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
                             .collection("sub_Community").document(et_title.getText().toString())
@@ -142,11 +150,11 @@ public class Commu_WriteFragment extends Fragment {
         });
 
         //사진 업로드드 눌렀을 때
-       btn_image=(ImageButton)view.findViewById(R.id.btn_image);
+        btn_image=(ImageButton)view.findViewById(R.id.btn_image);
         btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
                 startActivityForResult(intent,
@@ -166,7 +174,6 @@ public class Commu_WriteFragment extends Fragment {
 
     }
 
-
     //사진 올리기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -174,6 +181,7 @@ public class Commu_WriteFragment extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
 
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
+                //bmp = ((BitmapDrawable) imgPreview.getDrawable()).getBitmap();
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);

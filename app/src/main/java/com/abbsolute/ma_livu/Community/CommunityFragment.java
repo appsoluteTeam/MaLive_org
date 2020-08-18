@@ -49,6 +49,7 @@ public class CommunityFragment extends Fragment {
     private String content;
     private String category;
     private String date;
+    private String writer;
 
     @Nullable
     @Override

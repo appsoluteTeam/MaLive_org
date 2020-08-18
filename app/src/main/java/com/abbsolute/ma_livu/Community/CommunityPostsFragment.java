@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,9 +34,8 @@ public class CommunityPostsFragment extends Fragment {
     private TextView commu_content;
     private TextView commu_category;
 
-
     private Button btn_back;
-    private Button btn_commu_comment;
+    private ImageButton btn_commu_comment;
 
     @Nullable
     @Override

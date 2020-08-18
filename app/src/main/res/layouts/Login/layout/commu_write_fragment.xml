@@ -26,6 +26,15 @@
             android:visibility="visible" />
 
 
+        <ImageButton
+            android:id="@+id/btn_image"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="75dp"
+            android:background="@drawable/icon_camera" />
+
         <TextView
             android:id="@+id/btn_commu_upload"
             android:layout_width="wrap_content"
@@ -44,7 +53,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/top_bar_title"
+                android:id="@+id/commu_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -141,35 +150,40 @@
         android:textSize="20dp"
         tools:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/et_content"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="15dp"
-        android:gravity="top"
-        android:hint="본문 내용을 입력하세요."
-        android:padding="15dp"
-        android:textColor="@android:color/darker_gray"
-        android:background="@android:color/transparent"/>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/image_test"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="2dp"
-            tools:src="@tools:sample/avatars"
-            tools:visibility="invisible" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/btn_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/icon_camera" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="15dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="top"
+                    android:hint="본문 내용을 입력하세요."
+                    android:padding="15dp"
+                    android:textColor="@android:color/darker_gray" />
+
+                <ImageView
+                    android:id="@+id/image_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:src="@tools:sample/avatars" />
+
+            </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 
 </LinearLayout>

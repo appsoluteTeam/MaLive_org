@@ -25,7 +25,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/top_bar_title"
+                android:id="@+id/commu_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="2.5"
-                android:background="@drawable/title_icon" />
+                android:src="@drawable/title_icon"/>
 
             <LinearLayout
                 android:layout_width="0dp"

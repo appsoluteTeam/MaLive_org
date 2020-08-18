@@ -39,5 +39,69 @@
             android:layout_weight="1"
             android:onClick="onClick" />
     </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/roomTitle4"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
+
+            <include
+                android:id="@+id/roomTitle5"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
+
+            <include
+                android:id="@+id/roomTitle6"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/roomTitle7"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick" />
+
+            <include
+                android:id="@+id/null1"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:visibility="invisible" />
+
+            <include
+                android:id="@+id/null2"
+                layout="@layout/titile_icon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:visibility="invisible" />
+        </TableRow>
     </TableLayout>
 </LinearLayout>

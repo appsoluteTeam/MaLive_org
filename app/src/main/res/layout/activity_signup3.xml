@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".Login.Signup3Activity">
 
     <TextView
@@ -25,7 +26,8 @@
         android:layout_marginStart="56dp"
         android:layout_marginLeft="56dp"
         android:layout_marginTop="64dp"
-        android:text="○    ○    ○    ●"
+        android:text="○    ○    ●"
+        android:textColor="#90DCEE"
         android:textSize="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +44,7 @@
             android:id="@+id/radioButton5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:buttonTint="#90DCEE"
             android:text="집에서 오랜 시간 보내요" />
 
         <RadioButton
@@ -49,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:buttonTint="#90DCEE"
             android:text="밖에서 오랜 시간 보내요"
             app:layout_constraintStart_toStartOf="@+id/rg_test1"
             tools:layout_editor_absoluteY="305dp" />
@@ -80,6 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
+            android:buttonTint="#90DCEE"
             android:text="누워있는 편이에요"
             app:layout_constraintStart_toStartOf="@+id/view"
             app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -89,6 +94,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:buttonTint="#90DCEE"
             android:text="움직이는 편이에요"
             app:layout_constraintStart_toStartOf="@+id/radioButton7"
             app:layout_constraintTop_toBottomOf="@+id/radioButton7" />
@@ -97,10 +103,14 @@
 
     <Button
         android:id="@+id/btn_next3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
         android:layout_marginTop="60dp"
+        android:background="@drawable/button_background"
+        android:stateListAnimator="@null"
         android:text="다음"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rg_test2" />

@@ -7,18 +7,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginRight="30sp">
-        <ImageView
-            android:id="@+id/todo_image"
-            android:layout_width="50sp"
-            android:layout_height="50sp"
-            android:layout_gravity="center">
-        </ImageView>
+        android:layout_marginRight="5sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="10dp">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="80sp"
             android:layout_height="wrap_content"
+            android:padding="7dp"
             android:hint="할 일"
             android:textSize="13sp"
+            android:textAlignment="center"
+            android:background="@drawable/todo_text_background"
             android:id="@+id/todo_image_text">
         </TextView>
     </LinearLayout>

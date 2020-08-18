@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,7 +22,9 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixListRemoveFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
 import com.abbsolute.ma_livu.MyPage.DataListener;
@@ -32,6 +35,8 @@ import com.abbsolute.ma_livu.MyPage.payFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Stack;
 
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
 
@@ -49,6 +54,9 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private TitleFragment titleFragment;
     private payFragment payFragment;
     private informationSetFragment informationSetFragment;
+
+    //fragment저장할 stack
+    public static Stack<Fragment> fragmentStack;
 
 
     /* myPage관련 변수 */
@@ -71,6 +79,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        fragmentStack = new Stack<>();
 
         //기본 fragment
         homeFragment = new HomeFragment();
@@ -148,6 +158,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     // 프래그먼트 교체가 일어나는 함수
     public void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
+
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (n){
             case 0:
@@ -162,8 +173,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 3:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
-            
-            // 방명록 프래그먼트에서 버튼 눌렀을 때
             case 4:
                 fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
@@ -185,16 +194,28 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 break;
             //투두 프래그먼트로 이동
             case 100:
-                fragmentTransaction.replace(R.id.main_frame,toDoFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame,toDoFragment);
+                fragmentTransaction.commit();
                 break;
             //투두 작성메인 화면
             case 101:
-                fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment);
+                fragmentTransaction.commit();
                 break;
             //고정리스트
             case 102:
                 fragmentTransaction.replace(R.id.main_frame,toDoFixModifyingFragment).commit();
                 break;
+            //고정 할 일 프레그먼트
+            case 103:
+                ToDoFixWriteFragment toDoFixWriteFragment=new ToDoFixWriteFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFixWriteFragment).commit();
+                break;
+            case 104:
+                ToDoFixListRemoveFragment toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
+                break;
+
 
         }
     }
@@ -237,6 +258,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentStack.push(myPageFragment);
         switch (myPageCategoryIndex){
             case 0:
                 fragmentTransaction.replace(R.id.main_frame,titleFragment);

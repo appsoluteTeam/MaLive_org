@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,11 +27,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,10 +53,10 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     private static String email;
 
     /*칭호 islocked 변수*/
-    private ArrayList<Boolean> TODOIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false,true,false,false,true,false,true,false,false,false,false,true,false));
+    private static ArrayList<Boolean> TODOIslocked;
     private ArrayList<Boolean> attendanceIslocked = new ArrayList<Boolean>(Arrays.asList(true,true,false));
     private ArrayList<Boolean> todayIslocked = new ArrayList<Boolean>(Arrays.asList(true));
-    private ArrayList<Boolean> roomIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false));
+    private ArrayList<Boolean> roomIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false,true,true,true,false));
 
     private View view;
     private TODOtitleFragment TODOFragment;
@@ -63,12 +66,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
     private TextView tdBtn,attendanceBtn,todayBtn,roomBtn,editTitle,repTitle;
-    private Button editFinishBtn;
+    private Button editFinishBtn,btn_back;
     private Bundle bundle;
     private static int repTitleIndex,category;
     private static String str_nickname;
+    private static long clean_complete, trash_complete, todo_complete, wash_complete;
     private static boolean editFinish = true;//초기화 기본화면으로
     private ImageView titleImage;
+    public static Stack<Fragment> fragmentStack;
+    public static Boolean[] TODOList = new Boolean[15];
+    public static int count = 0;
 
     public TitleFragment(){};
     public TitleFragment(String email){
@@ -126,6 +133,35 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
+
+        /*칭호 획득 여부 가져오기*/
+        firestore.collection(FirebaseID.ToDoLists).document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                clean_complete = (long) shot.get(FirebaseID.clean_complete);
+                                wash_complete = (long) shot.get(FirebaseID.wash_complete);
+                                trash_complete = (long) shot.get(FirebaseID.trash_complete);
+                                todo_complete = (long) shot.get(FirebaseID.todo_complete);
+
+                                Log.d("TitleFragment", "todo 가져오기 완료");
+                                Log.d("clean_complete",shot.get(FirebaseID.clean_complete).toString());
+                            } else {
+                                Log.d("TitleFragment", "No such document");
+                            }
+                        } else {
+                            Log.d("TitleFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -146,6 +182,10 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         editFinishBtn = view.findViewById(R.id.editFinish);
         editTitle = view.findViewById(R.id.editTitle);
         titleImage = view.findViewById(R.id.image);
+        btn_back = view.findViewById(R.id.btn_back);
+
+        //back버튼 적용 위해 stack에 담아둔 fragment
+        fragmentStack = HomeActivity.fragmentStack;
 
         editFinishBtn.setVisibility(View.GONE);//초기화면은 편집아닌 일반화면이니까 완료버튼숨기기
 
@@ -157,7 +197,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             bundle.putString("title","null");
         }else {
             bundle.putString("title", repTitle.getText().toString());
-            Log.d("Titleeee",repTitle.getText().toString());
         }
         bundle.putBoolean("edit",false);
 
@@ -173,17 +212,114 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         roomBtn.setOnClickListener(this);
         editTitle.setOnClickListener(this);
         editFinishBtn.setOnClickListener(this);
+        btn_back.setOnClickListener(this);
 
         //category,index정보 불러와서 대표 칭호 setText
         setRepTitle(category,repTitleIndex);
+
+        //칭호 획득 여부 판단
+        setTitleIslocked(clean_complete,wash_complete,trash_complete,todo_complete);
+        TODOIslocked = new ArrayList<Boolean>(Arrays.asList(TODOList));
 
         //파이어스토어 저장
         saveFirebaseIsLocked();
 
         return view;
     }
+
+    //칭호 획득 여부 판단, 횟수에 따라서 달라짐
+    public void setTitleIslocked(long clean_complete,long wash_completete, long trash_complete, long todo_complete){
+        countCleanTitleIsLocked(clean_complete);
+        countWashTitleIsLocked(wash_completete);
+        countTrashTitleIsLocked(trash_complete);
+        countTodoTitleIsLocked(todo_complete);
+    }
+
+    //count 에 따라 열렸는지 안열렸는지 체크
+    public void countCleanTitleIsLocked(long clean_complete){
+        if(clean_complete >= 5 && clean_complete < 10){
+            setCleanTitleIsLocked(true,false,false,false);
+        }else if(clean_complete >= 10 && clean_complete < 30){
+            setCleanTitleIsLocked(true,true,false,false);
+        }else if(clean_complete >= 30 && clean_complete < 50){
+            setCleanTitleIsLocked(true,true,true,false);
+        }else if(clean_complete >= 50){
+            setCleanTitleIsLocked(true,true,true,true);
+        }else if(clean_complete < 5){
+            setCleanTitleIsLocked(false,false,false,false);
+        }
+    }
+
+    public void setCleanTitleIsLocked(boolean first,boolean second, boolean third, boolean fourth){
+        TODOList[0] = first;
+        TODOList[1] = second;
+        TODOList[2] = third;
+        TODOList[3] = fourth;
+
+        Log.d("setCleanTitle",TODOList[0].toString());
+    }
+
+    public void countWashTitleIsLocked(long wash_complete){
+        if(wash_complete >= 5 && wash_complete < 10){
+            setWashTitleIsLocked(true,false,false,false);
+        }else if(wash_complete >= 10 && wash_complete < 30){
+            setWashTitleIsLocked(true,true,false,false);
+        }else if(wash_complete >= 30 && wash_complete < 50){
+            setWashTitleIsLocked(true,true,true,false);
+        }else if(wash_complete >= 50){
+            setWashTitleIsLocked(true,true,true,true);
+        }else if(wash_complete < 5){
+            setWashTitleIsLocked(false,false,false,false);
+        }
+    }
+
+    public void setWashTitleIsLocked(boolean first,boolean second, boolean third, boolean fourth){
+        TODOList[4] = first;
+        TODOList[5] = second;
+        TODOList[6] = third;
+        TODOList[7] = fourth;
+    }
+
+    public void countTrashTitleIsLocked(long trash_complete){
+        if(trash_complete >= 4 && trash_complete < 8){
+            setTrashTitleIsLocked(true,false,false,false);
+        }else if(trash_complete >= 8 && trash_complete < 20){
+            setTrashTitleIsLocked(true,true,false,false);
+        }else if(trash_complete >= 20 && trash_complete < 40){
+            setTrashTitleIsLocked(true,true,true,false);
+        }else if(trash_complete >= 40){
+            setTrashTitleIsLocked(true,true,true,true);
+        }else if(trash_complete < 4){
+            setTrashTitleIsLocked(false,false,false,false);
+        }
+    }
+
+    public void setTrashTitleIsLocked(boolean first,boolean second, boolean third, boolean fourth){
+        TODOList[8] = first;
+        TODOList[9] = second;
+        TODOList[10] = third;
+        TODOList[11] = fourth;
+    }
+
+    public void countTodoTitleIsLocked(long todo_complete){
+        if(todo_complete >= 10 && todo_complete < 20){
+            setTodoTitleIsLocked(true,false,false);
+        }else if(todo_complete >= 20 && todo_complete < 40){
+            setTodoTitleIsLocked(true,true,false);
+        }else if(todo_complete >= 40){
+            setTodoTitleIsLocked(true,true,true);
+        }else if(todo_complete < 10){
+            setTodoTitleIsLocked(false,false,false);
+        }
+    }
+
+    public void setTodoTitleIsLocked(boolean first,boolean second, boolean third){
+        TODOList[12] = first;
+        TODOList[13] = second;
+        TODOList[14] = third;
+    }
+
     public void setRepTitle(int category, int repTitleIndex){
-        Log.d("setTitle","setRepTitle메소드 접속");
         titleList titleList = new titleList();
 
         //arrays.xml에서 각 title array불러오기
@@ -334,7 +470,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 //TODO: 대표칭호 선택 될 때 파이어스토어 디비 업데이트 - 완료
                 myPageRef.update(FirebaseID.titleCategory,category);
                 myPageRef.update(FirebaseID.index,repTitleIndex);
+                break;
 
+            case R.id.btn_back:
+                Fragment nextFragment = fragmentStack.pop();
+                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
                 break;
         }
 
@@ -347,10 +487,13 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             //isLocked Custom Class 호출
             isLocked isLocked = new isLocked(1,TODOIslocked,attendanceIslocked,todayIslocked,roomIslocked,category,repTitleIndex);
 
+            myPageRef.set(isLocked);
+
+
             //email을 문서이름으로 해서 firestore에 저장
             firestore.collection(FirebaseID.myPage)
                     .document(email).set(isLocked, SetOptions.merge());
+
         }
     }
-
 }

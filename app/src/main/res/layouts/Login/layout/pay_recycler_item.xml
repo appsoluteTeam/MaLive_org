@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="horizontal"
     android:weightSum="10">
 
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -48,6 +50,7 @@
             android:layout_marginRight="15dp"
             android:gravity="right"
             android:text="TextView"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView

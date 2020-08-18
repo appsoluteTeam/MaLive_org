@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+
+import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.deleteFixData;
 
 public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.ViewHolder> {
     static ArrayList<ToDoFixInfo> arrayList=new ArrayList<>();
@@ -29,12 +34,15 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder{
         protected TextView fixToDoTextView;
         protected TextView fixPeriodTextView;
+        protected LinearLayout linearLayout;
         boolean flag=false;// 고정리스트 눌렀을때 회색->흰색, 흰색->회색
+
         public ViewHolder(View v){
             super(v);
-            final LinearLayout linearLayout=v.findViewById(R.id.fix_list_layout);
+            linearLayout=v.findViewById(R.id.fix_list_layout);
             fixToDoTextView=v.findViewById(R.id.todo);
             fixPeriodTextView=v.findViewById(R.id.todo_date);
+
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -72,11 +80,17 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ToDoFixInfo toDoFixInfo=arrayList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        final ToDoFixInfo toDoFixInfo=arrayList.get(position);
+        String chkStr=toDoFixInfo.getFixPeriod();
+        if(chkStr==null){
+            holder.linearLayout.setVisibility(View.GONE);
+        }
         holder.fixToDoTextView.setText(toDoFixInfo.getFixToDo());//고정 할 일
         holder.fixPeriodTextView.setText(toDoFixInfo.getFixPeriod());//고정 할 일 주기
+
     }
+
 
     @Override
     public int getItemCount() {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ public class ToDoWriteMainFragment extends Fragment implements OnBackPressedList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_write_main,container,false);
+        Toast.makeText(getContext(), "카테고리는 한번만 클릭 하세요", Toast.LENGTH_SHORT).show();
         ViewPager pager = view.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());

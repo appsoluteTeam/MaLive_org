@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.abbsolute.ma_livu">
-
     <!-- 인터넷 허가 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
-    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -15,21 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".Login.SignupActivity"></activity>
-        <activity android:name=".Login.Signup2Activity"></activity>
-        <activity android:name=".Login.Signup3Activity"></activity>
-        <activity android:name=".Login.FindpwdActivity"></activity>
-        <activity android:name=".Login.Login2Activity" />
-        <activity android:name=".Login.LoginActivity">
+        <activity android:name=".Login.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".BottomNavigation.HomeActivity"/>
-
+        <activity android:name=".Login.SignupActivity" />
+        <activity android:name=".Login.Signup2Activity" />
+        <activity android:name=".Login.Signup3Activity" />
+        <activity android:name=".Login.FindpwdActivity" />
+        <activity android:name=".Login.Login2Activity" />
+        <activity android:name=".Login.LoginActivity">
+        </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".BottomNavigation.HomeActivity" />
     </application>
 
 </manifest>

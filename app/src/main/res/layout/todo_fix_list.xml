@@ -5,6 +5,14 @@
     android:background="@drawable/todo_border"
     android:layout_marginLeft="5sp"
     android:id="@+id/fix_list_layout">
+    <ImageButton
+        android:layout_width="15sp"
+        android:layout_height="15sp"
+        android:id="@+id/removingButton"
+        android:background="@drawable/removed_icon"
+        android:layout_marginLeft="45sp"
+        android:visibility="invisible">
+    </ImageButton>
     <TextView
         android:padding="5sp"
         android:layout_width="wrap_content"

@@ -3,7 +3,9 @@ package com.abbsolute.ma_livu.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
+import com.abbsolute.ma_livu.MyPage.payFragment;
+import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +34,8 @@ public class Login2Activity extends AppCompatActivity {
     //MyPage title fragment
     private TitleFragment titleFragment;
     private MyPageFragment myPageFragment;
+    private payFragment payFragment;
+    private informationSetFragment informationSetFragment;
 
 
     @Override
@@ -51,7 +57,6 @@ public class Login2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String email = email_login.getText().toString();
-                //listener안에서 사용하려고 final로 바꿔줬습니다!
                 String pwd = pass_login.getText().toString().trim();
 
                 auth.signInWithEmailAndPassword(email, pwd)
@@ -62,7 +67,13 @@ public class Login2Activity extends AppCompatActivity {
                                     Toast.makeText(Login2Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                                     titleFragment = new TitleFragment(email);
                                     myPageFragment = new MyPageFragment(email);
+                                    payFragment = new payFragment(email);
+                                    informationSetFragment = new informationSetFragment(email);
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
+                                    SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("email_id",email);
+                                    editor.commit();
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(Login2Activity.this, "로그인 오류", Toast.LENGTH_SHORT).show();

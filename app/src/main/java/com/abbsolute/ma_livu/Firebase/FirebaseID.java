@@ -56,6 +56,7 @@ public class FirebaseID {
     public static String cleaning="cleaning";
     public static String laundry="laundry";
     public static String ToDoTrash="trash";
+    public static String etc="todo";
 
     //파이어스토어 MyPage 컬렉션 필드 이름
     public static String myPage = "myPage";
@@ -72,5 +73,15 @@ public class FirebaseID {
     public static String reptitle = "reptitle";
     public static String titleCategory = "category";
     public static String index = "index";
+    public static String pay = "pay";
+    public static String amount = "amount";
+    public static String balance = "balance";
+    public static String pay_date = "date";
+    public static String inout = "inout";
+    public static String pay_title = "title";
+    public static String wash_complete = "빨래complete";
+    public static String clean_complete = "청소complete";
+    public static String trash_complete = "쓰레기complete";
+    public static String todo_complete = "투두complete";
 
 }
