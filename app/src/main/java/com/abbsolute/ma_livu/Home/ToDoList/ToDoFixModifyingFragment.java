@@ -72,10 +72,10 @@ public class ToDoFixModifyingFragment extends Fragment {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         categoryRecyclerview.setLayoutManager(linearLayoutManager);
         categoryAdapter=new ToDoCategoryAdapter();
-        categoryInfos.add(new ToDoCategoryInfo(R.drawable.house_cleaning,"청소하기"));
-        categoryInfos.add(new ToDoCategoryInfo(R.drawable.laundry,"빨래하기"));
-        categoryInfos.add(new ToDoCategoryInfo(R.drawable.trash,"쓰레기"));
-        categoryInfos.add(new ToDoCategoryInfo(R.drawable.user1,"기타"));
+        categoryInfos.add(new ToDoCategoryInfo("청소하기"));
+        categoryInfos.add(new ToDoCategoryInfo("빨래하기"));
+        categoryInfos.add(new ToDoCategoryInfo("쓰레기"));
+        categoryInfos.add(new ToDoCategoryInfo("기타"));
         categoryAdapter.setItem(categoryInfos);
         categoryAdapter.getCategoryContext(getContext());
         categoryRecyclerview.setAdapter(categoryAdapter);

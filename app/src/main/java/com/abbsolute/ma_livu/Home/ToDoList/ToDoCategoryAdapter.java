@@ -33,11 +33,9 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public class ViewHolder extends RecyclerView.ViewHolder{
-        protected ImageView todoImg;
         protected TextView todoText;
         ViewHolder(View v){
             super(v);
-            this.todoImg=v.findViewById(R.id.todo_image);
             this.todoText=v.findViewById(R.id.todo_image_text);
         }
     }
@@ -58,11 +56,9 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ToDoCategoryInfo categoryInfo=arrayList.get(position);
-        int img=categoryInfo.getToDoImage();
         final String text=categoryInfo.getToDoText();
-        holder.todoImg.setImageResource(img);
         holder.todoText.setText(text);
-        holder.todoImg.setOnClickListener(new View.OnClickListener() {
+        holder.todoText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
