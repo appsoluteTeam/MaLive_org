@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/radious_border"
+        android:background="@drawable/editfinish"
         android:orientation="vertical">
 
         <LinearLayout
@@ -94,7 +94,7 @@
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:text="삭제"
-                    android:textColor="#2196F3"
+                    android:textColor="#90DCEE"
                     android:textSize="12sp" />
 
                 <Button
@@ -104,7 +104,7 @@
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:text="신고"
-                    android:textColor="#2196F3"
+                    android:textColor="#90DCEE"
                     android:textSize="12sp" />
 
                 <View
@@ -133,8 +133,6 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="15dp"
                 android:src="@mipmap/ic_launcher_round"
-                app:civ_border_color="#000000"
-                app:civ_border_overlay="false"
                 app:civ_border_width="1dp" />
 
             <EditText

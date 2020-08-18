@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <!--    8번째 줄부터 45번째 줄까지 back 버튼-->
     <LinearLayout
         android:id="@+id/LinearTop"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/LinearBottom"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="false"
         android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/commentTop_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|top">
+            android:layout_gravity="center|top"
+            android:background="#FFFFFF">
 
             <Button
                 android:id="@+id/btn_back"
@@ -47,7 +49,7 @@
                         android:gravity="center"
                         android:text="@string/communityComment"
                         android:textColor="@android:color/tertiary_text_light"
-                        android:textSize="24sp"
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -60,32 +62,33 @@
                         android:textSize="24sp" />
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/grey_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_centerInParent="true"
-                    android:background="	#D3D3D3" />
+                <include layout="@layout/grey_line"></include>
             </LinearLayout>
 
         </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/CommunityCommentList"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/commentTop_Layout" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/CommunityCommentList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/commentTop_Layout" />
+        </ScrollView>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/LinearBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/LinearTop"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/round_border"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
@@ -100,7 +103,7 @@
             android:gravity="start|top"
             android:hint="댓글을 입력해주세요."
             android:inputType="textMultiLine"
-            android:textColor="@color/button_selector" />
+            android:textColor="#9F9E9E" />
 
         <Button
             android:id="@+id/btn_comment_insert"
@@ -112,4 +115,4 @@
             android:textColor="#90DCEE" />
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>

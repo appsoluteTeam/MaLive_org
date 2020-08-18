@@ -1,6 +1,5 @@
-package com.abbsolute.ma_livu.Community;
+package com.abbsolute.ma_livu.Community.CommunityComment;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentAdapter;
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentItem;
+import com.abbsolute.ma_livu.Community.bringData;
 import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;
@@ -39,11 +41,11 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
 //        Glide.with(holder.itemView) //프로필 이미지를 url로 받아오기 용이하도록 글라이드 이용
 ////                .load(arrayList.get(position).getIcon())
 ////                .into(holder.CommentIcon);
-//        holder.CommentNum.setText(arrayList.get(position).getNum());
         holder.CommentName.setText(arrayList.get(position).getName());
         holder.CommentDate.setText(arrayList.get(position).getDate());
         holder.Comment.setText(arrayList.get(position).getComment());
         holder.commu_comment_like.setText(arrayList.get(position).getComment_like());
+//        holder.commu_comment_comment_count.setText(Integer.toString());
 
 
         // '삭제' 버튼 클릭 시 데이터 삭제하기
@@ -66,12 +68,28 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         holder.btn_comment_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                
+                // 현재의 좋아요 갯수 받아오기
+                int like_count;
+                like_count = Integer.parseInt(holder.commu_comment_like.getText().toString());
+
+                // 버튼이 눌리지 않은 상태를 기본으로 설정
                 v.setSelected(!v.isSelected());
                 if(v.isSelected()) {
+                    holder.commu_comment_like.setText(Integer.toString(like_count+1));
                     callback.commentLike(position);
                 } else {
-
+                    holder.commu_comment_like.setText(Integer.toString(like_count-1));
+                    callback.commentDislike(position);
                 }
+            }
+        });
+
+        // '답글'버튼 클릭 시 CommunityCommentCommentFragment로 넘어가기
+        holder.btn_commu_comment_comment.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                callback.goCommunityCommentComment(position);
             }
         });
 
@@ -88,7 +106,6 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         });
     }
 
-
     //arrayList의 아이템 개수만큼 반환
     @Override
     public int getItemCount() {
@@ -102,7 +119,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         ImageView CommentIcon;
 
         TextView commu_comment_like;
-        TextView commu_comment_comment;
+        TextView commu_comment_comment_count;
 
         Button btn_comment_like;
         Button btn_commu_comment_comment;
@@ -124,14 +141,18 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
             this.commu_comment_like = itemView.findViewById(R.id.commu_comment_like);
 
             this.btn_commu_comment_comment = itemView.findViewById(R.id.btn_commu_comment_comment);
-            this.commu_comment_comment = itemView.findViewById(R.id.commu_comment_comment);
+            this.commu_comment_comment_count = itemView.findViewById(R.id.commu_comment_comment_count);
 
             this.btn_comment_extra = itemView.findViewById(R.id.btn_comment_extra);
             this.community_comment_extra = itemView.findViewById(R.id.community_comment_extra);
 
 //            this.btn_delete = itemView.findViewById(R.id.btn_delete);
             this.btn_commu_report = itemView.findViewById(R.id.btn_commu_report);
-
         }
+
+    }
+
+    public CommunityCommentItem getItem(int position) {
+        return arrayList.get(position);
     }
 }

@@ -54,6 +54,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/commu_title"
+
                     android:textColor="@android:color/black"
                     android:textSize="28sp"
                     android:textStyle="bold" />

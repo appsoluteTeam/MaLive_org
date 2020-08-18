@@ -1,9 +1,8 @@
-package com.abbsolute.ma_livu.Community;
+package com.abbsolute.ma_livu.Community.CommunityComment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentFragment;
+import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
+import com.abbsolute.ma_livu.Community.bringData;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,8 +65,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     private ImageView CommentIcon;
     private EditText Comment;
 
-    private TextView commu_comment_like;
-
     private Button btn_back;
     private Button btn_insert;
 
@@ -83,8 +84,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 //        CommentDate = view.findViewById(R.id.CommentDate);
         Comment = view.findViewById(R.id.WriteComment);
 //        CommentIcon = view.findViewById(R.id.CommentIcon);
-        commu_comment_like = view.findViewById(R.id.commu_comment_like);
-
 
         btn_back = view.findViewById(R.id.btn_back);
         btn_insert = view.findViewById(R.id.btn_comment_insert);
@@ -131,6 +130,8 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                     dateform = new SimpleDateFormat("yyyy-MM-dd");
                     date = Calendar.getInstance();
 
+                    like_count = 0;
+
                     // DB에 데이터 추가
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
@@ -144,6 +145,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                             .collection(FirebaseID.Community_Comment).document(Comment.getText().toString())
                             .set(data, SetOptions.merge());
                 }
+                refresh();
             }
         });
 
@@ -200,40 +202,49 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     }
 
     // 댓글 좋아요 메소드
+    @Override
     public void commentLike(int position) {
-
-
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
-
-            //DB의 좋아요 수 데이터 받아오기
-            data.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    DocumentSnapshot snapshot = task.getResult();
-                                    Map<String, Object> shot = snapshot.getData();
-                                    like_count = Integer.parseInt(String.valueOf(shot.get(FirebaseID.commu_comment_like)));
-                                }
-                            }
-                        }
-                    });
-
-//            like_count = like_count + 1;
-            // DB의 좋아요 수 데이터 업데이트
-//            data.update(FirebaseID.commu_comment_like, String.valueOf(like_count+1));
-//            adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
-
-//            commu_comment_like.setText(String.valueOf(like_count));
-
+            data.update(FirebaseID.commu_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())+1));
         }
     }
+
+    // 댓글 좋아요 취소 메소드
+    @Override
+    public void commentDislike(int position) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                    .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
+            data.update(FirebaseID.commu_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())));
+        }
+    }
+
     // 대댓글 메소드
+    @Override
+    public void goCommunityCommentComment(int position) {
+        CommunityCommentItem item = adapter.getItem(position);
 
+        // CommunityCommentCommentFragment로 데이터 넘기기
+        Bundle bundle = new Bundle();
+        bundle.putString("Category", category);
+        bundle.putString("Title", title);
+        bundle.putString("CommentName", item.getName());
+        bundle.putString("CommentDate", item.getDate());
+        bundle.putString("CommentComment", item.getComment());
+        bundle.putString("CommentLike", item.getComment_like());
 
-//     // 댓글 삭제 메소드
+        transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        CommunityCommentCommentFragment communityCommentCommentFragment = new CommunityCommentCommentFragment();
+        communityCommentCommentFragment.setArguments(bundle);
+
+        // 버튼 누르면 화면 전환
+        transaction.replace(R.id.main_frame, communityCommentCommentFragment);
+        transaction.commit();
+     }
+
+    //     // 댓글 삭제 메소드
 //    @Override
 //    public void deleteItem(int position) {
 //
@@ -282,10 +293,10 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                                                         .collection(FirebaseID.Community_Comment).document(Comment).set(data, SetOptions.merge());
 
                                             } else {
-//                                                Log.d("GuestBookActivity", "No such document");
+//                                                Log.d("HomeActivity", "No such document");
                                             }
                                         } else {
-//                                            Log.d("GuestBookActivity", "get failed with ", task.getException());
+//                                            Log.d("HomeActivity", "get failed with ", task.getException());
                                         }
                                     }
                                 });

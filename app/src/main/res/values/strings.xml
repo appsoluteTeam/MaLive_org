@@ -9,6 +9,7 @@
 
     // 커뮤니티 String
     <string name="communityComment">댓글</string>
+    <string name="communityCommentComment">답글</string>
     <string name="Community">커뮤니티</string>
     <string name="commu_write">글쓰기</string>
     <string name="commu_title">제목</string>
