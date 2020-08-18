@@ -1,5 +1,27 @@
 <resources>
     <string name="app_name">MaLive</string>
     <string name="myPage">마이페이지</string>
+    <string name="Community">커뮤니티</string>
+    <string name="commu_write">글쓰기</string>
     <string name="mypage_information_set">정보 설정</string>
+
+    // 방명록 String
+    <string name="guestBook">방명록</string>
+    <string name="guestBookWrite">방명록 작성</string>
+
+    // 커뮤니티 String
+    <string name="communityComment">댓글</string>
+
+    <string name="mypage_title">칭호</string>
+    <string name="account">계정</string>
+    <string name="changeNickname">닉네임 변경</string>
+    <string name="accountWithdraw">회원 탈퇴</string>
+    <string name="logout">로그아웃</string>
+    <string name="appSeting">앱 설정</string>
+    <string name="setAlarm">알림 설정</string>
+    <string name="version">버전 정보</string>
+    <string name="inquire">문의하기</string>
+    <string name="etc">기타</string>
+    <string name="consentInformantion">정보 동의 설정</string>
+    <string name="pay">결제</string>
 </resources>

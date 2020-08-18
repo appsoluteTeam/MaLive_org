@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,8 +46,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private GuestBookWriteFragment guestBookWriteFragment;
+    private FragmentTransaction transaction;
 
 
     private RecyclerView recyclerView;
@@ -66,6 +66,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
     private Button btn_insert;
     private Button btn_delete;
     private Button btn_like;
+    private Button btn_back;
 
     boolean likeState = false;
     boolean unlikeState = false;
@@ -83,20 +84,34 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
 
         btn_insert = view.findViewById(R.id.btn_insert);
         btn_delete = view.findViewById(R.id.btn_delete);
+        btn_back = view.findViewById(R.id.btn_back);
         btn_guestbook_write = (Button)view.findViewById(R.id.btn_guestbook_write);
 
-        // 방명록 '작성'버튼을 누를 시
+        // '뒤로가기' 버튼 누를 시
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                HomeFragment homeFragment = new HomeFragment();
+
+                // '작성'버튼 누를 시 화면 전환
+                transaction.replace(R.id.main_frame, homeFragment);
+                transaction.commit();
+            }
+        });
+
+        // 방명록 '작성' 버튼 누를 시
         btn_guestbook_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // GuestBookWriteFragment로 데이터 넘기기
                 Bundle bundle = new Bundle();
                 bundle.putInt("CommentCount", adapter.getItemCount());
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 GuestBookWriteFragment guestBookWriteFragment = new GuestBookWriteFragment();
                 guestBookWriteFragment.setArguments(bundle);
 
-                // '작성'버튼 누르면 화면 전환
+                // '작성'버튼 누를 시 화면 전환
                 transaction.replace(R.id.main_frame, guestBookWriteFragment);
                 transaction.commit();
 //                ((HomeActivity)getActivity()).setFragment(5);
@@ -324,7 +339,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
 
     // 리사이클러뷰 새로고침 메소드
     private void refresh() {
-        fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.detach(this).attach(this).commit();
+        transaction = getFragmentManager().beginTransaction();
+        transaction.detach(this).attach(this).commit();
     }
 }

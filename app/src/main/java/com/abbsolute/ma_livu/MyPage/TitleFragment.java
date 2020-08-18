@@ -1,22 +1,30 @@
 package com.abbsolute.ma_livu.MyPage;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,11 +46,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     /*파이어베이스 변수*/
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private DocumentReference myPageRef = firestore.collection(FirebaseID.myPage).document();
-    private String email;
+    private DocumentReference myPageRef;
+    private static String email;
 
     /*칭호 islocked 변수*/
-    private ArrayList<Boolean> TODOIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false,true,false,false,true,false,false,true,false,false,true,false,false,false));
+    private ArrayList<Boolean> TODOIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false,true,false,false,true,false,true,false,false,false,false,true,false));
     private ArrayList<Boolean> attendanceIslocked = new ArrayList<Boolean>(Arrays.asList(true,true,false));
     private ArrayList<Boolean> todayIslocked = new ArrayList<Boolean>(Arrays.asList(true));
     private ArrayList<Boolean> roomIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false));
@@ -54,14 +62,76 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     private roomFragment roomFragment;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
-    private TextView tdBtn,attendanceBtn,todayBtn,roomBtn,upRepTitle,editTitle;
-    private Button repTitle,editFinishBtn;
+    private TextView tdBtn,attendanceBtn,todayBtn,roomBtn,editTitle,repTitle;
+    private Button editFinishBtn;
     private Bundle bundle;
-    private int repTitleIndex,category;
+    private static int repTitleIndex,category;
+    private static String str_nickname;
     private static boolean editFinish = true;//초기화 기본화면으로
+    private ImageView titleImage;
+
+    public TitleFragment(){};
+    public TitleFragment(String email){
+        this.email = email;
+        Log.d("email",email);
+
+        /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
+        //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨 스레드문제인가?
+        firestore.collection(FirebaseID.myPage).document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                category  = Integer.valueOf((shot.get(FirebaseID.titleCategory).toString()));
+                                repTitleIndex = Integer.valueOf((shot.get(FirebaseID.index).toString()));
+                                Log.d("Titlecategory",String.valueOf(category));
+                                Log.d("Titleindex",String.valueOf(repTitleIndex));
+                                Log.d("TitleFragment", "대표칭호,인덱스 Get 완료");
+
+                            } else {
+                                Log.d("TitleFragment", "No such document");
+                            }
+                        } else {
+                            Log.d("TitleFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+        /*user firestore에서 닉네임 정보 가져오기 */
+        firestore.collection(FirebaseID.user).document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                str_nickname  = shot.get(FirebaseID.Nickname).toString();
+                                Log.d("TitleFragment", "user nickname Get 완료");
+
+                            } else {
+                                Log.d("TitleFragment", "No such document");
+                            }
+                        } else {
+                            Log.d("TitleFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.title,container,false);
+
+        myPageRef = firestore.collection(FirebaseID.myPage).document(email);
 
         TODOFragment = new TODOtitleFragment();
         attendanceFragment = new attendanceFragment();
@@ -74,8 +144,8 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         todayBtn = view.findViewById(R.id.todayBtn);
         roomBtn = view.findViewById(R.id.roomBtn);
         editFinishBtn = view.findViewById(R.id.editFinish);
-        upRepTitle = view.findViewById(R.id.upRepTitle);
         editTitle = view.findViewById(R.id.editTitle);
+        titleImage = view.findViewById(R.id.image);
 
         editFinishBtn.setVisibility(View.GONE);//초기화면은 편집아닌 일반화면이니까 완료버튼숨기기
 
@@ -84,10 +154,10 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         bundle = new Bundle(2);
 
         if(repTitle.getText().toString().equals("")){//대표칭호 설정 안되어있을 때
-            Log.d("isNULL?","Yesss");
             bundle.putString("title","null");
         }else {
             bundle.putString("title", repTitle.getText().toString());
+            Log.d("Titleeee",repTitle.getText().toString());
         }
         bundle.putBoolean("edit",false);
 
@@ -104,23 +174,52 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         editTitle.setOnClickListener(this);
         editFinishBtn.setOnClickListener(this);
 
-        //아이디가 키값, 키값 같으면 호출 또 할 필요 없다. 최초한번만!
+        //category,index정보 불러와서 대표 칭호 setText
+        setRepTitle(category,repTitleIndex);
+
+        //파이어스토어 저장
         saveFirebaseIsLocked();
 
         return view;
     }
+    public void setRepTitle(int category, int repTitleIndex){
+        Log.d("setTitle","setRepTitle메소드 접속");
+        titleList titleList = new titleList();
 
-    public void dataSet(String representationTitle,int repTitleIndex,int category){//DataListener 메소드
-        repTitle.setText(representationTitle);
-        upRepTitle.setText(representationTitle);
-        this.repTitleIndex = repTitleIndex;
-        this.category = category;
+        //arrays.xml에서 각 title array불러오기
+        TypedArray title_todo_image = getResources().obtainTypedArray(R.array.title_todo_image);
+        TypedArray title__attendance_image = getResources().obtainTypedArray(R.array.title__attendance_image);
 
-        //TODO: 대표칭호 선택 될 때 파이어스토어 디비 업데이트
+        String strReptitle;
+
+        switch (category){
+            case 1:
+                strReptitle = titleList.getTODO_titleList(repTitleIndex);
+                repTitle.setText(strReptitle);
+                Drawable todoTitleImage = title_todo_image.getDrawable(repTitleIndex);
+                titleImage.setImageDrawable(todoTitleImage);
+                break;
+            case 2:
+                strReptitle = titleList.getAttendance_titleList(repTitleIndex);
+                repTitle.setText(strReptitle);
+                Drawable atTitleImage = title__attendance_image.getDrawable(repTitleIndex);
+                titleImage.setImageDrawable(atTitleImage);
+                break;
+            case 3:
+                strReptitle = titleList.getToday_titleList(repTitleIndex);
+                repTitle.setText(strReptitle);
+                break;
+            case 4:
+                strReptitle = titleList.getRoom_titleList(repTitleIndex);
+                repTitle.setText(strReptitle);
+                break;
+        }
     }
 
-    public void emailSet(String email){
-        this.email = email;
+    public void dataSet(String representationTitle,int repTitleIndex,int category){//DataListener 메소드
+        this.repTitleIndex = repTitleIndex;
+        this.category = category;
+        setRepTitle(category,repTitleIndex);
     }
 
     public void onClick(View v){
@@ -128,7 +227,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         Bundle bundle2 = new Bundle(4);
         if(repTitle.getText().toString().equals("")){//대표칭호 설정 안되어있을 때
-            Log.d("isNULL?","Yesss");
             bundle2.putString("title","null");
         }else {
             bundle2.putString("title", repTitle.getText().toString());
@@ -138,7 +236,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         switch (v.getId()){
             case R.id.tdBtn:
-                Log.d("td","td버튼클릭");
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력,즉 edit데이터 false넘겨주면 됨
                     bundle2.putBoolean("edit",false);
                     editFinishBtn.setVisibility(v.GONE);
@@ -156,7 +253,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 todayBtn.setSelected(false);
                 break;
             case R.id.attendanceBtn://출석
-                Log.d("at","at버튼클릭");
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력, 즉 edit데이터 false넘겨주면 됨
                     bundle2.putBoolean("edit",false);
                     editFinishBtn.setVisibility(v.GONE);
@@ -234,6 +330,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 todayBtn.setSelected(false);
                 editFinishBtn.setVisibility(v.GONE);//완료버튼 숨기기
                 fragmentTransaction.add(R.id.frameLayout,TODOFragment).commitAllowingStateLoss();
+
+                //TODO: 대표칭호 선택 될 때 파이어스토어 디비 업데이트 - 완료
+                myPageRef.update(FirebaseID.titleCategory,category);
+                myPageRef.update(FirebaseID.index,repTitleIndex);
+
                 break;
         }
 
@@ -245,7 +346,14 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             Map<String, Object> myPageTitle = new HashMap<>();
             //isLocked Custom Class 호출
             isLocked isLocked = new isLocked(1,TODOIslocked,attendanceIslocked,todayIslocked,roomIslocked,category,repTitleIndex);
+
             myPageRef.set(isLocked);
+
+
+            //email을 문서이름으로 해서 firestore에 저장
+            firestore.collection(FirebaseID.myPage)
+                    .document(email).set(isLocked, SetOptions.merge());
+
         }
     }
 

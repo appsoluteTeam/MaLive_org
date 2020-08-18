@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.MyPage.MyPageFragment;
+import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,12 +29,20 @@ public class Login2Activity extends AppCompatActivity {
     private Button btn_findpwd;
     private FirebaseAuth auth; //파이어베이스 인증 객체
 
+    //MyPage title fragment
+    private TitleFragment titleFragment;
+    private MyPageFragment myPageFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
 
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
+
+        titleFragment = (TitleFragment)getSupportFragmentManager().findFragmentById(R.id.main_frame);//titleFragment
+
 
         email_login =(EditText) findViewById(R.id.btn_email_login); //이메일 입력
         pass_login =(EditText) findViewById(R.id.pass_login); // 패스워드 입력
@@ -51,6 +61,8 @@ public class Login2Activity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login2Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                    titleFragment = new TitleFragment(email);
+                                    myPageFragment = new MyPageFragment(email);
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
                                     SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();

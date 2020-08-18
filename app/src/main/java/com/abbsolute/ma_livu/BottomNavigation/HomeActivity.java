@@ -5,8 +5,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 
-import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -27,17 +25,17 @@ import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixListRemoveFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
 import com.abbsolute.ma_livu.MyPage.DataListener;
-import com.abbsolute.ma_livu.MyPage.EmailListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
+import com.abbsolute.ma_livu.MyPage.payFragment;
+import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener, EmailListener {
+public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
 
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
@@ -51,6 +49,9 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private AlarmFragment alarmFragment;
 
     private TitleFragment titleFragment;
+    private payFragment payFragment;
+    private informationSetFragment informationSetFragment;
+
 
     /* myPage관련 변수 */
     private int myPageCategoryIndex;  //  마이페이지 카테고리 인덱스
@@ -73,8 +74,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-        //fragment
+        //기본 fragment
         homeFragment = new HomeFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
@@ -84,6 +84,18 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         communityFragment = new CommunityFragment();
         commu_writeFragment = new Commu_WriteFragment();
         communityPostsFragment = new CommunityPostsFragment();
+
+        //타이틀 프래그먼트
+        titleFragment = new TitleFragment();
+
+        //방명록 프래그먼트
+        guestBookFragment = new GuestBookFragment();
+        guestBookWriteFragment = new GuestBookWriteFragment();
+
+        /* 투두리스트 프래그먼트들 */
+        toDoFragment=new ToDoFragment(); //투두 리스트 화면
+        toDoWriteMainFragment=new ToDoWriteMainFragment();//투두 작성 메인 화면
+        toDoFixModifyingFragment=new ToDoFixModifyingFragment();//고정리스트 수정 화면
 
 
         main_bottom =findViewById(R.id.main_bottom);
@@ -111,12 +123,16 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             }
         });
 
+
         homeFragment = new HomeFragment();
         communityFragment = new CommunityFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
 
+        /*마이페이지 관련 fragment*/
         titleFragment = new TitleFragment();
+        payFragment = new payFragment();
+        informationSetFragment = new informationSetFragment();
 
         guestBookFragment = new GuestBookFragment();
         guestBookWriteFragment = new GuestBookWriteFragment();
@@ -148,7 +164,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 3:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
-            // 방명록 프래그먼트에서 버튼 눌렀을 
             case 4:
                 fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
@@ -161,7 +176,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
                 fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
-
                 break;
             case 51:
                 fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
@@ -210,10 +224,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         titleFragment.dataSet(title,index,category);
     }
 
-    public void  emailSet(String email){
-        //TitleFragment에 SignUpActivty에서 받은 이메일값 전달
-        titleFragment.emailSet(email);
-    }
 
     public void onClick(View v){
         switch (v.getId()){
@@ -229,9 +239,13 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case R.id.btnMyPage_friend:
                 setMyPageFragment(3);
                 break;
+            case R.id.btnMyPage_informationSet:
+                setMyPageFragment(4);
+                break;
         }
     }
     /* myPage카테고리에 따라서 fragment 교체 */
+    /* 0:칭호 , 1:결제, 2:활동 , 3:친구, 4:정보설정 */
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -241,10 +255,16 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentTransaction.commit();
                 break;
             case 1:
+                fragmentTransaction.replace(R.id.main_frame,payFragment);
+                fragmentTransaction.commit();
                 break;
             case 2:
                 break;
             case 3:
+                break;
+            case 4:
+                fragmentTransaction.replace(R.id.main_frame,informationSetFragment);
+                fragmentTransaction.commit();
                 break;
         }
     }
