@@ -36,9 +36,8 @@ public class SignupActivity extends AppCompatActivity {
     private Pattern PASSWORD_PATTERN = Pattern.compile(password_pattern);
 
     //파이어베이스 인증 객체
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private FirebaseUser user;
 
     //
     private EditText email_sign;
@@ -61,7 +60,6 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         email_sign =(EditText) findViewById(R.id.email_sign);
         pass_sign =(EditText) findViewById(R.id.pass_sign);
         pwd_check =(EditText) findViewById(R.id.pwd_check);
@@ -137,16 +135,6 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isEmailVerified(){
-        if(user.isEmailVerified()){
-            tv_top.setText("비밀번호를\n설정해주세요");
-            return true;
-        }else{
-            tv_wanning.setText("이메일을 인증해주세요");
-            return false;
-        }
-    }
-
     // 비밀번호 유효성 검사
     private boolean isValidPasswd() {
         if (password.isEmpty()) {
@@ -183,19 +171,16 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             //파이어스토어에 정보 저장
-                            if(user != null){
+                            if (firebaseAuth.getCurrentUser() != null){
                                 Map<String,Object> userMap = new HashMap<>();
-                                userMap.put(FirebaseID.documentID,user.getUid());
+                                userMap.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
                                 userMap.put(FirebaseID.Email,email);
-                                userMap.put(FirebaseID.Password,password);
-                                firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
+                                firestore.collection(FirebaseID.user).document(email).set(userMap,SetOptions.merge());
                                 finish();
                             }
                             // 회원가입 성공
                             Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
                             intent.putExtra("email",email);
-
-
                             startActivity(intent);
                         } else {
                             // 회원가입 실패

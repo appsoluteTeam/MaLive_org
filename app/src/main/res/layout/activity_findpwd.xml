@@ -42,10 +42,14 @@
 
     <Button
         android:id="@+id/btn_sendemail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:background="@drawable/button_background"
+        android:stateListAnimator="@null"
         android:text="인증메일 전송"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="@+id/et_sendemail"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/et_sendemail"

@@ -66,8 +66,8 @@ public class Signup3Activity extends AppCompatActivity {
             Map<String,Object> userMap = new HashMap<>();
             userMap.put(FirebaseID.Test1,selectedButton.getText().toString());
             userMap.put(FirebaseID.Test2,selectedButton2.getText().toString());
-
             firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
+
             Intent intent = new Intent(Signup3Activity.this, LoginActivity.class);
             Toast.makeText(this.getApplicationContext(),"회원가입 성공", Toast.LENGTH_SHORT);
             startActivity(intent);
