@@ -25,7 +25,6 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="15dp"
             android:src="@mipmap/ic_launcher_round"
-            app:civ_border_color="#000000"
             app:civ_border_overlay="false"
             app:civ_border_width="1dp" />
 
@@ -46,6 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:fontFamily="sans-serif"
                     android:inputType="textPersonName"
                     android:text="박서윤짱짱"
                     android:textColor="#676767"
@@ -69,6 +69,7 @@
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:src="@drawable/more" />
@@ -93,17 +94,17 @@
 
                 <LinearLayout
                     android:id="@+id/community_comment_extra"
-                    android:layout_width="50dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:background="@drawable/rectangle1"
+                    android:background="@drawable/half_round_border"
                     android:orientation="vertical"
                     android:visibility="invisible">
 
                     <Button
                         android:id="@+id/button"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="30dp"
                         android:background="#00FFFFFF"
                         android:text="댓글알림"
                         android:textSize="12sp"
@@ -122,7 +123,7 @@
                     <Button
                         android:id="@+id/btn_commu_report"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="30dp"
                         android:background="#00FFFFFF"
                         android:text="신고"
                         android:textSize="12sp"
@@ -169,7 +170,7 @@
                     android:background="@drawable/comment_s" />
 
                 <TextView
-                    android:id="@+id/commu_comment_comment"
+                    android:id="@+id/commu_comment_comment_count"
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -177,15 +178,21 @@
                     android:text="0" />
 
             </LinearLayout>
-        </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_commu_comment_comment2"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:text="답글 0개"
+                android:textColor="#90DCEE"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/grey_line"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_centerInParent="true"
-        android:background="	#D3D3D3" />
+    <include layout="@layout/grey_line"></include>
 
 </LinearLayout>
