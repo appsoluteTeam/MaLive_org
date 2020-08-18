@@ -64,14 +64,16 @@ public class todayFragment extends Fragment {
         TextView[] todayTitleIdList = new TextView[]{todayTitle1.findViewById(R.id.name)};
         ImageView[] todayImageIdList = new ImageView[]{todayTitle1.findViewById(R.id.image)};
 
-        Drawable drawable = getResources().getDrawable(R.drawable.lock);
+        Drawable[] todayImage = new Drawable[]{getResources().getDrawable(R.drawable.today1)};
+        Drawable lock_title = getResources().getDrawable(R.drawable.lock_title);
 
         for(int i = 0; i < titleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
                 todayTitleIdList[i].setText(todayTitleList[i]);
+                todayImageIdList[i].setImageDrawable(todayImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 todayTitleIdList[i].setText("");
-                todayImageIdList[i].setImageDrawable(drawable);
+                todayImageIdList[i].setImageDrawable(lock_title);
             }
         }
 

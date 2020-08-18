@@ -18,27 +18,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerPayAdapter extends RecyclerView.Adapter<RecyclerPayAdapter.ViewHolder> {
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private ArrayList<payItemListView> arrayList;
-    private OnItemClick callback;
+   // private OnItemClick callback;
 
 
-    public RecyclerPayAdapter(ArrayList<payItemListView> arrayList, OnItemClick listener) {
+    public RecyclerPayAdapter(ArrayList<payItemListView> arrayList) {
         this.arrayList = arrayList;
-        this.callback = listener;
     }
 
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //뷰홀더 최초로 만들어내는 역할
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item_view, parent, false);
+    public RecyclerPayAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //뷰홀더 최초로 만들어내는 역할
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pay_recycler_item, parent, false);
         RecyclerPayAdapter.ViewHolder holder = new RecyclerPayAdapter.ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) { //각 아이템에 대한 매칭
+    public void onBindViewHolder(@NonNull final RecyclerPayAdapter.ViewHolder holder, final int position) { //각 아이템에 대한 매칭
         holder.pay_date.setText(arrayList.get(position).getPay_date());
         holder.pay_title.setText(arrayList.get(position).getPay_title());
         holder.pay_time_deposit_withdrawal.setText(arrayList.get(position).getPay_time_deposit_withdrawal());

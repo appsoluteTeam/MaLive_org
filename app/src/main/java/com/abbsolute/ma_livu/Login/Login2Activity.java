@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
+import com.abbsolute.ma_livu.MyPage.payFragment;
+import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +32,8 @@ public class Login2Activity extends AppCompatActivity {
     //MyPage title fragment
     private TitleFragment titleFragment;
     private MyPageFragment myPageFragment;
+    private payFragment payFragment;
+    private informationSetFragment informationSetFragment;
 
 
     @Override
@@ -62,6 +66,8 @@ public class Login2Activity extends AppCompatActivity {
                                     Toast.makeText(Login2Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                                     titleFragment = new TitleFragment(email);
                                     myPageFragment = new MyPageFragment(email);
+                                    payFragment = new payFragment(email);
+                                    informationSetFragment = new informationSetFragment(email);
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
                                     startActivity(intent);
                                 } else {

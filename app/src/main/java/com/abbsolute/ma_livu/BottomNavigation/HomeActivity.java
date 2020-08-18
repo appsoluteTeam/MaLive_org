@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -33,6 +34,8 @@ import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Stack;
+
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
 
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
@@ -49,6 +52,9 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private TitleFragment titleFragment;
     private payFragment payFragment;
     private informationSetFragment informationSetFragment;
+
+    //fragment저장할 stack
+    public static Stack<Fragment> fragmentStack;
 
 
     /* myPage관련 변수 */
@@ -71,6 +77,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        fragmentStack = new Stack<>();
 
         //기본 fragment
         homeFragment = new HomeFragment();
@@ -148,6 +156,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     // 프래그먼트 교체가 일어나는 함수
     public void setFragment(int n){
         fragmentManager = getSupportFragmentManager();
+
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (n){
             case 0:
@@ -237,6 +246,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentStack.push(myPageFragment);
         switch (myPageCategoryIndex){
             case 0:
                 fragmentTransaction.replace(R.id.main_frame,titleFragment);

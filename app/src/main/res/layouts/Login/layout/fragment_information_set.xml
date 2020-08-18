@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_fragment_information_set"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <FrameLayout
@@ -37,138 +38,213 @@
 
     </FrameLayout>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/account"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <include layout="@layout/grey_line"></include>
-
-            <TextView
-                android:id="@+id/btn_changeNickname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/changeNickname"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/btn_accountWithdraw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/accountWithdraw"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/btn_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/logout"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
-
-            <include layout="@layout/grey_line"></include>
-
-            <TextView
-                android:id="@+id/appSeting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/appSeting"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <include layout="@layout/grey_line"></include>
-
-            <TextView
-                android:id="@+id/btn_setAlarm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/setAlarm"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+            android:layout_weight="1">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/btn_version"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/account"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/grey_line"></include>
+
+                <TextView
+                    android:id="@+id/btn_accountWithdraw"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:layout_weight="1"
-                    android:text="@string/version"
+                    android:onClick="onClick"
+                    android:text="@string/accountWithdraw"
                     android:textColor="@android:color/black"
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/version"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/btn_logout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="TextView"
-                    android:textColor="#7FFFD4" />
+                    android:onClick="onClick"
+                    android:text="@string/logout"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <include layout="@layout/grey_line"></include>
+
+                <TextView
+                    android:id="@+id/appSeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/appSeting"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/grey_line"></include>
+
+                <TextView
+                    android:id="@+id/btn_setAlarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/setAlarm"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/btn_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:layout_weight="1"
+                        android:text="@string/version"
+                        android:textColor="@android:color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="TextView"
+                        android:textColor="#7FFFD4" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/inquire"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/inquire"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <include layout="@layout/grey_line"></include>
+
+                <TextView
+                    android:id="@+id/etc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/etc"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <include layout="@layout/grey_line"></include>
+
+                <TextView
+                    android:id="@+id/consentInformantion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:text="@string/consentInformantion"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+
             </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/information_noti"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background_white"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/inquire"
+                android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/inquire"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
-
-            <include layout="@layout/grey_line"></include>
-
-            <TextView
-                android:id="@+id/etc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="@string/etc"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_horizontal"
+                android:text="알림"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <include layout="@layout/grey_line"></include>
+            <View
+                android:layout_width="100dp"
+                android:layout_height="3dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:background="#90DCEE" />
 
             <TextView
-                android:id="@+id/consentInformantion"
+                android:id="@+id/notiContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/consentInformantion"
-                android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:layout_margin="25dp"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/withdrawWarning"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/approve"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/accountWithdraw"
+                    android:textColor="#90DCEE"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="#D3D3D3" />
+
+                <TextView
+                    android:id="@+id/cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="취소"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </FrameLayout>
 
 </LinearLayout>

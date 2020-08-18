@@ -36,7 +36,7 @@ public class TODOtitleFragment extends Fragment {
     private ConstraintLayout trashTitle1,trashTitle2,trashTitle3,trashTitle4;
     private ConstraintLayout todoTitle1,todoTitle2,todoTitle3;
 
-    private boolean[] clean,wash,trash,todo; //각 목표 달성여부 우선은 다 false로 둠
+    private Boolean[] clean,wash,trash,todo; //각 목표 달성여부 우선은 다 false로 둠
     private String repTitle;
     private Boolean isedit,isNull=false,editFinish;
     public static boolean isClicked = false;
@@ -82,12 +82,26 @@ public class TODOtitleFragment extends Fragment {
         totalTitleList = new String[]{"인간돌돌이", "인간빗자루", "인간청소기", "50회는아직안정함","다듬이", "빨래판", "드럼세탁기", "스타일러",
                "5L","10L","50L","100L","todo1","todo2","todo3"};
 
-        clean = new boolean[]{true,false,false,true};
-        wash = new boolean[]{false,false,true,false};
-        trash = new boolean[]{true,false,false,false};
-        todo = new boolean[]{false,true,false};
 
-        boolean[] islocked = new boolean[]{true,false,false,true,false,false,true,false,true,false,false,false,false,true,false};
+        clean = new Boolean[4];
+        wash = new Boolean[4];
+        trash = new Boolean[4];
+        todo = new Boolean[3];
+
+        for(int i = 0; i < 4; i++){
+            clean[i] = TitleFragment.TODOList[i];
+        }
+        for(int i = 4; i < 8; i++){
+            wash[i-4] = TitleFragment.TODOList[i];
+        }
+        for(int i = 8; i < 12; i++){
+            trash[i-8] = TitleFragment.TODOList[i];
+        }
+        for(int i = 12; i < 15; i++){
+            todo[i-12] = TitleFragment.TODOList[i];
+        }
+
+        Boolean[] islocked = TitleFragment.TODOList;
 
         //setSelected는 default가 false -> 흰색 배경
         //true -> 회색배경
@@ -167,7 +181,7 @@ public class TODOtitleFragment extends Fragment {
         ImageView[] todoImageIdList = new ImageView[]{todoTitle1.findViewById(R.id.image),todoTitle2.findViewById(R.id.image),todoTitle3.findViewById(R.id.image)};
 
         //TODO: 아이콘 적용
-        Drawable drawable = getResources().getDrawable(R.drawable.lock);
+        Drawable lock_title = getResources().getDrawable(R.drawable.lock_title);
         //각 칭호 아이콘
         Drawable[] cleanImage = new Drawable[]{getResources().getDrawable(R.drawable.clean1),getResources().getDrawable(R.drawable.clean2),getResources().getDrawable(R.drawable.clean3),getResources().getDrawable(R.drawable.clean4)};
         Drawable[] washImage = new Drawable[]{getResources().getDrawable(R.drawable.wash1),getResources().getDrawable(R.drawable.wash2),getResources().getDrawable(R.drawable.wash3),getResources().getDrawable(R.drawable.wash4)};
@@ -182,7 +196,7 @@ public class TODOtitleFragment extends Fragment {
                 cleanImageIdList[i].setImageDrawable(cleanImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
                 cleanTitleIdList[i].setText("");
-                cleanImageIdList[i].setImageDrawable(drawable);
+                cleanImageIdList[i].setImageDrawable(lock_title);
             }
         }
 
@@ -192,7 +206,7 @@ public class TODOtitleFragment extends Fragment {
                 washImageIdList[i].setImageDrawable(washImage[i]);
             }else{
                 washTitleIdList[i].setText("");
-                washImageIdList[i].setImageDrawable(drawable);
+                washImageIdList[i].setImageDrawable(lock_title);
             }
         }
 
@@ -202,7 +216,7 @@ public class TODOtitleFragment extends Fragment {
                 todoImageIdList[i].setImageDrawable(todoImage[i]);
             }else{
                 todoTitleIdList[i].setText("");
-                todoImageIdList[i].setImageDrawable(drawable);
+                todoImageIdList[i].setImageDrawable(lock_title);
             }
         }
 
@@ -213,7 +227,7 @@ public class TODOtitleFragment extends Fragment {
                 trashImageIdList[i].setImageDrawable(trashImage[i]);
             } else {
                 trashTitleIdList[i].setText("");
-                trashImageIdList[i].setImageDrawable(drawable);
+                trashImageIdList[i].setImageDrawable(lock_title);
             }
         }
         return v;
