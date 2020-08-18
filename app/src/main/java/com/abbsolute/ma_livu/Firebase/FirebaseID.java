@@ -30,6 +30,17 @@ public class FirebaseID {
     public static String commu_comment_comment = "commu_comment_comment";
     public static String commu_comment_icon = "commu_comment_icon";
     public static String commu_comment_like = "commu_comment_like";
+    public static String commu_comment_comment_count = "commu_comment_comment_count";
+
+    //파이어스토어 Community Comment Comment 컬렉션 필드 이름
+    public static String Community_Comment_Comment = "커뮤니티 답글";
+    public static String Community_Comment_Comment_Report = "Community_comment_comment_report";
+    public static String commu_comment_comment_num = "commu_comment_comment_num";
+    public static String commu_comment_comment_name = "commu_comment_comment_name";
+    public static String commu_comment_comment_date = "commu_comment_comment_date";
+    public static String commu_comment_comment_icon = "commu_comment_comment_icon";
+    public static String commu_comment_comment_like = "commu_comment_comment_like";
+    public static String commu_comment_comment_comment = "commu_comment_comment_comment";
 
     //파이어스토어 GuestBook 컬렉션 필드 이름
     public static String GuestBook = "GuestBook";

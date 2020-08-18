@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,11 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentFragment;
 import com.abbsolute.ma_livu.R;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class CommunityPostsFragment extends Fragment {
     //프래그먼트 전환 변수

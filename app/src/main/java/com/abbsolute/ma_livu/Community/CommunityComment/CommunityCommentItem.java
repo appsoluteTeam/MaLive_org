@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Community;
+package com.abbsolute.ma_livu.Community.CommunityComment;
 
 public class CommunityCommentItem {
     private String name;
