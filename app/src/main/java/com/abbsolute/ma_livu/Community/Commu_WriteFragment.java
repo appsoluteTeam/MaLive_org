@@ -22,6 +22,7 @@ import android.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import org.w3c.dom.Text;
 import java.util.HashMap;
@@ -67,6 +69,10 @@ public class Commu_WriteFragment extends Fragment {
     //사진
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     private ImageView image_test;
+    public CommunityAdapter adapter;
+    private RecyclerView recycler_community;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<bringData> arrayList;
 
     @Nullable
     @Override
@@ -182,7 +188,7 @@ public class Commu_WriteFragment extends Fragment {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
                         byteArray.length);
 
-                image_test=(ImageView)view.findViewById(R.id.image_test);
+                //image_test=(ImageView)view.findViewById(R.id.image_test);
                 image_test.setImageBitmap(bitmap);
             }
         }

@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">MaLive</string>
     <string name="myPage">마이페이지</string>
-    <string name="Community">커뮤니티</string>
-    <string name="commu_write">글쓰기</string>
     <string name="mypage_information_set">정보 설정</string>
 
     // 방명록 String
@@ -11,6 +9,9 @@
 
     // 커뮤니티 String
     <string name="communityComment">댓글</string>
+    <string name="Community">커뮤니티</string>
+    <string name="commu_write">글쓰기</string>
+    <string name="commu_title">제목</string>
 
     <string name="mypage_title">칭호</string>
     <string name="account">계정</string>
