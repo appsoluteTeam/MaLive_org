@@ -91,6 +91,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
             database.execSQL(sql);
         }
     }
+
     public static void updateData(Context context, String tableName, ToDoInfo toDoInfo, String contents){
         DatabaseHelper helper = new DatabaseHelper(context, "todo.db", null, 16);
         database = helper.getWritableDatabase();
@@ -99,6 +100,13 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 " where detailcontent='"+contents+"';";
         database.execSQL(sql);
     }
+    public static void deleteFixData(String tableName,String fixToDo){
+        if(database!=null){
+            String sql="delete from "+ tableName +" where todo='"+fixToDo+"';";
+            database.execSQL(sql);
+        }
+    }
+
     public static ArrayList<ToDoInfo> deleteData(Context context, String tableName, int id, ToDoInfo toDoInfo){
         ArrayList<ToDoInfo> toDoInfos=new ArrayList<>();
         if(database!=null){

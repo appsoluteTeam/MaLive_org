@@ -347,9 +347,13 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             //isLocked Custom Class 호출
             isLocked isLocked = new isLocked(1,TODOIslocked,attendanceIslocked,todayIslocked,roomIslocked,category,repTitleIndex);
 
+            myPageRef.set(isLocked);
+
+
             //email을 문서이름으로 해서 firestore에 저장
             firestore.collection(FirebaseID.myPage)
                     .document(email).set(isLocked, SetOptions.merge());
+
         }
     }
 

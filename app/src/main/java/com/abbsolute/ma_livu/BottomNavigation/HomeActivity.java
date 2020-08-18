@@ -21,7 +21,9 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixListRemoveFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
 import com.abbsolute.ma_livu.MyPage.DataListener;
@@ -162,8 +164,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 3:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
                 break;
-            
-            // 방명록 프래그먼트에서 버튼 눌렀을 때
             case 4:
                 fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
@@ -185,16 +185,28 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 break;
             //투두 프래그먼트로 이동
             case 100:
-                fragmentTransaction.replace(R.id.main_frame,toDoFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame,toDoFragment);
+                fragmentTransaction.commit();
                 break;
             //투두 작성메인 화면
             case 101:
-                fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment);
+                fragmentTransaction.commit();
                 break;
             //고정리스트
             case 102:
                 fragmentTransaction.replace(R.id.main_frame,toDoFixModifyingFragment).commit();
                 break;
+            //고정 할 일 프레그먼트
+            case 103:
+                ToDoFixWriteFragment toDoFixWriteFragment=new ToDoFixWriteFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFixWriteFragment).commit();
+                break;
+            case 104:
+                ToDoFixListRemoveFragment toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
+                fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
+                break;
+
 
         }
     }

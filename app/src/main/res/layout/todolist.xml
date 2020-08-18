@@ -28,14 +28,16 @@
             android:textAlignment="center"
             android:gravity="center">
         </TextView>
-        <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/write_date"
-            android:layout_marginLeft="155sp"
-            android:layout_marginTop="17sp"
-            android:text="작성날짜">
-        </TextView>-->
+        <CheckBox
+            android:layout_marginTop="8dp"
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginLeft="335dp"
+            android:id="@+id/chk_btn"
+            android:button="@null"
+            android:background="@drawable/checkbox_custom">
+        </CheckBox>
+
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"

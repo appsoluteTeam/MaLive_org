@@ -4,20 +4,19 @@
     android:layout_height="wrap_content"
     android:background="@drawable/todo_border"
     android:layout_marginLeft="5sp"
-    android:id="@+id/fix_list_layout">
+    android:id="@+id/fix_remove_layout">
     <ImageButton
         android:layout_width="15sp"
         android:layout_height="15sp"
         android:id="@+id/removingButton"
         android:background="@drawable/removed_icon"
-        android:layout_marginLeft="45sp"
-        android:visibility="invisible">
+        android:layout_marginLeft="55dp">
     </ImageButton>
     <TextView
         android:padding="5sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/todo"
+        android:id="@+id/todo_remove"
         android:hint="고정 할 일"
         android:textSize="13sp"
         android:textColor="#2E2E2E"
@@ -27,7 +26,7 @@
         android:padding="5sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/todo_date"
+        android:id="@+id/todo_date_remove"
         android:hint="요일"
         android:textSize="13sp"
         android:textColor="#2E2E2E"
