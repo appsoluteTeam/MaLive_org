@@ -94,8 +94,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="15dp"
                     android:src="@mipmap/ic_launcher_round"
-                    app:civ_border_overlay="false"
-                    app:civ_border_width="1dp" />
+                    app:civ_border_overlay="false" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
