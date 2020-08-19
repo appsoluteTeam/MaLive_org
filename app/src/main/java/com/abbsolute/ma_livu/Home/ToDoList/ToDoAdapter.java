@@ -127,31 +127,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
             }
         });
-        SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        final String id = sharedPreferences.getString("email_id", "");
-        firestore.collection("ToDoList").document(id + " ToDo")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot snapshot = task.getResult();
-                            if (snapshot.exists()) {
-                                String content = (String) snapshot.getData().get("contents"+position);
-                                final String detailContent = (String) snapshot.getData().get("detailContents"+position);
-                                String dates = (String) snapshot.getData().get("dates"+position);
-                                String dDay = (String) snapshot.getData().get("dDates"+position);
-                                holder.Contents.setText(content);
-                                holder.ContentsDetail.setText(detailContent);
-                                // holder.writeDates.setText(toDoInfo.getDates());
 
-
-                                ///할 일 완료 체크여부 설정하기
-
-                            }
-                        }
-                    }
-                });
         ///체크데이터 불러오기
         final SharedPreferences pf = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
         Boolean chk1 = pf.getBoolean("chk" + position, false);

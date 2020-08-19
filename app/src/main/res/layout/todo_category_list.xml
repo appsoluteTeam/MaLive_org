@@ -18,7 +18,8 @@
             android:textSize="13sp"
             android:textAlignment="center"
             android:background="@drawable/todo_text_background"
-            android:id="@+id/todo_image_text">
+            android:id="@+id/todo_image_text"
+            android:gravity="center_horizontal">
         </TextView>
     </LinearLayout>
 </LinearLayout>

@@ -179,7 +179,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
                                for(int i=0;i<=siz;i++){
                                    String period=(String)snapshot.getData().get("period"+i);
                                    String todo=(String)snapshot.getData().get("todo"+i);
-                                   ToDoFixInfo toDoFixInfo=new ToDoFixInfo(period,todo);
+                                   ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
                                    toDoFixInfos.add(toDoFixInfo);
                                }
                                toDoFixListAdapter.setFixItem(toDoFixInfos);

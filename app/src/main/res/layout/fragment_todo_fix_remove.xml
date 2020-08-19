@@ -114,7 +114,7 @@
         android:layout_gravity="center|bottom"
         android:text="등록하기"
         android:background="@drawable/button_background"
-        android:textColor="#FFFFFF"
+        android:textColor="#2E2E2E"
         android:layout_marginBottom="10sp">
     </Button>
 </LinearLayout>

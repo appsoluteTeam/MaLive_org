@@ -48,7 +48,7 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
                 public void onClick(View v) {
                     if(flag==false)
                     {
-                        linearLayout.setBackgroundColor(Color.GRAY);
+
                         SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         String upDateText=fixToDoTextView.getText().toString();
@@ -56,7 +56,6 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
                         editor.commit();
                         flag=true;
                     }else if(flag==true) {
-                        linearLayout.setBackgroundColor(Color.WHITE);
                         flag = false;
                     }
                 }

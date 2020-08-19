@@ -361,11 +361,11 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                     }
                                                     HashMap<String, Object> data = new HashMap<>();
                                                     if (content.equals("기타")) {
-                                                        String detail = (String) snapshot.getData().get("detailContents" + (position + 1));
-                                                        String c = Integer.toString(cnt);
-                                                        data.put(detail + "complete", c);
+                                                        //String detail = (String) snapshot.getData().get("detailContents" + (position + 1));
+                                                        long c = (long)(cnt);
+                                                        data.put("투두complete", c);
                                                     } else {
-                                                        String c = Integer.toString(cnt);
+                                                        long c = (long) (cnt);
                                                         data.put(content + "complete", c);
                                                     }
                                                     firestore.collection(FirebaseID.ToDoLists).document(id).set(data, SetOptions.merge());
