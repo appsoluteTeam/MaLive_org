@@ -58,8 +58,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             super(v);
             this.Contents = v.findViewById(R.id.todo_text);//내용
             this.ContentsDetail = v.findViewById(R.id.todo_text_detail);//상세내용
-            //  this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
-            //
             this.checkToDo = v.findViewById(R.id.chk_btn);
             this.dDays = v.findViewById(R.id.d_date);//디데이
             this.toDoFrame = v.findViewById(R.id.todo_frame);
