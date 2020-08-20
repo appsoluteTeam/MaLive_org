@@ -51,7 +51,7 @@
         </androidx.recyclerview.widget.RecyclerView>
         <View
             android:layout_marginLeft="7sp"
-            android:layout_width="370dp"
+            android:layout_width="375dp"
             android:layout_height="1dp"
             android:background="#BDBDBD">
         </View>
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="수정"
                 android:layout_gravity="end"
-                android:layout_marginLeft="310sp"
+                android:layout_marginLeft="308sp"
                 android:id="@+id/fix_todo_modify">
             </TextView>
             <TextView
@@ -114,7 +114,8 @@
             android:layout_height="40sp"
             android:id="@+id/todo_write2"
             android:layout_gravity="center"
-            android:background="@drawable/edit_black">
+            android:background="@drawable/edit_black"
+            android:hint="고정 할 일 입력">
         </EditText>
         <View
             android:layout_marginTop="50sp"
@@ -156,7 +157,7 @@
             </NumberPicker>
         </LinearLayout>
         <Button
-            android:layout_marginTop="50sp"
+            android:layout_marginTop="40sp"
             android:layout_width="120sp"
             android:layout_height="40sp"
             android:id="@+id/write"

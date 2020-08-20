@@ -97,6 +97,9 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
                                         int cnt=Integer.parseInt(counts);
                                         if(cnt>0)
                                             cnt--;
+                                        else if(cnt==0){
+                                            firestore.collection(FirebaseID.ToDoLists).document(id+" FixToDo").delete();
+                                        }
                                         counts=Integer.toString(cnt);
                                         Map<String,Object> updates = new HashMap<>();
                                         updates.put("period"+position, FieldValue.delete());

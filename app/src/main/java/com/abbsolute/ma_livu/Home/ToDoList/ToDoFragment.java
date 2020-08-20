@@ -2,11 +2,9 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -32,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
-import com.abbsolute.ma_livu.Community.bringData;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,24 +37,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshInterface {//ToDoList 추가, 삭제, 수정 클래스
@@ -84,6 +76,8 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     private String TAG = "";
 
     ///
+    private ToDoListCustomDialog customDialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -133,13 +127,13 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, dates, dDay, backgrounds);
                                         toDoInfos.add(toDoInfo);
                                     }
-                                    Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                                    Comparator<ToDoInfo> comparator = new Comparator<ToDoInfo>() {
                                         @Override
                                         public int compare(ToDoInfo o1, ToDoInfo o2) {
                                             return o1.getdDay().compareTo(o2.getdDay());
                                         }
                                     };
-                                    Collections.sort(toDoInfos,comparator);
+                                    Collections.sort(toDoInfos, comparator);
                                     toDoAdapter.setItem(toDoInfos);
 
                                 }
@@ -197,7 +191,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                             if (cnt >= 1)
                                                 cnt--;
                                             count = Integer.toString(cnt);
-                                            if(position==0){
+                                            if (position == 0) {
                                                 firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
                                                         .delete()
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -213,7 +207,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                             }
                                                         });
 
-                                            }else{
+                                            } else {
                                                 Map<String, Object> updates = new HashMap<>();
                                                 int moveIdx = position + 1;
                                                 //ex) 2번 지우면 3->2
@@ -251,82 +245,75 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         editor.commit();
                                     }//chk true
                                     else {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                        builder.setTitle("AlertDialog Title");
-                                        builder.setMessage("AlertDialog Content");
-                                        builder.setPositiveButton("예",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Toast.makeText(getContext(), "예를 선택했습니다.", Toast.LENGTH_LONG).show();
-                                                        DocumentSnapshot snapshot = task.getResult();
-                                                        String content = "";
-                                                        String detailContent = "";
-                                                        String dates = "";
-                                                        String dDay = "";
-                                                        String colors = "";
-                                                        String count = "";
-                                                        if (snapshot.exists()) {
-                                                            count = (String) snapshot.getData().get("Count");
-                                                            int cnt = Integer.parseInt(count);
-                                                            if (cnt >= 1)
-                                                                cnt--;
-                                                            count = Integer.toString(cnt);
-                                                            if(position==0){
-                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
-                                                                        .delete()
-                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                            @Override
-                                                                            public void onSuccess(Void aVoid) {
-                                                                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                                            }
-                                                                        })
-                                                                        .addOnFailureListener(new OnFailureListener() {
-                                                                            @Override
-                                                                            public void onFailure(@NonNull Exception e) {
-                                                                                Log.w(TAG, "Error deleting document", e);
-                                                                            }
-                                                                        });
-                                                            }else{
-                                                                Map<String, Object> updates = new HashMap<>();
-                                                                int moveIdx = position + 1;
-                                                                //ex) 2번 지우면 3->2
-                                                                Map<String, Object> data = new HashMap<>();
-                                                                content = (String) snapshot.getData().get("contents" + moveIdx);
-                                                                detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
-                                                                dates = (String) snapshot.getData().get("dates" + moveIdx);
-                                                                dDay = (String) snapshot.getData().get("dDates" + moveIdx);
-                                                                colors = (String) snapshot.getData().get("color" + moveIdx);
-                                                                data.put("contents" + position, content);
-                                                                data.put("detailContents" + position, detailContent);
-                                                                data.put("dates" + position, dates);
-                                                                data.put("dDates" + position, dDay);
-                                                                data.put("color" + position, colors);
-                                                                data.put("Count", count);
-                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
-                                                                ////
-                                                                updates.put("contents" + moveIdx, FieldValue.delete());
-                                                                updates.put("detailContents" + moveIdx, FieldValue.delete());
-                                                                updates.put("dates" + moveIdx, FieldValue.delete());
-                                                                updates.put("dDates" + moveIdx, FieldValue.delete());
-                                                                updates.put("color" + moveIdx, FieldValue.delete());
-                                                                updates.put("Count", count);
-                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
-                                                                ////
-                                                                if (!count.equals("0"))
-                                                                    refresh();
-                                                            }
-                                                        }
-
-
+                                        View.OnClickListener leftListener = new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Toast.makeText(getContext(), "예를 선택했습니다.", Toast.LENGTH_LONG).show();
+                                                DocumentSnapshot snapshot = task.getResult();
+                                                String content = "";
+                                                String detailContent = "";
+                                                String dates = "";
+                                                String dDay = "";
+                                                String colors = "";
+                                                String count = "";
+                                                if (snapshot.exists()) {
+                                                    count = (String) snapshot.getData().get("Count");
+                                                    int cnt = Integer.parseInt(count);
+                                                    if (cnt >= 1)
+                                                        cnt--;
+                                                    count = Integer.toString(cnt);
+                                                    if (position == 0) {
+                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Log.w(TAG, "Error deleting document", e);
+                                                                    }
+                                                                });
+                                                    } else {
+                                                        Map<String, Object> updates = new HashMap<>();
+                                                        int moveIdx = position + 1;
+                                                        //ex) 2번 지우면 3->2
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        content = (String) snapshot.getData().get("contents" + moveIdx);
+                                                        detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
+                                                        dates = (String) snapshot.getData().get("dates" + moveIdx);
+                                                        dDay = (String) snapshot.getData().get("dDates" + moveIdx);
+                                                        colors = (String) snapshot.getData().get("color" + moveIdx);
+                                                        data.put("contents" + position, content);
+                                                        data.put("detailContents" + position, detailContent);
+                                                        data.put("dates" + position, dates);
+                                                        data.put("dDates" + position, dDay);
+                                                        data.put("color" + position, colors);
+                                                        data.put("Count", count);
+                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
+                                                        ////
+                                                        updates.put("contents" + moveIdx, FieldValue.delete());
+                                                        updates.put("detailContents" + moveIdx, FieldValue.delete());
+                                                        updates.put("dates" + moveIdx, FieldValue.delete());
+                                                        updates.put("dDates" + moveIdx, FieldValue.delete());
+                                                        updates.put("color" + moveIdx, FieldValue.delete());
+                                                        updates.put("Count", count);
+                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
+                                                        ////
+                                                        if (!count.equals("0"))
+                                                            refresh();
                                                     }
-                                                });
-                                        builder.setNegativeButton("아니오",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Toast.makeText(getContext(), "아니오를 선택했습니다.", Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                        builder.show();
+                                                }
+                                                customDialog.dismiss();
+                                            }//onClick
+                                        };
+                                        customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
+                                                "그래도 삭제하시겠습니까?", leftListener, rightListener);
+                                        customDialog.show();
+
                                     }
 
 
@@ -362,7 +349,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                     HashMap<String, Object> data = new HashMap<>();
                                                     if (content.equals("기타")) {
                                                         //String detail = (String) snapshot.getData().get("detailContents" + (position + 1));
-                                                        long c = (long)(cnt);
+                                                        long c = (long) (cnt);
                                                         data.put("투두complete", c);
                                                     } else {
                                                         long c = (long) (cnt);
@@ -389,7 +376,15 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
 
         return view;
     }
+
     //다시 그리기
+    private View.OnClickListener rightListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getContext(), "오른쪽 버튼 클릭", Toast.LENGTH_SHORT).show();
+            customDialog.dismiss();
+        }
+    };
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -419,15 +414,15 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, dates, dDay, backgrounds);
                                         toDoInfos.add(toDoInfo);
                                     }
-                                    Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                                    Comparator<ToDoInfo> comparator = new Comparator<ToDoInfo>() {
                                         @Override
                                         public int compare(ToDoInfo o1, ToDoInfo o2) {
                                             return o1.getdDay().compareTo(o2.getdDay());
                                         }
                                     };
-                                    Collections.sort(toDoInfos,comparator);
-                                    for(ToDoInfo toDoInfo : toDoInfos){
-                                        Toast.makeText(getContext(), ""+toDoInfo.getdDay(), Toast.LENGTH_SHORT).show();
+                                    Collections.sort(toDoInfos, comparator);
+                                    for (ToDoInfo toDoInfo : toDoInfos) {
+                                        Toast.makeText(getContext(), "" + toDoInfo.getdDay(), Toast.LENGTH_SHORT).show();
                                     }
                                     toDoAdapter.setItem(toDoInfos);
 
