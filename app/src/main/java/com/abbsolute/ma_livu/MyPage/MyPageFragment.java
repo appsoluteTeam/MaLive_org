@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class MyPageFragment extends Fragment {
     private View view;
     private MyPageDataListener dataListener;
-    private Button btnMyPage_informationSet,btnMyPage_title,btnMyPage_pay,btnMyPage_active,btnMyPage_friend;
+    private LinearLayout btnMyPage_informationSet,btnMyPage_title,btnMyPage_pay,btnMyPage_active,btnMyPage_friend;
     private TextView nickname,textView_email;
 
 
