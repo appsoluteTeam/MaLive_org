@@ -1,7 +1,9 @@
 package com.abbsolute.ma_livu.Community;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,6 +24,8 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +39,7 @@ import com.google.firebase.firestore.SetOptions;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,7 +74,8 @@ public class Commu_WriteFragment extends Fragment {
     private Calendar date;
 
     //사진
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
+    private static final int IMAGE_REQUEST_CODE = 1888;
+    private static final int REQUESTED_PERMISSION = 1002;
     private ImageView image_test;
     public CommunityAdapter adapter;
     private RecyclerView recycler_community;
@@ -79,20 +85,20 @@ public class Commu_WriteFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.commu_write_fragment,container,false);
+        view = inflater.inflate(R.layout.commu_write_fragment, container, false);
 
-        et_title= view.findViewById(R.id.et_title);
-        et_content= view.findViewById(R.id.et_content);
+        et_title = view.findViewById(R.id.et_title);
+        et_content = view.findViewById(R.id.et_content);
 
-        category_eat=(TextView)view.findViewById(R.id.category_eat);
-        category_do=(TextView)view.findViewById(R.id.category_do);
-        category_how=(TextView)view.findViewById(R.id.category_how);
+        category_eat = (TextView) view.findViewById(R.id.category_eat);
+        category_do = (TextView) view.findViewById(R.id.category_do);
+        category_how = (TextView) view.findViewById(R.id.category_how);
 
 
         //카테고리 선택되었을 때 클릭리스너
-        TextView.OnClickListener categoryListener = new TextView.OnClickListener(){
+        TextView.OnClickListener categoryListener = new TextView.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.category_eat: //뭐 먹지 카테고리 선택
                         category = "what_eat";
@@ -133,11 +139,11 @@ public class Commu_WriteFragment extends Fragment {
                     dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     date = Calendar.getInstance();
 
-                    Map<String,Object> data = new HashMap<>();
-                    data.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
-                    data.put(FirebaseID.category,category);
-                    data.put(FirebaseID.title,et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
-                    data.put(FirebaseID.content,et_content.getText().toString());
+                    Map<String, Object> data = new HashMap<>();
+                    data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
+                    data.put(FirebaseID.category, category);
+                    data.put(FirebaseID.title, et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
+                    data.put(FirebaseID.content, et_content.getText().toString());
                     data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
 
                     // 저장 위치 변경
@@ -145,54 +151,64 @@ public class Commu_WriteFragment extends Fragment {
                             .collection("sub_Community").document(et_title.getText().toString())
                             .set(data, SetOptions.merge());
                 }
-                ((HomeActivity)getActivity()).setFragment(50);
+                ((HomeActivity) getActivity()).setFragment(50);
             }
         });
 
+
         //사진 업로드드 눌렀을 때
-        btn_image=(ImageButton)view.findViewById(R.id.btn_image);
+        btn_image = (ImageButton) view.findViewById(R.id.btn_image);
         btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-                startActivityForResult(intent,
-                        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                startActivityForResult(intent, IMAGE_REQUEST_CODE);
             }
         });
 
         //뒤로가기 버튼 눌렀을 때
-        btn_back=(ImageButton)view.findViewById(R.id.btn_back);
+        btn_back = (ImageButton) view.findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(50);
+                ((HomeActivity) getActivity()).setFragment(50);
             }
         });
         return view;
 
+//        if (ContextCompat.checkSelfPermission(
+//                getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//                //showInContextUI();
+//            } else {
+//                ActivityCompat.requestPermissions(getActivity(),
+//                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                        REQUESTED_PERMISSION);
+//            }
+//        }
     }
 
     //사진 올리기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == IMAGE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-
-                Bitmap bmp = (Bitmap) data.getExtras().get("data");
-                //bmp = ((BitmapDrawable) imgPreview.getDrawable()).getBitmap();
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-                        byteArray.length);
-
-                image_test=(ImageView)view.findViewById(R.id.image_test);
-                image_test.setImageBitmap(bitmap);
+                Uri image = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),image);
+                    image_test=(ImageView)view.findViewById(R.id.image_test);
+                    image_test.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
