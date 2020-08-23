@@ -148,7 +148,7 @@
             android:id="@+id/write"
             android:layout_gravity="center|bottom"
             android:text="수정완료"
-            android:background="@drawable/button_background"
+            android:background="@drawable/todo_button_background"
             android:textColor="#2E2E2E"
             android:layout_marginBottom="10sp">
         </Button>

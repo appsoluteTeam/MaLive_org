@@ -136,7 +136,7 @@
             android:layout_height="40sp"
             android:layout_gravity="center"
             android:layout_marginTop="40sp"
-            android:background="@drawable/button_background"
+            android:background="@drawable/todo_button_background"
             android:text="등록하기"
             android:textColor="#2E2E2E">
         </Button>
