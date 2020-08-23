@@ -16,6 +16,7 @@
             android:padding="7dp"
             android:hint="할 일"
             android:textSize="13sp"
+            android:textColor="#1C1C1C"
             android:textAlignment="center"
             android:background="@drawable/todo_text_background"
             android:id="@+id/todo_image_text"

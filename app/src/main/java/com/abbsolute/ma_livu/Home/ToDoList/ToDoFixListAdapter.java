@@ -48,7 +48,6 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
                 public void onClick(View v) {
                     if(flag==false)
                     {
-
                         SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         String upDateText=fixToDoTextView.getText().toString();

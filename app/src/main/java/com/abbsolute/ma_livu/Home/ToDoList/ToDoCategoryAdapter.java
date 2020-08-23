@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,10 +74,12 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                 if(text.equals("청소하기")){
                     if(cleanFlag==false){
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background2);
+                        holder.todoText.setTextColor(Color.WHITE);
                         cleanFlag=true;
                     }else{
                         cleanFlag=false;
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background);
+                        holder.todoText.setTextColor(Color.BLACK);
                     }
                     Toast.makeText(context, "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo", "청소");
@@ -85,10 +88,12 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                 else if(text.equals("빨래하기")){
                     if(laundryFlag==false){
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background2);
+                        holder.todoText.setTextColor(Color.WHITE);
                         laundryFlag=true;
                     }else{
                         laundryFlag=false;
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background);
+                        holder.todoText.setTextColor(Color.BLACK);
                     }
                     Toast.makeText(context, "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","빨래");
@@ -98,10 +103,12 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                 else if(text.equals("쓰레기")){
                     if(trashFlag==false){
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background2);
+                        holder.todoText.setTextColor(Color.WHITE);
                         trashFlag=true;
                     }else{
                         trashFlag=false;
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background);
+                        holder.todoText.setTextColor(Color.BLACK);
                     }
                     Toast.makeText(context, "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","쓰레기");
@@ -111,10 +118,12 @@ public class ToDoCategoryAdapter extends RecyclerView.Adapter<ToDoCategoryAdapte
                 else if(text.equals("기타")){
                     if(todoFlag==false){
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background2);
+                        holder.todoText.setTextColor(Color.WHITE);
                         todoFlag=true;
                     }else{
                         todoFlag=false;
                         holder.todoText.setBackgroundResource(R.drawable.todo_text_background);
+                        holder.todoText.setTextColor(Color.BLACK);
                     }
                     Toast.makeText(context, "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
                     editor.putString("toDo","기타");
