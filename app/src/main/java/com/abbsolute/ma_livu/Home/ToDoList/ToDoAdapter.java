@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +94,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.ContentsDetail.setText(toDoInfo.getDetailContent());
         if (dDay != null) {
             holder.dDays.setText(dDay);
+            holder.dDays.setTextColor(Color.BLACK);
         }
         if (position >= 1) {
             int pos = position;

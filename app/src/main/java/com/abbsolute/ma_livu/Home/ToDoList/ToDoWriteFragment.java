@@ -190,8 +190,9 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface {
                     SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("modify",false);
+                    editor.putInt("upload",1);
                     editor.commit();
-                    ((HomeActivity)getActivity()).setFragment(0);//ToDoFragment로 전환
+                    ((HomeActivity)getActivity()).setFragment(100);
                 }else{//추가
                     ToDoFragment toDoFragment=new ToDoFragment();
                     Bundle bundle2=new Bundle(1);
@@ -212,9 +213,9 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface {
                     SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2",Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("modify",false);
+                    editor.putInt("upload",1);
                     editor.commit();
-                    refresh();
-                    ((HomeActivity)getActivity()).setFragment(0);//ToDoFragment로 전환
+                    ((HomeActivity)getActivity()).setFragment(100);
                 }
 
             }

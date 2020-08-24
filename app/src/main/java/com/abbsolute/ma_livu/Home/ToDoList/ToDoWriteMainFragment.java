@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Home.ToDoList;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ public class ToDoWriteMainFragment extends Fragment implements OnBackPressedList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_write_main,container,false);
-        Toast.makeText(getContext(), "카테고리는 한번만 클릭 하세요", Toast.LENGTH_SHORT).show();
+        SharedPreferences pf = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
         ViewPager pager = view.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
         PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());

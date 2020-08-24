@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Home;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,10 @@ public class HomeFragment extends Fragment {
         go_Todo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("upload",0);
+                editor.commit();
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });

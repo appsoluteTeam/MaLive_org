@@ -48,7 +48,7 @@
         android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginTop="80dp"
-        android:background="@drawable/todo_button_background"
+        android:background="@drawable/button_background"
         android:stateListAnimator="@null"
         android:text="로그인"
         android:textColor="#FFFFFF"
