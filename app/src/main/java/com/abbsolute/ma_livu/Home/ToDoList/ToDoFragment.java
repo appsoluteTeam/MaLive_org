@@ -88,7 +88,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
-
         Button fab = view.findViewById(R.id.fab);//추가
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,11 +96,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("modify", false);
                 editor.commit();
-                transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                ToDoWriteMainFragment toDoWriteMainFragment=new ToDoWriteMainFragment();
-                transaction.replace(R.id.main_frame, toDoWriteMainFragment);
-                transaction.commit();
-                //((HomeActivity) getActivity()).setFragment(101);//toDoWriteFragment로 화면전환
+                ((HomeActivity) getActivity()).setFragment(101);//toDoWriteFragment로 화면전환
                 //Intent intent = new Intent(getContext(), ToDoWriteMainFragment.class);
                 //startActivityForResult(intent, WRITE_RESULT);
             }
@@ -141,8 +136,9 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                     toDoAdapter.setItem(toDoInfos);
 
                                 }
-                                recyclerView.setAdapter(toDoAdapter);
                                 toDoAdapter.notifyDataSetChanged();
+                                recyclerView.setAdapter(toDoAdapter);
+
                             }
                         }
                     }
@@ -150,6 +146,8 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         ////
         toDoAdapter.GetContext(getContext(), this);
         toDoAdapter.notifyDataSetChanged();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(toDoAdapter);
         recyclerView.setItemAnimator(null);
 
         //밀어서 할일 삭제
@@ -183,11 +181,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         String colors = "";
                                         String count = "";
                                         if (snapshot.exists()) {
-                                            count = (String) snapshot.getData().get("Count");
-                                            int cnt = Integer.parseInt(count);
-                                            if (cnt >= 1)
-                                                cnt--;
-                                            count = Integer.toString(cnt);
                                             if (position == 0) {
                                                 firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
                                                         .delete()
@@ -206,9 +199,8 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
 
                                             } else {
                                                 Map<String, Object> updates = new HashMap<>();
-
+                                                count = (String) snapshot.getData().get("Count");
                                                 int siz=Integer.parseInt(count);
-                                                siz++;
                                                 for(int i=position;i<siz;i++){
                                                     int moveIdx = i + 1;
                                                     //ex) 2번 지우면 3->2
@@ -226,13 +218,13 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                     data.put("Count", count);
                                                     firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
                                                 }
-
-                                                ////
                                                 updates.put("contents" + siz, FieldValue.delete());
                                                 updates.put("detailContents" + siz, FieldValue.delete());
                                                 updates.put("dates" + siz, FieldValue.delete());
                                                 updates.put("dDates" + siz, FieldValue.delete());
                                                 updates.put("color" + siz, FieldValue.delete());
+                                                siz--;
+                                                count=Integer.toString(siz);
                                                 updates.put("Count", count);
                                                 firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
                                                 ///
@@ -276,9 +268,8 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                                 });
                                                     } else {
                                                         Map<String, Object> updates = new HashMap<>();
-
+                                                        count = (String) snapshot.getData().get("Count");
                                                         int siz=Integer.parseInt(count);
-                                                        siz++;
                                                         for(int i=position;i<siz;i++){
                                                             int moveIdx = i + 1;
                                                             //ex) 2번 지우면 3->2
@@ -296,13 +287,13 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                             data.put("Count", count);
                                                             firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
                                                         }
-
-                                                        ////
                                                         updates.put("contents" + siz, FieldValue.delete());
                                                         updates.put("detailContents" + siz, FieldValue.delete());
                                                         updates.put("dates" + siz, FieldValue.delete());
                                                         updates.put("dDates" + siz, FieldValue.delete());
                                                         updates.put("color" + siz, FieldValue.delete());
+                                                        siz--;
+                                                        count=Integer.toString(siz);
                                                         updates.put("Count", count);
                                                         firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
                                                         ///
@@ -372,7 +363,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                 }
                             });
                     toDoInfos.remove(position);
-                    toDoAdapter.notifyItemRemoved(position);
+                    recyclerView.setAdapter(toDoAdapter);
 
                 }//왼쪽으로 swipe
 
@@ -384,8 +375,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
 
         return view;
     }
-
-    //다시 그리기
     private View.OnClickListener rightListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -393,23 +382,13 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
             customDialog.dismiss();
         }
     };
-
-
-
+    //다시 그리기
     @Override
     public void onResume() {
         super.onResume();
         Toast.makeText(getContext(), "On Resume!!!", Toast.LENGTH_SHORT).show();
         toDoInfos=new ArrayList<>();
         SharedPreferences pf = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
-        int flag = pf.getInt("upload", 0);
-        if(flag==1){
-            refresh();
-            SharedPreferences tmp = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor editor=tmp.edit();
-            editor.putInt("upload",0);
-            editor.commit();
-        }
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String id = sharedPreferences.getString("email_id", "");
         firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
@@ -442,15 +421,28 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                     };
                                     Collections.sort(toDoInfos, comparator);
                                     toDoAdapter.setItem(toDoInfos);
-
                                 }
-                                recyclerView.setAdapter(toDoAdapter);
                                 toDoAdapter.notifyDataSetChanged();
-
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setAdapter(toDoAdapter);
+                                SharedPreferences pf=getContext().getSharedPreferences("pref2", MODE_PRIVATE);
+                                int uploading=pf.getInt("upload",0);
+                                if(uploading==1){
+                                    refresh();
+                                    SharedPreferences tmp=getContext().getSharedPreferences("pref2",MODE_PRIVATE);
+                                    SharedPreferences.Editor editor=tmp.edit();
+                                    editor.putInt("upload",0);
+                                    editor.commit();
+                                }
                             }
                         }
                     }
                 });
+        toDoAdapter=new ToDoAdapter();
+        toDoAdapter.GetContext(getContext(),this);
+        toDoAdapter.setItem(toDoInfos);
+        toDoAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(toDoAdapter);
     }
 
 

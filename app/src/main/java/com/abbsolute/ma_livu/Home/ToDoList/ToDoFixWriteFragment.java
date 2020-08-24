@@ -151,7 +151,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
                     Toast.makeText(getContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
                 }
                 refresh();
-                ((HomeActivity)getActivity()).setFragment(0);//ToDoFragment로 전환
+                ((HomeActivity)getActivity()).setFragment(100);//ToDoFragment로 전환
             }
         });
         // todo: 고정리스트 어뎁터 생성 및 적용
