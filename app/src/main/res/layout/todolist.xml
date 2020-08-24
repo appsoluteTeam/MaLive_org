@@ -37,7 +37,6 @@
             android:button="@null"
             android:background="@drawable/checkbox_custom">
         </CheckBox>
-
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"

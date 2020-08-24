@@ -240,16 +240,12 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                     refresh();
                                             }
                                         }
-                                        SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = pfComplete.edit();
-                                        editor.putBoolean("chk" + position, false);
-                                        editor.commit();
+
                                     }//chk true
                                     else {
                                         View.OnClickListener leftListener = new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Toast.makeText(getContext(), "예를 선택했습니다.", Toast.LENGTH_LONG).show();
                                                 DocumentSnapshot snapshot = task.getResult();
                                                 String content = "";
                                                 String detailContent = "";
@@ -362,7 +358,12 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                         long c = (long) (cnt);
                                                         data.put(content + "complete", c);
                                                     }
+                                                    Toast.makeText(getContext(), ""+cnt, Toast.LENGTH_SHORT).show();
                                                     firestore.collection(FirebaseID.ToDoLists).document(id).set(data, SetOptions.merge());
+                                                    SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
+                                                    SharedPreferences.Editor Checkeditor = pfComplete.edit();
+                                                    Checkeditor.putBoolean("chk" + position, false);
+                                                    Checkeditor.commit();
                                                 }
                                             }
 
@@ -423,7 +424,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                     toDoInfos.clear();
                                     String cnt = (String) snapshot.getData().get("Count");
                                     int siz = Integer.parseInt(cnt);
-                                    Toast.makeText(getContext(), cnt, Toast.LENGTH_SHORT).show();
                                     for (int i = 0; i <= siz; i++) {
                                         String content = (String) snapshot.getData().get("contents" + i);
                                         String detailContent = (String) snapshot.getData().get("detailContents" + i);
@@ -441,9 +441,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         }
                                     };
                                     Collections.sort(toDoInfos, comparator);
-                                    for (ToDoInfo toDoInfo : toDoInfos) {
-                                        Toast.makeText(getContext(), "" + toDoInfo.getdDay(), Toast.LENGTH_SHORT).show();
-                                    }
                                     toDoAdapter.setItem(toDoInfos);
 
                                 }
