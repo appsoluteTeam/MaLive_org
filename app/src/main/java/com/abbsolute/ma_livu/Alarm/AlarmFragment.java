@@ -59,7 +59,11 @@ public class AlarmFragment extends Fragment {
                             if(task.getResult()!=null){
                                 DocumentSnapshot snapshot=task.getResult();
                                 if(snapshot.exists()){
-                                    nickName=(String)snapshot.getData().get("nickname");
+                                    if(snapshot.getData().get("nickname")!=null){
+                                        nickName=(String)snapshot.getData().get("nickname");
+                                    }else{
+
+                                    }
                                 }
                             }
                         }
