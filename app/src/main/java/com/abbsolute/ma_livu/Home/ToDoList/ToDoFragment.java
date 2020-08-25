@@ -321,38 +321,57 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
                                         if (task.getResult() != null) {
-                                            DocumentSnapshot snapshot = task.getResult();
+                                            final DocumentSnapshot snapshot = task.getResult();
                                             if (snapshot.exists()) {
                                                 SharedPreferences pf = getContext().getSharedPreferences("pref", MODE_PRIVATE);
                                                 boolean chk = pf.getBoolean("chk" + position, false);
                                                 if (chk == true) {
-                                                    String content = (String) snapshot.getData().get("contents" + position);
-                                                    SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("pref3", MODE_PRIVATE);
-                                                    SharedPreferences.Editor editor = sharedPreferences1.edit();
-                                                    //전체 달성횟수-> 칭호
-                                                    int cnt = 0;
-                                                    if (sharedPreferences1 != null) {
-                                                        cnt = sharedPreferences1.getInt(content + "Complete", 1);
-                                                        cnt++;
-                                                        editor.putInt(content + "Complete", cnt);
-                                                        editor.commit();
-                                                    } else {
-                                                        cnt = 1;
-                                                        editor.putInt(content + "Complete", cnt);
-                                                        editor.commit();
-                                                    }
-                                                    HashMap<String, Object> data = new HashMap<>();
-                                                    if (content.equals("기타")) {
-                                                        //String detail = (String) snapshot.getData().get("detailContents" + (position + 1));
-                                                        long c = (long) (cnt);
-                                                        data.put("투두complete", c);
-                                                    } else {
-                                                        long c = (long) (cnt);
-                                                        data.put(content + "complete", c);
-                                                    }
-                                                    Toast.makeText(getContext(), ""+cnt, Toast.LENGTH_SHORT).show();
-                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document().set(data, SetOptions.merge());
-                                                    ////
+                                                    final String content = (String) snapshot.getData().get("contents" + position);
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub")
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if(task.isSuccessful()){
+                                                                        if(task.getResult()!=null){
+                                                                            //전체 달성횟수-> 칭호
+                                                                            DocumentSnapshot totalCompleteSnapShot=task.getResult();
+                                                                            if(totalCompleteSnapShot.exists()){
+                                                                                if(totalCompleteSnapShot.getData().get(content+"complete")!=null){
+                                                                                    long completeCount = (long)totalCompleteSnapShot.getData().get(content+"complete");
+                                                                                    completeCount++;
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                                    ////
+                                                                                }else{
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    long completeCount=1;
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                                }
+                                                                            }else {
+                                                                                HashMap<String, Object> data = new HashMap<>();
+                                                                                long completeCount=1;
+                                                                                if (content.equals("기타")) {
+                                                                                    data.put("투두complete", completeCount);
+                                                                                } else {
+                                                                                    data.put(content + "complete", completeCount);
+                                                                                }
+                                                                                firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });//전체 달성횟수 데이터
                                                     //// 월별 달성률 측정
                                                     long systemTime = System.currentTimeMillis();
                                                     SimpleDateFormat formatter= null;
@@ -363,8 +382,44 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                     String[] dates=date.split("-");
                                                     String year=dates[0];
                                                     String month=dates[1];
-                                                    String updateDate=year+"-"+month;
-                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate).set(data,SetOptions.merge());
+                                                    final String updateDate=year+"-"+month;
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if(task.isSuccessful()){
+                                                                        if(task.getResult()!=null){
+                                                                            DocumentSnapshot completeMonthSnapshot=task.getResult();
+                                                                            if(completeMonthSnapshot.exists()){
+                                                                                if(completeMonthSnapshot.getData().get(content+"complete")!=null){
+                                                                                    long completeMonthCount=(long)completeMonthSnapshot.getData().get(content+"complete");
+                                                                                    completeMonthCount++;
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeMonthCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeMonthCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                                            .set(data,SetOptions.merge());
+                                                                                }else{
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    long completeMonthCount=1;
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeMonthCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeMonthCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                                            .set(data,SetOptions.merge());
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+
                                                     SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
                                                     SharedPreferences.Editor Checkeditor = pfComplete.edit();
                                                     Checkeditor.putBoolean("chk" + position, false);
@@ -378,7 +433,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                             });
                     toDoInfos.remove(position);
                     recyclerView.setAdapter(toDoAdapter);
-
                 }//왼쪽으로 swipe
 
             }//onswiped
