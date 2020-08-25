@@ -329,6 +329,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                     String content = (String) snapshot.getData().get("contents" + position);
                                                     SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("pref3", MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPreferences1.edit();
+                                                    //전체 달성횟수-> 칭호
                                                     int cnt = 0;
                                                     if (sharedPreferences1 != null) {
                                                         cnt = sharedPreferences1.getInt(content + "Complete", 1);
@@ -350,7 +351,20 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                         data.put(content + "complete", c);
                                                     }
                                                     Toast.makeText(getContext(), ""+cnt, Toast.LENGTH_SHORT).show();
-                                                    firestore.collection(FirebaseID.ToDoLists).document(id).set(data, SetOptions.merge());
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document().set(data, SetOptions.merge());
+                                                    ////
+                                                    //// 월별 달성률 측정
+                                                    long systemTime = System.currentTimeMillis();
+                                                    SimpleDateFormat formatter= null;
+                                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                        formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                    }
+                                                    final String date=formatter.format(systemTime);
+                                                    String[] dates=date.split("-");
+                                                    String year=dates[0];
+                                                    String month=dates[1];
+                                                    String updateDate=year+"-"+month;
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate).set(data,SetOptions.merge());
                                                     SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
                                                     SharedPreferences.Editor Checkeditor = pfComplete.edit();
                                                     Checkeditor.putBoolean("chk" + position, false);

@@ -1,21 +1,21 @@
 package com.abbsolute.ma_livu.Alarm;
 
 public class PrevNotificationInfo {
-    int friendImage;
+    int image;
     String notifiedText;
     String prevNotificationTime;
-    PrevNotificationInfo(int friendImage,String notifiedText,String prevNotificationTime){
-        this.friendImage=friendImage;
+    PrevNotificationInfo(int image,String notifiedText,String prevNotificationTime){
+        this.image=image;
         this.notifiedText=notifiedText;
         this.prevNotificationTime=prevNotificationTime;
     }
 
     public int getFriendImage() {
-        return friendImage;
+        return image;
     }
 
-    public void setFriendImage(int friendImage) {
-        this.friendImage = friendImage;
+    public void setFriendImage(int image) {
+        this.image = image;
     }
 
     public String getNotifiedText() {

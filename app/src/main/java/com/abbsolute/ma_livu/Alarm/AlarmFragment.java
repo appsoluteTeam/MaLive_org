@@ -19,6 +19,7 @@ import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,7 +34,10 @@ public class AlarmFragment extends Fragment {
     private RecyclerView friendRequestListView;
     private RecyclerView prevNotificationListView;
     private FirebaseFirestore firestore= FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     private ArrayList<String> dDayList=new ArrayList<>();
+    ///
+    String nickName="";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +48,25 @@ public class AlarmFragment extends Fragment {
         prevNotificationListView=view.findViewById(R.id.prev_notification_list);
         LinearLayoutManager layoutManager1=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         friendRequestListView.setLayoutManager(layoutManager1);
+        FirebaseUser user=firebaseAuth.getCurrentUser();
+        //닉네임 찾기
+        firestore.collection(FirebaseID.user).document(user+"")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult()!=null){
+                                DocumentSnapshot snapshot=task.getResult();
+                                if(snapshot.exists()){
+                                    nickName=(String)snapshot.getData().get("nickname");
+                                }
+                            }
+                        }
+                    }
+                });
+
+        ///이전알림 시작
         LinearLayoutManager layoutManager2=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         prevNotificationListView.setLayoutManager(layoutManager2);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
@@ -56,33 +79,35 @@ public class AlarmFragment extends Fragment {
                         if(task.isSuccessful()){
                             if(task.getResult()!=null){
                                 DocumentSnapshot snapshot=task.getResult();
-                                String count= (String) snapshot.getData().get("Count");
-                                int siz=Integer.parseInt(count);
-                                for(int i=0;i<=siz;i++){
-                                    String dDay=(String)snapshot.getData().get("dDates"+i);
-                                    dDayList.add(dDay);
-                                }
-                                long systemTime = System.currentTimeMillis();
-                                SimpleDateFormat formatter= null;
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                    formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                                }
-                                String date=formatter.format(systemTime);
-                                String[] splitData=date.split("-");
-                                String tmp1=splitData[0];
-                                String tmp2=splitData[1];
-                                String tmp3=splitData[2];
-                                String today=tmp1+"년"+tmp2+"월"+tmp3+"일";
-                                for(int i=0;i<dDayList.size();i++){
-                                    if(dDayList.get(i).compareTo(today)<0){
-                                        //todo: db 할지 파이어스토어 할 지 정하기
-                                        //
+                                if(snapshot.exists()){
+                                    String count= (String) snapshot.getData().get("Count");
+                                    int siz=Integer.parseInt(count);
+                                    for(int i=0;i<=siz;i++){
+                                        String dDay=(String)snapshot.getData().get("dDates"+i);
+                                        dDayList.add(dDay);
+                                    }
+                                    long systemTime = System.currentTimeMillis();
+                                    SimpleDateFormat formatter= null;
+                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                        formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                    }
+                                    String date=formatter.format(systemTime);
+                                    String[] splitData=date.split("-");
+                                    String tmp1=splitData[0];
+                                    String tmp2=splitData[1];
+                                    String tmp3=splitData[2];
+                                    String today=tmp1+"년"+tmp2+"월"+tmp3+"일";
+                                    for(int i=0;i<dDayList.size();i++){
+                                        if(dDayList.get(i).compareTo(today)<0){
+                                            //PrevNotificationInfo prevNotificationInfo=new PrevNotificationInfo()
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 });
+        ///이전알림 끝
         return view;
     }
 }
