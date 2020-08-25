@@ -2,6 +2,7 @@ package com.abbsolute.ma_livu.Community;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +30,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class CommunityFragment extends Fragment {
@@ -50,6 +53,7 @@ public class CommunityFragment extends Fragment {
     private String category;
     private String date;
     private String writer;
+    private String[] img_uri;
 
     @Nullable
     @Override
@@ -133,6 +137,7 @@ public class CommunityFragment extends Fragment {
                 bundle.putString("Content", item.getContent());
                 bundle.putString("Date", item.getDate());
                 bundle.putString("Category", item.getCategory());
+                bundle.putString("Writer",item.getWriter());
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
@@ -155,8 +160,10 @@ public class CommunityFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(task.isSuccessful()){
+
                                     if(task.getResult() != null){
                                         arrayList.clear();
+
                                         for(DocumentSnapshot snapshot : task.getResult()){
                                             Map<String,Object> shot = snapshot.getData();
                                             String documentID = String.valueOf(shot.get(FirebaseID.documentID));
@@ -164,8 +171,13 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
+//                                            for(int i=0; i<FirebaseID.Commu_image_URI.length(); i++){
+//                                                img_uri[i]= (String) shot.get(FirebaseID.Commu_image_URI);
+//                                            }
+//                                            Log.d("CommunityFragment", "img_uri = "+img_uri);
+                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
                          
-                                            bringData data = new bringData(documentID,title,category,content,date);
+                                            bringData data = new bringData(documentID,title,category,content,date,writer);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -190,8 +202,10 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
-                         
-                                            bringData data = new bringData(documentID,title,category,content,date);
+
+                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
+
+                                            bringData data = new bringData(documentID,title,category,content,date,writer);
                                           
                                             arrayList.add(data);
                                         }
@@ -217,8 +231,10 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
-                         
-                                            bringData data = new bringData(documentID,title,category,content,date);
+
+                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
+
+                                            bringData data = new bringData(documentID,title,category,content,date,writer);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();

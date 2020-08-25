@@ -20,6 +20,7 @@ public class FirebaseID {
     public static String category ="category";
     public static String content ="content";
     public static String commu_date ="commu_date";
+    public static String Commu_image_URI ="Commu_image_URI";
 
     //파이어스토어 Community Comment 컬렉션 필드 이름
     public static String Community_Comment = "Community_comment";

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.payFragment;
@@ -36,6 +37,7 @@ public class Login2Activity extends AppCompatActivity {
     private MyPageFragment myPageFragment;
     private payFragment payFragment;
     private informationSetFragment informationSetFragment;
+    private Commu_WriteFragment commu_writeFragment;
 
 
     @Override
@@ -69,6 +71,7 @@ public class Login2Activity extends AppCompatActivity {
                                     myPageFragment = new MyPageFragment(email);
                                     payFragment = new payFragment(email);
                                     informationSetFragment = new informationSetFragment(email);
+                                    commu_writeFragment =new Commu_WriteFragment(email);
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
                                     SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();

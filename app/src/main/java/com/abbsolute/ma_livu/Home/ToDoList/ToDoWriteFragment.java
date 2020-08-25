@@ -216,7 +216,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface {
                     refresh();
                     ((HomeActivity)getActivity()).setFragment(0);//ToDoFragment로 전환
                 }
-
             }
         });
         return view;
