@@ -36,7 +36,6 @@
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
-            <include layout="@layout/grey_line"></include>
         </LinearLayout>
 
     </FrameLayout>

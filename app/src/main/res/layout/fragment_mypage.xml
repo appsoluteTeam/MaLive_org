@@ -11,24 +11,25 @@
 
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="2.1">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/btnMyPage_informationSet"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="15dp"
+                android:layout_marginTop="40dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/draw_image"
+                    android:id="@+id/btnMyPage_informationSet"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center_horizontal"
@@ -52,6 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="15dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
@@ -106,11 +108,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="30dp"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/profile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -124,7 +127,7 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar2"
+                    android:id="@+id/clean_progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
@@ -145,6 +148,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -158,7 +162,7 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar3"
+                    android:id="@+id/wash_progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
@@ -179,6 +183,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -192,7 +197,7 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar4"
+                    android:id="@+id/trash_progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
@@ -213,6 +218,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -226,7 +232,7 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
-                    android:id="@+id/progressBar5"
+                    android:id="@+id/todo_progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
@@ -252,7 +258,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.9">
 
         <View
             android:layout_width="match_parent"
@@ -263,20 +269,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/btnMyPage_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnMyPage_title_image"
+                    android:id="@+id/btnMyPage_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -294,16 +301,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnMyPage_pay"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnMyPage_pay_image"
+                    android:id="@+id/btnMyPage_pay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -321,16 +328,16 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnMyPage_active"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnMyPage_active_image"
+                    android:id="@+id/btnMyPage_active"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -344,20 +351,20 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="활성" />
+                    android:text="활동" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnMyPage_friend"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
+                android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/btnMyPage_friend_image"
+                    android:id="@+id/btnMyPage_friend"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"

@@ -65,10 +65,13 @@ public class Login2Activity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login2Activity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+
+                                   //email필요한 fragment에 생성자로 email값 넘겨줌
                                     titleFragment = new TitleFragment(email);
                                     myPageFragment = new MyPageFragment(email);
                                     payFragment = new payFragment(email);
                                     informationSetFragment = new informationSetFragment(email);
+
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
                                     SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = sharedPreferences.edit();

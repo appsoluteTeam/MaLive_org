@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -128,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 userMap.put(FirebaseID.Nickname,account.getDisplayName());
                                 String email=account.getEmail();
                                 firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
+
                                 finish();
                             }
                             Toast.makeText(LoginActivity.this,"로그인 성공",Toast.LENGTH_SHORT).show();

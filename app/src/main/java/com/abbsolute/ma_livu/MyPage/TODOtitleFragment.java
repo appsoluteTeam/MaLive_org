@@ -21,6 +21,7 @@ import java.util.Map;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+/* todo 칭호 fragment */
 public class TODOtitleFragment extends Fragment {
 
     /*파이어베이스 변수*/
@@ -74,6 +75,7 @@ public class TODOtitleFragment extends Fragment {
 
         View v =  inflater.inflate(R.layout.todo_title_fragment,container,false);
 
+        /* 각 to-do title 이름 */
         cleanTitleList = new String[]{"인간돌돌이", "인간빗자루", "인간청소기", "50회는아직안정함"};
         washTitleList = new String[]{"다듬이", "빨래판", "드럼세탁기", "스타일러"};
         trashTitleList = new String[]{"5L","10L","50L","100L"};
@@ -128,6 +130,16 @@ public class TODOtitleFragment extends Fragment {
                trashTitle1,trashTitle2,trashTitle3,trashTitle4,todoTitle1,todoTitle2,todoTitle3};
 
 
+        /*잠겨있는 칭호 배경 회색으로 변경*/
+        //isedit뒤로 했다고 이상하게 바뀜,,,,;;이유는 모름.
+        for(int i = 0; i < titleList.length; i++){
+            if(islocked[i] == true){//잠금해제일때
+                titleList[i].setSelected(false);//흰색
+            }else{//잠겨있을 때
+                titleList[i].setSelected(true);//회색
+            }
+        }
+
         if(isedit == true) {
             if(category == 1) {//TODO category 일때
                 for (int i = 0; i < titleList.length; i++) {
@@ -164,7 +176,6 @@ public class TODOtitleFragment extends Fragment {
             }
         }
 
-
         /*
             title,image findViewById해준 후 배열에 할당
          */
@@ -180,8 +191,8 @@ public class TODOtitleFragment extends Fragment {
         ImageView[] trashImageIdList = new ImageView[]{trashTitle1.findViewById(R.id.image),trashTitle2.findViewById(R.id.image),trashTitle3.findViewById(R.id.image),trashTitle4.findViewById(R.id.image)};
         ImageView[] todoImageIdList = new ImageView[]{todoTitle1.findViewById(R.id.image),todoTitle2.findViewById(R.id.image),todoTitle3.findViewById(R.id.image)};
 
-        //TODO: 아이콘 적용
         Drawable lock_title = getResources().getDrawable(R.drawable.lock_title);
+
         //각 칭호 아이콘
         Drawable[] cleanImage = new Drawable[]{getResources().getDrawable(R.drawable.clean1),getResources().getDrawable(R.drawable.clean2),getResources().getDrawable(R.drawable.clean3),getResources().getDrawable(R.drawable.clean4)};
         Drawable[] washImage = new Drawable[]{getResources().getDrawable(R.drawable.wash1),getResources().getDrawable(R.drawable.wash2),getResources().getDrawable(R.drawable.wash3),getResources().getDrawable(R.drawable.wash4)};
@@ -190,7 +201,6 @@ public class TODOtitleFragment extends Fragment {
 
 
         for(int i = 0; i < clean.length; i++){
-
             if(clean[i] == true){//목표 달성할 시 칭호 부여
                 cleanTitleIdList[i].setText(cleanTitleList[i]);
                 cleanImageIdList[i].setImageDrawable(cleanImage[i]);
