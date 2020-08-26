@@ -58,6 +58,34 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
                 }
             }
         });
+
+        // '더보기' 버튼 클릭 시 보이기
+        holder.btn_comment_comment_extra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.community_comment_comment_extra.getVisibility() == View.INVISIBLE) {
+                    holder.community_comment_comment_extra.setVisibility(View.VISIBLE);
+                } else {
+                    holder.community_comment_comment_extra.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        // '삭제' 버튼 클릭 시 데이터 삭제하기
+        holder.btn_commu_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.deleteItem(position);
+            }
+        });
+
+        // '신고' 버튼 클릭 시 데이터 신고하기
+        holder.btn_commu_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.reportItem(position);
+            }
+        });
     }
 
     @Override
@@ -77,6 +105,9 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
         ImageButton btn_comment_comment_extra;
         LinearLayout community_comment_comment_extra;
 
+        Button btn_commu_delete;
+        Button btn_commu_report;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.CommentCommentName = itemView.findViewById(R.id.CommentCommentName);
@@ -89,7 +120,10 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
 
             this.btn_comment_comment_extra = itemView.findViewById(R.id.btn_comment_comment_extra);
             this.community_comment_comment_extra = itemView.findViewById(R.id.community_comment_comment_extra);
-        }
 
+            this.btn_commu_delete = itemView.findViewById(R.id.btn_commu_delete);
+            this.btn_commu_report = itemView.findViewById(R.id.btn_commu_report);
+
+        }
     }
 }

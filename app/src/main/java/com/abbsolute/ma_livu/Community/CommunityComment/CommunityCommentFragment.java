@@ -1,8 +1,10 @@
 package com.abbsolute.ma_livu.Community.CommunityComment;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +22,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentAdapter;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentFragment;
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.bringData;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -59,6 +64,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 
     private static int count;
     private static int like_count;
+    private static int comment_count;
     private TextView CommentCount;
     private TextView CommentName;
     private TextView CommentDate;
@@ -80,10 +86,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         View view = inflater.inflate(R.layout.fragment_community_comment,container,false);
 
         CommentCount = view.findViewById(R.id.comment_count);
-//        CommentName = view.findViewById(R.id.CommentName);
-//        CommentDate = view.findViewById(R.id.CommentDate);
         Comment = view.findViewById(R.id.WriteComment);
-//        CommentIcon = view.findViewById(R.id.CommentIcon);
 
         btn_back = view.findViewById(R.id.btn_back);
         btn_insert = view.findViewById(R.id.btn_comment_insert);
@@ -111,6 +114,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                 bundle.putString("Title", title);
                 bundle.putString("Content", content);
                 bundle.putString("Date", posts_date);
+                bundle.putString("Writer", writer);
                 communityPostsFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
@@ -131,14 +135,17 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                     date = Calendar.getInstance();
 
                     like_count = 0;
+                    comment_count = 0;
 
                     // DB에 데이터 추가
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
                     data.put(FirebaseID.commu_comment_name, firebaseAuth.getCurrentUser().getEmail());
+//                    data.put(FirebaseID.commu_comment_name, firebaseAuth.getCurrentUser().getDisplayName());
                     data.put(FirebaseID.commu_comment_comment, Comment.getText().toString());
                     data.put(FirebaseID.commu_comment_date, dateform.format(date.getTime()));
                     data.put(FirebaseID.commu_comment_like, like_count);
+                    data.put(FirebaseID.commu_comment_comment_count, comment_count);
 
                     // DB에 저장되는 경로 Community->category->sub_Community->Community_Comment
                     firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -168,13 +175,15 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                                     String Comment = String.valueOf(shot.get(FirebaseID.commu_comment_comment));
                                     String CommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_date));
                                     String CommentLike = String.valueOf(shot.get(FirebaseID.commu_comment_like));
+                                    String CommentCount = String.valueOf(shot.get(FirebaseID.commu_comment_comment_count));
 
-                                    CommunityCommentItem data = new CommunityCommentItem(CommentName, Comment, CommentDate, CommentLike);
+                                    CommunityCommentItem data = new CommunityCommentItem(CommentName, Comment, CommentDate, CommentLike, CommentCount);
                                     arrayList.add(data);
                                 }
                                 // 전체 댓글 수 받아오기
                                 count =  adapter.getItemCount();
                                 CommentCount.setText(Integer.toString(count));
+                                commentCount(count);
 
                                 adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
                             }
@@ -244,12 +253,57 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         transaction.commit();
      }
 
-    //     // 댓글 삭제 메소드
-//    @Override
-//    public void deleteItem(int position) {
-//
-//    }
-//
+         // 댓글 삭제 메소드
+    @Override
+    public void deleteItem(final int position) {
+        //삭제 여부를 묻는 알림창 띄우기
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("삭제");
+        builder.setMessage("삭제하시겠습니까?");
+        builder.setCancelable(true);
+
+        // "삭제" 버튼 클릭 시
+        builder.setPositiveButton(
+                "삭제",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        // DB 내부의 데이터 삭제
+                        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                                .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @SuppressLint("LongLogTag")
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("CommunityCommentFragment", "커뮤니티 댓글 삭제 완료!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("HomeActivity", "커뮤니티 댓글 삭제 실패!");
+                                    }
+                                });
+
+                        // 새로 고침
+                        refresh();
+                    }
+                });
+
+        // "취소" 버튼 클릭 시
+        builder.setNegativeButton(
+                "취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
      // 댓글 신고 메소드
     @Override
     public void reportItem(final int position) {
@@ -265,7 +319,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        // 신고할 데이터 "GuestBook" 컬렉션에서 받아오기
+                        // 신고할 데이터 받아오기
                         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                                 .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
                                 .get()
@@ -317,6 +371,15 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    // 전체 댓글 수 받아오는 메소드
+    private void commentCount(int count) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            DocumentReference data = firestore.collection(FirebaseID.Community).document(category)
+                    .collection("sub_Community").document(title);
+            data.update(FirebaseID.commu_comment_count, count);
+        }
     }
 
     // 리사이클러뷰 새로고침 메소드

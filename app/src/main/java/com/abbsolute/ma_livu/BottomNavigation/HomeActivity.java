@@ -32,6 +32,7 @@ import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.payFragment;
+import com.abbsolute.ma_livu.MyPage.activeFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
     private TitleFragment titleFragment;
     private payFragment payFragment;
+    private activeFragment activeFragment;
     private informationSetFragment informationSetFragment;
 
     //fragment저장할 stack
@@ -141,6 +143,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         titleFragment = new TitleFragment();
         payFragment = new payFragment();
         informationSetFragment = new informationSetFragment();
+        activeFragment = new activeFragment();
 
         guestBookFragment = new GuestBookFragment();
         guestBookWriteFragment = new GuestBookWriteFragment();
@@ -270,6 +273,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentTransaction.commit();
                 break;
             case 2:
+                fragmentTransaction.replace(R.id.main_frame,activeFragment);
+                fragmentTransaction.commit();
                 break;
             case 3:
                 break;

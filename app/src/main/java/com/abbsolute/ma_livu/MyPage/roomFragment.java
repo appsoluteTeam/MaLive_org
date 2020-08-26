@@ -14,6 +14,7 @@ import com.abbsolute.ma_livu.R;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+/* 방 꾸미기 칭호 fragment */
 public class roomFragment extends Fragment {
     private String[] roomTitleList;
     private boolean[] islocked;
@@ -82,9 +83,11 @@ public class roomFragment extends Fragment {
 
         for(int i = 0; i < titleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
+                titleList[i].setSelected(false);//흰색
                 roomTitleIdList[i].setText(roomTitleList[i]);
                 roomImageIdList[i].setImageDrawable(roomImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
+                titleList[i].setSelected(true);//회색
                 roomTitleIdList[i].setText("");
                 roomImageIdList[i].setImageDrawable(lock_title);
             }

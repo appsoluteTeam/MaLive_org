@@ -4,7 +4,7 @@ public class ToDoFixInfo {//고정 리스트 정보 클래스
     public String fixToDo;
     public String fixPeriod;
 
-    public ToDoFixInfo(String fixPeriod,String fixToDo){
+    public ToDoFixInfo(String fixToDo,String fixPeriod){
         this.fixPeriod=fixPeriod;
         this.fixToDo=fixToDo;
     }

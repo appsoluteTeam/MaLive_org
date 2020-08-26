@@ -180,29 +180,29 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="#FFFFFF"
-            android:src="@drawable/icon_like"
+            android:src="@drawable/button_event_like_m"
             android:text="좋아요" />
 
         <TextView
+            android:id="@+id/commu_like_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="15dp"
             android:text="120" />
 
-        <ImageView
-            android:id="@+id/imageView8"
+        <ImageButton
+            android:id="@+id/btn_commu_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:background="#FFFFFF"
-            app:srcCompat="@drawable/icon_save" />
+            app:srcCompat="@drawable/button_event_save" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/commu_save_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:text="165" />
+            android:layout_marginRight="15dp" />
 
         <ImageButton
             android:id="@+id/btn_commu_comment"
@@ -214,11 +214,10 @@
             android:text="댓글" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/commu_comment_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:text="3" />
+            android:layout_marginRight="15dp" />
 
     </LinearLayout>
 

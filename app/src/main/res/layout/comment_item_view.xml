@@ -132,8 +132,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="15dp"
-                android:src="@mipmap/ic_launcher_round"
-                app:civ_border_width="1dp" />
+                android:src="@mipmap/ic_launcher_round" />
 
             <EditText
                 android:id="@+id/Comment"
@@ -147,7 +146,7 @@
 
             <ImageButton
                 android:id="@+id/btn_like"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginBottom="10dp"
@@ -158,6 +157,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </RelativeLayout>

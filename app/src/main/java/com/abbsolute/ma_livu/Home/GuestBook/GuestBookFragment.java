@@ -117,8 +117,6 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
 //                ((HomeActivity)getActivity()).setFragment(5);
             }
         });
-
-
         // DB의 데이터 불러와 어레이리스트에 넣기
         arrayList = new ArrayList<>();
         firestore.collection(FirebaseID.GuestBook)

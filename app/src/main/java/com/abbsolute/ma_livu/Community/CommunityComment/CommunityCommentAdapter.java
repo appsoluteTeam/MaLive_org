@@ -45,16 +45,16 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         holder.CommentDate.setText(arrayList.get(position).getDate());
         holder.Comment.setText(arrayList.get(position).getComment());
         holder.commu_comment_like.setText(arrayList.get(position).getComment_like());
-//        holder.commu_comment_comment_count.setText(Integer.toString());
+        holder.commu_comment_comment_count.setText(arrayList.get(position).getComment_count());
 
 
         // '삭제' 버튼 클릭 시 데이터 삭제하기
-//        holder.btn_delete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                callback.deleteItem(position);
-//            }
-//        });
+        holder.btn_commu_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.deleteItem(position);
+            }
+        });
 
          // '신고' 버튼 클릭 시 데이터 신고하기
         holder.btn_commu_report.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +124,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         Button btn_comment_like;
         Button btn_commu_comment_comment;
 
-        Button btn_delete;
+        Button btn_commu_delete;
         Button btn_commu_report;
 
         ImageButton btn_comment_extra;
@@ -146,7 +146,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
             this.btn_comment_extra = itemView.findViewById(R.id.btn_comment_extra);
             this.community_comment_extra = itemView.findViewById(R.id.community_comment_extra);
 
-//            this.btn_delete = itemView.findViewById(R.id.btn_delete);
+            this.btn_commu_delete = itemView.findViewById(R.id.btn_commu_delete);
             this.btn_commu_report = itemView.findViewById(R.id.btn_commu_report);
         }
 

@@ -9,18 +9,26 @@ public class bringData {
     private String content;
     private String date;
     private String category;
+
     private String img_uri;
     private String writer;
+    private String likeCount;
+    private String saveCount;
   
 
-    public bringData(String documentID, String title, String category, String content,String date,String writer) {
+    public bringData(String documentID, String title, String category, String content, String date,String writer,String likeCount, String saveCount) {
+
         this.documentID = documentID;
         this.title = title;
         this.content = content;
         this.category =category;
         this.date = date;
+
         this.img_uri= img_uri;
         this.writer=writer;
+
+        this.likeCount = likeCount;
+        this.saveCount = saveCount;
 
     }
 
@@ -65,6 +73,7 @@ public class bringData {
         this.date = date;
     }
 
+
     public String getImg_uri() {
         return img_uri;
     }
@@ -79,5 +88,21 @@ public class bringData {
 
     public void setWriter(String writer) {
         this.writer = writer;
+
+    public String getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(String likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public String getSaveCount() {
+        return saveCount;
+    }
+
+    public void setSaveCount(String saveCount) {
+        this.saveCount = saveCount;
+
     }
 }

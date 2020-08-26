@@ -32,6 +32,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/* 결제 창 fragment */
+
 public class payFragment extends Fragment {
     private View view;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -118,7 +120,9 @@ public class payFragment extends Fragment {
 
     public void radioSet(){
 
+        //정렬화면 보이게
         layout_pay_sort.setVisibility(view.VISIBLE);
+
         //라디오버튼
         pay_sort_deposit = (RadioButton)view.findViewById(R.id.pay_sort_deposit);
         pay_sort_withdraw = (RadioButton)view.findViewById(R.id.pay_sort_withdraw);
@@ -131,7 +135,6 @@ public class payFragment extends Fragment {
         //라디오 버튼 클릭 리스너
         RadioButton.OnClickListener radioButtonClickListener = new RadioButton.OnClickListener(){ @Override
             public void onClick(View view) {
-
             }
         };
 

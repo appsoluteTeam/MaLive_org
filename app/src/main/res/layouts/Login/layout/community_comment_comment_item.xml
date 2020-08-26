@@ -17,10 +17,11 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            app:srcCompat="@drawable/icon_comment" />
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:srcCompat="@drawable/icon_recomment" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/CommentCommentIcon"
@@ -106,11 +107,11 @@
                     android:visibility="invisible">
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/btn_commu_delete"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:background="#00FFFFFF"
-                        android:text="댓글알림"
+                        android:text="삭제"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -147,7 +148,7 @@
 
                 <Button
                     android:id="@+id/btn_comment_comment_like"
-                    android:layout_width="20dp"
+                    android:layout_width="25dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/button_event_like_s" />

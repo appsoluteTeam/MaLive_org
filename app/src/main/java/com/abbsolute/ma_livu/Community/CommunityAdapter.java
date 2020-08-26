@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.CustomViewHolder> {
@@ -48,6 +50,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
     public void onBindViewHolder(@NonNull CommunityAdapter.CustomViewHolder holder, int position) {
         holder.community_title.setText(arrayList.get(position).getTitle());
         holder.community_content.setText(arrayList.get(position).getContent());
+        holder.community_like_count.setText(arrayList.get(position).getLikeCount());
+        holder.community_save_count.setText(arrayList.get(position).getSaveCount());
 
     }
 
@@ -59,7 +63,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
     public class CustomViewHolder extends RecyclerView.ViewHolder{
         TextView community_title;
         TextView community_content;
-
+        TextView community_like_count;
+        TextView community_save_count;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,7 +86,8 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Cust
 
             this.community_title = itemView.findViewById(R.id.commu_title);
             this.community_content =itemView.findViewById(R.id.commu_content);
-
+            this.community_like_count = itemView.findViewById(R.id.commu_like_count);
+            this.community_save_count = itemView.findViewById(R.id.commu_save_count);
         }
     }
 

@@ -7,12 +7,13 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:weightSum="5">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <include
                 android:id="@+id/cleanTitle1"
@@ -44,7 +45,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <include
                 android:id="@+id/cleanTitle4"
@@ -59,7 +61,7 @@
                 android:id="@+id/washTitle1"
                 layout="@layout/titile_icon_name"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:onClick="onClick" />
@@ -76,8 +78,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <include
                 android:id="@+id/washTitle3"
@@ -109,8 +111,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <include
                 android:id="@+id/trashTitle2"
@@ -142,8 +144,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <include
                 android:id="@+id/todoTitle1"
@@ -158,7 +160,7 @@
                 android:id="@+id/todoTitle2"
                 layout="@layout/titile_icon_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:onClick="onClick" />

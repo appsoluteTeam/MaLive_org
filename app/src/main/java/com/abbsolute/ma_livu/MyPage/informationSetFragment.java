@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Login.LoginActivity;
 import com.abbsolute.ma_livu.R;
@@ -23,9 +24,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Stack;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+/* 정보설정 fragment */
 
 public class informationSetFragment extends Fragment implements View.OnClickListener{
     private View view;
@@ -36,14 +43,22 @@ public class informationSetFragment extends Fragment implements View.OnClickList
     private static int approveNum;
     private static String email;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    public static Stack<Fragment> fragmentStack;
+    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fm;
+    private Button btn_back;
 
     public informationSetFragment(){}
     public informationSetFragment(String email){
         this.email = email;
     }
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        /* 정보설정 fragment */
         view = inflater.inflate(R.layout.fragment_information_set, container, false);
+
+
+        /*fragement설정*/
+        fm = getFragmentManager();
+        fragmentTransaction = fm.beginTransaction();
 
         layout_fragment_information_set = view.findViewById(R.id.layout_fragment_information_set);
         btn_accountWithdraw = view.findViewById(R.id.btn_accountWithdraw); //회원탈퇴
@@ -52,6 +67,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
         btn_logout = view.findViewById(R.id.btn_logout);
         notiContents = view.findViewById(R.id.notiContents);
         cancel = view.findViewById(R.id.cancel);
+        btn_back = view.findViewById(R.id.btn_back);
 
         notiContents_withdraw = getString(R.string.withdrawWarning);
         notiContents_logout = getString(R.string.logoutWarning);
@@ -65,6 +81,11 @@ public class informationSetFragment extends Fragment implements View.OnClickList
         approve.setOnClickListener(this);
         btn_logout.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        btn_back.setOnClickListener(this);
+
+        //back버튼 적용 위해 stack에 담아둔 fragment
+        fragmentStack = HomeActivity.fragmentStack;
+
 
         return view;
     }
@@ -124,6 +145,10 @@ public class informationSetFragment extends Fragment implements View.OnClickList
             case R.id.cancel:
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 information_noti.setVisibility(view.GONE);
+                break;
+            case R.id.btn_back:
+                Fragment nextFragment = fragmentStack.pop();
+                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
                 break;
         }
     }

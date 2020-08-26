@@ -49,7 +49,7 @@
         android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginTop="112dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/todo_button_background"
         android:stateListAnimator="@null"
         android:text="다음"
         android:textColor="#FFFFFF"
