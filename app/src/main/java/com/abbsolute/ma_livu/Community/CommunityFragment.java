@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
@@ -160,7 +161,6 @@ public class CommunityFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(task.isSuccessful()){
-
                                     if(task.getResult() != null){
                                         arrayList.clear();
 
@@ -185,6 +185,7 @@ public class CommunityFragment extends Fragment {
                                 }
                             }
                         });
+                //firestore.collection("Community").orderBy("what_eat").orderBy("date");
                 break;
             case 1:
                 firestore.collection("Community").document("what_do").collection("sub_Community")
