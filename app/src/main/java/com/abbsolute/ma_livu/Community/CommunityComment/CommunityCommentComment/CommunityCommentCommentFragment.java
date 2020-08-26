@@ -1,6 +1,9 @@
 package com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,8 @@ import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -151,7 +156,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                     data.put(FirebaseID.commu_comment_comment_date, dateform.format(date.getTime()));
                     data.put(FirebaseID.commu_comment_comment_like, comment_like_count);
 
-                    // DB에 저장되는 경로 Community->category->sub_Community->Community_Comment
+                    // DB에 저장되는 경로 Community->category->sub_Community->Community_Comment->Community_Comment_Comment
                     firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                             .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(recomment.getText().toString())
                             .set(data, SetOptions.merge());
@@ -188,6 +193,8 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                                 recommentCount.setText(Integer.toString(count));
                                 // 리사이클러뷰에 표시되는 전체 답글 수
                                 commentcommentcount.setText(Integer.toString(count));
+                                // CommunityCommentFragment에 전체 답글 수 넘겨주기 위해 Firestore에 데이터 추가
+                                commentCount();
 
                                 adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
                             }
@@ -235,6 +242,131 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(arrayList.get(position).getComment());
             data.update(FirebaseID.commu_comment_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())));
+        }
+    }
+
+    @Override
+    public void deleteItem(final int position) {
+        //삭제 여부를 묻는 알림창 띄우기
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("삭제");
+        builder.setMessage("삭제하시겠습니까?");
+        builder.setCancelable(true);
+
+        // "삭제" 버튼 클릭 시
+        builder.setPositiveButton(
+                "삭제",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        // DB 내부의 데이터 삭제
+                        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                                .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(arrayList.get(position).getComment())
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("HomeActivity", "커뮤니티 댓글 삭제 완료!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("HomeActivity", "커뮤니티 댓글 삭제 실패!");
+                                    }
+                                });
+
+                        // 새로 고침
+                        refresh();
+                    }
+                });
+
+        // "취소" 버튼 클릭 시
+        builder.setNegativeButton(
+                "취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void reportItem(final int position) {
+        // 신고 여부를 묻는 알림창 띄우기
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("신고");
+        builder.setMessage("이 글을 신고하시겠습니까?");
+        builder.setCancelable(true);
+
+        // "신고" 버튼 클릭 시
+        builder.setPositiveButton(
+                "신고",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        // 신고할 데이터 "GuestBook" 컬렉션에서 받아오기
+                        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                                .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(arrayList.get(position).getComment())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+
+                                            // 컬렉션 내의 document에 접근
+                                            DocumentSnapshot document = task.getResult();
+
+                                            if (document.exists()) {
+                                                Map<String, Object> shot = document.getData();
+                                                String CommentName = String.valueOf(shot.get(FirebaseID.commu_comment_name));
+                                                String Comment = String.valueOf(shot.get(FirebaseID.commu_comment_comment));
+                                                String CommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_date));
+
+                                                // 신고할 데이터 "ReportComment" 컬렉션에 추가
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put(FirebaseID.commu_comment_name, CommentName);
+                                                data.put(FirebaseID.commu_comment_comment, Comment);
+                                                data.put(FirebaseID.commu_comment_date, CommentDate);
+
+                                                firestore.collection(FirebaseID.Community).document(category).collection(FirebaseID.Community_Comment_Report).document(title)
+                                                        .collection(FirebaseID.Community_Comment).document(Comment).set(data, SetOptions.merge());
+
+                                            } else {
+//                                                Log.d("HomeActivity", "No such document");
+                                            }
+                                        } else {
+//                                            Log.d("HomeActivity", "get failed with ", task.getException());
+                                        }
+                                    }
+                                });
+
+                        // 새로 고침
+                        refresh();
+                    }
+                });
+
+        // "취소" 버튼 클릭 시
+        builder.setNegativeButton(
+                "취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void commentCount() {
+        if (firebaseAuth.getCurrentUser() != null) {
+            DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                    .collection(FirebaseID.Community_Comment).document(commentComment);
+            data.update(FirebaseID.commu_comment_comment_count, String.valueOf(adapter.getItemCount()));
         }
     }
 }

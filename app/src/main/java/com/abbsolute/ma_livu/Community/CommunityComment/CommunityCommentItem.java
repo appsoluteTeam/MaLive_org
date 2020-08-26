@@ -6,12 +6,14 @@ public class CommunityCommentItem {
 //    private String icon;
     private String date;
     private String comment_like;
+    private String comment_count;
 
-    public CommunityCommentItem(String name, String comment, String date, String comment_like) {
+    public CommunityCommentItem(String name, String comment, String date, String comment_like, String comment_count) {
         this.name = name;
         this.comment = comment;
         this.date = date;
         this.comment_like = comment_like;
+        this.comment_count = comment_count;
     }
 
     public String getName() {
@@ -52,5 +54,13 @@ public class CommunityCommentItem {
 
     public void setComment_like(String comment_like) {
         this.comment_like = comment_like;
+    }
+
+    public String getComment_count() {
+        return comment_count;
+    }
+
+    public void setComment_count(String comment_count) {
+        this.comment_count = comment_count;
     }
 }

@@ -76,6 +76,10 @@ public class Commu_WriteFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
 
+    private static int comment_count;
+    private static int save_count;
+    private static int like_count;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -128,6 +132,10 @@ public class Commu_WriteFragment extends Fragment {
             public void onClick(View v) {
                 if (firebaseAuth.getCurrentUser() != null) {
 
+                    like_count  = 0;
+                    save_count = 0;
+                    comment_count = 0;
+
                     // 게시글 작성 시간 받아오기
                     long now = System.currentTimeMillis();
                     dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -139,6 +147,10 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.title,et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content,et_content.getText().toString());
                     data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
+                    // 좋아요, 저장, 댓글
+                    data.put(FirebaseID.commu_like_count, like_count);
+                    data.put(FirebaseID.commu_save_count, save_count);
+                    data.put(FirebaseID.commu_comment_count, comment_count);
 
                     // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
