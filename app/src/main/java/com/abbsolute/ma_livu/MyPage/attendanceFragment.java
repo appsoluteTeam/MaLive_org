@@ -15,6 +15,8 @@ import com.abbsolute.ma_livu.R;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+/*출석 칭호 fragment*/
+
 public class attendanceFragment extends Fragment {
     private String[] attendanceTitleList;
     private boolean[] islocked;
@@ -72,9 +74,11 @@ public class attendanceFragment extends Fragment {
 
         for(int i = 0; i < attendanceTitleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
+                titleList[i].setSelected(false);//흰색
                 atTitleIdList[i].setText(attendanceTitleList[i]);
                 atImageIdList[i].setImageDrawable(attendanceImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
+                titleList[i].setSelected(true);//회색
                 atTitleIdList[i].setText("");
                 atImageIdList[i].setImageDrawable(lock_title);
             }

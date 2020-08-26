@@ -83,7 +83,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         Log.d("email",email);
 
         /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
-        //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨 스레드문제인가?
         firestore.collection(FirebaseID.myPage).document(email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -134,6 +133,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                     }
                 });
 
+    }
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+
         /*칭호 획득 여부 가져오기*/
         firestore.collection(FirebaseID.ToDoLists).document(email)
                 .get()
@@ -151,8 +155,9 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                                 trash_complete = (long) shot.get(FirebaseID.trash_complete);
                                 todo_complete = (long) shot.get(FirebaseID.todo_complete);
 
+                                Log.d("clean complte",String.valueOf(clean_complete));
+
                                 Log.d("TitleFragment", "todo 가져오기 완료");
-                                Log.d("clean_complete",shot.get(FirebaseID.clean_complete).toString());
                             } else {
                                 Log.d("TitleFragment", "No such document");
                             }
@@ -161,10 +166,10 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.title,container,false);
 
         myPageRef = firestore.collection(FirebaseID.myPage).document(email);
@@ -256,7 +261,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         TODOList[2] = third;
         TODOList[3] = fourth;
 
-        Log.d("setCleanTitle",TODOList[0].toString());
     }
 
     public void countWashTitleIsLocked(long wash_complete){
@@ -324,8 +328,9 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         //arrays.xml에서 각 title array불러오기
         TypedArray title_todo_image = getResources().obtainTypedArray(R.array.title_todo_image);
-        TypedArray title__attendance_image = getResources().obtainTypedArray(R.array.title__attendance_image);
-
+        TypedArray title_attendance_image = getResources().obtainTypedArray(R.array.title_attendance_image);
+        TypedArray title_today_image = getResources().obtainTypedArray(R.array.title_today_image);
+        TypedArray title_room_image = getResources().obtainTypedArray(R.array.title_room_image);
         String strReptitle;
 
         switch (category){
@@ -338,16 +343,20 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             case 2:
                 strReptitle = titleList.getAttendance_titleList(repTitleIndex);
                 repTitle.setText(strReptitle);
-                Drawable atTitleImage = title__attendance_image.getDrawable(repTitleIndex);
+                Drawable atTitleImage = title_attendance_image.getDrawable(repTitleIndex);
                 titleImage.setImageDrawable(atTitleImage);
                 break;
             case 3:
                 strReptitle = titleList.getToday_titleList(repTitleIndex);
                 repTitle.setText(strReptitle);
+                Drawable todayTitleImage = title_today_image.getDrawable(repTitleIndex);
+                titleImage.setImageDrawable(todayTitleImage);
                 break;
             case 4:
                 strReptitle = titleList.getRoom_titleList(repTitleIndex);
                 repTitle.setText(strReptitle);
+                Drawable roomTitleImage = title_room_image.getDrawable(repTitleIndex);
+                titleImage.setImageDrawable(roomTitleImage);
                 break;
         }
     }

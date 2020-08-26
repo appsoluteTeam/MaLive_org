@@ -15,6 +15,8 @@ import com.abbsolute.ma_livu.R;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+
+/* 투데이 칭호 fragment */
 public class todayFragment extends Fragment {
     private String[] todayTitleList;
     private boolean[] islocked;
@@ -69,14 +71,17 @@ public class todayFragment extends Fragment {
 
         for(int i = 0; i < titleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
+                titleList[i].setSelected(false);//흰색
                 todayTitleIdList[i].setText(todayTitleList[i]);
                 todayImageIdList[i].setImageDrawable(todayImage[i]);
             }else{//목표 달성 못할 시 빈칸(null)
+                titleList[i].setSelected(true);//회색
                 todayTitleIdList[i].setText("");
                 todayImageIdList[i].setImageDrawable(lock_title);
             }
         }
 
+        /* 대표칭호 수정 할 때 */
         if(isedit == true) {
             if(category == 3) {//TODAY category 일때
                 for (int i = 0; i < titleList.length; i++) {
