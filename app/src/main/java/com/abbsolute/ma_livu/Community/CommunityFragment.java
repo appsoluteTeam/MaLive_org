@@ -50,6 +50,8 @@ public class CommunityFragment extends Fragment {
     private String category;
     private String date;
     private String writer;
+    private String likeCount;
+    private String saveCount;
 
     @Nullable
     @Override
@@ -164,8 +166,10 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
-                         
-                                            bringData data = new bringData(documentID,title,category,content,date);
+                                            likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+                                            saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+
+                                            bringData data = new bringData(documentID,title,category,content,date,likeCount,saveCount);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -190,9 +194,10 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
-                         
-                                            bringData data = new bringData(documentID,title,category,content,date);
-                                          
+                                            likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+                                            saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+
+                                            bringData data = new bringData(documentID,title,category,content,date,likeCount,saveCount);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -217,8 +222,10 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
-                         
-                                            bringData data = new bringData(documentID,title,category,content,date);
+                                            likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+                                            saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+
+                                            bringData data = new bringData(documentID,title,category,content,date,likeCount,saveCount);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
