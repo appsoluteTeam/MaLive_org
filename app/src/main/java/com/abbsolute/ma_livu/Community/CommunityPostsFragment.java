@@ -90,7 +90,8 @@ public class CommunityPostsFragment extends Fragment {
         }
 
         commu_title.setText(title);
-        //commu_writer.setText(writer);
+        commu_title.setSelected(true);
+        commu_writer.setText(writer);
         commu_content.setText(content);
         commu_date.setText(date);
         if (category.equals("what_eat")) {

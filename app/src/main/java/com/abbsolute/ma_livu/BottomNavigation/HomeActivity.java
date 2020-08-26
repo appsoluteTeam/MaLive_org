@@ -256,6 +256,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 break;
         }
     }
+
     /* myPage카테고리에 따라서 fragment 교체 */
     /* 0:칭호 , 1:결제, 2:활동 , 3:친구, 4:정보설정 */
     public void setMyPageFragment(int myPageCategoryIndex){

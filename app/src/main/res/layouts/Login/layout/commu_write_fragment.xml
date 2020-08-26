@@ -175,11 +175,146 @@
                     android:padding="15dp"
                     android:textColor="@android:color/darker_gray" />
 
-                <ImageView
-                    android:id="@+id/image_test"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:src="@tools:sample/avatars" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/commu_img1"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        tools:src="@tools:sample/avatars" />
+
+                    <EditText
+                        android:id="@+id/commu_img_explain1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="사진에 대한 설명을 입력하세요."
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textSize="14sp"
+                        tools:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/commu_img2"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        tools:src="@tools:sample/avatars" />
+
+                    <EditText
+                        android:id="@+id/commu_img_explain2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="사진에 대한 설명을 입력하세요."
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textSize="14sp"
+                        tools:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/commu_img3"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        tools:src="@tools:sample/avatars" />
+
+                    <EditText
+                        android:id="@+id/commu_img_explain3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="사진에 대한 설명을 입력하세요."
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textSize="14sp"
+                        tools:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/commu_img4"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        tools:src="@tools:sample/avatars" />
+
+                    <EditText
+                        android:id="@+id/commu_img_explain4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="사진에 대한 설명을 입력하세요."
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textSize="14sp"
+                        tools:visibility="invisible" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="horizontal"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/commu_img5"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        tools:src="@tools:sample/avatars" />
+
+                    <EditText
+                        android:id="@+id/commu_img_explain5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:hint="사진에 대한 설명을 입력하세요."
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:textSize="14sp"
+                        tools:visibility="invisible" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>

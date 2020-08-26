@@ -2,6 +2,7 @@ package com.abbsolute.ma_livu.Community;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +28,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class CommunityFragment extends Fragment {
@@ -50,8 +54,12 @@ public class CommunityFragment extends Fragment {
     private String category;
     private String date;
     private String writer;
+
+    private String[] img_uri;
+
     private String likeCount;
     private String saveCount;
+
 
     @Nullable
     @Override
@@ -135,6 +143,7 @@ public class CommunityFragment extends Fragment {
                 bundle.putString("Content", item.getContent());
                 bundle.putString("Date", item.getDate());
                 bundle.putString("Category", item.getCategory());
+                bundle.putString("Writer",item.getWriter());
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
@@ -159,6 +168,7 @@ public class CommunityFragment extends Fragment {
                                 if(task.isSuccessful()){
                                     if(task.getResult() != null){
                                         arrayList.clear();
+
                                         for(DocumentSnapshot snapshot : task.getResult()){
                                             Map<String,Object> shot = snapshot.getData();
                                             String documentID = String.valueOf(shot.get(FirebaseID.documentID));
@@ -166,10 +176,19 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
+
+//                                            for(int i=0; i<FirebaseID.Commu_image_URI.length(); i++){
+//                                                img_uri[i]= (String) shot.get(FirebaseID.Commu_image_URI);
+//                                            }
+//                                            Log.d("CommunityFragment", "img_uri = "+img_uri);
+                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
+                        
+
                                             likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
                                             saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            bringData data = new bringData(documentID,title,category,content,date,likeCount,saveCount);
+                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
+
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -177,6 +196,7 @@ public class CommunityFragment extends Fragment {
                                 }
                             }
                         });
+                //firestore.collection("Community").orderBy("what_eat").orderBy("date");
                 break;
             case 1:
                 firestore.collection("Community").document("what_do").collection("sub_Community")
@@ -194,10 +214,15 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
+
+                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
+
+
                                             likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
                                             saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            bringData data = new bringData(documentID,title,category,content,date,likeCount,saveCount);
+                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
+
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -222,10 +247,12 @@ public class CommunityFragment extends Fragment {
                                             content =String.valueOf(shot.get(FirebaseID.content));
                                             category = String.valueOf(shot.get(FirebaseID.category));
                                             date = String.valueOf(shot.get(FirebaseID.commu_date));
+                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
+
                                             likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
                                             saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            bringData data = new bringData(documentID,title,category,content,date,likeCount,saveCount);
+                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();

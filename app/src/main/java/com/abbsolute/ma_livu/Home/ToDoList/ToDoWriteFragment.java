@@ -218,7 +218,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface {
                     editor.commit();
                     ((HomeActivity)getActivity()).setFragment(100);
                 }
-
             }
         });
         return view;
