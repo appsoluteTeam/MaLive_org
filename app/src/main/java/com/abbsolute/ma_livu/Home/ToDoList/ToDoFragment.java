@@ -2,11 +2,9 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -32,7 +30,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
-import com.abbsolute.ma_livu.Community.bringData;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,7 +37,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,16 +44,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshInterface {//ToDoList 추가, 삭제, 수정 클래스
@@ -84,6 +77,8 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     private String TAG = "";
 
     ///
+    private ToDoListCustomDialog customDialog;
+    private FragmentTransaction transaction;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,8 +88,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         toDoAdapter = new ToDoAdapter();
-        FragmentManager fragmentManager = getFragmentManager();
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Button fab = view.findViewById(R.id.fab);//추가
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,18 +126,19 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, dates, dDay, backgrounds);
                                         toDoInfos.add(toDoInfo);
                                     }
-                                    Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                                    Comparator<ToDoInfo> comparator = new Comparator<ToDoInfo>() {
                                         @Override
                                         public int compare(ToDoInfo o1, ToDoInfo o2) {
                                             return o1.getdDay().compareTo(o2.getdDay());
                                         }
                                     };
-                                    Collections.sort(toDoInfos,comparator);
+                                    Collections.sort(toDoInfos, comparator);
                                     toDoAdapter.setItem(toDoInfos);
 
                                 }
-                                recyclerView.setAdapter(toDoAdapter);
                                 toDoAdapter.notifyDataSetChanged();
+                                recyclerView.setAdapter(toDoAdapter);
+
                             }
                         }
                     }
@@ -152,15 +146,10 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         ////
         toDoAdapter.GetContext(getContext(), this);
         toDoAdapter.notifyDataSetChanged();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(toDoAdapter);
         recyclerView.setItemAnimator(null);
-        ///뒤로가기 버튼 이벤트 처리
-        Button back = view.findViewById(R.id.btn_back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((HomeActivity) getActivity()).setFragment(0);//뒤로가기 누르면 homeFragment로 이동
-            }
-        });
+
         //밀어서 할일 삭제
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -192,12 +181,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         String colors = "";
                                         String count = "";
                                         if (snapshot.exists()) {
-                                            count = (String) snapshot.getData().get("Count");
-                                            int cnt = Integer.parseInt(count);
-                                            if (cnt >= 1)
-                                                cnt--;
-                                            count = Integer.toString(cnt);
-                                            if(position==0){
+                                            if (position == 0) {
                                                 firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
                                                         .delete()
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -213,120 +197,117 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                             }
                                                         });
 
-                                            }else{
+                                            } else {
                                                 Map<String, Object> updates = new HashMap<>();
-                                                int moveIdx = position + 1;
-                                                //ex) 2번 지우면 3->2
-                                                Map<String, Object> data = new HashMap<>();
-                                                content = (String) snapshot.getData().get("contents" + moveIdx);
-                                                detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
-                                                dates = (String) snapshot.getData().get("dates" + moveIdx);
-                                                dDay = (String) snapshot.getData().get("dDates" + moveIdx);
-                                                colors = (String) snapshot.getData().get("color" + moveIdx);
-                                                data.put("contents" + position, content);
-                                                data.put("detailContents" + position, detailContent);
-                                                data.put("dates" + position, dates);
-                                                data.put("dDates" + position, dDay);
-                                                data.put("color" + position, colors);
-                                                data.put("Count", count);
-                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
-                                                ////
-                                                updates.put("contents" + moveIdx, FieldValue.delete());
-                                                updates.put("detailContents" + moveIdx, FieldValue.delete());
-                                                updates.put("dates" + moveIdx, FieldValue.delete());
-                                                updates.put("dDates" + moveIdx, FieldValue.delete());
-                                                updates.put("color" + moveIdx, FieldValue.delete());
+                                                count = (String) snapshot.getData().get("Count");
+                                                int siz=Integer.parseInt(count);
+                                                for(int i=position;i<siz;i++){
+                                                    int moveIdx = i + 1;
+                                                    //ex) 2번 지우면 3->2
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    content = (String) snapshot.getData().get("contents" + moveIdx);
+                                                    detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
+                                                    dates = (String) snapshot.getData().get("dates" + moveIdx);
+                                                    dDay = (String) snapshot.getData().get("dDates" + moveIdx);
+                                                    colors = (String) snapshot.getData().get("color" + moveIdx);
+                                                    data.put("contents" + i, content);
+                                                    data.put("detailContents" + i, detailContent);
+                                                    data.put("dates" + i, dates);
+                                                    data.put("dDates" + i, dDay);
+                                                    data.put("color" + i, colors);
+                                                    data.put("Count", count);
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
+                                                }
+                                                updates.put("contents" + siz, FieldValue.delete());
+                                                updates.put("detailContents" + siz, FieldValue.delete());
+                                                updates.put("dates" + siz, FieldValue.delete());
+                                                updates.put("dDates" + siz, FieldValue.delete());
+                                                updates.put("color" + siz, FieldValue.delete());
+                                                siz--;
+                                                count=Integer.toString(siz);
                                                 updates.put("Count", count);
                                                 firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
-                                                ////
+                                                ///
                                                 if (!count.equals("0"))
                                                     refresh();
                                             }
                                         }
 
-
-                                        SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = pfComplete.edit();
-                                        editor.putBoolean("chk" + position, false);
-                                        editor.commit();
                                     }//chk true
                                     else {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                        builder.setTitle("AlertDialog Title");
-                                        builder.setMessage("AlertDialog Content");
-                                        builder.setPositiveButton("예",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Toast.makeText(getContext(), "예를 선택했습니다.", Toast.LENGTH_LONG).show();
-                                                        DocumentSnapshot snapshot = task.getResult();
-                                                        String content = "";
-                                                        String detailContent = "";
-                                                        String dates = "";
-                                                        String dDay = "";
-                                                        String colors = "";
-                                                        String count = "";
-                                                        if (snapshot.exists()) {
-                                                            count = (String) snapshot.getData().get("Count");
-                                                            int cnt = Integer.parseInt(count);
-                                                            if (cnt >= 1)
-                                                                cnt--;
-                                                            count = Integer.toString(cnt);
-                                                            if(position==0){
-                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
-                                                                        .delete()
-                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                            @Override
-                                                                            public void onSuccess(Void aVoid) {
-                                                                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                                            }
-                                                                        })
-                                                                        .addOnFailureListener(new OnFailureListener() {
-                                                                            @Override
-                                                                            public void onFailure(@NonNull Exception e) {
-                                                                                Log.w(TAG, "Error deleting document", e);
-                                                                            }
-                                                                        });
-                                                            }else{
-                                                                Map<String, Object> updates = new HashMap<>();
-                                                                int moveIdx = position + 1;
-                                                                //ex) 2번 지우면 3->2
-                                                                Map<String, Object> data = new HashMap<>();
-                                                                content = (String) snapshot.getData().get("contents" + moveIdx);
-                                                                detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
-                                                                dates = (String) snapshot.getData().get("dates" + moveIdx);
-                                                                dDay = (String) snapshot.getData().get("dDates" + moveIdx);
-                                                                colors = (String) snapshot.getData().get("color" + moveIdx);
-                                                                data.put("contents" + position, content);
-                                                                data.put("detailContents" + position, detailContent);
-                                                                data.put("dates" + position, dates);
-                                                                data.put("dDates" + position, dDay);
-                                                                data.put("color" + position, colors);
-                                                                data.put("Count", count);
-                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
-                                                                ////
-                                                                updates.put("contents" + moveIdx, FieldValue.delete());
-                                                                updates.put("detailContents" + moveIdx, FieldValue.delete());
-                                                                updates.put("dates" + moveIdx, FieldValue.delete());
-                                                                updates.put("dDates" + moveIdx, FieldValue.delete());
-                                                                updates.put("color" + moveIdx, FieldValue.delete());
-                                                                updates.put("Count", count);
-                                                                firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
-                                                                ////
-                                                                if (!count.equals("0"))
-                                                                    refresh();
-                                                            }
+                                        View.OnClickListener leftListener = new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                DocumentSnapshot snapshot = task.getResult();
+                                                String content = "";
+                                                String detailContent = "";
+                                                String dates = "";
+                                                String dDay = "";
+                                                String colors = "";
+                                                String count = "";
+                                                if (snapshot.exists()) {
+                                                    count = (String) snapshot.getData().get("Count");
+                                                    int cnt = Integer.parseInt(count);
+                                                    if (cnt >= 1)
+                                                        cnt--;
+                                                    count = Integer.toString(cnt);
+                                                    if (position == 0) {
+                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
+                                                                .delete()
+                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+                                                                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                                    }
+                                                                })
+                                                                .addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+                                                                        Log.w(TAG, "Error deleting document", e);
+                                                                    }
+                                                                });
+                                                    } else {
+                                                        Map<String, Object> updates = new HashMap<>();
+                                                        count = (String) snapshot.getData().get("Count");
+                                                        int siz=Integer.parseInt(count);
+                                                        for(int i=position;i<siz;i++){
+                                                            int moveIdx = i + 1;
+                                                            //ex) 2번 지우면 3->2
+                                                            Map<String, Object> data = new HashMap<>();
+                                                            content = (String) snapshot.getData().get("contents" + moveIdx);
+                                                            detailContent = (String) snapshot.getData().get("detailContents" + moveIdx);
+                                                            dates = (String) snapshot.getData().get("dates" + moveIdx);
+                                                            dDay = (String) snapshot.getData().get("dDates" + moveIdx);
+                                                            colors = (String) snapshot.getData().get("color" + moveIdx);
+                                                            data.put("contents" + i, content);
+                                                            data.put("detailContents" + i, detailContent);
+                                                            data.put("dates" + i, dates);
+                                                            data.put("dDates" + i, dDay);
+                                                            data.put("color" + i, colors);
+                                                            data.put("Count", count);
+                                                            firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").set(data, SetOptions.merge());
                                                         }
-
-
+                                                        updates.put("contents" + siz, FieldValue.delete());
+                                                        updates.put("detailContents" + siz, FieldValue.delete());
+                                                        updates.put("dates" + siz, FieldValue.delete());
+                                                        updates.put("dDates" + siz, FieldValue.delete());
+                                                        updates.put("color" + siz, FieldValue.delete());
+                                                        siz--;
+                                                        count=Integer.toString(siz);
+                                                        updates.put("Count", count);
+                                                        firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo").update(updates);
+                                                        ///
+                                                        if (!count.equals("0"))
+                                                            refresh();
                                                     }
-                                                });
-                                        builder.setNegativeButton("아니오",
-                                                new DialogInterface.OnClickListener() {
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Toast.makeText(getContext(), "아니오를 선택했습니다.", Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                        builder.show();
+                                                }
+                                                customDialog.dismiss();
+                                            }//onClick
+                                        };
+                                        customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
+                                                "그래도 삭제하시겠습니까?", leftListener, rightListener);
+                                        customDialog.show();
+
                                     }
 
 
@@ -340,35 +321,109 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if (task.isSuccessful()) {
                                         if (task.getResult() != null) {
-                                            DocumentSnapshot snapshot = task.getResult();
+                                            final DocumentSnapshot snapshot = task.getResult();
                                             if (snapshot.exists()) {
                                                 SharedPreferences pf = getContext().getSharedPreferences("pref", MODE_PRIVATE);
                                                 boolean chk = pf.getBoolean("chk" + position, false);
                                                 if (chk == true) {
-                                                    String content = (String) snapshot.getData().get("contents" + position);
-                                                    SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("pref3", MODE_PRIVATE);
-                                                    SharedPreferences.Editor editor = sharedPreferences1.edit();
-                                                    int cnt = 0;
-                                                    if (sharedPreferences1 != null) {
-                                                        cnt = sharedPreferences1.getInt(content + "Complete", 1);
-                                                        cnt++;
-                                                        editor.putInt(content + "Complete", cnt);
-                                                        editor.commit();
-                                                    } else {
-                                                        cnt = 1;
-                                                        editor.putInt(content + "Complete", cnt);
-                                                        editor.commit();
+                                                    final String content = (String) snapshot.getData().get("contents" + position);
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub")
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if(task.isSuccessful()){
+                                                                        if(task.getResult()!=null){
+                                                                            //전체 달성횟수-> 칭호
+                                                                            DocumentSnapshot totalCompleteSnapShot=task.getResult();
+                                                                            if(totalCompleteSnapShot.exists()){
+                                                                                if(totalCompleteSnapShot.getData().get(content+"complete")!=null){
+                                                                                    long completeCount = (long)totalCompleteSnapShot.getData().get(content+"complete");
+                                                                                    completeCount++;
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                                    ////
+                                                                                }else{
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    long completeCount=1;
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                                }
+                                                                            }else {
+                                                                                HashMap<String, Object> data = new HashMap<>();
+                                                                                long completeCount=1;
+                                                                                if (content.equals("기타")) {
+                                                                                    data.put("투두complete", completeCount);
+                                                                                } else {
+                                                                                    data.put(content + "complete", completeCount);
+                                                                                }
+                                                                                firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });//전체 달성횟수 데이터
+                                                    //// 월별 달성률 측정
+                                                    long systemTime = System.currentTimeMillis();
+                                                    SimpleDateFormat formatter= null;
+                                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                        formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
                                                     }
-                                                    HashMap<String, Object> data = new HashMap<>();
-                                                    if (content.equals("기타")) {
-                                                        String detail = (String) snapshot.getData().get("detailContents" + (position + 1));
-                                                        String c = Integer.toString(cnt);
-                                                        data.put(detail + "complete", c);
-                                                    } else {
-                                                        String c = Integer.toString(cnt);
-                                                        data.put(content + "complete", c);
-                                                    }
-                                                    firestore.collection(FirebaseID.ToDoLists).document(id).set(data, SetOptions.merge());
+                                                    final String date=formatter.format(systemTime);
+                                                    String[] dates=date.split("-");
+                                                    String year=dates[0];
+                                                    String month=dates[1];
+                                                    final String updateDate=year+"-"+month;
+                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                    if(task.isSuccessful()){
+                                                                        if(task.getResult()!=null){
+                                                                            DocumentSnapshot completeMonthSnapshot=task.getResult();
+                                                                            if(completeMonthSnapshot.exists()){
+                                                                                if(completeMonthSnapshot.getData().get(content+"complete")!=null){
+                                                                                    long completeMonthCount=(long)completeMonthSnapshot.getData().get(content+"complete");
+                                                                                    completeMonthCount++;
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeMonthCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeMonthCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                                            .set(data,SetOptions.merge());
+                                                                                }else{
+                                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                                    long completeMonthCount=1;
+                                                                                    if (content.equals("기타")) {
+                                                                                        data.put("투두complete", completeMonthCount);
+                                                                                    } else {
+                                                                                        data.put(content + "complete", completeMonthCount);
+                                                                                    }
+                                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                                            .set(data,SetOptions.merge());
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            });
+
+                                                    SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
+                                                    SharedPreferences.Editor Checkeditor = pfComplete.edit();
+                                                    Checkeditor.putBoolean("chk" + position, false);
+                                                    Checkeditor.commit();
                                                 }
                                             }
 
@@ -377,8 +432,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                 }
                             });
                     toDoInfos.remove(position);
-                    toDoAdapter.notifyItemRemoved(position);
-
+                    recyclerView.setAdapter(toDoAdapter);
                 }//왼쪽으로 swipe
 
             }//onswiped
@@ -389,11 +443,20 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
 
         return view;
     }
+    private View.OnClickListener rightListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getContext(), "오른쪽 버튼 클릭", Toast.LENGTH_SHORT).show();
+            customDialog.dismiss();
+        }
+    };
     //다시 그리기
-
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getContext(), "On Resume!!!", Toast.LENGTH_SHORT).show();
+        toDoInfos=new ArrayList<>();
+        SharedPreferences pf = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String id = sharedPreferences.getString("email_id", "");
         firestore.collection(FirebaseID.ToDoLists).document(id + " ToDo")
@@ -408,7 +471,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                     toDoInfos.clear();
                                     String cnt = (String) snapshot.getData().get("Count");
                                     int siz = Integer.parseInt(cnt);
-                                    Toast.makeText(getContext(), cnt, Toast.LENGTH_SHORT).show();
                                     for (int i = 0; i <= siz; i++) {
                                         String content = (String) snapshot.getData().get("contents" + i);
                                         String detailContent = (String) snapshot.getData().get("detailContents" + i);
@@ -419,45 +481,43 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, dates, dDay, backgrounds);
                                         toDoInfos.add(toDoInfo);
                                     }
-                                    Comparator<ToDoInfo> comparator=new Comparator<ToDoInfo>() {
+                                    Comparator<ToDoInfo> comparator = new Comparator<ToDoInfo>() {
                                         @Override
                                         public int compare(ToDoInfo o1, ToDoInfo o2) {
                                             return o1.getdDay().compareTo(o2.getdDay());
                                         }
                                     };
-                                    Collections.sort(toDoInfos,comparator);
-                                    for(ToDoInfo toDoInfo : toDoInfos){
-                                        Toast.makeText(getContext(), ""+toDoInfo.getdDay(), Toast.LENGTH_SHORT).show();
-                                    }
+                                    Collections.sort(toDoInfos, comparator);
                                     toDoAdapter.setItem(toDoInfos);
-
                                 }
-                                recyclerView.setAdapter(toDoAdapter);
                                 toDoAdapter.notifyDataSetChanged();
-
+                                recyclerView.setHasFixedSize(true);
+                                recyclerView.setAdapter(toDoAdapter);
+                                SharedPreferences pf=getContext().getSharedPreferences("pref2", MODE_PRIVATE);
+                                int uploading=pf.getInt("upload",0);
+                                if(uploading==1){
+                                    refresh();
+                                    SharedPreferences tmp=getContext().getSharedPreferences("pref2",MODE_PRIVATE);
+                                    SharedPreferences.Editor editor=tmp.edit();
+                                    editor.putInt("upload",0);
+                                    editor.commit();
+                                }
                             }
                         }
                     }
                 });
-        ////
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
+        toDoAdapter=new ToDoAdapter();
+        toDoAdapter.GetContext(getContext(),this);
+        toDoAdapter.setItem(toDoInfos);
+        toDoAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(toDoAdapter);
     }
 
 
     //디데이 알림 기능(수정필요!)
     public void getDays() {
         Log.d("alarm2", " method start");
-        ArrayList<ToDoInfo> toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
+       // ArrayList<ToDoInfo> toDoInfos = ToDoAppHelper.selectTodoInfo("todoInfo");
         Log.d("toDoInfoSize", Integer.toString(toDoInfos.size()));
         long systemTime = System.currentTimeMillis();
         SimpleDateFormat formatter = null;

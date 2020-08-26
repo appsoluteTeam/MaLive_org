@@ -44,7 +44,7 @@
         android:id="@+id/btn_sendemail"
         android:layout_width="160dp"
         android:layout_height="45dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/todo_button_background"
         android:stateListAnimator="@null"
         android:text="인증메일 전송"
         android:textColor="#FFFFFF"

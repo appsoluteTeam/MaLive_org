@@ -82,11 +82,8 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine" />
-
         </LinearLayout>
-
         <!--                프로필 이미지가 앞에 배치하기 위해 순서 바꿈-->
-
         <LinearLayout
             android:id="@+id/profileBottom"
             android:layout_width="match_parent"
@@ -94,13 +91,11 @@
             android:layout_below="@+id/profileTop"
             android:layout_alignParentLeft="true"
             android:orientation="horizontal">
-
             <View
                 android:id="@+id/view4"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
-
             <Button
                 android:id="@+id/btn_insert"
                 android:layout_width="wrap_content"

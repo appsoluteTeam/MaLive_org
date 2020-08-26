@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,8 +59,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             super(v);
             this.Contents = v.findViewById(R.id.todo_text);//내용
             this.ContentsDetail = v.findViewById(R.id.todo_text_detail);//상세내용
-            //  this.writeDates=v.findViewById(R.id.write_date);//작성 날짜
-            //
             this.checkToDo = v.findViewById(R.id.chk_btn);
             this.dDays = v.findViewById(R.id.d_date);//디데이
             this.toDoFrame = v.findViewById(R.id.todo_frame);
@@ -95,6 +94,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.ContentsDetail.setText(toDoInfo.getDetailContent());
         if (dDay != null) {
             holder.dDays.setText(dDay);
+            holder.dDays.setTextColor(Color.BLACK);
         }
         if (position >= 1) {
             int pos = position;
@@ -129,31 +129,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
             }
         });
-        SharedPreferences sharedPreferences = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        final String id = sharedPreferences.getString("email_id", "");
-        firestore.collection("ToDoList").document(id + " ToDo")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot snapshot = task.getResult();
-                            if (snapshot.exists()) {
-                                String content = (String) snapshot.getData().get("contents"+position);
-                                final String detailContent = (String) snapshot.getData().get("detailContents"+position);
-                                String dates = (String) snapshot.getData().get("dates"+position);
-                                String dDay = (String) snapshot.getData().get("dDates"+position);
-                                holder.Contents.setText(content);
-                                holder.ContentsDetail.setText(detailContent);
-                                // holder.writeDates.setText(toDoInfo.getDates());
 
-
-                                ///할 일 완료 체크여부 설정하기
-
-                            }
-                        }
-                    }
-                });
         ///체크데이터 불러오기
         final SharedPreferences pf = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
         Boolean chk1 = pf.getBoolean("chk" + position, false);

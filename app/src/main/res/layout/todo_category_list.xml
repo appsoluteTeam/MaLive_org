@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginRight="5sp"
-        android:layout_marginLeft="10sp"
+        android:layout_marginLeft="7sp"
         android:layout_marginTop="10dp">
         <TextView
             android:layout_width="80sp"
@@ -16,9 +16,11 @@
             android:padding="7dp"
             android:hint="할 일"
             android:textSize="13sp"
+            android:textColor="#1C1C1C"
             android:textAlignment="center"
             android:background="@drawable/todo_text_background"
-            android:id="@+id/todo_image_text">
+            android:id="@+id/todo_image_text"
+            android:gravity="center_horizontal">
         </TextView>
     </LinearLayout>
 </LinearLayout>
