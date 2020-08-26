@@ -88,7 +88,8 @@ public class bringData {
 
     public void setWriter(String writer) {
         this.writer = writer;
-
+    }
+    
     public String getLikeCount() {
         return likeCount;
     }
