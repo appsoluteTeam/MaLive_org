@@ -176,10 +176,11 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                     final int position = viewHolder.getAdapterPosition();
                     final int deleteNum=tmpArray.get(position).todoNum;
                     final String content=toDoInfos.get(position).content;
+                    final String detailContentes=toDoInfos.get(position).detailContent;
                     Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
                     ///ToDoAppHelper.deleteData(getContext(), "todoInfo", position, toDoInfos.get(position));
                     final SharedPreferences pf = getContext().getSharedPreferences("pref", MODE_PRIVATE);
-                    boolean chk = pf.getBoolean("chk" + position, false);
+                    boolean chk = pf.getBoolean("chk" + detailContentes, false);
                     ///파이어베이스 db삭제
                     SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                     final String id = sharedPreferences.getString("email_id", "");
@@ -203,12 +204,20 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                                 //전체 달성횟수-> 칭호
                                                                 DocumentSnapshot totalCompleteSnapShot = task.getResult();
                                                                 if (totalCompleteSnapShot.exists()) {
-                                                                    if (totalCompleteSnapShot.getData().get(content + "complete") != null) {
-                                                                        long completeCount = (long) totalCompleteSnapShot.getData().get(content + "complete");
+                                                                    Map<String,Object> map=totalCompleteSnapShot.getData();
+                                                                    if (map.containsKey(content+"complete")
+                                                                            ||map.containsKey("투두complete")) {
+                                                                        long completeCount=0;
+                                                                        if(map.containsKey(content+"complete"))
+                                                                             completeCount = (long) totalCompleteSnapShot.getData().get(content + "complete");
+                                                                        long completeCountForToDo=0;
+                                                                        if(map.containsKey("투두complete"))
+                                                                             completeCountForToDo=(long)totalCompleteSnapShot.getData().get("투두complete");
                                                                         completeCount++;
+                                                                        completeCountForToDo++;
                                                                         HashMap<String, Object> data = new HashMap<>();
                                                                         if (content.equals("기타")) {
-                                                                            data.put("투두complete", completeCount);
+                                                                            data.put("투두complete", completeCountForToDo);
                                                                         } else {
                                                                             data.put(content + "complete", completeCount);
                                                                         }
@@ -241,7 +250,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                         //// 월별 달성률 측정
                                         long systemTime = System.currentTimeMillis();
                                         SimpleDateFormat formatter = null;
-                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                                             formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
                                         }
                                         final String date = formatter.format(systemTime);
@@ -258,12 +267,21 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                             if (task.getResult() != null) {
                                                                 DocumentSnapshot completeMonthSnapshot = task.getResult();
                                                                 if (completeMonthSnapshot.exists()) {
-                                                                    if (completeMonthSnapshot.getData().get(content + "complete") != null) {
-                                                                        long completeMonthCount = (long) completeMonthSnapshot.getData().get(content + "complete");
+                                                                    Map<String,Object> map=completeMonthSnapshot.getData();
+                                                                    if (map.containsKey(content+"complete")
+                                                                    ||map.containsKey("투두complete")) {
+                                                                        long completeMonthCount=0;
+                                                                        if(map.containsKey(content+"complete"))//청소, 빨래, 쓰레기
+                                                                            completeMonthCount = (long) completeMonthSnapshot.getData().get(content + "complete");
+                                                                        long completeCountForToDo=0;
+                                                                        if(map.containsKey("투두complete"))
+                                                                            completeCountForToDo=(long)completeMonthSnapshot.getData().get("투두complete");
+                                                                        Toast.makeText(getContext(), ""+completeCountForToDo, Toast.LENGTH_SHORT).show();
                                                                         completeMonthCount++;
+                                                                        completeCountForToDo++;
                                                                         HashMap<String, Object> data = new HashMap<>();
                                                                         if (content.equals("기타")) {
-                                                                            data.put("투두complete", completeMonthCount);
+                                                                            data.put("투두complete", completeCountForToDo);
                                                                         } else {
                                                                             data.put(content + "complete", completeMonthCount);
                                                                         }
@@ -280,6 +298,16 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                                         firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
                                                                                 .set(data, SetOptions.merge());
                                                                     }
+                                                                }else{
+                                                                    HashMap<String, Object> data = new HashMap<>();
+                                                                    long completeMonthCount = 1;
+                                                                    if (content.equals("기타")) {
+                                                                        data.put("투두complete", completeMonthCount);
+                                                                    } else {
+                                                                        data.put(content + "complete", completeMonthCount);
+                                                                    }
+                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                            .set(data, SetOptions.merge());
                                                                 }
                                                             }
                                                         }
@@ -287,7 +315,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                 });
                                         SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
                                         SharedPreferences.Editor Checkeditor = pfComplete.edit();
-                                        Checkeditor.putBoolean("chk" + position, false);
+                                        Checkeditor.putBoolean("chk" +detailContentes, false);
                                         Checkeditor.commit();
 
                                     }

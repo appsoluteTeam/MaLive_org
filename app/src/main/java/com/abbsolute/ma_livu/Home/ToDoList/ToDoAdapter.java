@@ -86,7 +86,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        ToDoInfo toDoInfo=arrayList.get(position);
+        final ToDoInfo toDoInfo=arrayList.get(position);
         final String detailContent=toDoInfo.getDetailContent();
         String dDay=toDoInfo.getdDay();
         holder.Contents.setText(toDoInfo.getContent());
@@ -131,7 +131,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         ///체크데이터 불러오기
         final SharedPreferences pf = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        Boolean chk1 = pf.getBoolean("chk" + position, false);
+        Boolean chk1 = pf.getBoolean("chk" + toDoInfo.getDetailContent(), false);
         holder.checkToDo.setChecked(chk1);
         holder.checkToDo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -140,7 +140,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 Toast.makeText(context, "" + isChecked, Toast.LENGTH_SHORT).show();
-                editor.putBoolean("chk" + position, isChecked);
+                editor.putBoolean("chk" + toDoInfo.getDetailContent(), isChecked);
                 editor.commit();
             }
         });
