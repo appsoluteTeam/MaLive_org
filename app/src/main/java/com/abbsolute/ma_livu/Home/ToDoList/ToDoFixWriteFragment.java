@@ -184,7 +184,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                                     String period=String.valueOf(snapshot.get("period"));
                                     String todo=String.valueOf(snapshot.get("todo"));
                                     String num=String.valueOf(snapshot.get("fixNum"));
-                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period,num);
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
                                     toDoFixInfos.add(toDoFixInfo);
                                 }
                                 toDoFixListAdapter.setFixItem(toDoFixInfos);
@@ -232,7 +232,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
             fixDate=values[periodPos]+" "+dates[dayPos]+"일";
         }
         String newCount=Integer.toString(counts+1);
-        final ToDoFixInfo toDoFixInfo=new ToDoFixInfo(detailData,fixDate,newCount);
+        final ToDoFixInfo toDoFixInfo=new ToDoFixInfo(detailData,fixDate);
         // toDoFixInfos.add(toDoFixInfo);
         //insertFixData("fixToDoInfo",toDoFixInfo);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
@@ -249,7 +249,6 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                     Map<String, Object> data = new HashMap<>();
                     data.put("period", toDoFixInfo.fixPeriod);
                     data.put("todo", toDoFixInfo.fixToDo);
-                    data.put("fixNum",toDoFixInfo.num);
                     documentReference.set(data, SetOptions.merge());
                 }
             }
@@ -279,7 +278,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
         }
         date=dYear+"년"+dMonth+"월"+days+"일";
         String dDate=date;
-        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2,counts+1);
+        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         //insertData("todoInfo",toDoInfo);
         //파이어베이스에 FixTodo데이터 올리기
         final String nowCount = Integer.toString(counts+1);
@@ -299,7 +298,6 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                     data.put("date", toDoInfo.dates);
                     data.put("dDay", toDoInfo.dDay);
                     data.put("color", toDoInfo.color + "");
-                    data.put("num",toDoInfo.todoNum+"");
                     documentReference.set(data, SetOptions.merge());
                 }
             }

@@ -134,11 +134,9 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                     String date = String.valueOf(shot.get("date"));
                                     String dDay = String.valueOf(shot.get("dDay"));
                                     String color = String.valueOf(shot.get("color"));
-                                    String num = String.valueOf(shot.get("num"));
-                                    int number = Integer.parseInt(num);
                                     int backgroundColor = Integer.parseInt(color);
                                     //String content, String detailContent, String dates, String dDay,int color
-                                    ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, date, dDay, backgroundColor, number);
+                                    ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, date, dDay, backgroundColor);
                                     toDoInfos.add(toDoInfo);
                                 }
                                 tmpArray = toDoInfos;
@@ -409,11 +407,9 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                     String date = String.valueOf(shot.get("date"));
                                     String dDay = String.valueOf(shot.get("dDay"));
                                     String color = String.valueOf(shot.get("color"));
-                                    String num = String.valueOf(shot.get("num"));
-                                    int number = Integer.parseInt(num);
                                     int backgroundColor = Integer.parseInt(color);
                                     //String content, String detailContent, String dates, String dDay,int color
-                                    ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, date, dDay, backgroundColor, number);
+                                    ToDoInfo toDoInfo = new ToDoInfo(content, detailContent, date, dDay, backgroundColor);
                                     toDoInfos.add(toDoInfo);
                                 }
                                 tmpArray = toDoInfos;

@@ -154,6 +154,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
         });
         final SQLiteDatabase todo;
         //저장
+        final String detailTodo = write.getText().toString();
         storing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +167,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                     final String email = getEmail.getString("email_id", "");
                     final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
                             .collection("ToDo")
-                            .document(counts+"");
+                            .document(detailTodo);
                     String res = pf.getString("toDo", "");
                     String resDetailTodo = write.getText().toString();
                     long systemTime = System.currentTimeMillis();
@@ -191,13 +192,12 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                         }
                         dDate = year + "년" + months + "월" + days + "일";
                     }
-                    ToDoInfo toDoInfo = new ToDoInfo(res, resDetailTodo, date, dDate, Color.WHITE,counts);
+                    ToDoInfo toDoInfo = new ToDoInfo(res, resDetailTodo, date, dDate, Color.WHITE);
                     HashMap<String, Object> data = new HashMap<>();
                     data.put("contents", toDoInfo.content);
                     data.put("detailContents", toDoInfo.detailContent);
                     data.put("dates", toDoInfo.dates);
                     data.put("dDates", toDoInfo.dDay);
-                    data.put("num",toDoInfo.todoNum);
                     documentReference.update(data);
                     SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -260,7 +260,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
         counts++;//다음꺼
         String nowCount = Integer.toString(counts);
         //이 번호가 있는지 조회해보고 있다면 counts++하여 없는 번호에 등록
-        final ToDoInfo toDoInfo = new ToDoInfo(data, detailData, date, dDate, R.drawable.todo_border,counts);
+        final ToDoInfo toDoInfo = new ToDoInfo(data, detailData, date, dDate, R.drawable.todo_border);
         nowCount=Integer.toString(counts);
         final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("ToDo")
@@ -276,7 +276,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                     data.put("date", toDoInfo.dates);
                     data.put("dDay", toDoInfo.dDay);
                     data.put("color", toDoInfo.color + "");
-                    data.put("num",toDoInfo.todoNum+"");
                     documentReference.set(data, SetOptions.merge());
                 }
             }

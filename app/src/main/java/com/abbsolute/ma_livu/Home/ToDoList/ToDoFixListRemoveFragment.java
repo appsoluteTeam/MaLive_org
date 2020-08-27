@@ -97,8 +97,7 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
                                 for(DocumentSnapshot snapshot: task.getResult()){
                                     String period=String.valueOf(snapshot.get("period"));
                                     String todo=String.valueOf(snapshot.get("todo"));
-                                    String num=String.valueOf(snapshot.get("fixNum"));
-                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period,num);
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
                                     toDoFixInfos.add(toDoFixInfo);
                                 }
                                 toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
