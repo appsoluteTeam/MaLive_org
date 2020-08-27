@@ -55,7 +55,7 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 import static android.content.Context.POWER_SERVICE;
 
-public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshInterface {//ToDoList 추가, 삭제, 수정 클래스
+public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshInterface,OnBackPressedListener {//ToDoList 추가, 삭제, 수정 클래스
     RecyclerView recyclerView;
     public ToDoAdapter toDoAdapter;
 
@@ -174,7 +174,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.LEFT) {
                     final int position = viewHolder.getAdapterPosition();
-                    final int deleteNum=tmpArray.get(position).todoNum;
+                    final String deleteData=toDoInfos.get(position).detailContent;
                     final String content=toDoInfos.get(position).content;
                     final String detailContentes=toDoInfos.get(position).detailContent;
                     Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
@@ -188,7 +188,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                         ///파이어스토어 달성횟수 업로드
                         Log.d("체크","체크됨");
                         firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
-                                .document(tmpArray.get(position).todoNum + "")
+                                .document(deleteData + "")
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -336,7 +336,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                             @Override
                             public void onClick(View v) {
                                 firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
-                                        .document(deleteNum + "")
+                                        .document(deleteData + "")
                                         .delete()
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -588,6 +588,11 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         // 리사이클러뷰 새로고침 메소드
         fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.detach(this).attach(this).commit();
+    }
+    //뒤로가기 이벤트
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(0);
     }
 }
 

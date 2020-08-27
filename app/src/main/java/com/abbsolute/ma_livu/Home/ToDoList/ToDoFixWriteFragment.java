@@ -45,7 +45,7 @@ import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertData;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertFixData;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
-public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
+public class ToDoFixWriteFragment extends Fragment implements refreshInterface,OnBackPressedListener {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     ToDoCategoryAdapter categoryAdapter;
@@ -183,7 +183,8 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
                                 for(DocumentSnapshot snapshot: task.getResult()){
                                     String period=String.valueOf(snapshot.get("period"));
                                     String todo=String.valueOf(snapshot.get("todo"));
-                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
+                                    String num=String.valueOf(snapshot.get("fixNum"));
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period,num);
                                     toDoFixInfos.add(toDoFixInfo);
                                 }
                                 toDoFixListAdapter.setFixItem(toDoFixInfos);
@@ -203,9 +204,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
             @Override
             public void onClick(View v) {
                 ToDoFixModifyingFragment toDoFixModifyingFragment=new ToDoFixModifyingFragment();
-                Bundle bundle=new Bundle();
-                bundle.putInt("TotalCount",toDoFixListAdapter.getItemCount());
-                toDoFixModifyingFragment.setArguments(bundle);
+                toDoFixModifyingFragment.setCount(counts);
                 ((HomeActivity)getActivity()).setFragment(102);//ToDoFixModifyingFragment
             }
         });
@@ -232,16 +231,16 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         }else if(periodPos==2){// 매달 ex) 매달 3일
             fixDate=values[periodPos]+" "+dates[dayPos]+"일";
         }
-
-        final ToDoFixInfo toDoFixInfo=new ToDoFixInfo(detailData,fixDate);
+        String newCount=Integer.toString(counts+1);
+        final ToDoFixInfo toDoFixInfo=new ToDoFixInfo(detailData,fixDate,newCount);
         // toDoFixInfos.add(toDoFixInfo);
-        insertFixData("fixToDoInfo",toDoFixInfo);//고정리스트 데이터 db 삽입
+        //insertFixData("fixToDoInfo",toDoFixInfo);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
         final String nowCount = Integer.toString(counts+1);
         final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("FixToDo")
-                .document(nowCount);
+                .document(detailData);
         //final String finalDDate = dDate;
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -250,6 +249,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
                     Map<String, Object> data = new HashMap<>();
                     data.put("period", toDoFixInfo.fixPeriod);
                     data.put("todo", toDoFixInfo.fixToDo);
+                    data.put("fixNum",toDoFixInfo.num);
                     documentReference.set(data, SetOptions.merge());
                 }
             }
@@ -287,7 +287,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         final String email=sharedPreferences.getString("email_id","");
         final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("ToDo")
-                .document(nowCount);
+                .document(detailData);
         //final String finalDDate = dDate;
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -310,5 +310,10 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         fragmentTransaction = getFragmentManager().beginTransaction();
         ToDoFragment toDoFragment=new ToDoFragment();
         fragmentTransaction.detach(toDoFragment).attach(toDoFragment).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(100);//ToDo리스트 화면으로 이동
     }
 }

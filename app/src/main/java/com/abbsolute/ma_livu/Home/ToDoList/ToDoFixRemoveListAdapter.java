@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,6 +82,7 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
         holder.removingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String deleteData=arrayList.get(position).fixToDo;
                 arrayList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,arrayList.size());
@@ -88,7 +90,7 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
                 SharedPreferences sharedPreferences=context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 final String id=sharedPreferences.getString("email_id","");
                 firestore.collection(FirebaseID.ToDoLists).document(id).collection("FixToDo")
-                        .document(position+"")
+                        .document(deleteData)
                         .delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -102,6 +104,7 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
 
                             }
                         });
+
             }
         });
     }

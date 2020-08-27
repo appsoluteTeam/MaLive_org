@@ -33,7 +33,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +46,7 @@ import java.util.Map;
 import static android.app.Activity.RESULT_OK;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertData;
 
-public class ToDoWriteFragment extends Fragment implements refreshInterface {
+public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBackPressedListener {
     // newInstance constructor for creating fragment with arguments
     //파이버베이스 인증 변수
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -250,16 +253,18 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface {
             }
             dDate = year + "년" + months + "월" + day + "일";
         }
-        final ToDoInfo toDoInfo = new ToDoInfo(data, detailData, date, dDate, R.drawable.todo_border,counts+1);
         //insertData("todoInfo", toDoInfo);
         //파이어베이스에 todo데이터 올리기
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         final String email = sharedPreferences.getString("email_id", "");
-        final String nowCount = Integer.toString(counts+1);
-        Toast.makeText(getContext(),nowCount,Toast.LENGTH_SHORT).show();
+        counts++;//다음꺼
+        String nowCount = Integer.toString(counts);
+        //이 번호가 있는지 조회해보고 있다면 counts++하여 없는 번호에 등록
+        final ToDoInfo toDoInfo = new ToDoInfo(data, detailData, date, dDate, R.drawable.todo_border,counts);
+        nowCount=Integer.toString(counts);
         final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("ToDo")
-                .document(nowCount);
+                .document(detailData);
         //final String finalDDate = dDate;
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -284,6 +289,11 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface {
         fragmentTransaction = getFragmentManager().beginTransaction();
         ToDoFragment toDoFragment = new ToDoFragment();
         fragmentTransaction.detach(toDoFragment).attach(toDoFragment).commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(100);///ToDo리스트 화면으로 이동
     }
 }
 

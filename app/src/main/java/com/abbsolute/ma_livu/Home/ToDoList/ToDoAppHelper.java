@@ -145,7 +145,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 cursor.moveToNext();
                 String todo=cursor.getString(0);
                 String period=cursor.getString(1);
-                fixInfos.add(new ToDoFixInfo(todo,period));
+               // fixInfos.add(new ToDoFixInfo(todo,period));
             }
             cursor.close();
         }

@@ -34,7 +34,7 @@ import java.util.Map;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
 //fix_remove_list
-public class ToDoFixListRemoveFragment extends Fragment {
+public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressedListener{
     RecyclerView toDoRemovingFixListView;//삭제할 고정리스트
     RecyclerView categoryRecyclerview;
     ToDoCategoryAdapter categoryAdapter;
@@ -97,7 +97,8 @@ public class ToDoFixListRemoveFragment extends Fragment {
                                 for(DocumentSnapshot snapshot: task.getResult()){
                                     String period=String.valueOf(snapshot.get("period"));
                                     String todo=String.valueOf(snapshot.get("todo"));
-                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
+                                    String num=String.valueOf(snapshot.get("fixNum"));
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period,num);
                                     toDoFixInfos.add(toDoFixInfo);
                                 }
                                 toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
@@ -161,5 +162,10 @@ public class ToDoFixListRemoveFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(101);//writeMainFragment로
     }
 }
