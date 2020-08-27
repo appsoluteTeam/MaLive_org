@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +63,15 @@ public class ToDoFixModifyingFragment extends Fragment {
             "24","25","26","27","28","29","30"};
     // newInstance constructor for creating fragment with arguments
     TextView removing;
+    int count=0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_fix_modify_fragment,container,false);
+        if(getArguments()!=null){
+            count=getArguments().getInt("TotalCount");
+            Log.d("받아오기4!!!!",count+"");
+        }
         //todo : 페이지 2 카테고리 리스트 어뎁터 생성
         categoryRecyclerview=view.findViewById(R.id.todo_fix_modified_list_category);
         fixTodoRecyclerview=view.findViewById(R.id.fix_modified_list);
@@ -164,9 +170,8 @@ public class ToDoFixModifyingFragment extends Fragment {
                             if(snapshot.getData()!=null){
                                 toDoFixInfos.clear();
                                 HashMap<String,Object> info= (HashMap<String, Object>) snapshot.getData();
-                                String cnt= (String) info.get("Count");
-                                int siz=Integer.parseInt(cnt);
-                                for(int i=0;i<=siz;i++){
+                                long cnt= (long) info.get("Count");
+                                for(int i=0;i<=cnt;i++){
                                     String period=(String)snapshot.getData().get("period"+i);
                                     String todo=(String)snapshot.getData().get("todo"+i);
                                     ToDoFixInfo toDoFixInfo=new ToDoFixInfo(period,todo);
@@ -203,7 +208,7 @@ public class ToDoFixModifyingFragment extends Fragment {
         // toDoFixInfos.add(toDoFixInfo);
         SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String upDateContent=pref.getString("upDateToDo","");
-        updateFixData("fixToDoInfo",toDoFixInfo,upDateContent);//고정리스트 데이터 db 삽입
+        //updateFixData("fixToDoInfo",toDoFixInfo,upDateContent);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
         DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
@@ -214,19 +219,22 @@ public class ToDoFixModifyingFragment extends Fragment {
                     Map<String, Object> data = new HashMap<>();
                     //ex) Content1, Content2 이런식 으로 저장하도록 만듦
                     DocumentSnapshot snapshot=task.getResult();
-                    String tmp="";
-                    int tmpNumber=0;
-                    try {
-                        tmp= (String) snapshot.getData().get("Count");
-                        tmpNumber=Integer.parseInt(tmp);
-                    }catch (NullPointerException e){
-                        e.printStackTrace();
+                    if(snapshot.exists()){
+                        if(snapshot.getData()!=null){
+                            long tmp=0;
+                            int tmpNumber=0;
+                            try {
+                                tmp= (long) snapshot.getData().get("Count");
+                            }catch (NullPointerException e){
+                                e.printStackTrace();
+                            }
+                            data.put("period"+tmp,toDoFixInfo.fixPeriod);
+                            data.put("todo"+tmp,toDoFixInfo.fixToDo);
+                            data.put("Count",tmp);
+                            firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo").update(data);
+                        }
                     }
-                    String newCount=Integer.toString(tmpNumber);
-                    data.put("period"+newCount,toDoFixInfo.fixPeriod);
-                    data.put("todo"+newCount,toDoFixInfo.fixToDo);
-                    data.put("Count",newCount);
-                    firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo").update(data);
+
                 }
             }
         });
@@ -248,11 +256,13 @@ public class ToDoFixModifyingFragment extends Fragment {
         String dDay=dates[2];
         date=dYear+"년"+dMonth+"월"+dDay+"일";
         String dDate=date;
-        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
+        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2,count);
         //파이어베이스에 FixTodo 수정 데이터 올리기
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo");
+        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email)
+                .collection("ToDo")
+                .document(count+"");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -260,21 +270,14 @@ public class ToDoFixModifyingFragment extends Fragment {
                     Map<String, Object> data = new HashMap<>();
                     //ex) Content1, Content2 이런식 으로 저장하도록 만듦
                     DocumentSnapshot snapshot=task.getResult();
-                    String tmp="";
-                    int tmpNumber=0;
-                    try {
-                        tmp= (String) snapshot.getData().get("Count");
-                        tmpNumber=Integer.parseInt(tmp);
-                    }catch (NullPointerException e){
-                        e.printStackTrace();
+                    if(snapshot.exists()){
+                        data.put("content",toDoInfo.content);
+                        data.put("detailContent",toDoInfo.detailContent);
+                        data.put("date",toDoInfo.dates);
+                        data.put("dDay",toDoInfo.dDay);
+                        data.put("num",count);
                     }
-                    String newCount=Integer.toString(tmpNumber);
-                    data.put("contents"+newCount,toDoInfo.content);
-                    data.put("detailContents"+newCount,toDoInfo.detailContent);
-                    data.put("dates"+newCount,toDoInfo.dates);
-                    data.put("dDates"+newCount, toDoInfo.dDay);
-                    data.put("Count",newCount);
-                    firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo").update(data);
+                    firestore.collection(FirebaseID.ToDoLists).document(email).collection("ToDo").document(count+"").update(data);
                 }
             }
         });

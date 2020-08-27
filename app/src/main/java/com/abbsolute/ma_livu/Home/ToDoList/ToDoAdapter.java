@@ -35,7 +35,6 @@ import java.util.Map;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     ArrayList<ToDoInfo> arrayList = new ArrayList<>();
-    BringToDoData[] toDoDataArray;
     // CheckBox[] checkBoxes = new CheckBox[arrayList.size()];
     Context context;
     private static int UPDATE_RESULT = 101;

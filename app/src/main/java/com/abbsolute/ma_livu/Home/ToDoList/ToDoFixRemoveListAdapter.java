@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -82,36 +84,24 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
                 arrayList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,arrayList.size());
-                deleteFixData("fixToDoInfo",toDoFixInfo.getFixToDo());
+               // deleteFixData("fixToDoInfo",toDoFixInfo.getFixToDo());
                 SharedPreferences sharedPreferences=context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 final String id=sharedPreferences.getString("email_id","");
-                firestore.collection(FirebaseID.ToDoLists).document(id+" FixToDo")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                firestore.collection(FirebaseID.ToDoLists).document(id).collection("FixToDo")
+                        .document(position+"")
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task!=null){
-                                    DocumentSnapshot snapshot=task.getResult();
-                                    if(snapshot.exists()){
-                                        String counts=(String)snapshot.getData().get("Count");
-                                        int cnt=Integer.parseInt(counts);
-                                        if(cnt>0)
-                                            cnt--;
-                                        else if(cnt==0){
-                                            firestore.collection(FirebaseID.ToDoLists).document(id+" FixToDo").delete();
-                                        }
-                                        counts=Integer.toString(cnt);
-                                        Map<String,Object> updates = new HashMap<>();
-                                        updates.put("period"+position, FieldValue.delete());
-                                        updates.put("todo"+position,FieldValue.delete());
-                                        updates.put("Count",counts);
-                                        firestore.collection(FirebaseID.ToDoLists).document(id+" FixToDo")
-                                                .update(updates);
-                                    }
-                                }
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
                             }
                         });
-
             }
         });
     }

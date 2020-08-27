@@ -8,16 +8,18 @@ public class ToDoInfo {
     public String dates;
     public String dDay;
     Context context;
+    int todoNum;
     int color;
     public ToDoInfo(){
 
     }
-    public ToDoInfo(String content, String detailContent, String dates, String dDay,int color){
+    public ToDoInfo(String content, String detailContent, String dates, String dDay,int color,int todoNum){
         this.content=content;
         this.detailContent=detailContent;
         this.dates=dates;
         this.dDay=dDay;
         this.color=color;
+        this.todoNum=todoNum;
     }
 
     public int getColor() {

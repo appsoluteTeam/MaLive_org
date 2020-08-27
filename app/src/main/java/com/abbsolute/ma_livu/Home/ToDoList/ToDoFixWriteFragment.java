@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
@@ -66,15 +68,19 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
     TextView modifying;
     TextView removing;
     private FragmentTransaction fragmentTransaction;
-    public static ToDoFixWriteFragment newInstance() {
+    private static int counts=0;
+    public static ToDoFixWriteFragment newInstance(int count) {
         ToDoFixWriteFragment fragment = new ToDoFixWriteFragment();
-
+        counts=count;
         return fragment;
     }
+    //
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_fragment_fix,container,false);
+
         //todo : 페이지 2 카테고리 리스트 어뎁터 생성
         categoryRecyclerview=view.findViewById(R.id.todo_list_category2);
         fixTodoRecyclerview=view.findViewById(R.id.fix_list);
@@ -147,6 +153,10 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
                 {
                     fixAddData();
                     fixPeriodAddData();
+                    SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2",Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("upload",1);
+                    editor.commit();
                 }else{
                     Toast.makeText(getContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
                 }
@@ -161,37 +171,28 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         toDoFixListAdapter.getFixContext(getContext());
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        final DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                   if(task.getResult()!=null){
-                       DocumentSnapshot snapshot=task.getResult();
-                       if(snapshot.exists()){
-                           if(snapshot.getData()!=null){
-                               toDoFixInfos.clear();
-                               HashMap<String,Object> info= (HashMap<String, Object>) snapshot.getData();
-                               String cnt= (String) info.get("Count");
-                               int siz=Integer.parseInt(cnt);
-                               for(int i=0;i<=siz;i++){
-                                   String period=(String)snapshot.getData().get("period"+i);
-                                   String todo=(String)snapshot.getData().get("todo"+i);
-                                   ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
-                                   toDoFixInfos.add(toDoFixInfo);
-                               }
-                               toDoFixListAdapter.setFixItem(toDoFixInfos);
-                               toDoFixListAdapter.notifyDataSetChanged();
-                               fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
-                           }
-
-                       }
-                   }
-                }
-            }
-        });
+        firestore.collection(FirebaseID.ToDoLists).document(email)
+                .collection("FixToDo")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult()!=null){
+                                toDoFixInfos.clear();
+                                for(DocumentSnapshot snapshot: task.getResult()){
+                                    String period=String.valueOf(snapshot.get("period"));
+                                    String todo=String.valueOf(snapshot.get("todo"));
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
+                                    toDoFixInfos.add(toDoFixInfo);
+                                }
+                                toDoFixListAdapter.setFixItem(toDoFixInfos);
+                                toDoFixListAdapter.notifyDataSetChanged();
+                                fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
+                            }
+                        }
+                    }
+                });
        // toDoFixListAdapter.setFixItem(toDoFixInfos);
         //fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
         ///fixToDoList 수정, 삭제 변수 정의
@@ -201,6 +202,10 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         modifying.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ToDoFixModifyingFragment toDoFixModifyingFragment=new ToDoFixModifyingFragment();
+                Bundle bundle=new Bundle();
+                bundle.putInt("TotalCount",toDoFixListAdapter.getItemCount());
+                toDoFixModifyingFragment.setArguments(bundle);
                 ((HomeActivity)getActivity()).setFragment(102);//ToDoFixModifyingFragment
             }
         });
@@ -209,6 +214,10 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         removing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ToDoFixListRemoveFragment toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
+                Bundle bundle=new Bundle();
+                bundle.putInt("TotalRemoveCount",toDoFixListAdapter.getItemCount());
+                toDoFixListRemoveFragment.setArguments(bundle);
                 ((HomeActivity)getActivity()).setFragment(104);
             }
         });
@@ -229,32 +238,19 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         insertFixData("fixToDoInfo",toDoFixInfo);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        final DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
+        final String nowCount = Integer.toString(counts+1);
+        final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
+                .collection("FixToDo")
+                .document(nowCount);
+        //final String finalDDate = dDate;
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                    DocumentSnapshot snapshot=task.getResult();
-                    if(snapshot.exists()){
-                        String cnt= (String) snapshot.getData().get("Count");
-                        int tmp=Integer.parseInt(cnt);
-                        if(tmp>=0)
-                            tmp++;
-                        String newCnt=Integer.toString(tmp);
-                        data.put("period"+newCnt,toDoFixInfo.fixPeriod);
-                        data.put("todo"+newCnt,toDoFixInfo.fixToDo);
-                        data.put("Count",newCnt);
-                        documentReference.set(data, SetOptions.merge());
-                    }else{
-                        int tmp=0;
-                        String cnt=Integer.toString(tmp);
-                        data.put("period"+cnt,toDoFixInfo.fixPeriod);
-                        data.put("todo"+cnt,toDoFixInfo.fixToDo);
-                        data.put("Count",cnt);
-                        documentReference.set(data, SetOptions.merge());
-                    }
+                    data.put("period", toDoFixInfo.fixPeriod);
+                    data.put("todo", toDoFixInfo.fixToDo);
+                    documentReference.set(data, SetOptions.merge());
                 }
             }
         });
@@ -283,44 +279,28 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface {
         }
         date=dYear+"년"+dMonth+"월"+days+"일";
         String dDate=date;
-        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
-        insertData("todoInfo",toDoInfo);
+        final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2,counts+1);
+        //insertData("todoInfo",toDoInfo);
         //파이어베이스에 FixTodo데이터 올리기
+        final String nowCount = Integer.toString(counts+1);
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        final DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo");
+        final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
+                .collection("ToDo")
+                .document(nowCount);
+        //final String finalDDate = dDate;
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                    DocumentSnapshot snapshot=task.getResult();
-                    if(snapshot.exists()){
-                        String cnt= (String) snapshot.getData().get("Count");
-                        int tmp=Integer.parseInt(cnt);
-                        tmp++;
-                        String newCnt=Integer.toString(tmp);
-                        data.put("contents"+newCnt,toDoInfo.content);
-                        data.put("detailContents"+newCnt,toDoInfo.detailContent);
-                        data.put("dates"+newCnt,toDoInfo.dates);
-                        data.put("dDates"+newCnt,toDoInfo.dDay);
-                        data.put("Count",newCnt);
-                        String colors=Integer.toString(R.drawable.todo_border2);
-                        data.put("color"+newCnt,colors);
-                        documentReference.set(data, SetOptions.merge());
-                    }else{
-                        int tmp=0;
-                        String cnt=Integer.toString(tmp);
-                        data.put("contents"+cnt,toDoInfo.content);
-                        data.put("detailContents"+cnt,toDoInfo.detailContent);
-                        data.put("dates"+cnt,toDoInfo.dates);
-                        data.put("dDates"+cnt,toDoInfo.dDay);
-                        data.put("Count",cnt);
-                        String colors=Integer.toString(R.drawable.todo_border2);
-                        data.put("color"+cnt,colors);
-                        documentReference.set(data, SetOptions.merge());
-                    }
+                    data.put("content", toDoInfo.content);
+                    data.put("detailContent", toDoInfo.detailContent);
+                    data.put("date", toDoInfo.dates);
+                    data.put("dDay", toDoInfo.dDay);
+                    data.put("color", toDoInfo.color + "");
+                    data.put("num",toDoInfo.todoNum+"");
+                    documentReference.set(data, SetOptions.merge());
                 }
             }
         });
