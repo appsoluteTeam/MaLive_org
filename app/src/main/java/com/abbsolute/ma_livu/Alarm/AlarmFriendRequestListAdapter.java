@@ -9,7 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 
@@ -17,6 +25,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFriendRequestListAdapter.ViewHolder> {
     ArrayList<AlarmFriendRequestInfo> alarmRequestInfoArrayList=new ArrayList<>();
+    private static FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private static FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+    String nickName;
     public static class ViewHolder extends RecyclerView.ViewHolder{
         protected CircleImageView userImg;
         protected TextView requestMsg;
@@ -32,8 +43,9 @@ public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFri
             this.reclining=v.findViewById(R.id.recline);
         }
     }
-    public void setItem(ArrayList<AlarmFriendRequestInfo> arrayList){
+    public void setItem(ArrayList<AlarmFriendRequestInfo> arrayList,String nickName){
         this.alarmRequestInfoArrayList=arrayList;
+        this.nickName=nickName;
     }
     @NonNull
     @Override
@@ -44,12 +56,44 @@ public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFri
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AlarmFriendRequestInfo info=alarmRequestInfoArrayList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        final AlarmFriendRequestInfo info=alarmRequestInfoArrayList.get(position);
         holder.userImg.setBackgroundResource(info.getUserImage());
         holder.requestMsg.setText(info.getRequestMessage());
         holder.requestTime.setText(info.getPrevTime());
-
+        holder.accepting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String friendName=nickName;
+                final String email=firebaseAuth.getCurrentUser().getEmail();
+                firestore.collection(FirebaseID.alarm_fragment).document(email)
+                        .collection("friend")
+                        .document(friendName)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()){
+                                    if(task.getResult()!=null){
+                                        DocumentSnapshot snapshot=task.getResult();
+                                        if(snapshot.exists()){
+                                            firestore.collection(FirebaseID.alarm_fragment).document(email)
+                                                    .collection("friend")
+                                                    .document(friendName).set(friendName, SetOptions.merge());
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                alarmRequestInfoArrayList.remove(position);
+            }
+        });
+        holder.reclining.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alarmRequestInfoArrayList.remove(position);
+            }
+        });
     }
 
     @Override

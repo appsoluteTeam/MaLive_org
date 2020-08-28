@@ -72,7 +72,7 @@ public class AlarmFragment extends Fragment {
                                                 new AlarmFriendRequestInfo(R.drawable.user1,
                                                         requestMessage,"4시간전");
                                         alarmFriendRequestInfoArrayList.add(friendRequestInfo);
-                                        alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList);
+                                        alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList,nickName);
                                         friendRequestListView.setHasFixedSize(true);
                                         friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
                                     }else{
