@@ -298,8 +298,14 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+    }
+
+    @Override
     public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(101);//writeMainFragment로
+        ((HomeActivity)getActivity()).setCurrentScene(this);//writeMainFragment로
     }
     public void setCount(int counts){
         count=counts;

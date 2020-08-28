@@ -450,6 +450,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(toDoAdapter);
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);//뒤로가기 이벤트처리
     }
 
 
@@ -588,7 +589,8 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     //뒤로가기 이벤트
     @Override
     public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
+        Toast.makeText(getContext(),getContext().getClass().getName(),Toast.LENGTH_SHORT).show();
+        ((HomeActivity)getActivity()).setCurrentScene(this);
     }
 }
 

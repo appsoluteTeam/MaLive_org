@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 
 public class AlarmFragment extends Fragment {
-
+    //todo 모든 기능의 데이터가 구축되어야 할 수 있는 일
     private View view;
     private AlarmFriendRequestListAdapter alarmFriendRequestListAdapter;
     private AlarmPrevNotificationListAdapter alarmPrevNotificationListAdapter;
@@ -38,6 +40,7 @@ public class AlarmFragment extends Fragment {
     private ArrayList<String> dDayList=new ArrayList<>();
     ///
     String nickName="";
+    ArrayList<AlarmFriendRequestInfo> alarmFriendRequestInfoArrayList=new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +53,8 @@ public class AlarmFragment extends Fragment {
         friendRequestListView.setLayoutManager(layoutManager1);
         FirebaseUser user=firebaseAuth.getCurrentUser();
         //닉네임 찾기
-        firestore.collection(FirebaseID.user).document(user+"")
+        String email=user.getEmail();
+        firestore.collection(FirebaseID.user).document(email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -59,8 +63,18 @@ public class AlarmFragment extends Fragment {
                             if(task.getResult()!=null){
                                 DocumentSnapshot snapshot=task.getResult();
                                 if(snapshot.exists()){
-                                    if(snapshot.getData().get("nickname")!=null){
+                                    Map<String,Object> data=snapshot.getData();
+                                    if(data.containsKey("nickname")){
                                         nickName=(String)snapshot.getData().get("nickname");
+                                        String requestMessage=nickName+"님이 친구요청을 보냈습니다.";
+                                        //todo 마이페이지에서 친구요청 구현하면 시간데이터 넣기
+                                        AlarmFriendRequestInfo friendRequestInfo=
+                                                new AlarmFriendRequestInfo(R.drawable.user1,
+                                                        requestMessage,"4시간전");
+                                        alarmFriendRequestInfoArrayList.add(friendRequestInfo);
+                                        alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList);
+                                        friendRequestListView.setHasFixedSize(true);
+                                        friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
                                     }else{
 
                                     }

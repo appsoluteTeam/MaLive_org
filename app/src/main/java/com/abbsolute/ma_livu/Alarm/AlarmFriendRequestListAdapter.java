@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFriendRequestListAdapter.ViewHolder> {
-    ArrayList<AlarmRequestInfo> alarmRequestInfoArrayList=new ArrayList<>();
+    ArrayList<AlarmFriendRequestInfo> alarmRequestInfoArrayList=new ArrayList<>();
     public static class ViewHolder extends RecyclerView.ViewHolder{
         protected CircleImageView userImg;
         protected TextView requestMsg;
@@ -33,6 +32,9 @@ public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFri
             this.reclining=v.findViewById(R.id.recline);
         }
     }
+    public void setItem(ArrayList<AlarmFriendRequestInfo> arrayList){
+        this.alarmRequestInfoArrayList=arrayList;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +45,7 @@ public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFri
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AlarmRequestInfo info=alarmRequestInfoArrayList.get(position);
+        AlarmFriendRequestInfo info=alarmRequestInfoArrayList.get(position);
         holder.userImg.setBackgroundResource(info.getUserImage());
         holder.requestMsg.setText(info.getRequestMessage());
         holder.requestTime.setText(info.getPrevTime());

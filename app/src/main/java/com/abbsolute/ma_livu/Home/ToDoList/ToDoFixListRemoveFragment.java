@@ -164,7 +164,13 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+    }
+
+    @Override
     public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(101);//writeMainFragment로
+        ((HomeActivity)getActivity()).setCurrentScene(this);//writeMainFragment로
     }
 }

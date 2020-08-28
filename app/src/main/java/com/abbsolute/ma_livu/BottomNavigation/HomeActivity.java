@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.BottomNavigation;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -22,10 +23,12 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixListRemoveFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
@@ -73,10 +76,14 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     //투두 작성 메인 화면
     private ToDoWriteMainFragment toDoWriteMainFragment;
     //고정리스트 작성 화면
+    ToDoFixWriteFragment toDoFixWriteFragment;
+    //고정리스트 수정화면
     private ToDoFixModifyingFragment toDoFixModifyingFragment;
+    //고정리스트 삭제화면
+    ToDoFixListRemoveFragment toDoFixListRemoveFragment;
     private int count;
-
-
+    //todoList관련 뒤로가기 이벤트
+    OnBackPressedListener listener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,11 +218,11 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 break;
             //고정 할 일 프레그먼트
             case 103:
-                ToDoFixWriteFragment toDoFixWriteFragment=new ToDoFixWriteFragment();
+                toDoFixWriteFragment=new ToDoFixWriteFragment();
                 fragmentTransaction.replace(R.id.main_frame,toDoFixWriteFragment).commit();
                 break;
             case 104:
-                ToDoFixListRemoveFragment toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
+                toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
                 fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
                 break;
 
@@ -282,6 +289,45 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentTransaction.replace(R.id.main_frame,informationSetFragment);
                 fragmentTransaction.commit();
                 break;
+        }
+    }
+    //ToDoList 뒤로가기를 위한 함수
+    public void setOnBackPressedListener(OnBackPressedListener listener){ this.listener = listener; }
+    @Override
+    public void onBackPressed() {
+        if(listener!=null){
+            listener.onBackPressed();
+        }
+        else
+            super.onBackPressed();
+
+    }
+    public void setCurrentScene(Fragment fragment){
+
+        if(fragment instanceof ToDoFragment){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, homeFragment);
+            transaction.commit();
+        }
+        if(fragment instanceof ToDoWriteFragment){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, toDoFragment);
+            transaction.commit();
+        }
+        if(fragment instanceof ToDoFixWriteFragment){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, toDoFragment);
+            transaction.commit();
+        }
+        if(fragment instanceof ToDoFixModifyingFragment){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, toDoWriteMainFragment);
+            transaction.commit();
+        }
+        if(fragment instanceof ToDoFixListRemoveFragment){
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame, toDoWriteMainFragment);
+            transaction.commit();
         }
     }
 }
