@@ -20,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -77,15 +79,29 @@ public class AlarmFriendRequestListAdapter extends RecyclerView.Adapter<AlarmFri
                                     if(task.getResult()!=null){
                                         DocumentSnapshot snapshot=task.getResult();
                                         if(snapshot.exists()){
+                                            Map<String,Object> data=new HashMap<>();
+                                            String input="friend"+nickName;
+                                            data.put(input,friendName);
                                             firestore.collection(FirebaseID.alarm_fragment).document(email)
                                                     .collection("friend")
-                                                    .document(friendName).set(friendName, SetOptions.merge());
+                                                    .document(friendName).set(data, SetOptions.merge());
+                                            if(alarmRequestInfoArrayList.size()>0)
+                                                alarmRequestInfoArrayList.remove(position);
+                                        }else{
+                                            Map<String,Object> data=new HashMap<>();
+                                            String input="friend"+nickName;
+                                            data.put(input,friendName);
+                                            firestore.collection(FirebaseID.alarm_fragment).document(email)
+                                                    .collection("friend")
+                                                    .document(friendName).set(data, SetOptions.merge());
+                                            if(alarmRequestInfoArrayList.size()>0)
+                                                alarmRequestInfoArrayList.remove(position);
                                         }
                                     }
                                 }
                             }
                         });
-                alarmRequestInfoArrayList.remove(position);
+
             }
         });
         holder.reclining.setOnClickListener(new View.OnClickListener() {
