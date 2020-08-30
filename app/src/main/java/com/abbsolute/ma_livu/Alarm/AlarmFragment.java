@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,8 +111,8 @@ public class AlarmFragment extends Fragment {
                         }
                     }
                 });
-
         ///이전알림 시작
+        //투두리스트 정보 가져오기
         LinearLayoutManager layoutManager2=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         prevNotificationListView.setLayoutManager(layoutManager2);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
@@ -124,6 +125,7 @@ public class AlarmFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()) {
                             if(task.getResult()!=null){
+                                prevNotificationInfos.clear();
                                 for(DocumentSnapshot snapshot: task.getResult()){
                                     Map<String,Object> data=snapshot.getData();
                                     String dDay=String.valueOf(data.get("dDay"));
@@ -143,7 +145,7 @@ public class AlarmFragment extends Fragment {
                                 String tmp3=splitData[2];
                                 String today=tmp1+"년"+tmp2+"월"+tmp3+"일";
                                 for(int i=0;i<dDayList.size();i++){
-                                    if(i==3)
+                                    if(i==4)
                                         break;
                                     String cmp=dDayList.get(i);
                                     String inputContent=contentList.get(i);
@@ -178,6 +180,69 @@ public class AlarmFragment extends Fragment {
                         }
                     }
                 });
+        //내 댓글 가져오기(뭐먹지)
+        final ArrayList<String> titleNameList=new ArrayList<>();
+        firestore.collection(FirebaseID.Community).document("what_eat").
+                collection("sub_Community")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult()!=null){
+                                for(DocumentSnapshot snapshot:task.getResult()){
+                                    Map<String,Object> data=snapshot.getData();
+                                    String title=String.valueOf(data.get("title"));
+                                    Log.d("title!!!",title);
+                                    titleNameList.add(title);
+                                }
+                            }
+                        }
+                    }
+                });
+        Log.d("docuSize",titleNameList.size()+"");
+        for(int i=0;i<titleNameList.size();i++){
+           String docuName=titleNameList.get(i);
+            Log.d("문서이름",docuName);
+           firestore.collection(FirebaseID.Community).document("what_eat")
+                   .collection("sub_Community")
+                   .document(docuName)
+                   .collection(FirebaseID.Community_Comment)
+                   .get()
+                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                       @Override
+                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                           if(task.isSuccessful()){
+                               if(task.getResult()!=null){
+                                   for(DocumentSnapshot snapshot:task.getResult()){
+                                       Map<String,Object> data=snapshot.getData();
+                                       String comment=String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                       SimpleDateFormat formatter= null;
+                                       Date date=null;
+                                       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                           formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                           try {
+                                               date=formatter.parse(comment);
+                                           } catch (ParseException e) {
+                                               e.printStackTrace();
+                                           }
+                                           PrevTimeSetClass prevTimeSetClass=new PrevTimeSetClass();
+                                           String res=prevTimeSetClass.formatTimeString(date);
+                                           String responseText="내 글에 댓글이 달렸어요";
+                                           PrevNotificationInfo prevNotificationInfo=new PrevNotificationInfo(R.drawable.comments,
+                                                   responseText,res);
+                                           prevNotificationInfos.add(prevNotificationInfo);
+                                           alarmPrevNotificationListAdapter.setItem(prevNotificationInfos);
+                                           alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                           prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                       }
+
+                                   }
+                               }
+                           }
+                       }
+                   });
+        }
         ///이전알림 끝
         return view;
     }
