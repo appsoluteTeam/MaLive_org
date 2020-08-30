@@ -191,7 +191,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                         }
                         dDate = year + "년" + months + "월" + days + "일";
                     }
-                    final ToDoInfo toDoInfo = new ToDoInfo(res, resDetailTodo, date, dDate, Color.WHITE);
+                    final ToDoInfo toDoInfo = new ToDoInfo(res, resDetailTodo, date, dDate, R.drawable.todo_border);
                     firestore.collection(FirebaseID.ToDoLists).document(email)
                             .collection("ToDo")
                             .document(detail)
@@ -200,10 +200,11 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     HashMap<String, Object> data = new HashMap<>();
-                                    data.put("contents", toDoInfo.content);
-                                    data.put("detailContents", toDoInfo.detailContent);
-                                    data.put("dates", toDoInfo.dates);
-                                    data.put("dDates", toDoInfo.dDay);
+                                    data.put("content", toDoInfo.content);
+                                    data.put("detailContent", toDoInfo.detailContent);
+                                    data.put("date", toDoInfo.dates);
+                                    data.put("dDay", toDoInfo.dDay);
+                                    data.put("color",toDoInfo.color+"");
                                     firestore.collection(FirebaseID.ToDoLists).document(email)
                                             .collection("ToDo")
                                             .document(detail)

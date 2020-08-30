@@ -490,12 +490,12 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
             String dDay = toDoInfos.get(i).getdDay();
             String contents = toDoInfos.get(i).getContent();
 
-            String[] res = dDay.split("년");
-            String[] days = dDay.split("월");
-            String year = res[0];
-            String month = res[1];
-            String day = days[1];
-
+            String year = dDay.substring(0,4);//year
+            String month = dDay.substring(5,7);//month
+            String day = dDay.substring(8,10);//day
+            Toast.makeText(getContext(), year, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), month, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), day, Toast.LENGTH_SHORT).show();
 
             Log.d("d-day", year + "," + month + "," + day);
             Log.d("c-day", y + "," + m + "," + d);
