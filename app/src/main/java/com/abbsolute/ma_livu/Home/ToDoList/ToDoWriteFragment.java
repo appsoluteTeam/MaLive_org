@@ -165,9 +165,8 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                 if (isUpdated == true) {//수정작업
                     SharedPreferences getEmail = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                     final String email = getEmail.getString("email_id", "");
-                    final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
-                            .collection("ToDo")
-                            .document(detailTodo);
+                    SharedPreferences getDetail=getContext().getSharedPreferences("pref2",Activity.MODE_PRIVATE);
+                    final String detail=getDetail.getString("modifyContent","");
                     String res = pf.getString("toDo", "");
                     String resDetailTodo = write.getText().toString();
                     long systemTime = System.currentTimeMillis();
@@ -192,13 +191,31 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                         }
                         dDate = year + "년" + months + "월" + days + "일";
                     }
-                    ToDoInfo toDoInfo = new ToDoInfo(res, resDetailTodo, date, dDate, Color.WHITE);
-                    HashMap<String, Object> data = new HashMap<>();
-                    data.put("contents", toDoInfo.content);
-                    data.put("detailContents", toDoInfo.detailContent);
-                    data.put("dates", toDoInfo.dates);
-                    data.put("dDates", toDoInfo.dDay);
-                    documentReference.update(data);
+                    final ToDoInfo toDoInfo = new ToDoInfo(res, resDetailTodo, date, dDate, Color.WHITE);
+                    firestore.collection(FirebaseID.ToDoLists).document(email)
+                            .collection("ToDo")
+                            .document(detail)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    HashMap<String, Object> data = new HashMap<>();
+                                    data.put("contents", toDoInfo.content);
+                                    data.put("detailContents", toDoInfo.detailContent);
+                                    data.put("dates", toDoInfo.dates);
+                                    data.put("dDates", toDoInfo.dDay);
+                                    firestore.collection(FirebaseID.ToDoLists).document(email)
+                                            .collection("ToDo")
+                                            .document(detail)
+                                            .delete();
+                                    firestore.collection(FirebaseID.ToDoLists).document(email)
+                                            .collection("ToDo")
+                                            .document(toDoInfo.detailContent)
+                                            .set(data,SetOptions.merge());
+
+                                }
+                            });
+
                     SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("modify", false);
