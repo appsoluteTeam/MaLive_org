@@ -29,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -193,56 +194,58 @@ public class AlarmFragment extends Fragment {
                                 for(DocumentSnapshot snapshot:task.getResult()){
                                     Map<String,Object> data=snapshot.getData();
                                     String title=String.valueOf(data.get("title"));
-                                    Log.d("title!!!",title);
-                                    titleNameList.add(title);
+                                    String myNickName=String.valueOf(data.get("nickname"));
+                                    if(nickName.equals(myNickName)){
+                                        Log.d("title!!!",title);
+                                        firestore.collection(FirebaseID.Community).document("what_eat")
+                                                .collection("sub_Community")
+                                                .document(title)
+                                                .collection(FirebaseID.Community_Comment)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if(task.isSuccessful()){
+                                                            if(task.getResult()!=null){
+                                                                for(DocumentSnapshot snapshot:task.getResult()){
+                                                                    if(snapshot.exists()){
+                                                                        HashSet<PrevNotificationInfo> set=new HashSet<PrevNotificationInfo>(prevNotificationInfos);
+                                                                        ArrayList<PrevNotificationInfo> newArrays=new ArrayList<>(set);
+                                                                        Map<String,Object> data=snapshot.getData();
+                                                                        String comment=String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                        SimpleDateFormat formatter= null;
+                                                                        Date date=null;
+                                                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                            try {
+                                                                                date=formatter.parse(comment);
+                                                                            } catch (ParseException e) {
+                                                                                e.printStackTrace();
+                                                                            }
+                                                                            PrevTimeSetClass prevTimeSetClass=new PrevTimeSetClass();
+                                                                            String res=prevTimeSetClass.formatTimeString(date);
+                                                                            String responseText="내 글에 댓글이 달렸어요";
+                                                                            PrevNotificationInfo prevNotificationInfo=new PrevNotificationInfo(R.drawable.comments,
+                                                                                    responseText,res);
+                                                                            newArrays.add(prevNotificationInfo);
+                                                                            alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                        }
+                                                                    }
+
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                    }
                                 }
                             }
                         }
                     }
                 });
-        Log.d("docuSize",titleNameList.size()+"");
-        for(int i=0;i<titleNameList.size();i++){
-           String docuName=titleNameList.get(i);
-            Log.d("문서이름",docuName);
-           firestore.collection(FirebaseID.Community).document("what_eat")
-                   .collection("sub_Community")
-                   .document(docuName)
-                   .collection(FirebaseID.Community_Comment)
-                   .get()
-                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                       @Override
-                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                           if(task.isSuccessful()){
-                               if(task.getResult()!=null){
-                                   for(DocumentSnapshot snapshot:task.getResult()){
-                                       Map<String,Object> data=snapshot.getData();
-                                       String comment=String.valueOf(data.get(FirebaseID.commu_comment_date));
-                                       SimpleDateFormat formatter= null;
-                                       Date date=null;
-                                       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                           formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                                           try {
-                                               date=formatter.parse(comment);
-                                           } catch (ParseException e) {
-                                               e.printStackTrace();
-                                           }
-                                           PrevTimeSetClass prevTimeSetClass=new PrevTimeSetClass();
-                                           String res=prevTimeSetClass.formatTimeString(date);
-                                           String responseText="내 글에 댓글이 달렸어요";
-                                           PrevNotificationInfo prevNotificationInfo=new PrevNotificationInfo(R.drawable.comments,
-                                                   responseText,res);
-                                           prevNotificationInfos.add(prevNotificationInfo);
-                                           alarmPrevNotificationListAdapter.setItem(prevNotificationInfos);
-                                           alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                           prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
-                                       }
-
-                                   }
-                               }
-                           }
-                       }
-                   });
-        }
         ///이전알림 끝
         return view;
     }
