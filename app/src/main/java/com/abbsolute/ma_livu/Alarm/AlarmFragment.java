@@ -40,43 +40,44 @@ public class AlarmFragment extends Fragment {
     private AlarmPrevNotificationListAdapter alarmPrevNotificationListAdapter;
     private RecyclerView friendRequestListView;
     private RecyclerView prevNotificationListView;
-    private FirebaseFirestore firestore= FirebaseFirestore.getInstance();
-    private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-    private ArrayList<String> dDayList=new ArrayList<>();
-    private ArrayList<String> contentList=new ArrayList<>();
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private ArrayList<String> dDayList = new ArrayList<>();
+    private ArrayList<String> contentList = new ArrayList<>();
     ///
-    private String nickName="";
-    private ArrayList<AlarmFriendRequestInfo> alarmFriendRequestInfoArrayList=new ArrayList<>();
-    private ArrayList<PrevNotificationInfo> prevNotificationInfos=new ArrayList<>();
+    private String nickName = "";
+    private ArrayList<AlarmFriendRequestInfo> alarmFriendRequestInfoArrayList = new ArrayList<>();
+    private ArrayList<PrevNotificationInfo> prevNotificationInfos = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_alarm,container,false);
-        if(getArguments()!=null){//친구요청하는 부분에서 닉네임 넘겨받는 곳
+        view = inflater.inflate(R.layout.fragment_alarm, container, false);
+        if (getArguments() != null) {//친구요청하는 부분에서 닉네임 넘겨받는 곳
 
         }
-        alarmFriendRequestListAdapter=new AlarmFriendRequestListAdapter();
-        alarmPrevNotificationListAdapter=new AlarmPrevNotificationListAdapter();
-        friendRequestListView=view.findViewById(R.id.friend_request_list);
-        prevNotificationListView=view.findViewById(R.id.prev_notification_list);
-        LinearLayoutManager layoutManager1=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        alarmFriendRequestListAdapter = new AlarmFriendRequestListAdapter();
+        alarmPrevNotificationListAdapter = new AlarmPrevNotificationListAdapter();
+        friendRequestListView = view.findViewById(R.id.friend_request_list);
+        prevNotificationListView = view.findViewById(R.id.prev_notification_list);
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         friendRequestListView.setLayoutManager(layoutManager1);
-        FirebaseUser user=firebaseAuth.getCurrentUser();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         //닉네임 찾기
         //todo 마이페이지 친구요청 부문완료하면 요청하는 부분에서 닉네임 넘겨받기
-        final String email=user.getEmail();
+        final String email = user.getEmail();
         firestore.collection(FirebaseID.user).document(email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            if(task.getResult()!=null){
-                                final DocumentSnapshot snapshot=task.getResult();
-                                if(snapshot.exists()){
-                                    Map<String,Object> data=snapshot.getData();
-                                    if(data.containsKey("nickname")){
-                                        nickName=(String)snapshot.getData().get("nickname");
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                final DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot.exists()) {
+                                    Map<String, Object> data = snapshot.getData();
+                                    if (data.containsKey("nickname")) {
+                                        nickName = (String) snapshot.getData().get("nickname");
                                         firestore.collection(FirebaseID.alarm_fragment).document(email)
                                                 .collection("friend")
                                                 .document(nickName)
@@ -84,17 +85,17 @@ public class AlarmFragment extends Fragment {
                                                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if(task.isSuccessful()){
-                                                            if(task.getResult()!=null){
-                                                                DocumentSnapshot snapshot1=task.getResult();
-                                                                if(!snapshot1.exists()){
-                                                                    String requestMessage=nickName+"님이 친구요청을 보냈습니다.";
+                                                        if (task.isSuccessful()) {
+                                                            if (task.getResult() != null) {
+                                                                DocumentSnapshot snapshot1 = task.getResult();
+                                                                if (!snapshot1.exists()) {
+                                                                    String requestMessage = nickName + "님이 친구요청을 보냈습니다.";
                                                                     //todo 마이페이지에서 친구요청 구현하면 시간데이터 넣기
-                                                                    AlarmFriendRequestInfo friendRequestInfo=
+                                                                    AlarmFriendRequestInfo friendRequestInfo =
                                                                             new AlarmFriendRequestInfo(R.drawable.user1,
-                                                                                    requestMessage,"4시간전");
+                                                                                    requestMessage, "4시간전");
                                                                     alarmFriendRequestInfoArrayList.add(friendRequestInfo);
-                                                                    alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList,nickName);
+                                                                    alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
                                                                     alarmFriendRequestListAdapter.notifyDataSetChanged();
                                                                     friendRequestListView.setHasFixedSize(true);
                                                                     friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
@@ -104,7 +105,7 @@ public class AlarmFragment extends Fragment {
                                                     }
                                                 });
 
-                                    }else{
+                                    } else {
 
                                     }
                                 }
@@ -114,7 +115,7 @@ public class AlarmFragment extends Fragment {
                 });
         ///이전알림 시작
         //투두리스트 정보 가져오기
-        LinearLayoutManager layoutManager2=new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         prevNotificationListView.setLayoutManager(layoutManager2);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String id = sharedPreferences.getString("email_id", "");
@@ -124,53 +125,53 @@ public class AlarmFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()) {
-                            if(task.getResult()!=null){
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
                                 prevNotificationInfos.clear();
-                                for(DocumentSnapshot snapshot: task.getResult()){
-                                    Map<String,Object> data=snapshot.getData();
-                                    String dDay=String.valueOf(data.get("dDay"));
-                                    String content=String.valueOf(data.get("content"));
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> data = snapshot.getData();
+                                    String dDay = String.valueOf(data.get("dDay"));
+                                    String content = String.valueOf(data.get("content"));
                                     dDayList.add(dDay);
                                     contentList.add(content);
                                 }
                                 long systemTime = System.currentTimeMillis();
-                                SimpleDateFormat formatter= null;
+                                SimpleDateFormat formatter = null;
                                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                     formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
                                 }
-                                String date=formatter.format(systemTime);
-                                String[] splitData=date.split("-");
-                                String tmp1=splitData[0];
-                                String tmp2=splitData[1];
-                                String tmp3=splitData[2];
-                                String today=tmp1+"년"+tmp2+"월"+tmp3+"일";
-                                for(int i=0;i<dDayList.size();i++){
-                                    if(i==4)
+                                String date = formatter.format(systemTime);
+                                String[] splitData = date.split("-");
+                                String tmp1 = splitData[0];
+                                String tmp2 = splitData[1];
+                                String tmp3 = splitData[2];
+                                String today = tmp1 + "년" + tmp2 + "월" + tmp3 + "일";
+                                for (int i = 0; i < dDayList.size(); i++) {
+                                    if (i == 4)
                                         break;
-                                    String cmp=dDayList.get(i);
-                                    String inputContent=contentList.get(i);
-                                    if(cmp.compareTo(today)<0){
-                                        PrevTimeSetClass prevTimeSetClass=new PrevTimeSetClass();
-                                        SimpleDateFormat simpleDateFormat=null;
+                                    String cmp = dDayList.get(i);
+                                    String inputContent = contentList.get(i);
+                                    if (cmp.compareTo(today) < 0) {
+                                        PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                        SimpleDateFormat simpleDateFormat = null;
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                             simpleDateFormat = new SimpleDateFormat("yyyy년MM월dd일", Locale.KOREA);
                                         }
-                                        Date parseDate=null;
-                                        String res="";
+                                        Date parseDate = null;
+                                        String res = "";
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                             try {
-                                                parseDate=simpleDateFormat.parse(cmp);
-                                                res=prevTimeSetClass.formatTimeString(parseDate);//~전 으로 변경
+                                                parseDate = simpleDateFormat.parse(cmp);
+                                                res = prevTimeSetClass.formatTimeString(parseDate);//~전 으로 변경
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
                                         }
                                         Toast.makeText(getContext(), res, Toast.LENGTH_SHORT).show();
-                                        String notifiText=inputContent+" 지정일이 지났어요";
-                                        PrevNotificationInfo prevNotificationInfo=
+                                        String notifiText = inputContent + " 지정일이 지났어요";
+                                        PrevNotificationInfo prevNotificationInfo =
                                                 new PrevNotificationInfo(R.drawable.prev_todo,
-                                                        notifiText,res);
+                                                        notifiText, res);
                                         prevNotificationInfos.add(prevNotificationInfo);
                                         alarmPrevNotificationListAdapter.setItem(prevNotificationInfos);
                                         prevNotificationListView.setHasFixedSize(true);
@@ -182,21 +183,21 @@ public class AlarmFragment extends Fragment {
                     }
                 });
         //내 댓글 가져오기(뭐먹지)
-        final ArrayList<String> titleNameList=new ArrayList<>();
+        final ArrayList<String> titleNameList = new ArrayList<>();
         firestore.collection(FirebaseID.Community).document("what_eat").
                 collection("sub_Community")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            if(task.getResult()!=null){
-                                for(DocumentSnapshot snapshot:task.getResult()){
-                                    Map<String,Object> data=snapshot.getData();
-                                    String title=String.valueOf(data.get("title"));
-                                    String myNickName=String.valueOf(data.get("nickname"));
-                                    if(nickName.equals(myNickName)){
-                                        Log.d("title!!!",title);
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> data = snapshot.getData();
+                                    final String title = String.valueOf(data.get("title"));
+                                    String myNickName = String.valueOf(data.get("nickname"));
+                                    if (nickName.equals(myNickName)) {
+                                        Log.d("title!!!", title);
                                         firestore.collection(FirebaseID.Community).document("what_eat")
                                                 .collection("sub_Community")
                                                 .document(title)
@@ -205,28 +206,28 @@ public class AlarmFragment extends Fragment {
                                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if(task.isSuccessful()){
-                                                            if(task.getResult()!=null){
-                                                                for(DocumentSnapshot snapshot:task.getResult()){
-                                                                    if(snapshot.exists()){
-                                                                        HashSet<PrevNotificationInfo> set=new HashSet<PrevNotificationInfo>(prevNotificationInfos);
-                                                                        ArrayList<PrevNotificationInfo> newArrays=new ArrayList<>(set);
-                                                                        Map<String,Object> data=snapshot.getData();
-                                                                        String comment=String.valueOf(data.get(FirebaseID.commu_comment_date));
-                                                                        SimpleDateFormat formatter= null;
-                                                                        Date date=null;
+                                                        if (task.isSuccessful()) {
+                                                            if (task.getResult() != null) {
+                                                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                                                    if (snapshot.exists()) {
+                                                                        HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
+                                                                        ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
+                                                                        Map<String, Object> data = snapshot.getData();
+                                                                        String commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                        SimpleDateFormat formatter = null;
+                                                                        Date date = null;
                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                                                             formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
                                                                             try {
-                                                                                date=formatter.parse(comment);
+                                                                                date = formatter.parse(commentDate);
                                                                             } catch (ParseException e) {
                                                                                 e.printStackTrace();
                                                                             }
-                                                                            PrevTimeSetClass prevTimeSetClass=new PrevTimeSetClass();
-                                                                            String res=prevTimeSetClass.formatTimeString(date);
-                                                                            String responseText="내 글에 댓글이 달렸어요";
-                                                                            PrevNotificationInfo prevNotificationInfo=new PrevNotificationInfo(R.drawable.comments,
-                                                                                    responseText,res);
+                                                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                            String responseText = "내 글에 댓글이 달렸어요";
+                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                    responseText, res);
                                                                             newArrays.add(prevNotificationInfo);
                                                                             alarmPrevNotificationListAdapter.setItem(newArrays);
                                                                             alarmPrevNotificationListAdapter.notifyDataSetChanged();
@@ -239,7 +240,71 @@ public class AlarmFragment extends Fragment {
                                                             }
                                                         }
                                                     }
-                                                });
+                                                });//댓글
+                                        //대댓글(댓글->댓글)
+                                        firestore.collection(FirebaseID.Community).document("what_eat")
+                                                .collection("sub_Community")
+                                                .document(title)
+                                                .collection(FirebaseID.Community_Comment)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            if (task.getResult() != null) {
+                                                                for (DocumentSnapshot newDocumentSnapShot : task.getResult()) {
+                                                                    if (newDocumentSnapShot.exists()) {
+                                                                        Map<String, Object> data = newDocumentSnapShot.getData();
+                                                                        String commentComment = String.valueOf(data.get(FirebaseID.commu_comment_comment));
+                                                                        firestore.collection(FirebaseID.Community).document("what_eat")
+                                                                                .collection("sub_Community")
+                                                                                .document(title)
+                                                                                .collection(FirebaseID.Community_Comment)
+                                                                                .document(commentComment)
+                                                                                .collection(FirebaseID.Community_Comment_Comment)
+                                                                                .get()
+                                                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            if (task.getResult() != null) {
+                                                                                                for (DocumentSnapshot snapshot1 : task.getResult()) {
+                                                                                                    if (snapshot1.exists()) {
+                                                                                                        Map<String,Object> newData=snapshot1.getData();
+                                                                                                        String CommentCommentDate=String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        HashSet<PrevNotificationInfo> set=new HashSet<PrevNotificationInfo>(prevNotificationInfos);
+                                                                                                        ArrayList<PrevNotificationInfo> newArrays=new ArrayList<>(set);
+                                                                                                        SimpleDateFormat formatter= null;
+                                                                                                        Date date=null;
+                                                                                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                                                            try {
+                                                                                                                date = formatter.parse(CommentCommentDate);
+                                                                                                            } catch (ParseException e) {
+                                                                                                                e.printStackTrace();
+                                                                                                            }
+                                                                                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                            String responseText = "내 글에 대댓글이 달렸어요";
+                                                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                                                    responseText, res);
+                                                                                                            newArrays.add(prevNotificationInfo);
+                                                                                                            alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                });//대댓글의 정보찾기
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                });//댓글에 댓글==대댓글
                                     }
                                 }
                             }
