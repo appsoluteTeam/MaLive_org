@@ -39,6 +39,9 @@ public class AlarmPrevNotificationListAdapter extends RecyclerView.Adapter<Alarm
     public void setItem(ArrayList<PrevNotificationInfo> arrayList){
         this.prevInfoArrayList=arrayList;
     }
+    public void addItem(PrevNotificationInfo prevNotificationInfo){
+        prevInfoArrayList.add(prevNotificationInfo);
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PrevNotificationInfo info=prevInfoArrayList.get(position);
