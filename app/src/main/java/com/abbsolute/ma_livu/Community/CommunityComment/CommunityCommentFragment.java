@@ -79,6 +79,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     private String writer;
     private String content;
     private String posts_date;
+    private String commentLikeCount;
 
     @Nullable
     @Override

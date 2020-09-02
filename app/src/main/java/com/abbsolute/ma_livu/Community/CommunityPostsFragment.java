@@ -215,6 +215,7 @@ public class CommunityPostsFragment extends Fragment {
                 bundle.putString("Title", title);
                 bundle.putString("Content", content);
                 bundle.putString("Date", date);
+                bundle.putString("Writer", writer);
 
                 transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityCommentFragment communityCommentFragment = new CommunityCommentFragment();
