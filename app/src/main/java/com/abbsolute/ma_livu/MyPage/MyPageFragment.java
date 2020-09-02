@@ -55,24 +55,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         this.email = email;
         Log.d("email",email);
 
-        /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
-        //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨,,,,,,왜그래...
-
-    }
-
-    /*HomeActivity에 데이터 보내기 위해 필요한 코드*/
-    public void onAttach(Context context){
-        super.onAttach(context);
-        if(context instanceof MyPageDataListener){
-            dataListener = (MyPageDataListener) context;
-        }else{
-            throw new RuntimeException(context.toString() + "must implement DataListener");
-        }
-    }
-
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         /*user firestore에서 닉네임 정보 가져오기 */
         firestore.collection(FirebaseID.user).document(email)
                 .get()
@@ -89,6 +71,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                                 Log.d("MyPageFragment", "user nickname Get 완료");
 
                             } else {
+                                str_nickname = "";
                                 Log.d("MyPageFragment", "No such document");
                             }
                         } else {
@@ -117,6 +100,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                                 Log.d("MyPageFragment", "todo 가져오기 완료");
 
                             } else {
+                                clean_complete = 0;
+                                wash_complete = 0;
+                                trash_complete = 0;
+                                todo_complete = 0;
                                 Log.d("MyPageFragment", "No such document");
                             }
                         } else {
@@ -124,6 +111,24 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                         }
                     }
                 });
+        /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
+        //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨,,,,,,왜그래...
+
+    }
+
+    /*HomeActivity에 데이터 보내기 위해 필요한 코드*/
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(context instanceof MyPageDataListener){
+            dataListener = (MyPageDataListener) context;
+        }else{
+            throw new RuntimeException(context.toString() + "must implement DataListener");
+        }
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

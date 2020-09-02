@@ -69,7 +69,7 @@ public class roomFragment extends Fragment {
 
         titleList = new ConstraintLayout[]{roomTitle1,roomTitle2,roomTitle3,roomTitle4,roomTitle5,roomTitle6,roomTitle7};
 
-        roomTitleList = new String[]{"금","은","동","미니멀리스트","살림부자","아직X","맥시멈리스트"};
+        roomTitleList = new String[]{"금","은","동","미니멀리스트","살림뉴비","살림부자","맥시멈리스트"};
 
         TextView[] roomTitleIdList = new TextView[]{roomTitle1.findViewById(R.id.name),roomTitle2.findViewById(R.id.name),roomTitle3.findViewById(R.id.name),roomTitle4.findViewById(R.id.name),
                 roomTitle5.findViewById(R.id.name),roomTitle6.findViewById(R.id.name),roomTitle7.findViewById(R.id.name)};
