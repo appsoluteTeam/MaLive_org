@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AlarmPrevNotificationListAdapter extends RecyclerView.Adapter<AlarmPrevNotificationListAdapter.ViewHolder> {
-    ArrayList<PrevNotificationInfo> infoArrayList=new ArrayList<>();
+    ArrayList<PrevNotificationInfo> prevInfoArrayList=new ArrayList<>();
     public static class ViewHolder extends RecyclerView.ViewHolder{
         protected CircleImageView user;
         protected TextView prevMsg;
@@ -36,10 +36,15 @@ public class AlarmPrevNotificationListAdapter extends RecyclerView.Adapter<Alarm
         View itemView = inflater.inflate(R.layout.prev_notification_list, parent, false);
         return new ViewHolder(itemView);
     }
-
+    public void setItem(ArrayList<PrevNotificationInfo> arrayList){
+        this.prevInfoArrayList=arrayList;
+    }
+    public void addItem(PrevNotificationInfo prevNotificationInfo){
+        prevInfoArrayList.add(prevNotificationInfo);
+    }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        PrevNotificationInfo info=infoArrayList.get(position);
+        PrevNotificationInfo info=prevInfoArrayList.get(position);
         holder.user.setBackgroundResource(info.getFriendImage());
         holder.prevMsg.setText(info.getNotifiedText());
         holder.prevTime.setText(info.getPrevNotificationTime());
@@ -47,7 +52,7 @@ public class AlarmPrevNotificationListAdapter extends RecyclerView.Adapter<Alarm
 
     @Override
     public int getItemCount() {
-        return infoArrayList.size();
+        return prevInfoArrayList.size();
     }
 
 

@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,16 @@ import java.util.ArrayList;
 
 public class ToDoWriteMainFragment extends Fragment implements OnBackPressedListener {
     OnBackPressedListener listener;
-
+    private int count;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_write_main,container,false);
+        // 게시글 Count 받아오기
+        if(getArguments() != null){
+            count = getArguments().getInt("ToDoCount");
+            Log.d("받아오기1",count+"");
+        }
         SharedPreferences pf = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
         ViewPager pager = view.findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
@@ -63,9 +69,9 @@ public class ToDoWriteMainFragment extends Fragment implements OnBackPressedList
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return ToDoWriteFragment.newInstance();
+                    return ToDoWriteFragment.newInstance(count);
                 case 1:
-                    return ToDoFixWriteFragment.newInstance();
+                    return ToDoFixWriteFragment.newInstance(count);
                 default:
                     return null;
             }

@@ -1,10 +1,10 @@
 package com.abbsolute.ma_livu.Alarm;
 
-public class AlarmRequestInfo {
+public class AlarmFriendRequestInfo {
     int userImage;
     String requestMessage;
     String prevTime;
-    AlarmRequestInfo(int userImage,String requestMessage,String prevTime){
+    AlarmFriendRequestInfo(int userImage, String requestMessage, String prevTime){
         this.userImage=userImage;
         this.requestMessage=requestMessage;
         this.prevTime=prevTime;

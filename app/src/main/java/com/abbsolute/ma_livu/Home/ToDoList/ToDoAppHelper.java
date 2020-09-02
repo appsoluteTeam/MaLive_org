@@ -127,7 +127,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 String dates=cursor.getString(2);
                 String dDay=cursor.getString(3);
                 int colors=cursor.getInt(4);
-                toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay,colors));
+               // toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay,colors));
             }
             cursor.close();
         }
@@ -145,7 +145,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 cursor.moveToNext();
                 String todo=cursor.getString(0);
                 String period=cursor.getString(1);
-                fixInfos.add(new ToDoFixInfo(todo,period));
+               // fixInfos.add(new ToDoFixInfo(todo,period));
             }
             cursor.close();
         }
@@ -167,7 +167,7 @@ public class ToDoAppHelper {//db 쿼리문 다루는 클래스 delete, select, u
                 String dates=cursor.getString(2);
                 String dDay=cursor.getString(3);
                 int colors=cursor.getInt(4);
-                toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay,colors));
+               // toDoInfos.add(new ToDoInfo(content,detailContent,dates,dDay,colors));
             }
             cursor.close();
         }

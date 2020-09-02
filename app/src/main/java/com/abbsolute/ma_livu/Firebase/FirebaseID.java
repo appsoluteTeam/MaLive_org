@@ -91,4 +91,7 @@ public class FirebaseID {
     public static String trash_complete = "쓰레기complete";
     public static String todo_complete = "투두complete";
 
+    //AlarmFragment 파이어스토어
+    public static String alarm_fragment="AlarmFragment";
+
 }
