@@ -4,14 +4,39 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "com.abbsolute.ma_livu"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+    }
+    packagingOptions {
+        doNotStrip '*/armeabi-v7a/*.so'
+    }
+    aaptOptions {
+        noCompress = ['.unity3d', '.ress', '.resource', '.obb']
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+    signingConfigs {
+        release {
+            storeFile file('C:/appProject/unityProject/MaliveUnity2/key/user.keystore')
+            storePassword 'malive123'
+            keyAlias 'malive_key'
+            keyPassword 'malive123'
+        }
+    }
+    lintOptions {
+        abortOnError false
     }
     buildTypes {
         release {
@@ -61,4 +86,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4' //파이어스토어 데이터베이스
     implementation 'de.hdodenhof:circleimageview:3.0.0' //동그란 이미지 위젯 추가
     implementation 'com.google.firebase:firebase-messaging:20.2.0' //푸쉬 메시지 보내기
+
+    implementation project(':unityLibrary')     // 유니티 모듈
+    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])  // 유니티 라이브러리
 }

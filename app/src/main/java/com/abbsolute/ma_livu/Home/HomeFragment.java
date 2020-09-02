@@ -2,12 +2,14 @@ package com.abbsolute.ma_livu.Home;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.unity3d.player.UnityPlayer;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -49,6 +52,10 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
+    // 유니티
+    protected UnityPlayer mUnityPlayer;
+    private FrameLayout fl_forUnity;
+
     public HomeFragment(){};
     public HomeFragment(String email){
         this.email = email;
@@ -58,6 +65,8 @@ public class HomeFragment extends Fragment {
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mUnityPlayer = new UnityPlayer(getActivity());
+
         view = inflater.inflate(R.layout.fragment_home,container,false);
 
         attendance_check();
@@ -80,6 +89,13 @@ public class HomeFragment extends Fragment {
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });
+
+        // 여기서부터 유니티
+        this.fl_forUnity = view.findViewById(R.id.fl_forUnity);
+        this.fl_forUnity.addView(mUnityPlayer.getView(),
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        mUnityPlayer.requestFocus();
+        mUnityPlayer.windowFocusChanged(true);//First fix Line
 
         return view;
     }
@@ -147,5 +163,26 @@ public class HomeFragment extends Fragment {
         //commit해야지 sharedPreference에 저장 완료
         editor.putString(emailBeforeCalendar,currentCalendar);
         editor.commit();
+    }
+
+    // 유니티 함수
+    @Override
+    public void onPause() {
+        super.onPause();
+        mUnityPlayer.pause();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mUnityPlayer.resume();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mUnityPlayer.configurationChanged(newConfig);
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }
