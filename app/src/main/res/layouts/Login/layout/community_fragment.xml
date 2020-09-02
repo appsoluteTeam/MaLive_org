@@ -104,7 +104,7 @@
             android:text="어떻게 하지?" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/btn_commu_sort"
             android:layout_width="25dp"
             android:layout_height="28dp"
             android:layout_gravity="center"
@@ -114,34 +114,89 @@
             android:stateListAnimator="@null" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/commu_navigation">
+        android:layout_height="match_parent">
 
-
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_community"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <View
+            android:id="@+id/view_darker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#418A8A8A" />
+
+        <LinearLayout
+            android:id="@+id/layout_commu_sort"
+            android:layout_width="150dp"
+            android:layout_height="170dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background_white"
+            android:orientation="vertical">
+
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/linearLayout2"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background_mint"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_community"
+                <TextView
+                    android:id="@+id/textView11"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:text="정렬 기준"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
-        </ScrollView>
 
-    </LinearLayout>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <RadioButton
+                    android:id="@+id/commu_sort_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:buttonTint="#90DCEE"
+                    android:checked="true"
+                    android:text="최신순" />
+
+                <RadioButton
+                    android:id="@+id/commu_sort_like"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:buttonTint="#90DCEE"
+                    android:text="추천순" />
+
+                <RadioButton
+                    android:id="@+id/commu_sort_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:buttonTint="#90DCEE"
+                    android:text="스크랩순" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>
