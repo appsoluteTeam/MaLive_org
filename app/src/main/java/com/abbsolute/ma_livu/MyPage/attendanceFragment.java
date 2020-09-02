@@ -57,7 +57,7 @@ public class attendanceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
         View v =  inflater.inflate(R.layout.attendance_title_fragment,container,false);
-        islocked = new boolean[]{true,true,false};
+        islocked = new boolean[]{TitleFragment.attendanceList[0],TitleFragment.attendanceList[1],TitleFragment.attendanceList[2]};
 
         atTitle1 = v.findViewById(R.id.attendanceTitle1);
         atTitle2 = v.findViewById(R.id.attendanceTitle2);

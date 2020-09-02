@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
+import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.payFragment;
@@ -31,6 +32,8 @@ public class Login2Activity extends AppCompatActivity {
     private EditText pass_login;
     private Button btn_findpwd;
     private FirebaseAuth auth; //파이어베이스 인증 객체
+
+    private HomeFragment homeFragment;
 
     //MyPage title fragment
     private TitleFragment titleFragment;
@@ -73,6 +76,7 @@ public class Login2Activity extends AppCompatActivity {
                                     myPageFragment = new MyPageFragment(email);
                                     payFragment = new payFragment(email);
                                     informationSetFragment = new informationSetFragment(email);
+                                    homeFragment = new HomeFragment(email);
 
                                     commu_writeFragment =new Commu_WriteFragment(email);
 
@@ -83,7 +87,7 @@ public class Login2Activity extends AppCompatActivity {
                                     editor.commit();
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(Login2Activity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
+                                     Toast.makeText(Login2Activity.this, "로그인 오류", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

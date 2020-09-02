@@ -1,8 +1,11 @@
 package com.abbsolute.ma_livu.BottomNavigation;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -17,6 +20,7 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
@@ -27,6 +31,7 @@ import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
+import com.abbsolute.ma_livu.Login.Login2Activity;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
@@ -36,7 +41,13 @@ import com.abbsolute.ma_livu.MyPage.activeFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
@@ -59,6 +70,11 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
     //fragment저장할 stack
     public static Stack<Fragment> fragmentStack;
+
+    //출석체크 관련 변수
+    public static final long milli24hour = 86400000; //24시간 초기준 상수
+    private long currentMills;
+    private long beforeMills;
 
 
     /* myPage관련 변수 */
@@ -83,6 +99,9 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         setContentView(R.layout.activity_home);
 
         fragmentStack = new Stack<>();
+
+        //출석체크 메소드
+        //attendance_check();
 
         //기본 fragment
         homeFragment = new HomeFragment();
@@ -222,6 +241,31 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
         }
     }
+
+    //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나
+    public void attendance_check(){
+
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        currentMills = System.currentTimeMillis();  //현재시간
+        beforeMills = sharedPreferences.getLong("beforeMills",0);
+
+        Log.d("currentMills",String.valueOf(currentMills));
+        Log.d("beforeMills",String.valueOf(beforeMills));
+
+        if(currentMills - beforeMills >= milli24hour) {   //하루이상 지남
+            //todo:출첵 팝업창 띄어주고 파이어스토어 저장
+            Toast.makeText(HomeActivity.this, "출석체크 완료!", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(HomeActivity.this,"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
+        }
+
+        //sharedPreference에 마지막 접속시간 저장
+        editor.putLong("beforeMills",currentMills);
+        editor.commit();
+    }
+
 
     /* 마이페이지 관련 */
 

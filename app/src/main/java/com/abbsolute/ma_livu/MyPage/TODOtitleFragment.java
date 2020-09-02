@@ -79,10 +79,10 @@ public class TODOtitleFragment extends Fragment {
         cleanTitleList = new String[]{"인간돌돌이", "인간빗자루", "인간청소기", "50회는아직안정함"};
         washTitleList = new String[]{"다듬이", "빨래판", "드럼세탁기", "스타일러"};
         trashTitleList = new String[]{"5L","10L","50L","100L"};
-        todoTitleList = new String[]{"todo1","todo2","todo3"};
+        todoTitleList = new String[]{"초보계획러","중급계획러","프로계획러"};
 
         totalTitleList = new String[]{"인간돌돌이", "인간빗자루", "인간청소기", "50회는아직안정함","다듬이", "빨래판", "드럼세탁기", "스타일러",
-               "5L","10L","50L","100L","todo1","todo2","todo3"};
+               "5L","10L","50L","100L","초보계획러","중급계획러","프로계획러"};
 
 
         clean = new Boolean[4];
