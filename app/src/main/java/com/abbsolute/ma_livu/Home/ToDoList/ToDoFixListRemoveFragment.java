@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ import java.util.Map;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
 //fix_remove_list
-public class ToDoFixListRemoveFragment extends Fragment {
+public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressedListener{
     RecyclerView toDoRemovingFixListView;//삭제할 고정리스트
     RecyclerView categoryRecyclerview;
     ToDoCategoryAdapter categoryAdapter;
@@ -53,11 +55,15 @@ public class ToDoFixListRemoveFragment extends Fragment {
     final String[] dates={"1","2","3","4","5","6",
             "7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23",
             "24","25","26","27","28","29","30"};
+    private int count=0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.fragment_todo_fix_remove,container,false);
-
+        if(getArguments()!=null){
+            count=getArguments().getInt("TotalRemoveCount");
+            Log.d("받아오기5!!!~~",count+"");
+        }
         ///카테고리
         categoryRecyclerview=view.findViewById(R.id.todo_list_category3);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
@@ -80,32 +86,28 @@ public class ToDoFixListRemoveFragment extends Fragment {
         toDoFixRemoveListAdapter.getFixContext(getContext());
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        final DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                    DocumentSnapshot snapshot=task.getResult();
-                    if(snapshot.exists()){
-                        toDoFixInfos.clear();
-                        String cnt= (String) snapshot.getData().get("Count");
-                        int siz=Integer.parseInt(cnt);
-                        for(int i=0;i<=siz;i++){
-                            String period=(String)snapshot.getData().get("period"+i);
-                            String todo=(String)snapshot.getData().get("todo"+i);
-                            ToDoFixInfo toDoFixInfo=new ToDoFixInfo(period,todo);
-                            toDoFixInfos.add(toDoFixInfo);
+        firestore.collection(FirebaseID.ToDoLists).document(email).collection("FixToDo")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult()!=null){
+                                toDoFixInfos.clear();
+                                for(DocumentSnapshot snapshot: task.getResult()){
+                                    String period=String.valueOf(snapshot.get("period"));
+                                    String todo=String.valueOf(snapshot.get("todo"));
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
+                                    toDoFixInfos.add(toDoFixInfo);
+                                }
+                                toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
+                                toDoFixRemoveListAdapter.notifyDataSetChanged();
+                                toDoRemovingFixListView.setAdapter(toDoFixRemoveListAdapter);
+                            }
                         }
-                        toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
-                        toDoFixRemoveListAdapter.notifyDataSetChanged();
-                        toDoRemovingFixListView.setAdapter(toDoFixRemoveListAdapter);
-
                     }
-                }
-            }
-        });
+                });
+
         toDoFixRemoveListAdapter.setFixItem(toDoFixInfos);
         toDoRemovingFixListView.setAdapter(toDoFixRemoveListAdapter);
         completeBtn=view.findViewById(R.id.complete);
@@ -159,5 +161,16 @@ public class ToDoFixListRemoveFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setCurrentScene(this);//writeMainFragment로
     }
 }

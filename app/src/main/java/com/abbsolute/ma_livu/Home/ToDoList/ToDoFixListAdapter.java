@@ -48,6 +48,7 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
                 public void onClick(View v) {
                     if(flag==false)
                     {
+                        Toast.makeText(context, "수정할일을 불러옴!!", Toast.LENGTH_SHORT).show();
                         SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pref.edit();
                         String upDateText=fixToDoTextView.getText().toString();

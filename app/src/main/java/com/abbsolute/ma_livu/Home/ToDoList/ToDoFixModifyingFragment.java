@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +31,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +46,8 @@ import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInf
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.updateData;
 import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.updateFixData;
 
-public class ToDoFixModifyingFragment extends Fragment {
+public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedListener,refreshInterface{
+    int count=0;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     ToDoCategoryAdapter categoryAdapter;
@@ -62,10 +68,12 @@ public class ToDoFixModifyingFragment extends Fragment {
             "24","25","26","27","28","29","30"};
     // newInstance constructor for creating fragment with arguments
     TextView removing;
+    private FragmentTransaction fragmentTransaction;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_fix_modify_fragment,container,false);
+        //count받아오기
         //todo : 페이지 2 카테고리 리스트 어뎁터 생성
         categoryRecyclerview=view.findViewById(R.id.todo_fix_modified_list_category);
         fixTodoRecyclerview=view.findViewById(R.id.fix_modified_list);
@@ -137,11 +145,11 @@ public class ToDoFixModifyingFragment extends Fragment {
                 if(!res.equals("")&&!resDetailTodo.equals(""))
                 {
                     fixUpdateData();
-                    fixPeriodAddData();
+                    fixPeriodUpdateData();
                 }else{
                     Toast.makeText(getContext(),"데이터를 입력하세요",Toast.LENGTH_SHORT).show();
                 }
-                ((HomeActivity)getActivity()).setFragment(100);//ToDoFragment로 전환
+                ((HomeActivity)getActivity()).setFragment(100);//ToDoWriteMainFragment로 전환
             }
         });
         // todo: 고정리스트 어뎁터 생성 및 적용
@@ -151,37 +159,28 @@ public class ToDoFixModifyingFragment extends Fragment {
         toDoFixListAdapter.getFixContext(getContext());
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        final DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                    if(task.getResult()!=null){
-                        DocumentSnapshot snapshot=task.getResult();
-                        if(snapshot.exists()){
-                            if(snapshot.getData()!=null){
+        firestore.collection(FirebaseID.ToDoLists).document(email).collection("FixToDo")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult()!=null){
                                 toDoFixInfos.clear();
-                                HashMap<String,Object> info= (HashMap<String, Object>) snapshot.getData();
-                                String cnt= (String) info.get("Count");
-                                int siz=Integer.parseInt(cnt);
-                                for(int i=0;i<=siz;i++){
-                                    String period=(String)snapshot.getData().get("period"+i);
-                                    String todo=(String)snapshot.getData().get("todo"+i);
-                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(period,todo);
+                                for(DocumentSnapshot snapshot:task.getResult()){
+                                    Map<String,Object> data=snapshot.getData();
+                                    String todo=String.valueOf(data.get("todo"));
+                                    String period=String.valueOf(data.get("period"));
+                                    ToDoFixInfo toDoFixInfo=new ToDoFixInfo(todo,period);
                                     toDoFixInfos.add(toDoFixInfo);
                                 }
                                 toDoFixListAdapter.setFixItem(toDoFixInfos);
                                 toDoFixListAdapter.notifyDataSetChanged();
                                 fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
                             }
-
                         }
                     }
-                }
-            }
-        });
+                });
         toDoFixListAdapter.setFixItem(toDoFixInfos);
         fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
         ///fixToDoList 삭제 변수 정의
@@ -190,7 +189,7 @@ public class ToDoFixModifyingFragment extends Fragment {
         return view;
     }
     // todo: 고정 리스트 데이터 추가 함수
-    private void fixPeriodAddData(){
+    private void fixPeriodUpdateData(){
         String fixDate="";
         String detailData=fixWrite.getText().toString();
         if(periodPos==0||periodPos==1){// 매주, 격주 요일 ex) 매주 월요일
@@ -202,37 +201,45 @@ public class ToDoFixModifyingFragment extends Fragment {
         final ToDoFixInfo toDoFixInfo=new ToDoFixInfo(detailData,fixDate);
         // toDoFixInfos.add(toDoFixInfo);
         SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        String upDateContent=pref.getString("upDateToDo","");
-        updateFixData("fixToDoInfo",toDoFixInfo,upDateContent);//고정리스트 데이터 db 삽입
+        final String upDateContent=pref.getString("upDateToDo","");
+        //updateFixData("fixToDoInfo",toDoFixInfo,upDateContent);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                    DocumentSnapshot snapshot=task.getResult();
-                    String tmp="";
-                    int tmpNumber=0;
-                    try {
-                        tmp= (String) snapshot.getData().get("Count");
-                        tmpNumber=Integer.parseInt(tmp);
-                    }catch (NullPointerException e){
-                        e.printStackTrace();
+        final String finalFixDate = fixDate;
+        firestore.collection(FirebaseID.ToDoLists).document(email)
+                .collection("FixToDo")
+                .whereEqualTo("todo",upDateContent)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            Log.d("~~~","성공");
+                            for(QueryDocumentSnapshot snapshot:task.getResult()){
+                                Map<String,Object> data=snapshot.getData();
+                                String detailData=fixWrite.getText().toString();
+                                data.put("todo",detailData);
+                                data.put("period", finalFixDate);
+                                firestore.collection(FirebaseID.ToDoLists).document(email)
+                                        .collection("FixToDo")
+                                        .document(upDateContent)
+                                        .delete();
+                                firestore.collection(FirebaseID.ToDoLists).document(email)
+                                        .collection("FixToDo")
+                                        .document(detailData)
+                                        .set(data, SetOptions.merge());
+                            }
+                        }
+
                     }
-                    String newCount=Integer.toString(tmpNumber);
-                    data.put("period"+newCount,toDoFixInfo.fixPeriod);
-                    data.put("todo"+newCount,toDoFixInfo.fixToDo);
-                    data.put("Count",newCount);
-                    firestore.collection(FirebaseID.ToDoLists).document(email+" FixToDo").update(data);
-                }
-            }
-        });
+                });
+
     }
     //todo: 고정 할 일 데이터 추가 함수
     private void fixUpdateData() {
+        SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        final String upDateContent=pref.getString("upDateToDo","");
+        //
         SharedPreferences pf=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
         String data=pf.getString("toDo","");
         String detailData=fixWrite.getText().toString();
@@ -252,31 +259,62 @@ public class ToDoFixModifyingFragment extends Fragment {
         //파이어베이스에 FixTodo 수정 데이터 올리기
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
         final String email=sharedPreferences.getString("email_id","");
-        DocumentReference documentReference=firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> data = new HashMap<>();
-                    //ex) Content1, Content2 이런식 으로 저장하도록 만듦
-                    DocumentSnapshot snapshot=task.getResult();
-                    String tmp="";
-                    int tmpNumber=0;
-                    try {
-                        tmp= (String) snapshot.getData().get("Count");
-                        tmpNumber=Integer.parseInt(tmp);
-                    }catch (NullPointerException e){
-                        e.printStackTrace();
+        firestore.collection(FirebaseID.ToDoLists).document(email)
+                .collection("ToDo")
+                .whereEqualTo("detailContent",upDateContent)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            Log.d("!!!","성공");
+                            String cnt="";
+                            for(DocumentSnapshot snapshot:task.getResult()){
+                                Map<String,Object> d=snapshot.getData();
+                                cnt=String.valueOf(d.get("fixNum"));
+                            }
+                            for(QueryDocumentSnapshot snapshot:task.getResult()){
+                                Map<String,Object> data=snapshot.getData();
+                                data.put("content",toDoInfo.content);
+                                data.put("detailContent",toDoInfo.detailContent);
+                                data.put("date",toDoInfo.dates);
+                                data.put("dDay",toDoInfo.dDay);
+                                data.put("num",cnt);
+                                firestore.collection(FirebaseID.ToDoLists).document(email)
+                                        .collection("FixToDo")
+                                        .document(upDateContent)
+                                        .delete();
+                                firestore.collection(FirebaseID.ToDoLists).document(email)
+                                        .collection("FixToDo")
+                                        .document(toDoInfo.detailContent)
+                                        .set(data, SetOptions.merge());
+
+                            }
+                        }
+
                     }
-                    String newCount=Integer.toString(tmpNumber);
-                    data.put("contents"+newCount,toDoInfo.content);
-                    data.put("detailContents"+newCount,toDoInfo.detailContent);
-                    data.put("dates"+newCount,toDoInfo.dates);
-                    data.put("dDates"+newCount, toDoInfo.dDay);
-                    data.put("Count",newCount);
-                    firestore.collection(FirebaseID.ToDoLists).document(email+" ToDo").update(data);
-                }
-            }
-        });
+                });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setCurrentScene(this);//writeMainFragment로
+    }
+    public void setCount(int counts){
+        count=counts;
+    }
+
+    @Override
+    public void refresh() {
+        // 리사이클러뷰 새로고침 메소드
+        fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.detach(this).attach(this).commit();
     }
 }

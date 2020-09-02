@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
+        android:layout_marginTop="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -23,13 +24,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:layout_weight="1"
+            android:padding="10sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="친구 요청"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:textColor="#2E2E2E">
         </TextView>
         <TextView
+            android:layout_weight="1"
             android:layout_marginLeft="8sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,8 +42,9 @@
             android:textColor="#2E9AFE">
         </TextView>
         <TextView
+            android:layout_weight="1"
             android:textSize="15sp"
-            android:layout_marginLeft="205sp"
+            android:layout_marginLeft="150sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/friend_all_look"
@@ -70,15 +75,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:padding="10sp"
+            android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이전 알림"
-            android:textSize="18sp"
-            android:textColor="#2E2E2E">
+            android:textSize="24sp"
+            android:textColor="#151515">
         </TextView>
         <TextView
+            android:layout_weight="1"
             android:textSize="15sp"
-            android:layout_marginLeft="260sp"
+            android:layout_marginLeft="205sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/notification_all_look"
@@ -94,6 +102,7 @@
         android:background="#BDBDBD">
     </View>
     <androidx.recyclerview.widget.RecyclerView
+        android:padding="10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/prev_notification_list">

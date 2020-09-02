@@ -15,33 +15,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/request_msg"
+                    android:text="네버랜드주인장님이 친구요청을 보냈습니다.">
+                </TextView>
+                <ImageView
+                    android:layout_marginLeft="80sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/more_menu"
+                    android:background="@drawable/more">
+                </ImageView>
+            </LinearLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/request_msg"
-                android:text="네버랜드주인장님이 친구요청을 보냈습니다.">
+                android:id="@+id/times">
             </TextView>
-            <ImageView
-                android:layout_marginLeft="80sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/more_menu"
-                android:background="@drawable/more">
-            </ImageView>
         </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/times">
-    </TextView>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35sp"
             android:id="@+id/accept"
             android:text="수락"
             android:layout_marginLeft="90dp"
@@ -50,7 +55,7 @@
         </Button>
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35sp"
             android:id="@+id/recline"
             android:text="거절"
             android:layout_marginLeft="10dp"
