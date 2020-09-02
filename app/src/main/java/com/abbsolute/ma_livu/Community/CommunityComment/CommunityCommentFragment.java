@@ -132,7 +132,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 
                     // 게시글 작성 시간 받아오기
                     long now = System.currentTimeMillis();
-                    dateform = new SimpleDateFormat("yyyy-MM-dd");
+                    dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     date = Calendar.getInstance();
 
                     like_count = 0;
