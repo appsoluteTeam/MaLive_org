@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 
 android {
@@ -88,5 +89,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.2.0' //푸쉬 메시지 보내기
 
     implementation project(':unityLibrary')     // 유니티 모듈
-    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])  // 유니티 라이브러리
+    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // 유니티 라이브러리
+
+    implementation 'com.thebluealliance:spectrum:0.7.1'     //color picker
+    implementation 'de.hdodenhof:circleimageview:3.1.0'     //circle image view
+    implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4' //carousel layout
+}
+repositories {
+    mavenCentral()
 }
