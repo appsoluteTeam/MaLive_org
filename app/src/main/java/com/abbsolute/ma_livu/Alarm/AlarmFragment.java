@@ -94,11 +94,11 @@ public class AlarmFragment extends Fragment {
                                                                     AlarmFriendRequestInfo friendRequestInfo =
                                                                             new AlarmFriendRequestInfo(R.drawable.user1,
                                                                                     requestMessage, "4시간전");
-                                                                    alarmFriendRequestInfoArrayList.add(friendRequestInfo);
-                                                                    alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
-                                                                    alarmFriendRequestListAdapter.notifyDataSetChanged();
-                                                                    friendRequestListView.setHasFixedSize(true);
-                                                                    friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
+                                                                    //alarmFriendRequestInfoArrayList.add(friendRequestInfo);
+                                                                  //  alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
+                                                                  //  alarmFriendRequestListAdapter.notifyDataSetChanged();
+                                                                   // friendRequestListView.setHasFixedSize(true);
+                                                                   // friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
                                                                 }
                                                             }
                                                         }
@@ -198,6 +198,8 @@ public class AlarmFragment extends Fragment {
                                     Map<String, Object> data = snapshot.getData();
                                     final String title = String.valueOf(data.get("title"));
                                     String myNickName = String.valueOf(data.get("nickname"));
+                                    Log.d("nickName",myNickName);
+                                    Log.d("my",nickName);
                                     if (nickName.equals(myNickName)) {
                                         Log.d("title!!!", title);
                                         firestore.collection(FirebaseID.Community).document("what_eat")
@@ -219,7 +221,7 @@ public class AlarmFragment extends Fragment {
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
                                                                             try {
                                                                                 date = formatter.parse(commentDate);
                                                                             } catch (ParseException e) {
@@ -280,7 +282,7 @@ public class AlarmFragment extends Fragment {
                                                                                                         SimpleDateFormat formatter = null;
                                                                                                         Date date = null;
                                                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
                                                                                                             try {
                                                                                                                 date = formatter.parse(CommentCommentDate);
                                                                                                             } catch (ParseException e) {
@@ -349,7 +351,7 @@ public class AlarmFragment extends Fragment {
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
                                                                             try {
                                                                                 date = formatter.parse(commentDate);
                                                                             } catch (ParseException e) {
@@ -410,7 +412,7 @@ public class AlarmFragment extends Fragment {
                                                                                                         SimpleDateFormat formatter = null;
                                                                                                         Date date = null;
                                                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
                                                                                                             try {
                                                                                                                 date = formatter.parse(CommentCommentDate);
                                                                                                             } catch (ParseException e) {
@@ -479,7 +481,7 @@ public class AlarmFragment extends Fragment {
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
                                                                             try {
                                                                                 date = formatter.parse(commentDate);
                                                                             } catch (ParseException e) {
