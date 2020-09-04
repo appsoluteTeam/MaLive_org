@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class ItemBottom extends BottomSheetDialogFragment implements AccessoryAdapter.ItemClickListener {

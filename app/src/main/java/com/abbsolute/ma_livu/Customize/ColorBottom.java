@@ -15,6 +15,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.thebluealliance.spectrum.SpectrumPalette;
 

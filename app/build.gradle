@@ -94,7 +94,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // 유니티 라이브러리
 
     implementation 'com.thebluealliance:spectrum:0.7.1'     //color picker
-    implementation 'de.hdodenhof:circleimageview:3.1.0'     //circle image view
+    implementation 'de.hdodenhof:circleimageview:3.1.0'     //customize_menu_btt image view
     implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4' //carousel layout
 }
 repositories {
