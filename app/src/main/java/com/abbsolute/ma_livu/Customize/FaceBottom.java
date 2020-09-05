@@ -29,7 +29,7 @@ public class FaceBottom extends BottomSheetDialogFragment {
 
     private FaceBottomListener mListener;
 
-    UnityItem items[] = {
+    UnityItem[] items = {
             new UnityItem(0,"모자",UnityItem.Face,0),
             new UnityItem(1,"헤드셋",UnityItem.Face,0),
             new UnityItem(3,"가방",UnityItem.Face,0),

@@ -14,7 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FaceAdapter extends RecyclerView.Adapter<FaceAdapter.FaceViewHolder> {
 
-    public FaceAdapter(UnityItem items[]) {
+    public FaceAdapter(UnityItem[] items) {
         this.items = items;
     }
 

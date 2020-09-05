@@ -13,12 +13,12 @@ import com.abbsolute.ma_livu.R;
 
 public class AccessoryAdapter extends RecyclerView.Adapter<AccessoryAdapter.ItemViewBinder> {
 
-    public AccessoryAdapter(UnityItem items[]) {
+    public AccessoryAdapter(UnityItem[] items) {
         this.items = items;
     }
 
     public ItemClickListener itemClickListener;
-    private UnityItem items[];
+    private UnityItem[] items;
     private RecyclerView parent;
 
     @NonNull
@@ -26,8 +26,8 @@ public class AccessoryAdapter extends RecyclerView.Adapter<AccessoryAdapter.Item
     public ItemViewBinder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customize_item_view, parent, false);
 
-        int width = (int) parent.getContext().getResources().getDisplayMetrics().widthPixels;
-        view.getLayoutParams().width = (int) (width / 4); /// THIS LINE WILL DIVIDE OUR VIEW INTO NUMBERS OF PARTS
+        int width = parent.getContext().getResources().getDisplayMetrics().widthPixels;
+        view.getLayoutParams().width = width / 4; /// THIS LINE WILL DIVIDE OUR VIEW INTO NUMBERS OF PARTS
         ItemViewBinder itemViewBinder = new ItemViewBinder(view);
 
         return itemViewBinder;

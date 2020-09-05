@@ -163,7 +163,7 @@ public class AlarmFragment extends Fragment {
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                             try {
                                                 parseDate = simpleDateFormat.parse(cmp);
-                                                res = prevTimeSetClass.formatTimeString(parseDate);//~전 으로 변경
+                                                res = PrevTimeSetClass.formatTimeString(parseDate);//~전 으로 변경
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
@@ -226,7 +226,7 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                            String res = PrevTimeSetClass.formatTimeString(date);
                                                                             String responseText = "내 글에 댓글이 달렸어요";
                                                                             PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                     responseText, res);
@@ -287,7 +287,7 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                            String res = PrevTimeSetClass.formatTimeString(date);
                                                                                                             String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                             PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                     responseText, res);
@@ -356,7 +356,7 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                            String res = PrevTimeSetClass.formatTimeString(date);
                                                                             String responseText = "내 글에 댓글이 달렸어요";
                                                                             PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                     responseText, res);
@@ -417,7 +417,7 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                            String res = PrevTimeSetClass.formatTimeString(date);
                                                                                                             String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                             PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                     responseText, res);
@@ -486,7 +486,7 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                            String res = PrevTimeSetClass.formatTimeString(date);
                                                                             String responseText = "내 글에 댓글이 달렸어요";
                                                                             PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                     responseText, res);
@@ -547,7 +547,7 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                            String res = PrevTimeSetClass.formatTimeString(date);
                                                                                                             String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                             PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                     responseText, res);

@@ -90,21 +90,21 @@ public class CommunityFragment extends Fragment {
         view = inflater.inflate(R.layout.community_fragment,container,false);
 
         // 카테고리 버튼 눌렸을 때 버튼리스너
-        btn_what_eat=(Button)view.findViewById(R.id.what_eat);
-        btn_what_do=(Button)view.findViewById(R.id.what_do);
-        btn_how_do=(Button)view.findViewById(R.id.how_do);
-        btn_commu_write =(ImageButton)view.findViewById(R.id.btn_commu_write);
-        btn_back = (ImageButton)view.findViewById(R.id.btn_back);
+        btn_what_eat= view.findViewById(R.id.what_eat);
+        btn_what_do= view.findViewById(R.id.what_do);
+        btn_how_do= view.findViewById(R.id.how_do);
+        btn_commu_write = view.findViewById(R.id.btn_commu_write);
+        btn_back = view.findViewById(R.id.btn_back);
 
         // 정렬 버튼 눌렸을 때 리스너
-        recycler_community = (RecyclerView)view.findViewById(R.id.recycler_community);
-        btn_commu_sort = (ImageButton)view.findViewById(R.id.btn_commu_sort);
+        recycler_community = view.findViewById(R.id.recycler_community);
+        btn_commu_sort = view.findViewById(R.id.btn_commu_sort);
         layout_commu_sort = view.findViewById(R.id.layout_commu_sort);
         view_darker = view.findViewById(R.id.view_darker);
 
         // 초기화면에서 정렬창 안보이게
-        layout_commu_sort.setVisibility(view.GONE);
-        view_darker.setVisibility(view.GONE);
+        layout_commu_sort.setVisibility(View.GONE);
+        view_darker.setVisibility(View.GONE);
 
         // 컬렉션 레퍼런스
         what_eat = firestore.collection("Community").document("what_eat").collection("sub_Community");
@@ -157,7 +157,7 @@ public class CommunityFragment extends Fragment {
         callRecycler(0);
       
         // 리사이클러뷰에 가져온 정보 넣기
-        recycler_community = (RecyclerView)view.findViewById(R.id.recycler_community);
+        recycler_community = view.findViewById(R.id.recycler_community);
         recycler_community.setHasFixedSize(true);
         adapter = new CommunityAdapter(arrayList);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -208,8 +208,8 @@ public class CommunityFragment extends Fragment {
                 btn_commu_sort.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        layout_commu_sort.setVisibility(view.VISIBLE);
-                        view_darker.setVisibility(view.VISIBLE);
+                        layout_commu_sort.setVisibility(View.VISIBLE);
+                        view_darker.setVisibility(View.VISIBLE);
                         radioSet(what_eat);
                     }
                 });
@@ -257,8 +257,8 @@ public class CommunityFragment extends Fragment {
                 btn_commu_sort.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        layout_commu_sort.setVisibility(view.VISIBLE);
-                        view_darker.setVisibility(view.VISIBLE);
+                        layout_commu_sort.setVisibility(View.VISIBLE);
+                        view_darker.setVisibility(View.VISIBLE);
                         radioSet(what_do);
                     }
                 });
@@ -268,8 +268,8 @@ public class CommunityFragment extends Fragment {
                 btn_commu_sort.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        layout_commu_sort.setVisibility(view.VISIBLE);
-                        view_darker.setVisibility(view.VISIBLE);
+                        layout_commu_sort.setVisibility(View.VISIBLE);
+                        view_darker.setVisibility(View.VISIBLE);
                         radioSet(how_do);
                     }
                 });
@@ -281,15 +281,15 @@ public class CommunityFragment extends Fragment {
     public void radioSet(final CollectionReference section){
 
         //정렬화면 보이게
-        layout_commu_sort.setVisibility(view.VISIBLE);
+        layout_commu_sort.setVisibility(View.VISIBLE);
 
         //라디오버튼
-        commu_sort_date = (RadioButton)view.findViewById(R.id.commu_sort_date);
-        commu_sort_like = (RadioButton)view.findViewById(R.id.commu_sort_like);
-        commu_sort_save = (RadioButton)view.findViewById(R.id.commu_sort_save);
+        commu_sort_date = view.findViewById(R.id.commu_sort_date);
+        commu_sort_like = view.findViewById(R.id.commu_sort_like);
+        commu_sort_save = view.findViewById(R.id.commu_sort_save);
 
         //라디오 그룹
-        radioGroup = (RadioGroup)view.findViewById(R.id.radioGroup);
+        radioGroup = view.findViewById(R.id.radioGroup);
 
         //라디오 버튼 클릭 리스너
         RadioButton.OnClickListener radioButtonClickListener = new RadioButton.OnClickListener(){ @Override
@@ -301,8 +301,8 @@ public class CommunityFragment extends Fragment {
         RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener = new RadioGroup.OnCheckedChangeListener() { @Override
         public void onCheckedChanged(RadioGroup radioGroup,int i)
         {
-            layout_commu_sort.setVisibility(view.GONE);
-            view_darker.setVisibility(view.GONE);
+            layout_commu_sort.setVisibility(View.GONE);
+            view_darker.setVisibility(View.GONE);
 
             if(i == R.id.commu_sort_date){
                 callSortRecycler(0, section);

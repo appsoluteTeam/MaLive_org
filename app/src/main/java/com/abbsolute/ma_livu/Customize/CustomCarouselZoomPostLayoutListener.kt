@@ -1,4 +1,4 @@
-package com.example.sampletest
+package com.abbsolute.ma_livu.Customize
 
 import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager

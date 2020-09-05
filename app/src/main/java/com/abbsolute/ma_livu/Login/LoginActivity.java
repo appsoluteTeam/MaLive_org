@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
 
         //이메일로 로그인 버튼을 눌렀을 때
-        btn_email_login =(Button) findViewById(R.id.btn_email_login);
+        btn_email_login = findViewById(R.id.btn_email_login);
         btn_email_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         //회원가입 버튼을 눌렀을 때
-        btn_signup =(TextView)findViewById(R.id.btn_signup);
+        btn_signup = findViewById(R.id.btn_signup);
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

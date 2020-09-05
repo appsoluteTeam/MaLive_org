@@ -32,7 +32,7 @@ public class ColorBottom extends BottomSheetDialogFragment implements SpectrumPa
         View v = inflater.inflate(R.layout.customize_color_bottom_frag, container, false);
 
         //TODO: 현재 컬러를 받아와야함
-        spectrumPalette = (SpectrumPalette) v.findViewById(R.id.palette);
+        spectrumPalette = v.findViewById(R.id.palette);
 
         Button saveBtt = v.findViewById(R.id.save_color_btt);
         Button cancelBtt = v.findViewById(R.id.cancel_color_btt);

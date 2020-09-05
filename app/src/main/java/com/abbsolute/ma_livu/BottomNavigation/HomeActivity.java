@@ -181,6 +181,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         toDoFixModifyingFragment=new ToDoFixModifyingFragment();
 
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
+
+        getSupportFragmentManager().beginTransaction().add(R.id.unity_frame,homeFragment).commit();
     }
 
     // 프래그먼트 교체가 일어나는 함수
@@ -190,22 +192,39 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (n){
             case 0:
-                fragmentTransaction.replace(R.id.main_frame,homeFragment).commit();
+                if(homeFragment.isHidden()) {
+                    fragmentTransaction.show(homeFragment).commit();
+                }
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment).commit();
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.main_frame,myPageFragment).commit();
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_frame,myPageFragment).commit();
                 break;
             case 3:
-                fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
                 break;
             case 4:
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
                 fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
                 break;
             case 5:
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
                 fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
                 fragmentTransaction.commit();
                 break;
@@ -242,9 +261,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 104:
                 toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
                 fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
-                break;
-
-
+            break;
         }
     }
 

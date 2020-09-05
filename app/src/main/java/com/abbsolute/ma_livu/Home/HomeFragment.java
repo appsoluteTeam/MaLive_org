@@ -56,9 +56,10 @@ public class HomeFragment extends Fragment {
     protected UnityPlayer mUnityPlayer;
     private FrameLayout fl_forUnity;
 
-    public HomeFragment(){};
+    public HomeFragment(){}
+
     public HomeFragment(String email){
-        this.email = email;
+        HomeFragment.email = email;
     }
 
     @Nullable
@@ -71,7 +72,7 @@ public class HomeFragment extends Fragment {
 
         attendance_check();
 
-        go_GuestBook = (Button)view.findViewById(R.id.go_GuestBook);
+        go_GuestBook = view.findViewById(R.id.go_GuestBook);
         go_GuestBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -193,9 +193,9 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                 });
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
-        recyclerView = (RecyclerView) view.findViewById(R.id.CommunityCommentList);
+        recyclerView = view.findViewById(R.id.CommunityCommentList);
         recyclerView.setHasFixedSize(true);
-        adapter = new CommunityCommentAdapter(arrayList, (CommuCommentOnItemClick) this);
+        adapter = new CommunityCommentAdapter(arrayList, this);
         layoutManager = new LinearLayoutManager(getActivity());
 
         // 리사이클러뷰 역순 출력

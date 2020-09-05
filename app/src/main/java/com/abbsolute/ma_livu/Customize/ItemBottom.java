@@ -25,7 +25,7 @@ public class ItemBottom extends BottomSheetDialogFragment implements AccessoryAd
     RecyclerView.LayoutManager layoutManager;
     AccessoryAdapter itemRecyclerAdapter;
 
-    UnityItem sample[] = {
+    UnityItem[] sample = {
             new UnityItem(0,"모자",2,0),
             new UnityItem(1,"헤드셋",2,0),
             new UnityItem(2,"가방",2,0),

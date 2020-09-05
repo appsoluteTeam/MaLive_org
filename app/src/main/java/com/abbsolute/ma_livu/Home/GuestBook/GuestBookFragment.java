@@ -85,7 +85,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
         btn_insert = view.findViewById(R.id.btn_insert);
         btn_delete = view.findViewById(R.id.btn_delete);
         btn_back = view.findViewById(R.id.btn_back);
-        btn_guestbook_write = (Button)view.findViewById(R.id.btn_guestbook_write);
+        btn_guestbook_write = view.findViewById(R.id.btn_guestbook_write);
 
         // '뒤로가기' 버튼 누를 시
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -146,9 +146,9 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
                 });
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
-        recyclerView = (RecyclerView) view.findViewById(R.id.CommentList);
+        recyclerView = view.findViewById(R.id.CommentList);
         recyclerView.setHasFixedSize(true);
-        adapter = new CommentAdapter(arrayList, (OnItemClick) this);
+        adapter = new CommentAdapter(arrayList, this);
         layoutManager = new LinearLayoutManager(getActivity());
 
         // 리사이클러뷰 역순 출력
@@ -200,7 +200,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
 //        recyclerView = (RecyclerView) view.findViewById(R.id.CommentList);
         recyclerView.setHasFixedSize(true);
-        adapter = new CommentAdapter(arrayList, (OnItemClick) this);
+        adapter = new CommentAdapter(arrayList, this);
         layoutManager = new LinearLayoutManager(getActivity());
 
         // 리사이클러뷰 역순 출력

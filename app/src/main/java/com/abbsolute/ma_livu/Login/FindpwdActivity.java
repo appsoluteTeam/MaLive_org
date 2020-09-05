@@ -27,8 +27,8 @@ public class FindpwdActivity extends AppCompatActivity {
         setContentView(R.layout.activity_findpwd);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        et_sendemail =(EditText)findViewById(R.id.et_sendemail);
-        btn_sendeamil=(Button)findViewById(R.id.btn_sendemail);
+        et_sendemail = findViewById(R.id.et_sendemail);
+        btn_sendeamil= findViewById(R.id.btn_sendemail);
         btn_sendeamil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

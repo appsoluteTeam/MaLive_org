@@ -100,7 +100,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             if (pos > 0)
                 pos--;
             String tmp = arrayList.get(pos).dDay;
-            ;
             if (tmp.equals(dDay)) {
                 holder.dDays.setVisibility(View.GONE);
             }

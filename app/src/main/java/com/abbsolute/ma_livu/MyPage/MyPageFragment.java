@@ -48,11 +48,11 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     private static String str_nickname;
     private static long clean_complete, trash_complete, todo_complete, wash_complete;
 
-    public MyPageFragment(){};
+    public MyPageFragment(){}
 
     /*login2Activity에서 데이터 받음*/
     public MyPageFragment(String email){
-        this.email = email;
+        MyPageFragment.email = email;
         Log.d("email",email);
 
         /*user firestore에서 닉네임 정보 가져오기 */

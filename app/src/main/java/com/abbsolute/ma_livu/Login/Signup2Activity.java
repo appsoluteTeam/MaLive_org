@@ -38,8 +38,8 @@ public class Signup2Activity extends AppCompatActivity {
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
 
-        et_nickname=(EditText)findViewById(R.id.et_nickname);
-        btn_next2=(Button)findViewById(R.id.btn_next2);
+        et_nickname= findViewById(R.id.et_nickname);
+        btn_next2= findViewById(R.id.btn_next2);
         btn_next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

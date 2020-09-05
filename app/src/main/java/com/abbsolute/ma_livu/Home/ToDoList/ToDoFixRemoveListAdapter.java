@@ -55,7 +55,7 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
         }
     }
     public void getFixContext(Context context){
-        this.context=context;
+        ToDoFixRemoveListAdapter.context =context;
     }
 
 

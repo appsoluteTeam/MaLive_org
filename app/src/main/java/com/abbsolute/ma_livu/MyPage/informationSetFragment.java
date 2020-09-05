@@ -50,7 +50,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
 
     public informationSetFragment(){}
     public informationSetFragment(String email){
-        this.email = email;
+        informationSetFragment.email = email;
     }
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_information_set, container, false);
@@ -74,7 +74,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
         approve_withdraw = getString(R.string.accountWithdraw);
         approve_logout = getString(R.string.logout);
 
-        information_noti.setVisibility(view.GONE);
+        information_noti.setVisibility(View.GONE);
 
         /* 각 버튼 setOnClickListener해주기 */
         btn_accountWithdraw.setOnClickListener(this);
@@ -97,14 +97,14 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#F5F5F5"));
                 notiContents.setText(notiContents_withdraw);
                 approve.setText(approve_withdraw);
-                information_noti.setVisibility(view.VISIBLE);
+                information_noti.setVisibility(View.VISIBLE);
                 approveNum = 1;//탈퇴
                 break;
             case R.id.btn_logout:
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#F5F5F5"));
                 notiContents.setText(notiContents_logout);
                 approve.setText(approve_logout);
-                information_noti.setVisibility(view.VISIBLE);
+                information_noti.setVisibility(View.VISIBLE);
                 approveNum = 2;
                 break;
             case R.id.approve:
@@ -144,7 +144,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.cancel:
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                information_noti.setVisibility(view.GONE);
+                information_noti.setVisibility(View.GONE);
                 break;
             case R.id.btn_back:
                 Fragment nextFragment = fragmentStack.pop();

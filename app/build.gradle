@@ -30,7 +30,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('C:/appProject/unityProject/MaliveUnity2/key/user.keystore')
+            storeFile file('C:\\Users\\samer\\Desktop\\test\\MaLive_org\\key\\user.keystore')
             storePassword 'malive123'
             keyAlias 'malive_key'
             keyPassword 'malive123'

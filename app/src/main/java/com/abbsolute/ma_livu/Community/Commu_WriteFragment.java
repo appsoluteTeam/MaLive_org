@@ -75,7 +75,7 @@ public class Commu_WriteFragment extends Fragment {
     public Commu_WriteFragment() {}
 
     public Commu_WriteFragment(String email) {
-        this.email = email;
+        Commu_WriteFragment.email = email;
         Log.d("email",email);
 
         /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
@@ -120,9 +120,9 @@ public class Commu_WriteFragment extends Fragment {
         et_title = view.findViewById(R.id.et_title);
         et_content = view.findViewById(R.id.et_content);
 
-        category_eat = (TextView) view.findViewById(R.id.category_eat);
-        category_do = (TextView) view.findViewById(R.id.category_do);
-        category_how = (TextView) view.findViewById(R.id.category_how);
+        category_eat = view.findViewById(R.id.category_eat);
+        category_do = view.findViewById(R.id.category_do);
+        category_how = view.findViewById(R.id.category_how);
 
 
         //카테고리 선택되었을 때 클릭리스너
@@ -163,7 +163,7 @@ public class Commu_WriteFragment extends Fragment {
         img5=view.findViewById(R.id.commu_img5);
 
         //사진 업로드드 눌렀을 때
-        btn_image = (ImageButton) view.findViewById(R.id.btn_image);
+        btn_image = view.findViewById(R.id.btn_image);
         btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,7 +215,7 @@ public class Commu_WriteFragment extends Fragment {
         });
 
         //뒤로가기 버튼 눌렀을 때
-        btn_back = (ImageButton) view.findViewById(R.id.btn_back);
+        btn_back = view.findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

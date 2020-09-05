@@ -35,7 +35,7 @@ public class Hot_CommunityFragment extends Fragment {
             }
         });
 
-        btn_commu_write=(ImageButton)view.findViewById(R.id.btn_commu_write);
+        btn_commu_write= view.findViewById(R.id.btn_commu_write);
         btn_commu_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

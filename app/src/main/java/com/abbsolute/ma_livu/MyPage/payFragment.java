@@ -58,7 +58,7 @@ public class payFragment extends Fragment {
     }
 
     public payFragment(String email) {
-        this.email = email;
+        payFragment.email = email;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class payFragment extends Fragment {
         fm = getFragmentManager();
 
         //초기화면 정렬화면 안보이게
-        layout_pay_sort.setVisibility(view.GONE);
+        layout_pay_sort.setVisibility(View.GONE);
 
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
@@ -80,7 +80,7 @@ public class payFragment extends Fragment {
                 fragmentTransaction = fm.beginTransaction();
                 switch (v.getId()) {
                     case R.id.btn_pay_sort: //정렬 버튼
-                        layout_pay_sort.setVisibility(v.VISIBLE);
+                        layout_pay_sort.setVisibility(View.VISIBLE);
                         mRecyclerView.setBackgroundColor(Color.parseColor("#F5F5F5"));
                         radioSet();
                         break;
@@ -112,8 +112,8 @@ public class payFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
 
         //역순 출력
-        ((LinearLayoutManager) layoutManager).setReverseLayout(true);
-        ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
 
         mRecyclerView.setLayoutManager(layoutManager);
     }
@@ -121,16 +121,16 @@ public class payFragment extends Fragment {
     public void radioSet(){
 
         //정렬화면 보이게
-        layout_pay_sort.setVisibility(view.VISIBLE);
+        layout_pay_sort.setVisibility(View.VISIBLE);
 
         //라디오버튼
-        pay_sort_deposit = (RadioButton)view.findViewById(R.id.pay_sort_deposit);
-        pay_sort_withdraw = (RadioButton)view.findViewById(R.id.pay_sort_withdraw);
-        pay_sort_total = (RadioButton)view.findViewById(R.id.pay_sort_total);
+        pay_sort_deposit = view.findViewById(R.id.pay_sort_deposit);
+        pay_sort_withdraw = view.findViewById(R.id.pay_sort_withdraw);
+        pay_sort_total = view.findViewById(R.id.pay_sort_total);
 
 
         //라디오 그룹
-        radioGroup = (RadioGroup)view.findViewById(R.id.radioGroup);
+        radioGroup = view.findViewById(R.id.radioGroup);
 
         //라디오 버튼 클릭 리스너
         RadioButton.OnClickListener radioButtonClickListener = new RadioButton.OnClickListener(){ @Override
@@ -142,7 +142,7 @@ public class payFragment extends Fragment {
         RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener = new RadioGroup.OnCheckedChangeListener() { @Override
             public void onCheckedChanged(RadioGroup radioGroup,int i)
             {
-                layout_pay_sort.setVisibility(view.GONE);
+                layout_pay_sort.setVisibility(View.GONE);
                 mRecyclerView.setBackgroundColor(Color.WHITE);
 
                 if(i == R.id.pay_sort_deposit){
