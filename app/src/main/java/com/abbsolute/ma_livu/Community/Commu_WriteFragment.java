@@ -45,7 +45,10 @@ public class Commu_WriteFragment extends Fragment {
     private View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); // 작성자UID를 가져오기 위해서 선언
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // 파이어스토어를 사용하기 위해서 선언
-    private StorageReference storage = FirebaseStorage.getInstance().getReference();
+    public FirebaseStorage firestorage = FirebaseStorage.getInstance();
+    public StorageReference storageRef;
+    public StorageReference imageRef;
+
 
     //카테고리 클릭
     private TextView category_eat,category_do,category_how;
@@ -105,7 +108,6 @@ public class Commu_WriteFragment extends Fragment {
                     }
                 });
     }
-
 
 
     private static int comment_count;
@@ -195,9 +197,14 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.title, et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content, et_content.getText().toString());
                     data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
-
                     data.put(FirebaseID.Nickname,str_nickname);
-                    data.put(FirebaseID.Commu_image_URI,image_list);
+
+                    //사진 uri 저장
+                    Map<String, Object> data2 = new HashMap<>();
+                    for (int i=0; i<image_list.size(); i++){
+                        data2.put((FirebaseID.Commu_image_URI)+i,(image_list.get(i)).toString());
+                    }
+                    uploadFile(); // 파이어스토리지에 사진 올리기
 
                     // 좋아요, 저장, 댓글
                     data.put(FirebaseID.commu_like_count, like_count);
@@ -209,6 +216,9 @@ public class Commu_WriteFragment extends Fragment {
                     firestore.collection(FirebaseID.Community).document(category)
                             .collection("sub_Community").document(et_title.getText().toString())
                             .set(data, SetOptions.merge());
+                    firestore.collection(FirebaseID.Community).document(category)
+                            .collection("sub_Community").document(et_title.getText().toString())
+                            .set(data2, SetOptions.merge());
                 }
                 ((HomeActivity) getActivity()).setFragment(50);
             }
