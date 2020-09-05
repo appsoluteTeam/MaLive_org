@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Customize.ColorBottom;
+import com.abbsolute.ma_livu.Customize.FaceBottom;
+import com.abbsolute.ma_livu.Customize.ItemBottom;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.R;
@@ -42,6 +47,9 @@ public class HomeFragment extends Fragment {
     private Button go_Todo;
     private Button go_GuestBook;
 
+    private ImageButton colorBtt;
+    private ImageButton accessoryBtt;
+    private ImageButton expressionBtt;
     private static String email;
     private long atCount;
 
@@ -90,6 +98,44 @@ public class HomeFragment extends Fragment {
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });
+        LinearLayout floatingBtns = view.findViewById(R.id.customize_floating_buttons);
+        Button goCustomize = view.findViewById(R.id.go_customize);
+        goCustomize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUnityPlayer.UnitySendMessage("SceneManager", "LoadCustomizeScene","");
+                floatingBtns.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //customize listners
+        colorBtt = floatingBtns.findViewById(R.id.btn_fragment);
+        accessoryBtt = floatingBtns.findViewById(R.id.accessory_btn);
+        expressionBtt = floatingBtns.findViewById(R.id.expression_btn);
+        colorBtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ColorBottom bottomSheet = new ColorBottom();
+                bottomSheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+            }
+        });
+        accessoryBtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ItemBottom bottomSheet = new ItemBottom();
+
+                bottomSheet.show(getFragmentManager(), "bottomSheet");
+
+            }
+        });
+        expressionBtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FaceBottom faceBottom = new FaceBottom();
+                faceBottom.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+            }
+        });
+
 
         // 여기서부터 유니티
         this.fl_forUnity = view.findViewById(R.id.fl_forUnity);
@@ -99,6 +145,10 @@ public class HomeFragment extends Fragment {
         mUnityPlayer.windowFocusChanged(true);//First fix Line
 
         return view;
+    }
+
+    public void AssignSkin(String color){
+        mUnityPlayer.UnitySendMessage("쌀알1", "AssignSkin", color);
     }
 
     //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나

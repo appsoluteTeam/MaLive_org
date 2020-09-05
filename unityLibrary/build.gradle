@@ -5,12 +5,11 @@ apply plugin: 'com.android.library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.multidex:multidex:2.0.1"
-    }
+}
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -19,18 +18,15 @@ android {
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 28
         ndk {
             abiFilters 'armeabi-v7a'
         }
         versionCode 1
         versionName '0.1'
+        consumerProguardFiles 'proguard-unity.txt'
+    }
 
-        multiDexEnabled true
-    }
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
     lintOptions {
         abortOnError false
     }

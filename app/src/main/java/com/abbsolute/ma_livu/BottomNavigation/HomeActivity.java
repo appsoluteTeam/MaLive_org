@@ -20,6 +20,9 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
+import com.abbsolute.ma_livu.Customize.ColorBottom;
+import com.abbsolute.ma_livu.Customize.FaceBottom;
+import com.abbsolute.ma_livu.Customize.ItemBottom;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
@@ -52,7 +55,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Stack;
 
-public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
+public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener, ColorBottom.ColorBottomListener, ItemBottom.ItemBottomListener, FaceBottom.FaceBottomListener {
 
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
@@ -389,5 +392,16 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             transaction.replace(R.id.main_frame, toDoWriteMainFragment);
             transaction.commit();
         }
+    }
+
+    @Override
+    public void onButtonClicked(String text) {
+        //TODO: 처리
+
+    }
+
+    @Override
+    public void onColorClicked(String Color) {
+
     }
 }

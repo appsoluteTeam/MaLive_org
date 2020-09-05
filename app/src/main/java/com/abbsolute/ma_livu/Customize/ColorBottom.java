@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.thebluealliance.spectrum.SpectrumPalette;
@@ -72,11 +74,13 @@ public class ColorBottom extends BottomSheetDialogFragment implements SpectrumPa
     public void onColorSelected(@ColorInt int color) {
 
         this.curColor = color;
-        mListener.onButtonClicked(Integer.toHexString(curColor).toUpperCase());
+        mListener.onColorClicked(Integer.toHexString(curColor).toUpperCase());
+        HomeFragment homeFragment = (HomeFragment)getFragmentManager().findFragmentById(R.id.unity_frame);
+        homeFragment.AssignSkin(Integer.toHexString(curColor).toUpperCase());
     }
 
     public interface ColorBottomListener {
-        void onButtonClicked(String text);
+        void onColorClicked(String Color);
     }
 
     @Override
