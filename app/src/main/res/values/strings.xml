@@ -33,4 +33,6 @@
     <string name="logoutWarning">로그아웃 하시겠습니까?</string>
     ///알람프래그 먼트 String
     <string name="prevAlarm">이전 알림</string>
+    //친구
+    <string name="friend">친구</string>
 </resources>
