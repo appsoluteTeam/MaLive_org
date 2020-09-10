@@ -55,7 +55,7 @@ public class Commu_WriteFragment extends Fragment {
     private View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); // 작성자UID를 가져오기 위해서 선언
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // 파이어스토어를 사용하기 위해서 선언
-    private StorageReference storageReference=FirebaseStorage.getInstance().getReference();
+    private StorageReference storageReference=FirebaseStorage.getInstance().getReference(); // 슽호리쥐~
 
     //카테고리 클릭
     private TextView category_eat,category_do,category_how;
@@ -64,8 +64,10 @@ public class Commu_WriteFragment extends Fragment {
     //작성한 글
     private EditText et_title,et_content;
     private ImageView img1,img2,img3,img4,img5;
-    private static String email;
-    private static String str_nickname;
+    private EditText commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5;
+    private static String email,str_nickname;
+    private static int comment_count,save_count,like_count;
+
 
     //버튼
     private TextView btn_commu_upload;
@@ -75,14 +77,12 @@ public class Commu_WriteFragment extends Fragment {
     private SimpleDateFormat dateform;
     private Calendar date;
 
-    //사진
-    private Uri image;
-    private Uri urione;
+    //사진 올리기에 필요한 변수들
+    private Uri image,urione;
     private static final int IMAGE_REQUEST_CODE = 1888;
     public CommunityAdapter adapter;
     private ArrayList<Uri> image_list = new ArrayList<Uri>();
     private int image_turn=0;
-    private ArrayList<String> image_temp = new ArrayList<String>();
 
     public Commu_WriteFragment() {}
 
@@ -118,10 +118,6 @@ public class Commu_WriteFragment extends Fragment {
                 });
     }
 
-
-    private static int comment_count;
-    private static int save_count;
-    private static int like_count;
 
     @Nullable
     @Override
@@ -170,6 +166,12 @@ public class Commu_WriteFragment extends Fragment {
         img3=view.findViewById(R.id.commu_img3);
         img4=view.findViewById(R.id.commu_img4);
         img5=view.findViewById(R.id.commu_img5);
+        commu_img_explain1=view.findViewById(R.id.commu_img_explain1);
+        commu_img_explain2=view.findViewById(R.id.commu_img_explain2);
+        commu_img_explain3=view.findViewById(R.id.commu_img_explain3);
+        commu_img_explain4=view.findViewById(R.id.commu_img_explain4);
+        commu_img_explain5=view.findViewById(R.id.commu_img_explain5);
+
 
         //사진 업로드드 눌렀을 때
         btn_image = (ImageButton) view.findViewById(R.id.btn_image);
@@ -213,6 +215,14 @@ public class Commu_WriteFragment extends Fragment {
                     for(Uri image:image_list){
                         uploadFile(image,image_turn);
                         image_turn++;
+                    }
+
+                    //이미지 설명 넣기
+                    EditText[] commu_explain = {commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5};
+                    for(int i=0; i<5; i++){
+                        if(!(commu_explain[i].getText().toString().equals(""))){
+                            data.put((FirebaseID.commu_img_explain)+i,commu_explain[i].getText().toString());
+                        }
                     }
 
                     // 저장 위치 변경
