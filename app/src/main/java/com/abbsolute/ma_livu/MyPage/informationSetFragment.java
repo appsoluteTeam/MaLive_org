@@ -100,7 +100,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                 information_noti.setVisibility(view.VISIBLE);
                 approveNum = 1;//탈퇴
                 break;
-            case R.id.btn_logout:
+            case R.id.btn_logout://로그아웃
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#F5F5F5"));
                 notiContents.setText(notiContents_logout);
                 approve.setText(approve_logout);

@@ -32,8 +32,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,8 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 public class TitleFragment extends Fragment implements View.OnClickListener {
+
+    private View view;
 
     /*sharedPreference*/
     private final String todoTitleFile = email + "-check_todoTitle_first";
@@ -68,30 +72,35 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     private ArrayList<Boolean> todayIslocked = new ArrayList<Boolean>(Arrays.asList(true));
     private ArrayList<Boolean> roomIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false,true,true,true,false));
 
-    private View view;
+    //fragment 관련 변수들
     private TODOtitleFragment TODOFragment;
     private attendanceFragment attendanceFragment;
     private todayFragment todayFragment;
     private roomFragment roomFragment;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
+
+    //값 받아오는 변수들
     private TextView tdBtn,attendanceBtn,todayBtn,roomBtn,editTitle,repTitle;
     private Button editFinishBtn,btn_back,newTODO,newAttendance,newBtn;
+    private ImageView titleImage;
     private Bundle bundle;
+
     private static int repTitleIndex,category;
     private static String str_nickname;
     private static long clean_complete, trash_complete, todo_complete, wash_complete;
     private static long attendanceCount;
+    public static int count = 0;
     private static boolean editFinish = true;//초기화 기본화면으로
-    private ImageView titleImage;
     public static Stack<Fragment> fragmentStack;
+
+    //pay관련 변수들
     private String recentBalance;
     private long recentPayDocumentNum;
 
     public static Boolean[] TODOList = new Boolean[15];
     public static Boolean[] attendanceList = new Boolean[3];
 
-    public static int count = 0;
 
     //칭호 새로 획득 여부
 
@@ -302,8 +311,8 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         //파이어스토어 저장
         saveFirebaseIsLocked();
 
-      //  getRecentPayDocument();
-        //getToll("타이틀",1000);
+        getRecentPayDocument();
+
         return view;
     }
 
@@ -327,26 +336,12 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         countTodoTitleIsLocked(todo_complete);
     }
 
-    //count 에 따라 to-do title 열렸는지 안열렸는지 체크
 
-    //todo: 최초 한번만 체크
+    //count 에 따라 to-do title 열렸는지 안열렸는지 체크
     public void countCleanTitleIsLocked(long clean_complete){
         if(clean_complete >= 5 && clean_complete < 10){
             setCleanTitleIsLocked(true,false,false,false);
             checkFirstGetTitle(todoTitleFile,0);
-            /*
-            메소드 생성하는게 낫겠다 공통적인거니까 대신 array값 넘겨줘야함 얜 0번
-            checkFirstGetTitle(); -->todo도 attendance도 한번에 쓸 수 있을까? 그럼 to-do임도 넘겨줘야함
-            넘겨줘야할거 : 어떤 카테고리인지, arrayList값
-
-            0이면(아직 얻지않은거니까){//최초한번이니까
-                칭호 얻은거 톨 얻게 해주고
-                to-do 파란불보이게 하고
-                해당건 1로 바꿔주기
-            }else(1이면){
-                to-do 파란불꺼주기
-            }
-            */
         }else if(clean_complete >= 10 && clean_complete < 30){
             setCleanTitleIsLocked(true,true,false,false);
             checkFirstGetTitle(todoTitleFile,1);
@@ -494,32 +489,19 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 public void run() {
                     newBtn.setVisibility(view.INVISIBLE);
                 }
-            }, 5000);
+            }, 1000000);
 
             //톨 얻기
-            //getToll("칭호획득보상",1000);
+            //todo:getRecentPayDocument() 호출
 
             editor.putBoolean(keyname,true);
             editor.commit();
         }
     }
 
-    //톨 얻는 메소드
-    //todo: 가장 최근에 저장된 문서 접근해서 balance알아내기...
-    //firestore에 데이터 새로 파서 최근문서 뭔지 저장?..tempData 컬렉션에 저장할깡...
-    public void getToll(String title,int amount){
-        long recentPayDocument;
-        String balance;
-
-        getRecentPayDocument();
-        getRecentBalance();
-
-        Log.d("recentBalance",recentBalance);
-    }
-
+    //가장 최근 문서 알아내기
     public void getRecentPayDocument(){
-
-        firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.pay).document(FirebaseID.tmpData)
+        firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.tmpData).document("recentPayNum")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -533,17 +515,17 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                                 recentPayDocumentNum = Long.parseLong(shot.get(FirebaseID.recentDocument).toString());
                                 Log.d("getRecentPayDocument 안",Long.valueOf(recentPayDocumentNum).toString());
                             } else {
-                                recentPayDocumentNum = 1;
+                                recentPayDocumentNum = 0;
                             }
+                            getRecentBalance(recentPayDocumentNum);
                         } else {
                         }
                     }
                 });
-
-        Log.d("getRecentPayDocument 밖",Long.valueOf(recentPayDocumentNum).toString());
     }
 
-    public void getRecentBalance(){
+    //가장 최근 문서의 잔액 알아내기
+    public void getRecentBalance(final long recentPayDocumentNum){
         firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.pay).document(Long.valueOf(recentPayDocumentNum).toString())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -556,11 +538,71 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                             if (document.exists()) {
                                 Map<String, Object> shot = document.getData();
                                 recentBalance =shot.get(FirebaseID.balance).toString();
+                                Log.d("recentBalance final",recentBalance);
+                            }else{
+                                recentBalance = "0";
                             }
+                            getToll(recentBalance,recentPayDocumentNum);
+
                         } else {
                         }
+
                     }
                 });
+
+    }
+
+    //직전의 balance에 근거해서 톨 파이어스토어에 저장
+    public void getToll(String recentBalance,long recentPayDocumentNum){
+
+        Calendar calendar = Calendar.getInstance();
+        String month = Integer.valueOf(calendar.get(Calendar.MONTH)).toString();
+        String date = Integer.valueOf(calendar.get(Calendar.DATE)).toString();
+
+        String today = month + "." + date;
+
+        String hour = Integer.valueOf(calendar.get(Calendar.HOUR)).toString();
+        String minute = Integer.valueOf(calendar.get(Calendar.MINUTE)).toString();
+
+        String time = hour + ":" + minute;
+
+        int amount = 400;//임시로
+        int balance = Integer.parseInt(recentBalance) + amount;
+
+        payItemListView payItemListView =
+                new payItemListView(today,"칭호 획득 보상","입금","+400",Integer.valueOf(balance).toString(),time);
+
+        String documentName = String.valueOf(recentPayDocumentNum + 1);
+
+        //파이어스토어 저장
+        firestore.collection(FirebaseID.myPage)
+                .document(email)
+                .collection(FirebaseID.pay)
+                .document(documentName)
+                .set(payItemListView,SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+        //최근문서 바꾸기
+        Map<String,Object> payMap = new HashMap<>();
+        payMap.put(FirebaseID.recentDocument,documentName);
+
+        firestore.collection(FirebaseID.myPage)
+                .document(email)
+                .collection(FirebaseID.tmpData)
+                .document("recentPayNum")
+                .set(payMap);
+
 
     }
 

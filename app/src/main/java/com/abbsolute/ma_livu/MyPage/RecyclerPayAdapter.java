@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecyclerPayAdapter extends RecyclerView.Adapter<RecyclerPayAdapter.ViewHolder> {
     private ArrayList<payItemListView> arrayList;
-   // private OnItemClick callback;
-
 
     public RecyclerPayAdapter(ArrayList<payItemListView> arrayList) {
         this.arrayList = arrayList;
@@ -39,9 +37,9 @@ public class RecyclerPayAdapter extends RecyclerView.Adapter<RecyclerPayAdapter.
     public void onBindViewHolder(@NonNull final RecyclerPayAdapter.ViewHolder holder, final int position) { //각 아이템에 대한 매칭
         holder.pay_date.setText(arrayList.get(position).getPay_date());
         holder.pay_title.setText(arrayList.get(position).getPay_title());
-        holder.pay_time_deposit_withdrawal.setText(arrayList.get(position).getPay_time_deposit_withdrawal());
-        holder.amount.setText(arrayList.get(position).getAmount());
-        holder.balance.setText(arrayList.get(position).getBalance());
+        holder.pay_time_deposit_withdrawal.setText(arrayList.get(position).getPay_time() + " | " + arrayList.get(position).getPay_time_deposit_withdrawal());
+        holder.amount.setText(arrayList.get(position).getAmount()+" 톨");
+        holder.balance.setText(arrayList.get(position).getBalance()+" 톨");
     }
 
     @Override
