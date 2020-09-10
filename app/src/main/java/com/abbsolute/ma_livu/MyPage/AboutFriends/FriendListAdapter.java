@@ -1,5 +1,6 @@
 package com.abbsolute.ma_livu.MyPage.AboutFriends;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.R;
 import com.bumptech.glide.Glide;
 
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 
 public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.ViewHolder> {
     ArrayList<FriendListInfo> friendListInfoArrayList=new ArrayList<>();
+    Context context;
+    GoRoomClick goRoomClick;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -26,7 +30,10 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         FriendListAdapter.ViewHolder holder=new FriendListAdapter.ViewHolder(view);
         return holder;
     }
-
+    public void setContext(Context context,GoRoomClick goRoomClick){
+        this.context=context;
+        this.goRoomClick=goRoomClick;
+    }
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         FriendListInfo friendListInfo=friendListInfoArrayList.get(position);
@@ -36,24 +43,13 @@ public class FriendListAdapter extends RecyclerView.Adapter<FriendListAdapter.Vi
         holder.friendProfile.setBackgroundResource(R.mipmap.ic_launcher_round);
         holder.nickName.setText(friendListInfo.getName());
         holder.todayCount.setText(friendListInfo.getToday());
+        //방 놀러가기 누르면 홈 화면으로 이동
         holder.goRoom.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v){
+                goRoomClick.onClick(2);
             }
         });
-        /*// '더보기' 버튼 클릭 시 보이기
-        holder.btn_comment_extra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.community_comment_extra.getVisibility() == View.INVISIBLE) {
-                    holder.community_comment_extra.setVisibility(View.VISIBLE);
-                } else {
-                    holder.community_comment_extra.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-        * */
         //더보기 클릭 시 보이기
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
