@@ -68,7 +68,6 @@ public class Commu_WriteFragment extends Fragment {
     private static String email,str_nickname;
     private static int comment_count,save_count,like_count;
 
-
     //버튼
     private TextView btn_commu_upload;
     private ImageButton btn_back,btn_image;
@@ -85,7 +84,6 @@ public class Commu_WriteFragment extends Fragment {
     private int image_turn=0;
 
     public Commu_WriteFragment() {}
-
     public Commu_WriteFragment(String email) {
         this.email = email;
         Log.d("email",email);
@@ -117,7 +115,6 @@ public class Commu_WriteFragment extends Fragment {
                     }
                 });
     }
-
 
     @Nullable
     @Override
@@ -166,11 +163,11 @@ public class Commu_WriteFragment extends Fragment {
         img3=view.findViewById(R.id.commu_img3);
         img4=view.findViewById(R.id.commu_img4);
         img5=view.findViewById(R.id.commu_img5);
-        commu_img_explain1=view.findViewById(R.id.commu_img_explain1);
-        commu_img_explain2=view.findViewById(R.id.commu_img_explain2);
-        commu_img_explain3=view.findViewById(R.id.commu_img_explain3);
-        commu_img_explain4=view.findViewById(R.id.commu_img_explain4);
-        commu_img_explain5=view.findViewById(R.id.commu_img_explain5);
+        commu_img_explain1=view.findViewById(R.id.commu_img_explain1);commu_img_explain1.setVisibility(view.INVISIBLE);
+        commu_img_explain2=view.findViewById(R.id.commu_img_explain2);commu_img_explain2.setVisibility(view.INVISIBLE);
+        commu_img_explain3=view.findViewById(R.id.commu_img_explain3);commu_img_explain3.setVisibility(view.INVISIBLE);
+        commu_img_explain4=view.findViewById(R.id.commu_img_explain4);commu_img_explain4.setVisibility(view.INVISIBLE);
+        commu_img_explain5=view.findViewById(R.id.commu_img_explain5);commu_img_explain5.setVisibility(view.INVISIBLE);
 
 
         //사진 업로드드 눌렀을 때
@@ -250,12 +247,7 @@ public class Commu_WriteFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == IMAGE_REQUEST_CODE  && data != null && data.getData() != null) {
-            //기존 이미지 지우기
-            img1.setImageResource(0);
-            img2.setImageResource(0);
-            img3.setImageResource(0);
-            img4.setImageResource(0);
-            img5.setImageResource(0);
+
             //데이터 가져오기
             image = data.getData();
             ClipData clipData = data.getClipData();
@@ -269,17 +261,22 @@ public class Commu_WriteFragment extends Fragment {
                         switch (i){
                             case 0:
                                 img1.setImageURI(urione);
+                                commu_img_explain1.setVisibility(View.VISIBLE);
                                 break;
                             case 1:
                                 img2.setImageURI(urione);
+                                commu_img_explain2.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
                                 img3.setImageURI(urione);
+                                commu_img_explain3.setVisibility(View.VISIBLE);
                                 break;
                             case 3:
                                 img4.setImageURI(urione);
+                                commu_img_explain4.setVisibility(View.VISIBLE);
                             case 4:
                                 img5.setImageURI(urione);
+                                commu_img_explain5.setVisibility(View.VISIBLE);
                         }
                     }
                 }
