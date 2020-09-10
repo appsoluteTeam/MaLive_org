@@ -2,6 +2,7 @@ package com.abbsolute.ma_livu.MyPage.AboutFriends;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,13 @@ public class FriendListFragment extends Fragment {
     FriendListAdapter friendListAdapter;
     //ArrayList<FriendListInfo> arrayList=new ArrayList<>();
     LinearLayout layoutFriendSort;
-    FragmentTransaction fragmentTransaction;
-    private FragmentManager friendFm;
+
     private View view;
     //RadioButton
     private RadioButton friendLatestSort,friendNameSort,friendCommitDateSort;
     private RadioGroup radioGroup;
     //최신순,이름순,등록날짜순
+    ImageView friendOrder;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -63,28 +64,27 @@ public class FriendListFragment extends Fragment {
         layoutFriendSort=view.findViewById(R.id.layout_friend_sort);
         layoutFriendSort.setVisibility(View.GONE);
 
-        friendFm=getActivity().getSupportFragmentManager();
-        ImageView friendOrder=view.findViewById(R.id.friend_order);
-        friendOrder.setOnClickListener(new View.OnClickListener() {
+        friendOrder=view.findViewById(R.id.friend_order);
+        ImageView.OnClickListener friendOrder= new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentTransaction=friendFm.beginTransaction();
                 switch (v.getId()){
                     case R.id.layout_friend_sort:
+                        Log.d("clicked!","success");
                         layoutFriendSort.setVisibility(v.VISIBLE);
                         friendRecyclerview.setBackgroundColor(Color.parseColor("#F5F5F5"));
                         radioSet();
                         break;
                 }
             }
-        });
+        };
         return view;
     }
     public void radioSet(){
         //정렬화면 보이게
         layoutFriendSort.setVisibility(view.VISIBLE);
 
-        //라디오버튼
+        //라디오버튼(최신순,이름순,등록날짜순)
         friendLatestSort = (RadioButton)view.findViewById(R.id.friend_sort_latest);
         friendNameSort = (RadioButton)view.findViewById(R.id.friend_sort_name);
         friendCommitDateSort = (RadioButton)view.findViewById(R.id.friend_sort_commit);
