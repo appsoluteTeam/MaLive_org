@@ -42,23 +42,12 @@ public class activeFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static Stack<Fragment> fragmentStack;
-    private static String email;
-
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
-
     private Fragment activeFragment;
 
     private Button btn_back;
-
-
-    public activeFragment(){}
-
-    public activeFragment(String email){
-        this.email = email;
-    }
-
 
     //활동으로 넘어가는 버튼
     private Button btn_myPost, btn_myComment,  btn_myScrape;
