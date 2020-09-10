@@ -1,6 +1,7 @@
 package com.abbsolute.ma_livu.MyPage;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,9 +27,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Stack;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /* 마이페이지 메인 fragment */
 
@@ -47,6 +52,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     private static String email;
     private static String str_nickname;
     private static long clean_complete, trash_complete, todo_complete, wash_complete;
+
+    public static RecyclerPostAdapter adapter;
+    public static ArrayList<postItemListView> arrayList;
+    private int myPost_count;
+    private String  myPostCountName;
+
 
     public MyPageFragment(){};
 
@@ -129,6 +140,105 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        arrayList = new ArrayList<>();
+        String[] communityCategory = {"how_do","what_do","what_eat"};
+        myPostCountName = email + "-myPostCountFile";
+        myPost_count = 0;
+        adapter = new RecyclerPostAdapter(arrayList);
+
+        arrayList.clear();
+
+
+        for(int i = 0; i < communityCategory.length; i++) {
+            firestore.collection(FirebaseID.Community).document(communityCategory[i]).collection("sub_Community")
+                    .whereEqualTo("email", email)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult() != null) {
+//                                    arrayList.clear();
+                                    for (DocumentSnapshot snapshot : task.getResult()) {
+                                        String kor_category = "";
+
+                                        Map<String, Object> shot = snapshot.getData();
+
+                                        String Category = String.valueOf(shot.get(FirebaseID.category));
+                                        String Title = String.valueOf(shot.get(FirebaseID.title));
+                                        String Content = String.valueOf(shot.get(FirebaseID.content));
+                                        String Date = String.valueOf(shot.get(FirebaseID.commu_date));
+
+//                                        Log.d("category and title", category + title);
+
+                                        postItemListView data = new postItemListView(Category, Title, Content, Date);
+                                        arrayList.add(data);
+                                        myPost_count++;
+                                    }
+                                    adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+
+                                } else {
+                                    myPost_count = 0;
+                                    arrayList.clear();
+                                }
+                                //todo: sharedPreference에 count 값 저장하기
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                editor.putInt("myPost_count", myPost_count);
+                                editor.commit();
+                            }
+                        }
+                    });
+        }
+
+//        myPostCountName = email + "-myPostCountFile";
+//        myPost_count = 0;
+//
+//        // DB의 데이터 불러와 어레이리스트에 넣기
+//        arrayList = new ArrayList<>();
+//        String[] category = {"what_eat", "what_do", "how_do"};
+//        adapter = new RecyclerPostAdapter(arrayList);
+//
+//        arrayList.clear();
+//
+//        for(int i = 0; i < 3; i++) {
+//            firestore.collection("Community").document(category[i]).collection("sub_Community")
+//                    .whereEqualTo("nickname", str_nickname)
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                if (task.getResult() != null) {
+//                                    for (DocumentSnapshot snapshot : task.getResult()) {
+//                                        Map<String, Object> shot = snapshot.getData();
+//                                        String Category = String.valueOf(shot.get(FirebaseID.category));
+//                                        String Title = String.valueOf(shot.get(FirebaseID.title));
+//                                        String Content = String.valueOf(shot.get(FirebaseID.content));
+//                                        String Date = String.valueOf(shot.get(FirebaseID.commu_date));
+//
+//                                        postItemListView data = new postItemListView(Category, Title, Content, Date);
+//                                        arrayList.add(data);
+//                                        myPost_count++;
+//                                    }
+//                                    adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+//                                } else {
+//                                    myPost_count = 0;
+//                                    arrayList.clear();
+//                                }
+//                                Log.d("mymymycount",Integer.valueOf(myPost_count).toString());
+//                                //todo: sharedPreference에 count 값 저장하기
+//                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
+//                                SharedPreferences.Editor editor = sharedPreferences.edit();
+//
+//                                editor.putInt("myPost_count", myPost_count);
+//                                editor.commit();
+//
+//                            }
+//                        }
+//                    });
+//        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
