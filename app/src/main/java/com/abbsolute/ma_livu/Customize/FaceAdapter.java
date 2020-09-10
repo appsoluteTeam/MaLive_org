@@ -33,7 +33,7 @@ public class FaceAdapter extends RecyclerView.Adapter<FaceAdapter.FaceViewHolder
     public void onBindViewHolder(@NonNull FaceViewHolder holder, int position) {
         //   holder.faceImageView.setImageResource(items[position]);
         //TODO: 표정 이미지 추가
-        holder.itemTextView.setText(items[position].getName());
+        //  holder.itemTextView.setText(items[position].getName());
     }
 
     @Override
@@ -47,11 +47,11 @@ public class FaceAdapter extends RecyclerView.Adapter<FaceAdapter.FaceViewHolder
     public class FaceViewHolder extends RecyclerView.ViewHolder {
         View itemView;
         CircleImageView faceImageView;
-        TextView itemTextView;
+ //       TextView itemTextView;
         public FaceViewHolder(@NonNull View itemView) {
             super(itemView);
             faceImageView = itemView.findViewById(R.id.face_image);
-            itemTextView = itemView.findViewById(R.id.face_text);
+       //     itemTextView = itemView.findViewById(R.id.face_text);
             this.itemView = itemView;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

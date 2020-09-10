@@ -20,10 +20,8 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
-import com.abbsolute.ma_livu.Customize.ColorBottom;
 import com.abbsolute.ma_livu.Customize.FaceBottom;
 import com.abbsolute.ma_livu.Customize.ItemBottom;
-import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
@@ -36,7 +34,6 @@ import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
-import com.abbsolute.ma_livu.Login.Login2Activity;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
@@ -46,16 +43,10 @@ import com.abbsolute.ma_livu.MyPage.activeFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Stack;
 
-public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener, ColorBottom.ColorBottomListener, ItemBottom.ItemBottomListener, FaceBottom.FaceBottomListener {
+public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener,ItemBottom.ItemBottomListener, FaceBottom.FaceBottomListener {
 
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
@@ -358,6 +349,13 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void setOnBackPressedListener(OnBackPressedListener listener){ this.listener = listener; }
     @Override
     public void onBackPressed() {
+
+        //커스터마이즈 뒤로가기
+        if(getSupportFragmentManager().findFragmentById(R.id.customize_frame).isVisible()){
+            Fragment ft = getSupportFragmentManager().findFragmentById(R.id.customize_frame);
+            getSupportFragmentManager().beginTransaction().remove(ft).commit();
+            return;
+        }
         if(listener!=null){
             listener.onBackPressed();
         }
@@ -400,8 +398,4 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
     }
 
-    @Override
-    public void onColorClicked(String Color) {
-
-    }
 }

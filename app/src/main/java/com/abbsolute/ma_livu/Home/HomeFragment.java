@@ -1,6 +1,5 @@
 package com.abbsolute.ma_livu.Home;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,16 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
-import com.abbsolute.ma_livu.Customize.ColorBottom;
+import com.abbsolute.ma_livu.Customize.ColorFragment;
 import com.abbsolute.ma_livu.Customize.FaceBottom;
+import com.abbsolute.ma_livu.Customize.FaceFragment;
 import com.abbsolute.ma_livu.Customize.ItemBottom;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.R;
+import com.abbsolute.ma_livu.UnityPlugin.CustomPlugin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,7 +61,6 @@ public class HomeFragment extends Fragment {
     // 유니티
     protected UnityPlayer mUnityPlayer;
     private FrameLayout fl_forUnity;
-
     public HomeFragment(){}
 
     public HomeFragment(String email){
@@ -115,8 +112,10 @@ public class HomeFragment extends Fragment {
         colorBtt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ColorBottom bottomSheet = new ColorBottom();
-                bottomSheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+//                ColorBottom bottomSheet = new ColorBottom();
+//                bottomSheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+                ColorFragment colorFragment = new ColorFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,colorFragment).commit();
             }
         });
         accessoryBtt.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +130,10 @@ public class HomeFragment extends Fragment {
         expressionBtt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FaceBottom faceBottom = new FaceBottom();
-                faceBottom.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+                FaceFragment faceFragment = new FaceFragment();
+                moveCameraToFace();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,faceFragment).commit();
+
             }
         });
 
@@ -150,6 +151,22 @@ public class HomeFragment extends Fragment {
     public void AssignSkin(String color){
         mUnityPlayer.UnitySendMessage("쌀알1", "AssignSkin", color);
     }
+
+    public void cancelColorChange() {
+        mUnityPlayer.UnitySendMessage("쌀알1", "cancleSkin", "");
+    }
+
+    public void saveColorChange(String color){
+        mUnityPlayer.UnitySendMessage("쌀알1", "saveSkin", color);
+    }
+
+    public void moveCameraToFace(){
+        mUnityPlayer.UnitySendMessage("쌀알1", "MoveCameraToFace", "");
+    }
+    public void moveCameraToInit(){
+        mUnityPlayer.UnitySendMessage("쌀알1", "MoveCameraToInit", "");
+    }
+
 
     //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나
     public void attendance_check(){

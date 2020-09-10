@@ -11,14 +11,16 @@
         android:layout_height="100dp"
         android:src="@drawable/ic_launcher_background"
         />
-    <TextView
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="Face"
-        android:gravity="center"
-        android:id="@+id/face_text"
-        />
+
+<!--    <TextView-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="20sp"-->
+<!--        android:text="Face"-->
+<!--        android:gravity="center"-->
+<!--        android:id="@+id/face_text"-->
+<!--        />-->
+
 
 </LinearLayout>
