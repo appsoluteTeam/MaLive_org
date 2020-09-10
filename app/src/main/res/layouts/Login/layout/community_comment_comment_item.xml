@@ -148,7 +148,7 @@
 
                 <Button
                     android:id="@+id/btn_comment_comment_like"
-                    android:layout_width="25dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/button_event_like_s" />
