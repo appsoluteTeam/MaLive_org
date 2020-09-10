@@ -38,6 +38,7 @@ public class FirebaseID {
     public static String commu_comment_icon = "commu_comment_icon";
     public static String commu_comment_like = "commu_comment_like";
     public static String commu_comment_comment_count = "commu_comment_comment_count";
+//    public static Boolean commu_comment_like_check = false;
 
     //파이어스토어 Community Comment Comment 컬렉션 필드 이름
     public static String Community_Comment_Comment = "커뮤니티 답글";
