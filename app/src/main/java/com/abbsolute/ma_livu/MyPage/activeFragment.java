@@ -55,9 +55,9 @@ public class activeFragment extends Fragment {
     private static String str_nickname;
     private static String email;
 
-    private TextView myPost_count_top, myPost_count_bottom;
-    private String myPostCountName;
-    private int myPost_count;
+    private TextView myPost_count_top, myPost_count_bottom, myComment_count_top, myComment_count_bottom;
+    private String myPostCountName, myCommentCountName;
+    private int myPost_count, myComment_count;
 
     public activeFragment() { }
 
@@ -94,9 +94,13 @@ public class activeFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
           myPostCountName = email + "-myPostCountFile";
+          myCommentCountName = email + "-myCommentCountFile";
 
            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName,MODE_PRIVATE);
            myPost_count = sharedPreferences.getInt("myPost_count",0);
+
+           sharedPreferences = getActivity().getSharedPreferences(myCommentCountName,MODE_PRIVATE);
+           myComment_count = sharedPreferences.getInt("myComment_count",0);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,14 +119,21 @@ public class activeFragment extends Fragment {
 
          myPost_count_top = view.findViewById(R.id.myPost_count_top);
          myPost_count_bottom = view.findViewById(R.id.myPost_count_bottom);
+         myComment_count_top = view.findViewById(R.id.myComment_count_top);
+         myComment_count_bottom = view.findViewById(R.id.myComment_count_bottom);
+
 
 //        각 값 setText
          myPost_count_top.setText(Integer.valueOf(myPost_count).toString());
          myPost_count_bottom.setText(Integer.valueOf(myPost_count).toString());
+         myComment_count_top.setText(Integer.valueOf(myComment_count).toString());
+         myComment_count_bottom.setText(Integer.valueOf(myComment_count).toString());
 
         Toast.makeText(this.getContext(), "닉네임 : "+ str_nickname, Toast.LENGTH_LONG).show();
 
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
+            Bundle bundle = new Bundle();
+
             @SuppressLint("LongLogTag")
             @Override
             public void onClick(View v) {
@@ -139,7 +150,6 @@ public class activeFragment extends Fragment {
                         activeMyPostFragment activeMyPostFragment = new activeMyPostFragment();
 
                         // activeMyPostFragment로 데이터 넘기기
-                        Bundle bundle = new Bundle();
                         bundle.putString("Nickname", str_nickname);
                         activeMyPostFragment.setArguments(bundle);
 
@@ -147,6 +157,15 @@ public class activeFragment extends Fragment {
                         fragmentTransaction.commit();
                         break;
                     case R.id. btn_myComment:
+                        Log.d("activeFragment go myPostFragment","myPost buttonclick");
+                        activeMyCommentFragment activeMyCommentFragment = new activeMyCommentFragment();
+
+                        // activeMyPostFragment로 데이터 넘기기
+                        bundle.putString("Nickname", str_nickname);
+                        activeMyCommentFragment.setArguments(bundle);
+
+                        fragmentTransaction.replace(R.id.main_frame, activeMyCommentFragment);
+                        fragmentTransaction.commit();
                         break;
                     case R.id. btn_myScrape:
                         break;

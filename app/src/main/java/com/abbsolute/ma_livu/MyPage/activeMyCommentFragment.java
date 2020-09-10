@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,6 +47,8 @@ public class activeMyCommentFragment extends Fragment {
     private String nickname;
     private String[] category;
 
+    private TextView commu_title;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,6 +62,9 @@ public class activeMyCommentFragment extends Fragment {
             nickname = getArguments().getString("Nickname");
         }
 
+        commu_title = view.findViewById(R.id.commu_title);
+        commu_title.setText("댓글 단 글");
+
         btn_back = view.findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,37 +74,7 @@ public class activeMyCommentFragment extends Fragment {
             }
         });
 
-        // DB의 데이터 불러와 어레이리스트에 넣기
-        arrayList = new ArrayList<>();
-        String[] category = {"what_eat", "what_do", "how_do"};
-        arrayList.clear();
-
-        for(int i = 0; i < 3; i++) {
-            firestore.collection("Community").document(category[i]).collection("sub_Community")
-                    .whereEqualTo("nickname", nickname)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    for (DocumentSnapshot snapshot : task.getResult()) {
-                                        Map<String, Object> shot = snapshot.getData();
-                                        String Category = String.valueOf(shot.get(FirebaseID.category));
-                                        String Title = String.valueOf(shot.get(FirebaseID.title));
-                                        String Content = String.valueOf(shot.get(FirebaseID.content));
-                                        String Date = String.valueOf(shot.get(FirebaseID.commu_date));
-
-                                        postItemListView data = new postItemListView(Category, Title, Content, Date);
-                                        arrayList.add(data);
-                                    }
-                                    adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
-                                }
-                            }
-                        }
-                    });
-        }
-
+        arrayList = MyPageFragment.arrayList2;
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
         recyclerView = (RecyclerView) view.findViewById(R.id.active_recyclerVIew);

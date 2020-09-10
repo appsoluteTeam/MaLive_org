@@ -29,7 +29,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="@string/myPost2"
+                android:text="내가 쓴 글"
                 android:textColor="@android:color/black"
                 android:textSize="30sp"
                 android:textStyle="bold" />
