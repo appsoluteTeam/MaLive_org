@@ -12,16 +12,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentAdapter;
-import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentItem;
-import com.abbsolute.ma_livu.Community.bringData;
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityCommentAdapter.ViewHolder> {
     private ArrayList<CommunityCommentItem> arrayList;
     private CommuCommentOnItemClick callback;
+
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public CommunityCommentAdapter(ArrayList<CommunityCommentItem> arrayList, CommuCommentOnItemClick listener) {
         this.arrayList = arrayList;
@@ -98,10 +101,10 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
             @Override
             public void onClick(View v) {
                 if (holder.community_comment_extra.getVisibility() == View.INVISIBLE) {
-                    holder.community_comment_extra.setVisibility(View.VISIBLE);
-                } else {
-                    holder.community_comment_extra.setVisibility(View.INVISIBLE);
-                }
+                        holder.community_comment_extra.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.community_comment_extra.setVisibility(View.INVISIBLE);
+                    }
             }
         });
     }
