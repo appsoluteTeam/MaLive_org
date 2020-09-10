@@ -52,6 +52,7 @@ public class AlarmFragment extends Fragment {
     private ArrayList<PrevNotificationInfo> prevNotificationInfos = new ArrayList<>();
     //
     TextView allLook;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,11 +60,11 @@ public class AlarmFragment extends Fragment {
         if (getArguments() != null) {//친구요청하는 부분에서 닉네임 넘겨받는 곳
 
         }
-        allLook=view.findViewById(R.id.prev_notification_all_look);
+        allLook = view.findViewById(R.id.prev_notification_all_look);
         allLook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(200);
+                ((HomeActivity) getActivity()).setFragment(200);
             }
         });
         alarmFriendRequestListAdapter = new AlarmFriendRequestListAdapter();
@@ -105,10 +106,10 @@ public class AlarmFragment extends Fragment {
                                                                             new AlarmFriendRequestInfo(R.drawable.user1,
                                                                                     requestMessage, "4시간전");
                                                                     //alarmFriendRequestInfoArrayList.add(friendRequestInfo);
-                                                                  //  alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
-                                                                  //  alarmFriendRequestListAdapter.notifyDataSetChanged();
-                                                                   // friendRequestListView.setHasFixedSize(true);
-                                                                   // friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
+                                                                    //  alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
+                                                                    //  alarmFriendRequestListAdapter.notifyDataSetChanged();
+                                                                    // friendRequestListView.setHasFixedSize(true);
+                                                                    // friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
                                                                 }
                                                             }
                                                         }
@@ -141,8 +142,14 @@ public class AlarmFragment extends Fragment {
                                 //prevNotificationInfos=new ArrayList<>(set);
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     Map<String, Object> data = snapshot.getData();
-                                    String dDay = String.valueOf(data.get("dDay"));
-                                    String content = String.valueOf(data.get("content"));
+                                    String dDay = "";
+                                    String content = "";
+                                    if (data.containsKey("dDay")) {
+                                        dDay = String.valueOf(data.get("dDay"));
+                                    }
+                                    if (data.containsKey("content")) {
+                                        content = String.valueOf(data.get("content"));
+                                    }
                                     dDayList.add(dDay);
                                     contentList.add(content);
                                 }
@@ -208,8 +215,8 @@ public class AlarmFragment extends Fragment {
                                     Map<String, Object> data = snapshot.getData();
                                     final String title = String.valueOf(data.get("title"));
                                     String myNickName = String.valueOf(data.get("nickname"));
-                                    Log.d("nickName",myNickName);
-                                    Log.d("my",nickName);
+                                    Log.d("nickName", myNickName);
+                                    Log.d("my", nickName);
                                     if (nickName.equals(myNickName)) {
                                         Log.d("title!!!", title);
                                         firestore.collection(FirebaseID.Community).document("what_eat")
@@ -227,7 +234,10 @@ public class AlarmFragment extends Fragment {
                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                         Map<String, Object> data = snapshot.getData();
-                                                                        String commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                        String commentDate = "";
+                                                                        if (data.containsKey(FirebaseID.commu_comment_date)) {
+                                                                            commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                        }
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -238,15 +248,18 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            String res = prevTimeSetClass.formatTimeString(date);
-                                                                            String responseText = "내 글에 댓글이 달렸어요";
-                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                    responseText, res);
-                                                                            //newArrays.add(prevNotificationInfo);
-                                                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
-                                                                            //alarmPrevNotificationListAdapter.setItem(newArrays);
-                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                            if(date!=null){
+                                                                                String res = prevTimeSetClass.formatTimeString(date);
+                                                                                String responseText = "내 글에 댓글이 달렸어요";
+                                                                                PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                        responseText, res);
+                                                                                //newArrays.add(prevNotificationInfo);
+                                                                                alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                                                                //alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                            }
+
                                                                         }
                                                                     }
 
@@ -286,7 +299,10 @@ public class AlarmFragment extends Fragment {
                                                                                                 for (DocumentSnapshot snapshot1 : task.getResult()) {
                                                                                                     if (snapshot1.exists()) {
                                                                                                         Map<String, Object> newData = snapshot1.getData();
-                                                                                                        String CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        String CommentCommentDate = "";
+                                                                                                        if (newData.containsKey(FirebaseID.commu_comment_comment_date)) {
+                                                                                                            CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        }
                                                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                                                         SimpleDateFormat formatter = null;
@@ -299,15 +315,18 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                            String responseText = "내 글에 대댓글이 달렸어요";
-                                                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                                                    responseText, res);
-                                                                                                            //newArrays.add(prevNotificationInfo);
-                                                                                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
-                                                                                                            //alarmPrevNotificationListAdapter.setItem(newArrays);
-                                                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                            if(date!=null){
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
+                                                                                                                PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                                                        responseText, res);
+                                                                                                                //newArrays.add(prevNotificationInfo);
+                                                                                                                alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                                                                                                //alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                                                alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                                                prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                            }
+
                                                                                                         }
                                                                                                     }
                                                                                                 }
@@ -357,27 +376,34 @@ public class AlarmFragment extends Fragment {
                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                         Map<String, Object> data = snapshot.getData();
-                                                                        String commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
-                                                                        SimpleDateFormat formatter = null;
-                                                                        Date date = null;
-                                                                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                                                            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
-                                                                            try {
-                                                                                date = formatter.parse(commentDate);
-                                                                            } catch (ParseException e) {
-                                                                                e.printStackTrace();
+                                                                        if (data.containsKey(FirebaseID.commu_comment_date)) {
+                                                                            String commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                            SimpleDateFormat formatter = null;
+                                                                            Date date = null;
+                                                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                                                formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA);
+                                                                                try {
+                                                                                    date = formatter.parse(commentDate);
+                                                                                } catch (ParseException e) {
+                                                                                    e.printStackTrace();
+                                                                                }
+                                                                                PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                                                                String res="";
+                                                                                if(date!=null){
+                                                                                    res = prevTimeSetClass.formatTimeString(date);
+                                                                                    String responseText = "내 글에 댓글이 달렸어요";
+                                                                                    PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                            responseText, res);
+                                                                                    //newArrays.add(prevNotificationInfo);
+                                                                                    alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                                                                    //alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                    alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                    prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                }
+
                                                                             }
-                                                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            String res = prevTimeSetClass.formatTimeString(date);
-                                                                            String responseText = "내 글에 댓글이 달렸어요";
-                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                    responseText, res);
-                                                                            //newArrays.add(prevNotificationInfo);
-                                                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
-                                                                            //alarmPrevNotificationListAdapter.setItem(newArrays);
-                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
                                                                         }
+
                                                                     }
 
 
@@ -416,7 +442,10 @@ public class AlarmFragment extends Fragment {
                                                                                                 for (DocumentSnapshot snapshot1 : task.getResult()) {
                                                                                                     if (snapshot1.exists()) {
                                                                                                         Map<String, Object> newData = snapshot1.getData();
-                                                                                                        String CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        String CommentCommentDate = "";
+                                                                                                        if (newData.containsKey(FirebaseID.commu_comment_comment_date)) {
+                                                                                                            CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        }
                                                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                                                         SimpleDateFormat formatter = null;
@@ -429,15 +458,18 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                            String responseText = "내 글에 대댓글이 달렸어요";
-                                                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                                                    responseText, res);
-                                                                                                           // newArrays.add(prevNotificationInfo);
-                                                                                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
-                                                                                                           // alarmPrevNotificationListAdapter.setItem(newArrays);
-                                                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                            if(date!=null){
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
+                                                                                                                PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                                                        responseText, res);
+                                                                                                                // newArrays.add(prevNotificationInfo);
+                                                                                                                alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                                                                                                // alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                                                alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                                                prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                            }
+
                                                                                                         }
                                                                                                     }
                                                                                                 }
@@ -487,7 +519,10 @@ public class AlarmFragment extends Fragment {
                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                         Map<String, Object> data = snapshot.getData();
-                                                                        String commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                        String commentDate = "";
+                                                                        if (data.containsKey(FirebaseID.commu_comment_date)) {
+                                                                            commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
+                                                                        }
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
                                                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -498,15 +533,18 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            String res = prevTimeSetClass.formatTimeString(date);
-                                                                            String responseText = "내 글에 댓글이 달렸어요";
-                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                    responseText, res);
-                                                                          //  newArrays.add(prevNotificationInfo);
-                                                                          //  alarmPrevNotificationListAdapter.setItem(newArrays);
-                                                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
-                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                            if(date!=null){
+                                                                                String res = prevTimeSetClass.formatTimeString(date);
+                                                                                String responseText = "내 글에 댓글이 달렸어요";
+                                                                                PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                        responseText, res);
+                                                                                //  newArrays.add(prevNotificationInfo);
+                                                                                //  alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                                                                alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                            }
+
                                                                         }
                                                                     }
 
@@ -546,7 +584,10 @@ public class AlarmFragment extends Fragment {
                                                                                                 for (DocumentSnapshot snapshot1 : task.getResult()) {
                                                                                                     if (snapshot1.exists()) {
                                                                                                         Map<String, Object> newData = snapshot1.getData();
-                                                                                                        String CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        String CommentCommentDate = "";
+                                                                                                        if (newData.containsKey(FirebaseID.commu_comment_comment_date)) {
+                                                                                                            CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
+                                                                                                        }
                                                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                                                         SimpleDateFormat formatter = null;
@@ -559,15 +600,18 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                            String responseText = "내 글에 대댓글이 달렸어요";
-                                                                                                            PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                                                    responseText, res);
-                                                                                                            //newArrays.add(prevNotificationInfo);
-                                                                                                          //  alarmPrevNotificationListAdapter.setItem(newArrays);
-                                                                                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
-                                                                                                            alarmPrevNotificationListAdapter.notifyDataSetChanged();
-                                                                                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                            if(date!=null){
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
+                                                                                                                PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
+                                                                                                                        responseText, res);
+                                                                                                                //newArrays.add(prevNotificationInfo);
+                                                                                                                //  alarmPrevNotificationListAdapter.setItem(newArrays);
+                                                                                                                alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                                                                                                alarmPrevNotificationListAdapter.notifyDataSetChanged();
+                                                                                                                prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                                                                                            }
+
                                                                                                         }
                                                                                                     }
                                                                                                 }
