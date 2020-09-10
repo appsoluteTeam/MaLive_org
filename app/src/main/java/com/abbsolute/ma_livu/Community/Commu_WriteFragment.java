@@ -253,6 +253,7 @@ public class Commu_WriteFragment extends Fragment {
             image = data.getData();
             ClipData clipData = data.getClipData();
 
+            //사진 여러장 보이게 하기 
             if (data != null) {
                 for(int i = 0; i < 5; i++)
                 {
