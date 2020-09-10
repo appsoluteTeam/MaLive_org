@@ -168,26 +168,18 @@ public class AlarmFragment extends Fragment {
                                     if (data.containsKey("content")) {
                                         content = String.valueOf(data.get("content"));
                                     }
-                                    dDayList.add(dDay);
-                                    contentList.add(content);
-                                }
-                                long systemTime = System.currentTimeMillis();
-                                SimpleDateFormat formatter = null;
-                                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                                    formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                                }
-                                String date = formatter.format(systemTime);
-                                String[] splitData = date.split("-");
-                                String tmp1 = splitData[0];
-                                String tmp2 = splitData[1];
-                                String tmp3 = splitData[2];
-                                String today = tmp1 + "년" + tmp2 + "월" + tmp3 + "일";
-                                for (int i = 0; i < dDayList.size(); i++) {
-                                    if (i == 4)
-                                        break;
-                                    String cmp = dDayList.get(i);
-                                    String inputContent = contentList.get(i);
-                                    if (cmp.compareTo(today) < 0) {
+                                    long systemTime = System.currentTimeMillis();
+                                    SimpleDateFormat formatter = null;
+                                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                        formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                    }
+                                    String date = formatter.format(systemTime);
+                                    String[] splitData = date.split("-");
+                                    String tmp1 = splitData[0];
+                                    String tmp2 = splitData[1];
+                                    String tmp3 = splitData[2];
+                                    String today = tmp1 + "년" + tmp2 + "월" + tmp3 + "일";
+                                    if (dDay.compareTo(today) < 0) {
                                         PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                         SimpleDateFormat simpleDateFormat = null;
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -197,14 +189,14 @@ public class AlarmFragment extends Fragment {
                                         String res = "";
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                             try {
-                                                parseDate = simpleDateFormat.parse(cmp);
+                                                parseDate = simpleDateFormat.parse(dDay);
                                                 res = prevTimeSetClass.formatTimeString(parseDate);//~전 으로 변경
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
                                         }
                                         Toast.makeText(getContext(), res, Toast.LENGTH_SHORT).show();
-                                        String notifiText = inputContent + " 지정일이 지났어요";
+                                        String notifiText = content + " 지정일이 지났어요";
                                         PrevNotificationInfo prevNotificationInfo =
                                                 new PrevNotificationInfo(R.drawable.prev_todo,
                                                         notifiText, res);
@@ -214,7 +206,10 @@ public class AlarmFragment extends Fragment {
                                         prevNotificationListView.setHasFixedSize(true);
                                         prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
                                     }
+
                                 }
+
+
                             }
                         }
                     }
