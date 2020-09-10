@@ -45,7 +45,6 @@ public class Login2Activity extends AppCompatActivity {
     private informationSetFragment informationSetFragment;
     private activeFragment activeFragment;
     private Commu_WriteFragment commu_writeFragment;
-    private activeFragment activeFragment;
 
 
     @Override

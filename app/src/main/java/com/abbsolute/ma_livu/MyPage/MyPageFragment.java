@@ -42,10 +42,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     //reCyclerView 관련 변수
     private static RecyclerPostAdapter mAdapter = null;
 
-    //활동창 관련 변수
-    private int myPost_count = 0;
-    private String PostCountName;
-
     private MyPageDataListener dataListener;
     private Button  btnMyPage_informationSet,btnMyPage_title,btnMyPage_pay,btnMyPage_active,btnMyPage_friend;
     private TextView nickname,textView_email;
@@ -62,9 +58,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
 
     public static RecyclerPostAdapter adapter;
     public static ArrayList<postItemListView> arrayList;
-    private int myPost_count;
-    private String  myPostCountName;
 
+    //활동창 관련 변수
+    private int myPost_count = 0;
+    private String  myPostCountName;
 
     public MyPageFragment(){};
 
