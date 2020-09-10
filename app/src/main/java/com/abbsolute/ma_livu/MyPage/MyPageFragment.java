@@ -145,6 +145,14 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         btnMyPage_pay = view.findViewById(R.id.btnMyPage_pay);
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
         btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
+        //btnMyPage_friend 클릭시 친구목록으로 간다
+        btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //
 
         /*대표칭호,email findViewByID*/
         nickname = view.findViewById(R.id.nickname);
