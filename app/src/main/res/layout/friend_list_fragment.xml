@@ -104,15 +104,92 @@
             android:textColor="#2E2E2E">
         </TextView>
         <ImageView
-            android:layout_marginLeft="320sp"
+            android:id="@+id/friend_order"
+            android:layout_marginLeft="310sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_array">
         </ImageView>
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
+    <View
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/friends_list">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="1sp"
+        android:background="#9FA5AB">
+    </View>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/friends_list">
+        </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+            android:id="@+id/layout_friend_sort"
+            android:layout_width="150dp"
+            android:layout_height="170dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background_white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/friend_linearLayout2"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_background_mint"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/friend_textView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:text="정렬 기준"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/friend_radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <RadioButton
+                    android:id="@+id/friend_sort_latest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:buttonTint="#90DCEE"
+                    android:text="최신순" />
+
+                <RadioButton
+                    android:id="@+id/friend_sort_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:buttonTint="#90DCEE"
+                    android:text="이름순" />
+
+                <RadioButton
+                    android:id="@+id/friend_sort_commit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:buttonTint="#90DCEE"
+                    android:text="등록날짜순" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </FrameLayout>
+
 </LinearLayout>

@@ -18,6 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:layout_marginLeft="3sp"
+                    android:layout_weight="10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/friend_nickname"
@@ -25,25 +27,69 @@
                     android:textColor="#2E2E2E">
                 </TextView>
                 <ImageView
+                    android:layout_marginRight="8sp"
                     android:layout_marginTop="5sp"
-                    android:layout_marginLeft="250sp"
-                    android:layout_width="wrap_content"
+                    android:layout_weight="0.3"
+                    android:layout_width="2sp"
                     android:layout_height="wrap_content"
                     android:id="@+id/friend_list_more"
                     android:background="@drawable/more">
                 </ImageView>
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/today_count"
-                android:hint="today 199980">
-            </TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3sp"
+                    android:id="@+id/today_count"
+                    android:layout_weight="3"
+                    android:hint="today 199980">
+                </TextView>
+                <LinearLayout
+                    android:layout_marginRight="30sp"
+                    android:id="@+id/friend_comment_extra"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/half_round_border"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+                    <Button
+                        android:id="@+id/btn_friend_delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="#00FFFFFF"
+                        android:text="친구삭제"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                    <View
+                        android:id="@+id/grey_line2"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="#D3D3D3"
+                        android:paddingRight="1dp" />
+                    <Button
+                        android:id="@+id/btn_friend_block"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="#00FFFFFF"
+                        android:text="차단"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
             <Button
+                android:id="@+id/go_room"
+                android:layout_marginLeft="3sp"
                 android:layout_marginTop="5sp"
                 android:layout_marginBottom="7sp"
                 android:layout_width="wrap_content"
-                android:layout_height="32sp"
+                android:layout_height="25sp"
                 android:background="@drawable/button_background"
                 android:text="방 놀러가기"
                 android:textColor="#FFFFFF">
@@ -53,6 +99,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1sp"
-        android:background="#848484">
+        android:background="#9FA5AB">
     </View>
 </LinearLayout>
