@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
+import com.abbsolute.ma_livu.Alarm.AlarmFragmentAllLook;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
 
@@ -96,6 +97,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private ToDoFixModifyingFragment toDoFixModifyingFragment;
     //고정리스트 삭제화면
     ToDoFixListRemoveFragment toDoFixListRemoveFragment;
+    //이전알림 모두보기로 이동
+    AlarmFragmentAllLook alarmFragmentAllLook;
     private int count;
     //todoList관련 뒤로가기 이벤트
     OnBackPressedListener listener;
@@ -128,7 +131,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         toDoFragment=new ToDoFragment(); //투두 리스트 화면
         toDoWriteMainFragment=new ToDoWriteMainFragment();//투두 작성 메인 화면
         toDoFixModifyingFragment=new ToDoFixModifyingFragment();//고정리스트 수정 화면
-
+        /// alarm 프래그먼트들//
+        alarmFragmentAllLook=new AlarmFragmentAllLook();
 
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
@@ -240,7 +244,15 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 toDoFixListRemoveFragment = new ToDoFixListRemoveFragment();
                 fragmentTransaction.replace(R.id.main_frame, toDoFixListRemoveFragment).commit();
                 break;
-
+            //alarmFragment 프래그먼트
+            case 200:
+                fragmentTransaction.replace(R.id.main_frame,alarmFragmentAllLook);
+                fragmentTransaction.commit();
+                break;
+            case 201:
+                fragmentTransaction.replace(R.id.main_frame,alarmFragment);
+                fragmentTransaction.commit();
+                break;
 
         }
     }

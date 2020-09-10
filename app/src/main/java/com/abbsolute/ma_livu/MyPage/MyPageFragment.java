@@ -8,18 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +29,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Stack;
+
+import static android.content.Context.MODE_PRIVATE;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -60,6 +59,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     private static String email;
     private static String str_nickname;
     private static long clean_complete, trash_complete, todo_complete, wash_complete;
+
+    public static RecyclerPostAdapter adapter;
+    public static ArrayList<postItemListView> arrayList;
+    private int myPost_count;
+    private String  myPostCountName;
+
 
     public MyPageFragment(){};
 
@@ -141,15 +146,14 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*
-     //   PostCountName = email + "-postCountFile";
-
-        mList = new ArrayList<>();
-        mAdapter = new RecyclerPostAdapter(mList);
-
+        arrayList = new ArrayList<>();
         String[] communityCategory = {"how_do","what_do","what_eat"};
-
+        myPostCountName = email + "-myPostCountFile";
         myPost_count = 0;
+        adapter = new RecyclerPostAdapter(arrayList);
+
+        arrayList.clear();
+
 
         for(int i = 0; i < communityCategory.length; i++) {
             firestore.collection(FirebaseID.Community).document(communityCategory[i]).collection("sub_Community")
@@ -160,36 +164,31 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 if (task.getResult() != null) {
-                                    mList.clear();
+//                                    arrayList.clear();
                                     for (DocumentSnapshot snapshot : task.getResult()) {
                                         String kor_category = "";
 
                                         Map<String, Object> shot = snapshot.getData();
-                                        String category = String.valueOf(shot.get(FirebaseID.category));
-                                        String title = String.valueOf(shot.get(FirebaseID.title));
-                                        //나머지 정보도 다 불러올 수 있음 근데 일단은 setText할 것만 불러옴
-                                        if (category.equals("how_do")) {
-                                            kor_category = "어떻게 하지?";
-                                        } else if (category.equals("what_do")) {
-                                            kor_category = "뭐 하지?";
-                                        } else if (category.equals("what_eat")) {
-                                            kor_category = "뭐 먹지?";
-                                        }
 
-                                        Log.d("category and title", category + title);
+                                        String Category = String.valueOf(shot.get(FirebaseID.category));
+                                        String Title = String.valueOf(shot.get(FirebaseID.title));
+                                        String Content = String.valueOf(shot.get(FirebaseID.content));
+                                        String Date = String.valueOf(shot.get(FirebaseID.commu_date));
 
-                                        postItemListView postItemListView = new postItemListView(kor_category, title);
-                                        mList.add(postItemListView);
+//                                        Log.d("category and title", category + title);
+
+                                        postItemListView data = new postItemListView(Category, Title, Content, Date);
+                                        arrayList.add(data);
                                         myPost_count++;
                                     }
-                                    mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+                                    adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
 
                                 } else {
                                     myPost_count = 0;
-                                    mList.clear();
+                                    arrayList.clear();
                                 }
                                 //todo: sharedPreference에 count 값 저장하기
-                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PostCountName, MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                                 editor.putInt("myPost_count", myPost_count);
@@ -199,7 +198,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                     });
         }
 
-*/
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -216,6 +215,18 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         btnMyPage_pay = view.findViewById(R.id.btnMyPage_pay);
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
         btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
+        //btnMyPage_friend 클릭시 친구목록으로 간다
+        btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
+                FriendListFragment friendListFragment=new FriendListFragment();
+                fragmentTransaction.replace(R.id.main_frame,friendListFragment);
+                fragmentTransaction.commit();
+
+            }
+        });
+        //
 
         /*대표칭호,email findViewByID*/
         nickname = view.findViewById(R.id.nickname);

@@ -1,5 +1,6 @@
 package com.abbsolute.ma_livu.Community;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CommunityPostsFragment extends Fragment {
@@ -36,30 +40,14 @@ public class CommunityPostsFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static bringData data;
+    private List<ImageUpload> get_images;
 
     // 값 받아오는 변수들
-    private String title;
-    private String writer;
-    private String content;
-    private String date;
-    private String category;
-    private String commentCount;
-    private String saveCount;
-    private String likeCount;
-
-    private TextView commu_title;
-    private TextView commu_writer;
-    private TextView commu_date;
-    private TextView commu_content;
-    private TextView commu_category;
-    private TextView commu_like_count;
-    private TextView commu_save_count;
-    private TextView commu_comment_count;
-
+    private String title,writer,content,date,category,commentCount,saveCount,likeCount;
+    private TextView commu_title,commu_writer,commu_date,commu_content,commu_category,commu_like_count,commu_save_count,commu_comment_count;
     private Button btn_back;
-    private ImageButton btn_commu_like;
-    private ImageButton btn_commu_save;
-    private ImageButton btn_commu_comment;
+    private ImageButton btn_commu_like,btn_commu_save,btn_commu_comment;
+    private ImageView get_commu_img1,get_commu_img2,get_commu_img3;
 
     @Nullable
     @Override
@@ -80,6 +68,10 @@ public class CommunityPostsFragment extends Fragment {
         btn_commu_save = view.findViewById(R.id.btn_commu_save);
         btn_commu_comment = view.findViewById(R.id.btn_commu_comment);
 
+        get_commu_img1=view.findViewById(R.id.get_commu_img1);
+        get_commu_img2=view.findViewById(R.id.get_commu_img2);
+        get_commu_img3=view.findViewById(R.id.get_commu_img3);
+
         if(getArguments() != null){
             // CommunityFragment에서 데이터 받아오기
             title = getArguments().getString("Title");
@@ -88,7 +80,6 @@ public class CommunityPostsFragment extends Fragment {
             date = getArguments().getString("Date");
             category = getArguments().getString("Category");
         }
-
         commu_title.setText(title);
         commu_title.setSelected(true);
         commu_writer.setText(writer);
@@ -103,6 +94,9 @@ public class CommunityPostsFragment extends Fragment {
         if(category.equals("how_do")){
             commu_category.setText("어떻게 하지?");
         }
+
+        //사진 가져오기
+        getImage();
 
 //        // firestore에서 댓글 개수 정보 가져오기
         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -147,7 +141,6 @@ public class CommunityPostsFragment extends Fragment {
             }
         });
 
-
         // '좋아요' 버튼 클릭 시 count 증가
         btn_commu_like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,12 +168,10 @@ public class CommunityPostsFragment extends Fragment {
             }
         });
 
-
         // '저장' 버튼 클릭했을 때
         btn_commu_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // 현재의 좋아요 갯수 받아오기
                 int save_count;
                 save_count = Integer.parseInt(commu_save_count.getText().toString());
@@ -226,7 +217,45 @@ public class CommunityPostsFragment extends Fragment {
                 transaction.commit();
             }
         });
-
         return view;
     }
+
+    private void getImage(){
+        get_images = new ArrayList<>();
+//        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if(task.isSuccessful()){
+//                            if(task.getResult() != null) {
+//
+//                                for (DocumentSnapshot snapshot : task.getResult()) {
+//                                    Map<String, Object> shot = snapshot.getData();
+//                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+//                                    title = String.valueOf(shot.get(FirebaseID.title));
+//                                    content = String.valueOf(shot.get(FirebaseID.content));
+//                                    category = String.valueOf(shot.get(FirebaseID.category));
+//                                    date = String.valueOf(shot.get(FirebaseID.commu_date));
+//
+////                                            for(int i=0; i<FirebaseID.Commu_image_URI.length(); i++){
+////                                                img_uri[i]= (String) shot.get(FirebaseID.Commu_image_URI);
+////                                            }
+////                                            Log.d("CommunityFragment", "img_uri = "+img_uri);
+//                                    writer = String.valueOf(shot.get(FirebaseID.Nickname));
+//
+//
+//                                    likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+//                                    saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+//
+//                                }
+//                            }
+//                    }   }
+//                });
+//    }
 }
+
+
+
+
+
