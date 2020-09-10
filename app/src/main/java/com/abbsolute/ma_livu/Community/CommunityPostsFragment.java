@@ -43,22 +43,22 @@ public class CommunityPostsFragment extends Fragment {
     private List<ImageUpload> get_images;
 
     // 값 받아오는 변수들
-    private String title,writer,content,date,category,commentCount,saveCount,likeCount;
-    private TextView commu_title,commu_writer,commu_date,commu_content,commu_category,commu_like_count,commu_save_count,commu_comment_count;
+    private String title, writer, content, date, category, commentCount, saveCount, likeCount;
+    private TextView commu_title, commu_writer, commu_date, commu_content, commu_category, commu_like_count, commu_save_count, commu_comment_count;
     private Button btn_back;
-    private ImageButton btn_commu_like,btn_commu_save,btn_commu_comment;
-    private ImageView get_commu_img1,get_commu_img2,get_commu_img3;
+    private ImageButton btn_commu_like, btn_commu_save, btn_commu_comment;
+    private ImageView get_commu_img1, get_commu_img2, get_commu_img3;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_community_posts,container,false);
+        View view = inflater.inflate(R.layout.fragment_community_posts, container, false);
 
         commu_title = view.findViewById(R.id.commu_title);
         commu_date = view.findViewById(R.id.commu_date);
-        commu_writer=view.findViewById(R.id.commu_writer);
+        commu_writer = view.findViewById(R.id.commu_writer);
         commu_content = view.findViewById(R.id.commu_content);
-        commu_category=view.findViewById(R.id.commu_category);
+        commu_category = view.findViewById(R.id.commu_category);
         commu_like_count = view.findViewById(R.id.commu_like_count);
         commu_save_count = view.findViewById(R.id.commu_save_count);
         commu_comment_count = view.findViewById(R.id.commu_comment_count);
@@ -68,11 +68,11 @@ public class CommunityPostsFragment extends Fragment {
         btn_commu_save = view.findViewById(R.id.btn_commu_save);
         btn_commu_comment = view.findViewById(R.id.btn_commu_comment);
 
-        get_commu_img1=view.findViewById(R.id.get_commu_img1);
-        get_commu_img2=view.findViewById(R.id.get_commu_img2);
-        get_commu_img3=view.findViewById(R.id.get_commu_img3);
+        get_commu_img1 = view.findViewById(R.id.get_commu_img1);
+        get_commu_img2 = view.findViewById(R.id.get_commu_img2);
+        get_commu_img3 = view.findViewById(R.id.get_commu_img3);
 
-        if(getArguments() != null){
+        if (getArguments() != null) {
             // CommunityFragment에서 데이터 받아오기
             title = getArguments().getString("Title");
             writer = getArguments().getString("Writer");
@@ -88,10 +88,10 @@ public class CommunityPostsFragment extends Fragment {
         if (category.equals("what_eat")) {
             commu_category.setText("뭐 먹지?");
         }
-        if(category.equals("what_do")){
+        if (category.equals("what_do")) {
             commu_category.setText("뭐 하지?");
         }
-        if(category.equals("how_do")){
+        if (category.equals("how_do")) {
             commu_category.setText("어떻게 하지?");
         }
 
@@ -110,7 +110,7 @@ public class CommunityPostsFragment extends Fragment {
 
                             if (document.exists()) {
                                 Map<String, Object> shot = document.getData();
-                                commentCount  = shot.get(FirebaseID.commu_comment_count).toString();
+                                commentCount = shot.get(FirebaseID.commu_comment_count).toString();
                                 commu_comment_count.setText(commentCount);
 
                                 likeCount = shot.get(FirebaseID.commu_like_count).toString();
@@ -178,7 +178,7 @@ public class CommunityPostsFragment extends Fragment {
 
                 // 버튼이 눌리지 않은 상태를 기본으로 설정
                 v.setSelected(!v.isSelected());
-                if(v.isSelected()) {
+                if (v.isSelected()) {
                     commu_save_count.setText(Integer.toString(save_count + 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
@@ -220,7 +220,7 @@ public class CommunityPostsFragment extends Fragment {
         return view;
     }
 
-    private void getImage(){
+    private void getImage() {
         get_images = new ArrayList<>();
 //        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
 //                .get()
@@ -253,6 +253,7 @@ public class CommunityPostsFragment extends Fragment {
 //                    }   }
 //                });
 //    }
+    }
 }
 
 
