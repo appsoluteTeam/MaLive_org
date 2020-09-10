@@ -1,7 +1,9 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -9,14 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.loader.content.CursorLoader;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
@@ -28,27 +33,29 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.common.io.Files.getFileExtension;
+
 public class Commu_WriteFragment extends Fragment {
 
     private View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); // 작성자UID를 가져오기 위해서 선언
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // 파이어스토어를 사용하기 위해서 선언
-    public FirebaseStorage firestorage = FirebaseStorage.getInstance();
-    public StorageReference storageRef;
-    public StorageReference imageRef;
-
+    private StorageReference storageReference=FirebaseStorage.getInstance().getReference();
 
     //카테고리 클릭
     private TextView category_eat,category_do,category_how;
@@ -73,7 +80,7 @@ public class Commu_WriteFragment extends Fragment {
     private Uri urione;
     private static final int IMAGE_REQUEST_CODE = 1888;
     public CommunityAdapter adapter;
-    private ArrayList<String> image_list = new ArrayList<String>();
+    private ArrayList<Uri> image_list = new ArrayList<Uri>();
 
     public Commu_WriteFragment() {}
 
@@ -121,11 +128,9 @@ public class Commu_WriteFragment extends Fragment {
 
         et_title = view.findViewById(R.id.et_title);
         et_content = view.findViewById(R.id.et_content);
-
         category_eat = (TextView) view.findViewById(R.id.category_eat);
         category_do = (TextView) view.findViewById(R.id.category_do);
         category_how = (TextView) view.findViewById(R.id.category_how);
-
 
         //카테고리 선택되었을 때 클릭리스너
         TextView.OnClickListener categoryListener = new TextView.OnClickListener() {
@@ -170,8 +175,9 @@ public class Commu_WriteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(intent, IMAGE_REQUEST_CODE);
+                startActivityForResult(intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_CODE);
             }
         });
 
@@ -199,11 +205,6 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
                     data.put(FirebaseID.Nickname,str_nickname);
 
-                    //사진 uri 저장
-                    Map<String, Object> data2 = new HashMap<>();
-                    for (int i=0; i<image_list.size(); i++){
-                        data2.put((FirebaseID.Commu_image_URI)+i,(image_list.get(i)).toString());
-                    }
                     uploadFile(); // 파이어스토리지에 사진 올리기
 
                     // 좋아요, 저장, 댓글
@@ -211,14 +212,10 @@ public class Commu_WriteFragment extends Fragment {
                     data.put(FirebaseID.commu_save_count, save_count);
                     data.put(FirebaseID.commu_comment_count, comment_count);
 
-
                     // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
                             .collection("sub_Community").document(et_title.getText().toString())
                             .set(data, SetOptions.merge());
-                    firestore.collection(FirebaseID.Community).document(category)
-                            .collection("sub_Community").document(et_title.getText().toString())
-                            .set(data2, SetOptions.merge());
                 }
                 ((HomeActivity) getActivity()).setFragment(50);
             }
@@ -236,18 +233,16 @@ public class Commu_WriteFragment extends Fragment {
 
     }
 
-    //사진 올리기
+    //사진 셋팅하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE) {
-
+        if (requestCode == IMAGE_REQUEST_CODE  && data != null && data.getData() != null) {
             //기존 이미지 지우기
             img1.setImageResource(0);
             img2.setImageResource(0);
             img3.setImageResource(0);
             img4.setImageResource(0);
             img5.setImageResource(0);
-
             //데이터 가져오기
             image = data.getData();
             ClipData clipData = data.getClipData();
@@ -257,7 +252,7 @@ public class Commu_WriteFragment extends Fragment {
                 {
                     if(i<clipData.getItemCount()){
                         urione =  clipData.getItemAt(i).getUri();
-                        image_list.add(urione.toString());
+                        image_list.add(urione);
                         switch (i){
                             case 0:
                                 img1.setImageURI(urione);
@@ -278,26 +273,35 @@ public class Commu_WriteFragment extends Fragment {
     }
 
     private void uploadFile() {
-        //업로드할 파일이 있으면 수행
-        Log.d("Commu_WriteFragment", "image");
-        if (image != null) {
-            StorageReference riversRef = storage.child("images/rivers.jpg");
-            riversRef.putFile(image)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        if(image_list !=null){
+            final StorageReference sRef = storageReference.child(FirebaseID.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image_list)));
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            // ...
-                        }
-                    });
-        } else {
-            Log.d("Commu_WriteFragment", "사진을 선택안했어용");
+            for(int i = 0; i<image_list.size(); i++){
+                final int finalI = i;
+                sRef.putFile(image_list.get(i))
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                sRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        //creating the upload object to store uploaded image details
+                                        ImageUpload upload = new ImageUpload(uri.toString());
+
+                                        //adding an upload to firebase database
+                                        firestore.collection(FirebaseID.Community).document(category)
+                                                .collection("sub_Community").document(et_title.getText().toString())
+                                                .set(upload, SetOptions.merge());
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            }
         }
     }
+
 }

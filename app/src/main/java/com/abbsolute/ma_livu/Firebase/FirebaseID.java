@@ -102,5 +102,8 @@ public class FirebaseID {
     //AlarmFragment 파이어스토어
     public static String alarm_fragment="AlarmFragment";
 
+    //스토리지
+    public static final String STORAGE_PATH_UPLOADS = "community_images/";
+
 
 }
