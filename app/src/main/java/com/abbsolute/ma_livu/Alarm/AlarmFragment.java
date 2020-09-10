@@ -249,6 +249,7 @@ public class AlarmFragment extends Fragment {
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                             if(date!=null){
+                                                                                Log.d("OK!!","Okay!!!~~");
                                                                                 String res = prevTimeSetClass.formatTimeString(date);
                                                                                 String responseText = "내 글에 댓글이 달렸어요";
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
@@ -316,6 +317,7 @@ public class AlarmFragment extends Fragment {
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
+                                                                                                                Log.d("OK!!","Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date);
                                                                                                                 String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
@@ -390,6 +392,7 @@ public class AlarmFragment extends Fragment {
                                                                                 PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                 String res="";
                                                                                 if(date!=null){
+                                                                                    Log.d("OK!!","Okay!!!~~");
                                                                                     res = prevTimeSetClass.formatTimeString(date);
                                                                                     String responseText = "내 글에 댓글이 달렸어요";
                                                                                     PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
@@ -459,6 +462,7 @@ public class AlarmFragment extends Fragment {
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
+                                                                                                                Log.d("OK!!","Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date);
                                                                                                                 String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
@@ -534,6 +538,7 @@ public class AlarmFragment extends Fragment {
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                             if(date!=null){
+                                                                                Log.d("OK!!","Okay!!!~~");
                                                                                 String res = prevTimeSetClass.formatTimeString(date);
                                                                                 String responseText = "내 글에 댓글이 달렸어요";
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
@@ -601,6 +606,7 @@ public class AlarmFragment extends Fragment {
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
+                                                                                                                Log.d("OK!!","Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date);
                                                                                                                 String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
