@@ -68,7 +68,7 @@ public class FriendListFragment extends Fragment {
         layoutFriendSort.setVisibility(View.GONE);
 
         friendOrder=view.findViewById(R.id.friend_order);
-        ImageView.OnClickListener friendOrder= new ImageView.OnClickListener() {
+        friendOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("clicked!","success");
@@ -76,7 +76,7 @@ public class FriendListFragment extends Fragment {
                 friendRecyclerview.setBackgroundColor(Color.parseColor("#F5F5F5"));
                 radioSet();
             }
-        };
+        });
         return view;
     }
     public void radioSet(){
@@ -116,7 +116,7 @@ public class FriendListFragment extends Fragment {
             case 3:
                 String titleTextCommitDate="등록날짜순";
                 sortText.setText(titleTextCommitDate);
-                layoutFriendSort.setVisibility(view.VISIBLE);
+                friendOrder.setVisibility(view.VISIBLE);
                 break;
         }
     }
