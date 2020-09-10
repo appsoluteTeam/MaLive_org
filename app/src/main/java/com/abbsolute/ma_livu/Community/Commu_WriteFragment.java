@@ -81,6 +81,8 @@ public class Commu_WriteFragment extends Fragment {
     private static final int IMAGE_REQUEST_CODE = 1888;
     public CommunityAdapter adapter;
     private ArrayList<Uri> image_list = new ArrayList<Uri>();
+    private int image_turn=0;
+    private ArrayList<String> image_temp = new ArrayList<String>();
 
     public Commu_WriteFragment() {}
 
@@ -187,7 +189,6 @@ public class Commu_WriteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (firebaseAuth.getCurrentUser() != null) {
-
                     like_count  = 0;
                     save_count = 0;
                     comment_count = 0;
@@ -199,18 +200,20 @@ public class Commu_WriteFragment extends Fragment {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
-                    data.put(FirebaseID.category, category);
-                    data.put(FirebaseID.title, et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
-                    data.put(FirebaseID.content, et_content.getText().toString());
-                    data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
-                    data.put(FirebaseID.Nickname,str_nickname);
+                    data.put(FirebaseID.category, category); //카테고리
+                    data.put(FirebaseID.title, et_title.getText().toString()); // 제목
+                    data.put(FirebaseID.content, et_content.getText().toString()); //내용
+                    data.put(FirebaseID.commu_date, dateform.format(date.getTime())); // 작성시간
+                    data.put(FirebaseID.Nickname,str_nickname); // 작성자 닉네임
+                    data.put(FirebaseID.commu_like_count, like_count); //좋아요
+                    data.put(FirebaseID.commu_save_count, save_count); //스크랩수
+                    data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
 
-                    uploadFile(); // 파이어스토리지에 사진 올리기
-
-                    // 좋아요, 저장, 댓글
-                    data.put(FirebaseID.commu_like_count, like_count);
-                    data.put(FirebaseID.commu_save_count, save_count);
-                    data.put(FirebaseID.commu_comment_count, comment_count);
+                    //파이어 스토리지 사진 올리기
+                    for(Uri image:image_list){
+                        uploadFile(image,image_turn);
+                        image_turn++;
+                    }
 
                     // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
@@ -248,7 +251,7 @@ public class Commu_WriteFragment extends Fragment {
             ClipData clipData = data.getClipData();
 
             if (data != null) {
-                for(int i = 0; i < 3; i++)
+                for(int i = 0; i < 5; i++)
                 {
                     if(i<clipData.getItemCount()){
                         urione =  clipData.getItemAt(i).getUri();
@@ -263,6 +266,10 @@ public class Commu_WriteFragment extends Fragment {
                             case 2:
                                 img3.setImageURI(urione);
                                 break;
+                            case 3:
+                                img4.setImageURI(urione);
+                            case 4:
+                                img5.setImageURI(urione);
                         }
                     }
                 }
@@ -272,13 +279,11 @@ public class Commu_WriteFragment extends Fragment {
         }
     }
 
-    private void uploadFile() {
-        if(image_list !=null){
-            final StorageReference sRef = storageReference.child(FirebaseID.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image_list)));
 
-            for(int i = 0; i<image_list.size(); i++){
-                final int finalI = i;
-                sRef.putFile(image_list.get(i))
+    private void uploadFile(Uri image, final int idx) {
+            final StorageReference sRef = storageReference.child(
+                        FirebaseID.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image)));
+                sRef.putFile(image)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -287,11 +292,13 @@ public class Commu_WriteFragment extends Fragment {
                                     public void onSuccess(Uri uri) {
                                         //creating the upload object to store uploaded image details
                                         ImageUpload upload = new ImageUpload(uri.toString());
+                                        final Map<String, Object> data = new HashMap<>();
+                                        data.put("Uri"+idx,upload.getUrl());
 
                                         //adding an upload to firebase database
                                         firestore.collection(FirebaseID.Community).document(category)
                                                 .collection("sub_Community").document(et_title.getText().toString())
-                                                .set(upload, SetOptions.merge());
+                                                .set(data, SetOptions.merge());
                                     }
                                 });
                             }
@@ -301,7 +308,7 @@ public class Commu_WriteFragment extends Fragment {
                     }
                 });
             }
-        }
+
+
     }
 
-}
