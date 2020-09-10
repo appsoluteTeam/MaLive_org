@@ -191,6 +191,7 @@ public class Commu_WriteFragment extends Fragment {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
+                    data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());
                     data.put(FirebaseID.category, category);
                     data.put(FirebaseID.title, et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
                     data.put(FirebaseID.content, et_content.getText().toString());
