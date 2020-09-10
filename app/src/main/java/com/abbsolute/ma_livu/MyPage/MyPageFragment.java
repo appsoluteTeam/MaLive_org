@@ -149,6 +149,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
+                FriendListFragment friendListFragment=new FriendListFragment();
+                fragmentTransaction.replace(R.id.main_frame,friendListFragment);
+                fragmentTransaction.commit();
 
             }
         });
