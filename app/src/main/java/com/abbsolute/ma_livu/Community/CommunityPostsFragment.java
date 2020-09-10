@@ -195,7 +195,6 @@ public class CommunityPostsFragment extends Fragment {
                 }
             }
         });
-
         // '댓글' 버튼 눌렀을 시
         btn_commu_comment.setOnClickListener(new View.OnClickListener() {
             @Override

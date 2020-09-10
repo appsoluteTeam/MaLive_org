@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,11 +38,13 @@ public class FriendListFragment extends Fragment {
     private RadioGroup radioGroup;
     //최신순,이름순,등록날짜순
     ImageView friendOrder;
+    TextView sortText;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.friend_list_fragment,container,false);
         Button backButton=view.findViewById(R.id.btn_back);
+        sortText=view.findViewById(R.id.sort_text);
         //뒤로가기 구현
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,14 +71,10 @@ public class FriendListFragment extends Fragment {
         ImageView.OnClickListener friendOrder= new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.layout_friend_sort:
-                        Log.d("clicked!","success");
-                        layoutFriendSort.setVisibility(v.VISIBLE);
-                        friendRecyclerview.setBackgroundColor(Color.parseColor("#F5F5F5"));
-                        radioSet();
-                        break;
-                }
+                Log.d("clicked!","success");
+                layoutFriendSort.setVisibility(v.VISIBLE);
+                friendRecyclerview.setBackgroundColor(Color.parseColor("#F5F5F5"));
+                radioSet();
             }
         };
         return view;
@@ -107,10 +106,18 @@ public class FriendListFragment extends Fragment {
     public void friendCallRecycler(int n){
         switch (n){
             case 1:
-
+                String titleTextLatest="최신순";
+                sortText.setText(titleTextLatest);
+                break;
             case 2:
-
+                String titleTextName="이름순";
+                sortText.setText(titleTextName);
+                break;
             case 3:
+                String titleTextCommitDate="등록날짜순";
+                sortText.setText(titleTextCommitDate);
+                layoutFriendSort.setVisibility(view.VISIBLE);
+                break;
         }
     }
 }
