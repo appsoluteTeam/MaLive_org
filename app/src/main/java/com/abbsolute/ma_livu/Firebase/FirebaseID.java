@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Firebase;
 
+import com.abbsolute.ma_livu.R;
+
 public class FirebaseID {
 
     //파이어스토어 컬렉션 이름
@@ -20,8 +22,8 @@ public class FirebaseID {
     public static String category ="category";
     public static String content ="content";
     public static String commu_date ="commu_date";
+    public static String commu_img_explain="commu_img_explain";
 
-    public static String Commu_image_URI ="Commu_image_URI";
 
     public static String commu_comment_count = "commu_comment_count";
     public static String commu_like_count = "commu_like_count";
@@ -101,6 +103,9 @@ public class FirebaseID {
 
     //AlarmFragment 파이어스토어
     public static String alarm_fragment="AlarmFragment";
+
+    //스토리지
+    public static final String STORAGE_PATH_UPLOADS = "community_images/";
 
 
 }
