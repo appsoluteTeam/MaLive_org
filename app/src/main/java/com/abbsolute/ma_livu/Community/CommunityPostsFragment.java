@@ -224,8 +224,38 @@ public class CommunityPostsFragment extends Fragment {
         get_images = new ArrayList<>();
 //        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
 //                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if(task.isSuccessful()){
+//                            if(task.getResult() != null) {
 //
-    }
-
-
+//                                for (DocumentSnapshot snapshot : task.getResult()) {
+//                                    Map<String, Object> shot = snapshot.getData();
+//                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+//                                    title = String.valueOf(shot.get(FirebaseID.title));
+//                                    content = String.valueOf(shot.get(FirebaseID.content));
+//                                    category = String.valueOf(shot.get(FirebaseID.category));
+//                                    date = String.valueOf(shot.get(FirebaseID.commu_date));
+//
+////                                            for(int i=0; i<FirebaseID.Commu_image_URI.length(); i++){
+////                                                img_uri[i]= (String) shot.get(FirebaseID.Commu_image_URI);
+////                                            }
+////                                            Log.d("CommunityFragment", "img_uri = "+img_uri);
+//                                    writer = String.valueOf(shot.get(FirebaseID.Nickname));
+//
+//
+//                                    likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+//                                    saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+//
+//                                }
+//                            }
+//                    }   }
+//                });
+//    }
 }
+
+
+
+
+
