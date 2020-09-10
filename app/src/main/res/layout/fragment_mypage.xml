@@ -276,16 +276,14 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnMyPage_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/title_total_icon"
@@ -303,16 +301,14 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnMyPage_pay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/pay_total_icon"
@@ -330,16 +326,14 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnMyPage_active"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/active_total_icon"
@@ -357,16 +351,14 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:onClick="onClick"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnMyPage_friend"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/friend_total_icon"

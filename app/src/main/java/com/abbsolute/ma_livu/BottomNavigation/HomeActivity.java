@@ -109,9 +109,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
         fragmentStack = new Stack<>();
 
-        //출석체크 메소드
-        //attendance_check();
-
         //기본 fragment
         homeFragment = new HomeFragment();
         myPageFragment = new MyPageFragment();
@@ -188,64 +185,64 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     }
 
     // 프래그먼트 교체가 일어나는 함수
-    public void setFragment(int n){
+    public void setFragment(int n) {
         fragmentManager = getSupportFragmentManager();
 
         fragmentTransaction = fragmentManager.beginTransaction();
-        switch (n){
+        switch (n) {
             case 0:
-                fragmentTransaction.replace(R.id.main_frame,homeFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
                 break;
             case 1:
                 fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.main_frame,myPageFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
                 break;
             case 3:
-                fragmentTransaction.replace(R.id.main_frame,alarmFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, alarmFragment).commit();
                 break;
             case 4:
-                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
+                fragmentTransaction.replace(R.id.main_frame, guestBookFragment);
                 fragmentTransaction.commit();
                 break;
             case 5:
-                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
+                fragmentTransaction.replace(R.id.main_frame, guestBookWriteFragment);
                 fragmentTransaction.commit();
                 break;
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
-                fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, communityFragment).commit();
                 break;
             case 51:
-                fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, commu_writeFragment).commit();
                 break;
             case 52:
-                fragmentTransaction.replace(R.id.main_frame,communityPostsFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).commit();
                 break;
             //투두 프래그먼트로 이동
             case 100:
-                fragmentTransaction.replace(R.id.main_frame,toDoFragment);
+                fragmentTransaction.replace(R.id.main_frame, toDoFragment);
                 fragmentTransaction.commit();
                 break;
             //투두 작성메인 화면
             case 101:
-                fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment);
+                fragmentTransaction.replace(R.id.main_frame, toDoWriteMainFragment);
                 fragmentTransaction.commit();
                 break;
             //고정리스트
             case 102:
-                fragmentTransaction.replace(R.id.main_frame,toDoFixModifyingFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, toDoFixModifyingFragment).commit();
                 break;
             //고정 할 일 프레그먼트
             case 103:
-                toDoFixWriteFragment=new ToDoFixWriteFragment();
-                fragmentTransaction.replace(R.id.main_frame,toDoFixWriteFragment).commit();
+                toDoFixWriteFragment = new ToDoFixWriteFragment();
+                fragmentTransaction.replace(R.id.main_frame, toDoFixWriteFragment).commit();
                 break;
             case 104:
-                toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
-                fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
+                toDoFixListRemoveFragment = new ToDoFixListRemoveFragment();
+                fragmentTransaction.replace(R.id.main_frame, toDoFixListRemoveFragment).commit();
                 break;
             //alarmFragment 프래그먼트
             case 200:
@@ -260,30 +257,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         }
     }
 
-    //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나
-    public void attendance_check(){
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        currentMills = System.currentTimeMillis();  //현재시간
-        beforeMills = sharedPreferences.getLong("beforeMills",0);
-
-        Log.d("currentMills",String.valueOf(currentMills));
-        Log.d("beforeMills",String.valueOf(beforeMills));
-
-        if(currentMills - beforeMills >= milli24hour) {   //하루이상 지남
-            //todo:출첵 팝업창 띄어주고 파이어스토어 저장
-            Toast.makeText(HomeActivity.this, "출석체크 완료!", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(HomeActivity.this,"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
-        }
-
-        //sharedPreference에 마지막 접속시간 저장
-        editor.putLong("beforeMills",currentMills);
-        editor.commit();
-    }
-
 
     /* 마이페이지 관련 */
 
@@ -291,6 +264,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void myPageDataSet(int myPageCategory){
         myPageCategoryIndex = myPageCategory;
     }
+
 
     /*각 프래그먼트에서 데이터 받는 메소드*/
     public void dataSet(String title, int index, int category){

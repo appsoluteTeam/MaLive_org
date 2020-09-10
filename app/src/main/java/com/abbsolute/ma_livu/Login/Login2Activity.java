@@ -20,6 +20,8 @@ import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.activeFragment;
 import com.abbsolute.ma_livu.MyPage.payFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
+import com.abbsolute.ma_livu.MyPage.activeFragment;
+
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +43,7 @@ public class Login2Activity extends AppCompatActivity {
     private MyPageFragment myPageFragment;
     private payFragment payFragment;
     private informationSetFragment informationSetFragment;
+    private activeFragment activeFragment;
     private Commu_WriteFragment commu_writeFragment;
     private activeFragment activeFragment;
 
@@ -80,6 +83,7 @@ public class Login2Activity extends AppCompatActivity {
                                     informationSetFragment = new informationSetFragment(email);
                                     homeFragment = new HomeFragment(email);
                                     activeFragment = new activeFragment(email);
+
                                     commu_writeFragment =new Commu_WriteFragment(email);
 
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);

@@ -86,9 +86,10 @@ public class FirebaseID {
     public static String pay = "pay";
     public static String amount = "amount";
     public static String balance = "balance";
-    public static String pay_date = "date";
-    public static String inout = "inout";
-    public static String pay_title = "title";
+    public static String pay_date = "pay_date";
+    public static String inout = "pay_time_deposit_withdrawal";
+    public static String pay_title = "pay_title";
+    public static String pay_time = "pay_time";
     public static String tmpData ="tmpData";
     public static String recentDocument = "recentDocument";
     public static String wash_complete = "빨래complete";

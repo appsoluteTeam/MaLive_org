@@ -1,5 +1,6 @@
 package com.abbsolute.ma_livu.MyPage;
 
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
@@ -40,11 +42,23 @@ public class activeFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static Stack<Fragment> fragmentStack;
+    private static String email;
 
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
+
+    private Fragment activeFragment;
+
     private Button btn_back;
+
+
+    public activeFragment(){}
+
+    public activeFragment(String email){
+        this.email = email;
+    }
+
 
     //활동으로 넘어가는 버튼
     private Button btn_myPost, btn_myComment,  btn_myScrape;
@@ -100,6 +114,7 @@ public class activeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_mypage_active, container, false);
 
         btn_back = view.findViewById(R.id.btn_back);
+        activeFragment = new activeFragment();
 
         btn_myPost = view.findViewById(R.id.btn_myPost);
         btn_myComment = view.findViewById(R.id.btn_myComment);
@@ -129,6 +144,7 @@ public class activeFragment extends Fragment {
                         Fragment nextFragment = fragmentStack.pop();
                         fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
                         break;
+
                     case R.id. btn_myPost:
                         Log.d("activeFragment go myPostFragment","myPost buttonclick");
                         activeMyPostFragment activeMyPostFragment = new activeMyPostFragment();
@@ -145,6 +161,7 @@ public class activeFragment extends Fragment {
                         break;
                     case R.id. btn_myScrape:
                         break;
+
                 }
             }
         };

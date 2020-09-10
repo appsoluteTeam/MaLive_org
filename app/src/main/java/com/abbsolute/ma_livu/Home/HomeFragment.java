@@ -122,6 +122,10 @@ public class HomeFragment extends Fragment {
                                 if (document.exists()) {
                                     Map<String, Object> shot = document.getData();
                                     atCount = (long)shot.get(FirebaseID.attendanceCount);
+                                    atCount += 1;
+
+                                    //출석체크 +1 추가한 값 저장장
+                                   firestore.collection(FirebaseID.Attendance).document(email).update(FirebaseID.attendanceCount,atCount);
                                     Log.d("HomeFragment", "at count get 완료");
                                 } else {
                                     Log.d("HomeFragment", "No such document");
@@ -132,13 +136,6 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-            atCount += 1;
-
-            if (firebaseAuth.getCurrentUser() != null) {
-                Map<String, Object> userMap = new HashMap<>();
-                userMap.put(FirebaseID.attendanceCount,atCount);
-                firestore.collection(FirebaseID.Attendance).document(email).set(userMap, SetOptions.merge());
-            }
             Toast.makeText(getContext(), "출석체크 완료!", Toast.LENGTH_SHORT).show();
         }
 
