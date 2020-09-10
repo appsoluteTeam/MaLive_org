@@ -199,6 +199,7 @@ public class Commu_WriteFragment extends Fragment {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
+                    data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());//이메일
                     data.put(FirebaseID.category, category); //카테고리
                     data.put(FirebaseID.title, et_title.getText().toString()); // 제목
                     data.put(FirebaseID.content, et_content.getText().toString()); //내용
@@ -213,6 +214,7 @@ public class Commu_WriteFragment extends Fragment {
                         uploadFile(image,image_turn);
                         image_turn++;
                     }
+
 
                     //이미지 설명 넣기
                     EditText[] commu_explain = {commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5};

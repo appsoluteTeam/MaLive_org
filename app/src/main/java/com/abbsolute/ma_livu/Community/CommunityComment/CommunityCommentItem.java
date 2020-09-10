@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Community.CommunityComment;
 
+import android.text.BoringLayout;
+
 public class CommunityCommentItem {
     private String name;
     private String comment;
@@ -7,6 +9,7 @@ public class CommunityCommentItem {
     private String date;
     private String comment_like;
     private String comment_count;
+//    private Boolean comment_like_check;
 
     public CommunityCommentItem(String name, String comment, String date, String comment_like, String comment_count) {
         this.name = name;
@@ -14,6 +17,7 @@ public class CommunityCommentItem {
         this.date = date;
         this.comment_like = comment_like;
         this.comment_count = comment_count;
+//        this.comment_like_check = comment_like_check;
     }
 
     public String getName() {
@@ -63,4 +67,12 @@ public class CommunityCommentItem {
     public void setComment_count(String comment_count) {
         this.comment_count = comment_count;
     }
+
+//    public Boolean getComment_like_check() {
+//        return comment_like_check;
+//    }
+//
+//    public void setComment_like_check(Boolean comment_like_check) {
+//        this.comment_like_check = comment_like_check;
+//    }
 }

@@ -17,6 +17,7 @@ import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
+import com.abbsolute.ma_livu.MyPage.activeFragment;
 import com.abbsolute.ma_livu.MyPage.payFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
@@ -41,6 +42,7 @@ public class Login2Activity extends AppCompatActivity {
     private payFragment payFragment;
     private informationSetFragment informationSetFragment;
     private Commu_WriteFragment commu_writeFragment;
+    private activeFragment activeFragment;
 
 
     @Override
@@ -77,7 +79,7 @@ public class Login2Activity extends AppCompatActivity {
                                     payFragment = new payFragment(email);
                                     informationSetFragment = new informationSetFragment(email);
                                     homeFragment = new HomeFragment(email);
-
+                                    activeFragment = new activeFragment(email);
                                     commu_writeFragment =new Commu_WriteFragment(email);
 
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
