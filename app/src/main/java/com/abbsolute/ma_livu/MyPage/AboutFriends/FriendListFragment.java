@@ -25,12 +25,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.R;
 
 import java.util.ArrayList;
 
-public class FriendListFragment extends Fragment{
+public class FriendListFragment extends Fragment implements GoRoomClick{
     RecyclerView friendRecyclerview;
     FriendListAdapter friendListAdapter;
     //ArrayList<FriendListInfo> arrayList=new ArrayList<>();
@@ -76,6 +78,7 @@ public class FriendListFragment extends Fragment{
         //
         friendRecyclerview=view.findViewById(R.id.friends_list);
         friendListAdapter=new FriendListAdapter();
+        friendListAdapter.setContext(getContext(),this);
         FriendListInfo friendListInfo=new FriendListInfo(R.mipmap.ic_launcher_round,"nickName","100");
         friendListAdapter.addItem(friendListInfo);
         friendListAdapter.addItem(friendListInfo);
@@ -152,7 +155,11 @@ public class FriendListFragment extends Fragment{
         }
     }
 
-
-
-
+    //HomeFragment로 가는 함수
+    @Override
+    public void onClick(int n) {
+        if(n==2){
+            ((HomeActivity)getActivity()).setFragment(0);
+        }
+    }
 }
