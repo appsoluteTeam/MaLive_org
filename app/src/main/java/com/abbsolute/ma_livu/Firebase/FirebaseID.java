@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Firebase;
 
+import android.net.Uri;
+
 import com.abbsolute.ma_livu.R;
 
 public class FirebaseID {
@@ -23,6 +25,7 @@ public class FirebaseID {
     public static String content ="content";
     public static String commu_date ="commu_date";
     public static String commu_img_explain="commu_img_explain";
+    public static String Url ="Url";
 
 
     public static String commu_comment_count = "commu_comment_count";

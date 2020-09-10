@@ -223,7 +223,6 @@ public class CommunityFragment extends Fragment {
 //                                if(task.isSuccessful()){
 //                                    if(task.getResult() != null){
 //                                        arrayList.clear();
-//
 //                                        for(DocumentSnapshot snapshot : task.getResult()){
 //                                            Map<String,Object> shot = snapshot.getData();
 //                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));

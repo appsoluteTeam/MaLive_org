@@ -215,7 +215,6 @@ public class Commu_WriteFragment extends Fragment {
                         image_turn++;
                     }
 
-
                     //이미지 설명 넣기
                     EditText[] commu_explain = {commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5};
                     for(int i=0; i<5; i++){
@@ -254,6 +253,7 @@ public class Commu_WriteFragment extends Fragment {
             image = data.getData();
             ClipData clipData = data.getClipData();
 
+            //사진 여러장 보이게 하기 
             if (data != null) {
                 for(int i = 0; i < 5; i++)
                 {
@@ -288,10 +288,9 @@ public class Commu_WriteFragment extends Fragment {
         }
     }
 
-
     private void uploadFile(Uri image, final int idx) {
-            final StorageReference sRef = storageReference.child(
-                        FirebaseID.STORAGE_PATH_UPLOADS + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image)));
+            final StorageReference sRef = storageReference.child(FirebaseID.STORAGE_PATH_UPLOADS+
+                        et_title.getText().toString()+"/" + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image)));
                 sRef.putFile(image)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -302,7 +301,7 @@ public class Commu_WriteFragment extends Fragment {
                                         //creating the upload object to store uploaded image details
                                         ImageUpload upload = new ImageUpload(uri.toString());
                                         final Map<String, Object> data = new HashMap<>();
-                                        data.put("Uri"+idx,upload.getUrl());
+                                        data.put(FirebaseID.Url+idx,upload.getUrl());
 
                                         //adding an upload to firebase database
                                         firestore.collection(FirebaseID.Community).document(category)
