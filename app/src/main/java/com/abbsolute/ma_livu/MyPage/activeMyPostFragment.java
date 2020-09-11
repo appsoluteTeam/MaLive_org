@@ -107,7 +107,7 @@ public class activeMyPostFragment extends Fragment {
 //                    });
 //        }
 
-        arrayList = MyPageFragment.arrayList;
+        arrayList = activeFragment.arrayList;
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
         recyclerView = (RecyclerView) view.findViewById(R.id.active_recyclerVIew);
