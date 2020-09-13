@@ -1,7 +1,9 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -9,14 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.loader.content.CursorLoader;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
@@ -28,24 +33,29 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.common.io.Files.getFileExtension;
+
 public class Commu_WriteFragment extends Fragment {
 
     private View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); // 작성자UID를 가져오기 위해서 선언
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // 파이어스토어를 사용하기 위해서 선언
-    private StorageReference storage = FirebaseStorage.getInstance().getReference();
+    private StorageReference storageReference=FirebaseStorage.getInstance().getReference(); // 슽호리쥐~
 
     //카테고리 클릭
     private TextView category_eat,category_do,category_how;
@@ -54,8 +64,9 @@ public class Commu_WriteFragment extends Fragment {
     //작성한 글
     private EditText et_title,et_content;
     private ImageView img1,img2,img3,img4,img5;
-    private static String email;
-    private static String str_nickname;
+    private EditText commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5;
+    private static String email,str_nickname;
+    private static int comment_count,save_count,like_count;
 
     //버튼
     private TextView btn_commu_upload;
@@ -65,15 +76,14 @@ public class Commu_WriteFragment extends Fragment {
     private SimpleDateFormat dateform;
     private Calendar date;
 
-    //사진
-    private Uri image;
-    private Uri urione;
+    //사진 올리기에 필요한 변수들
+    private Uri image,urione;
     private static final int IMAGE_REQUEST_CODE = 1888;
     public CommunityAdapter adapter;
-    private ArrayList<String> image_list = new ArrayList<String>();
+    private ArrayList<Uri> image_list = new ArrayList<Uri>();
+    private int image_turn=0;
 
     public Commu_WriteFragment() {}
-
     public Commu_WriteFragment(String email) {
         this.email = email;
         Log.d("email",email);
@@ -106,12 +116,6 @@ public class Commu_WriteFragment extends Fragment {
                 });
     }
 
-
-
-    private static int comment_count;
-    private static int save_count;
-    private static int like_count;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -119,11 +123,9 @@ public class Commu_WriteFragment extends Fragment {
 
         et_title = view.findViewById(R.id.et_title);
         et_content = view.findViewById(R.id.et_content);
-
         category_eat = (TextView) view.findViewById(R.id.category_eat);
         category_do = (TextView) view.findViewById(R.id.category_do);
         category_how = (TextView) view.findViewById(R.id.category_how);
-
 
         //카테고리 선택되었을 때 클릭리스너
         TextView.OnClickListener categoryListener = new TextView.OnClickListener() {
@@ -161,6 +163,12 @@ public class Commu_WriteFragment extends Fragment {
         img3=view.findViewById(R.id.commu_img3);
         img4=view.findViewById(R.id.commu_img4);
         img5=view.findViewById(R.id.commu_img5);
+        commu_img_explain1=view.findViewById(R.id.commu_img_explain1);commu_img_explain1.setVisibility(view.INVISIBLE);
+        commu_img_explain2=view.findViewById(R.id.commu_img_explain2);commu_img_explain2.setVisibility(view.INVISIBLE);
+        commu_img_explain3=view.findViewById(R.id.commu_img_explain3);commu_img_explain3.setVisibility(view.INVISIBLE);
+        commu_img_explain4=view.findViewById(R.id.commu_img_explain4);commu_img_explain4.setVisibility(view.INVISIBLE);
+        commu_img_explain5=view.findViewById(R.id.commu_img_explain5);commu_img_explain5.setVisibility(view.INVISIBLE);
+
 
         //사진 업로드드 눌렀을 때
         btn_image = (ImageButton) view.findViewById(R.id.btn_image);
@@ -168,8 +176,9 @@ public class Commu_WriteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(intent, IMAGE_REQUEST_CODE);
+                startActivityForResult(intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_CODE);
             }
         });
 
@@ -179,7 +188,6 @@ public class Commu_WriteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (firebaseAuth.getCurrentUser() != null) {
-
                     like_count  = 0;
                     save_count = 0;
                     comment_count = 0;
@@ -191,19 +199,29 @@ public class Commu_WriteFragment extends Fragment {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
-                    data.put(FirebaseID.category, category);
-                    data.put(FirebaseID.title, et_title.getText().toString()); // title 이란 필드이름으로 작성한 제목 저장
-                    data.put(FirebaseID.content, et_content.getText().toString());
-                    data.put(FirebaseID.commu_date, dateform.format(date.getTime()));
+                    data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());//이메일
+                    data.put(FirebaseID.category, category); //카테고리
+                    data.put(FirebaseID.title, et_title.getText().toString()); // 제목
+                    data.put(FirebaseID.content, et_content.getText().toString()); //내용
+                    data.put(FirebaseID.commu_date, dateform.format(date.getTime())); // 작성시간
+                    data.put(FirebaseID.Nickname,str_nickname); // 작성자 닉네임
+                    data.put(FirebaseID.commu_like_count, like_count); //좋아요
+                    data.put(FirebaseID.commu_save_count, save_count); //스크랩수
+                    data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
 
-                    data.put(FirebaseID.Nickname,str_nickname);
-                    data.put(FirebaseID.Commu_image_URI,image_list);
+                    //파이어 스토리지 사진 올리기
+                    for(Uri image:image_list){
+                        uploadFile(image,image_turn);
+                        image_turn++;
+                    }
 
-                    // 좋아요, 저장, 댓글
-                    data.put(FirebaseID.commu_like_count, like_count);
-                    data.put(FirebaseID.commu_save_count, save_count);
-                    data.put(FirebaseID.commu_comment_count, comment_count);
-
+                    //이미지 설명 넣기
+                    EditText[] commu_explain = {commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5};
+                    for(int i=0; i<5; i++){
+                        if(!(commu_explain[i].getText().toString().equals(""))){
+                            data.put((FirebaseID.commu_img_explain)+i,commu_explain[i].getText().toString());
+                        }
+                    }
 
                     // 저장 위치 변경
                     firestore.collection(FirebaseID.Community).document(category)
@@ -226,38 +244,41 @@ public class Commu_WriteFragment extends Fragment {
 
     }
 
-    //사진 올리기
+    //사진 셋팅하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE) {
-
-            //기존 이미지 지우기
-            img1.setImageResource(0);
-            img2.setImageResource(0);
-            img3.setImageResource(0);
-            img4.setImageResource(0);
-            img5.setImageResource(0);
+        if (requestCode == IMAGE_REQUEST_CODE  && data != null && data.getData() != null) {
 
             //데이터 가져오기
             image = data.getData();
             ClipData clipData = data.getClipData();
 
+            //사진 여러장 보이게 하기 
             if (data != null) {
-                for(int i = 0; i < 3; i++)
+                for(int i = 0; i < 5; i++)
                 {
                     if(i<clipData.getItemCount()){
                         urione =  clipData.getItemAt(i).getUri();
-                        image_list.add(urione.toString());
+                        image_list.add(urione);
                         switch (i){
                             case 0:
                                 img1.setImageURI(urione);
+                                commu_img_explain1.setVisibility(View.VISIBLE);
                                 break;
                             case 1:
                                 img2.setImageURI(urione);
+                                commu_img_explain2.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
                                 img3.setImageURI(urione);
+                                commu_img_explain3.setVisibility(View.VISIBLE);
                                 break;
+                            case 3:
+                                img4.setImageURI(urione);
+                                commu_img_explain4.setVisibility(View.VISIBLE);
+                            case 4:
+                                img5.setImageURI(urione);
+                                commu_img_explain5.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -267,27 +288,35 @@ public class Commu_WriteFragment extends Fragment {
         }
     }
 
-    private void uploadFile() {
-        //업로드할 파일이 있으면 수행
-        Log.d("Commu_WriteFragment", "image");
-        if (image != null) {
-            StorageReference riversRef = storage.child("images/rivers.jpg");
-            riversRef.putFile(image)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+    private void uploadFile(Uri image, final int idx) {
+            final StorageReference sRef = storageReference.child(FirebaseID.STORAGE_PATH_UPLOADS+
+                        et_title.getText().toString()+"/" + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image)));
+                sRef.putFile(image)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                sRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        //creating the upload object to store uploaded image details
+                                        ImageUpload upload = new ImageUpload(uri.toString());
+                                        final Map<String, Object> data = new HashMap<>();
+                                        data.put(FirebaseID.Url+idx,upload.getUrl());
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            // ...
-                        }
-                    });
-        } else {
-            Log.d("Commu_WriteFragment", "사진을 선택안했어용");
-        }
+                                        //adding an upload to firebase database
+                                        firestore.collection(FirebaseID.Community).document(category)
+                                                .collection("sub_Community").document(et_title.getText().toString())
+                                                .set(data, SetOptions.merge());
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                    }
+                });
+            }
+
+
     }
-}
+

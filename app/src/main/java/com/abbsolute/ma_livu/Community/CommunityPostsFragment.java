@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Community;
 
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +23,17 @@ import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentAdapter;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CommunityPostsFragment extends Fragment {
@@ -36,41 +44,27 @@ public class CommunityPostsFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static bringData data;
+    private String get_images,get_explain_temp;
 
     // 값 받아오는 변수들
-    private String title;
-    private String writer;
-    private String content;
-    private String date;
-    private String category;
-    private String commentCount;
-    private String saveCount;
-    private String likeCount;
-
-    private TextView commu_title;
-    private TextView commu_writer;
-    private TextView commu_date;
-    private TextView commu_content;
-    private TextView commu_category;
-    private TextView commu_like_count;
-    private TextView commu_save_count;
-    private TextView commu_comment_count;
-
+    private String title, writer, content, date, category, commentCount, saveCount, likeCount;
+    private TextView commu_title, commu_writer, commu_date, commu_content, commu_category, commu_like_count, commu_save_count, commu_comment_count;
     private Button btn_back;
-    private ImageButton btn_commu_like;
-    private ImageButton btn_commu_save;
-    private ImageButton btn_commu_comment;
+    private ImageButton btn_commu_like, btn_commu_save, btn_commu_comment;
+    private ImageView get_commu_img1, get_commu_img2, get_commu_img3,get_commu_img4,get_commu_img5;
+    private TextView get_commu_explain1,get_commu_explain2,get_commu_explain3,get_commu_explain4,get_commu_explain5;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_community_posts,container,false);
+        final View view = inflater.inflate(R.layout.fragment_community_posts, container, false);
 
         commu_title = view.findViewById(R.id.commu_title);
         commu_date = view.findViewById(R.id.commu_date);
-        commu_writer=view.findViewById(R.id.commu_writer);
+        commu_writer = view.findViewById(R.id.commu_writer);
         commu_content = view.findViewById(R.id.commu_content);
-        commu_category=view.findViewById(R.id.commu_category);
+        commu_category = view.findViewById(R.id.commu_category);
         commu_like_count = view.findViewById(R.id.commu_like_count);
         commu_save_count = view.findViewById(R.id.commu_save_count);
         commu_comment_count = view.findViewById(R.id.commu_comment_count);
@@ -80,7 +74,16 @@ public class CommunityPostsFragment extends Fragment {
         btn_commu_save = view.findViewById(R.id.btn_commu_save);
         btn_commu_comment = view.findViewById(R.id.btn_commu_comment);
 
-        if(getArguments() != null){
+        get_commu_img1 = view.findViewById(R.id.get_commu_img1);get_commu_img2 = view.findViewById(R.id.get_commu_img2);get_commu_img3 = view.findViewById(R.id.get_commu_img3);get_commu_img4 = view.findViewById(R.id.get_commu_img4);get_commu_img5 = view.findViewById(R.id.get_commu_img5);
+        get_commu_explain1=view.findViewById(R.id.get_commu_explain1);get_commu_explain1.setVisibility(view.INVISIBLE);
+        get_commu_explain2=view.findViewById(R.id.get_commu_explain2);get_commu_explain2.setVisibility(view.INVISIBLE);
+        get_commu_explain3=view.findViewById(R.id.get_commu_explain3);get_commu_explain3.setVisibility(view.INVISIBLE);
+        get_commu_explain4=view.findViewById(R.id.get_commu_explain4);get_commu_explain4.setVisibility(view.INVISIBLE);
+        get_commu_explain5=view.findViewById(R.id.get_commu_explain5);get_commu_explain5.setVisibility(view.INVISIBLE);
+        final TextView[] get_expain = {get_commu_explain1,get_commu_explain2,get_commu_explain3,get_commu_explain4,get_commu_explain5};
+        final ImageView[] get_img ={get_commu_img1,get_commu_img2,get_commu_img3,get_commu_img4,get_commu_img5};
+
+        if (getArguments() != null) {
             // CommunityFragment에서 데이터 받아오기
             title = getArguments().getString("Title");
             writer = getArguments().getString("Writer");
@@ -88,7 +91,6 @@ public class CommunityPostsFragment extends Fragment {
             date = getArguments().getString("Date");
             category = getArguments().getString("Category");
         }
-
         commu_title.setText(title);
         commu_title.setSelected(true);
         commu_writer.setText(writer);
@@ -97,14 +99,15 @@ public class CommunityPostsFragment extends Fragment {
         if (category.equals("what_eat")) {
             commu_category.setText("뭐 먹지?");
         }
-        if(category.equals("what_do")){
+        if (category.equals("what_do")) {
             commu_category.setText("뭐 하지?");
         }
-        if(category.equals("how_do")){
+        if (category.equals("how_do")) {
             commu_category.setText("어떻게 하지?");
         }
 
-//        // firestore에서 댓글 개수 정보 가져오기
+
+        // firestore에서 댓글 개수, 사진 정보 가져오기
         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -113,18 +116,28 @@ public class CommunityPostsFragment extends Fragment {
                         if (task.isSuccessful()) {
                             // 컬렉션 내의 document에 접근
                             DocumentSnapshot document = task.getResult();
-
                             if (document.exists()) {
                                 Map<String, Object> shot = document.getData();
-                                commentCount  = shot.get(FirebaseID.commu_comment_count).toString();
+                                commentCount = shot.get(FirebaseID.commu_comment_count).toString();
                                 commu_comment_count.setText(commentCount);
-
                                 likeCount = shot.get(FirebaseID.commu_like_count).toString();
                                 commu_like_count.setText(likeCount);
-
                                 saveCount = shot.get(FirebaseID.commu_save_count).toString();
                                 commu_save_count.setText(saveCount);
 
+                                //사진 업로드
+                                Map<String, Object> shot2 = document.getData();
+                                for (int i=0; i<5; i++){
+                                    if(shot.get((FirebaseID.Url)+i) != null){
+                                        get_images=((String)shot2.get((FirebaseID.Url)+i));
+                                        Glide.with(getActivity()).load(get_images).into(get_img[i]);
+                                        if(shot2.get((FirebaseID.commu_img_explain)+i) !=null){
+                                            get_explain_temp= (String) shot2.get((FirebaseID.commu_img_explain)+i);
+                                            get_expain[i].setVisibility(view.VISIBLE);
+                                            get_expain[i].setText(get_explain_temp);
+                                        }
+                                    }
+                                }
                             } else {
                                 Log.d("CommunityPostsFragment", "댓글 개수 가져오기 실패");
                             }
@@ -146,7 +159,6 @@ public class CommunityPostsFragment extends Fragment {
                 transaction.commit();
             }
         });
-
 
         // '좋아요' 버튼 클릭 시 count 증가
         btn_commu_like.setOnClickListener(new View.OnClickListener() {
@@ -175,19 +187,17 @@ public class CommunityPostsFragment extends Fragment {
             }
         });
 
-
         // '저장' 버튼 클릭했을 때
         btn_commu_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // 현재의 좋아요 갯수 받아오기
                 int save_count;
                 save_count = Integer.parseInt(commu_save_count.getText().toString());
 
                 // 버튼이 눌리지 않은 상태를 기본으로 설정
                 v.setSelected(!v.isSelected());
-                if(v.isSelected()) {
+                if (v.isSelected()) {
                     commu_save_count.setText(Integer.toString(save_count + 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
@@ -204,7 +214,6 @@ public class CommunityPostsFragment extends Fragment {
                 }
             }
         });
-
         // '댓글' 버튼 눌렀을 시
         btn_commu_comment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +235,11 @@ public class CommunityPostsFragment extends Fragment {
                 transaction.commit();
             }
         });
-
         return view;
     }
 }
+
+
+
+
+

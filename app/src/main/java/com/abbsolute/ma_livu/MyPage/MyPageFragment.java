@@ -1,39 +1,50 @@
 package com.abbsolute.ma_livu.MyPage;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Stack;
+
+import static android.content.Context.MODE_PRIVATE;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /* 마이페이지 메인 fragment */
 
 public class MyPageFragment extends Fragment implements View.OnClickListener{
     private View view;
+
+    //reCyclerView 관련 변수
+    private static RecyclerPostAdapter mAdapter = null;
+
     private MyPageDataListener dataListener;
     private Button  btnMyPage_informationSet,btnMyPage_title,btnMyPage_pay,btnMyPage_active,btnMyPage_friend;
     private TextView nickname,textView_email;
@@ -128,7 +139,30 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        arrayList = new ArrayList<>();
+//        arrayList2 = new ArrayList<>();
+//        final String[] communityCategory = {"how_do","what_do","what_eat"};
+//        myPostCountName = email + "-myPostCountFile";
+//        myPost_count = 0;
+//
+//        myCommentCountName = email + "-myCommentCountFile";
+//        myComment_count = 0;
+//
+//        adapter = new RecyclerPostAdapter(arrayList);
+//        adapter = new RecyclerPostAdapter(arrayList2);
+//        arrayList.clear();
+//        arrayList2.clear();
+//
+//        for(int i = 0; i < communityCategory.length; i++) {
+//            final String Category2 = communityCategory[i];
+//            final ArrayList<String> Title = new ArrayList<String>();
+//
+//            // 내가 쓴 글 불러오기
+//            bringMyPost(Category2);
+//
+//            // 댓글 단 글 불러오기
+//            bringMyCommentPost(Category2, Title);
+//        }
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -145,6 +179,18 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         btnMyPage_pay = view.findViewById(R.id.btnMyPage_pay);
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
         btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
+        //btnMyPage_friend 클릭시 친구목록으로 간다
+        btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
+                FriendListFragment friendListFragment=new FriendListFragment();
+                fragmentTransaction.replace(R.id.main_frame,friendListFragment);
+                fragmentTransaction.commit();
+
+            }
+        });
+        //
 
         /*대표칭호,email findViewByID*/
         nickname = view.findViewById(R.id.nickname);
@@ -203,4 +249,97 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
+
+//    // 내가 쓴 글 불러오기
+//    public void bringMyPost(String Category2) {
+//        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").whereEqualTo("email", email)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//
+////                            내가 쓴 글 불러오기
+//                        if (task.isSuccessful()) {
+//                            if (task.getResult() != null) {
+//                                for (DocumentSnapshot snapshot : task.getResult()) {
+//
+//                                    Map<String, Object> shot = snapshot.getData();
+//
+//                                    String Category = String.valueOf(shot.get(FirebaseID.category));
+//                                    String Title = String.valueOf(shot.get(FirebaseID.title));
+//                                    String Content = String.valueOf(shot.get(FirebaseID.content));
+//                                    String Date = String.valueOf(shot.get(FirebaseID.commu_date));
+//
+//                                    postItemListView data = new postItemListView(Category, Title, Content, Date);
+//                                    arrayList.add(data);
+//                                    myPost_count++;
+//                                }
+//                                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+//
+//                            } else {
+//                                myPost_count = 0;
+//                                arrayList.clear();
+//                            }
+//                            //todo: sharedPreference에 count 값 저장하기
+//                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedPreferences.edit();
+//                            editor.putInt("myPost_count", myPost_count);
+//                            editor.commit();
+//                        }
+//                    }
+//                });
+//    }
+//
+//    // 댓글 단 글 불러오기
+//    public void bringMyCommentPost(final String Category2, final ArrayList<String> Title) {
+//        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        // 댓글 단 글 받아오기
+//                        if (task.isSuccessful()) {
+//                            if (task.getResult() != null) {
+//                                for (DocumentSnapshot snapshot : task.getResult()) {
+//                                    Map<String, Object> shot = snapshot.getData();
+//                                    Title.add(String.valueOf(shot.get(FirebaseID.title)));
+//                                    //adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
+//                                }
+//                                for (int j = 0; j < Title.size(); j++) {
+//                                    final String Title2 = Title.get(j);
+//                                    firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").document(Title2).collection("Community_comment")
+//                                            .whereEqualTo("email", email)
+//                                            .get()
+//                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                                @Override
+//                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                                    if (task.isSuccessful()) {
+//                                                        if (task.getResult() != null) {
+//                                                            for (DocumentSnapshot snapshot : task.getResult()) {
+//                                                                Map<String, Object> shot2 = snapshot.getData();
+//                                                                final String Content = String.valueOf(shot2.get(FirebaseID.content));
+//                                                                final String Date = String.valueOf(shot2.get(FirebaseID.commu_date));
+//                                                                postItemListView data = new postItemListView(Category2, Title2, Content, Date);
+//                                                                arrayList2.add(data);
+//                                                                myComment_count++;
+//                                                                Log.d("plz", Integer.valueOf(myComment_count).toString());
+//                                                            }
+//                                                        } else {
+//                                                            myComment_count = 0;
+//                                                            arrayList2.clear();
+//                                                        }
+//                                                        //몰라
+//                                                        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myCommentCountName, MODE_PRIVATE);
+//                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                                                        editor.putInt("myComment_count", myComment_count);
+//                                                        editor.commit();
+//                                                    }
+//                                                }
+//                                            });
+//                                }
+//                            }
+//                        }
+//                    }
+//                });
+//    }
 }

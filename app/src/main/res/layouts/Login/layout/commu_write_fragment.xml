@@ -298,7 +298,8 @@
                         android:id="@+id/commu_img5"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        tools:src="@tools:sample/avatars" />
+                        tools:src="@tools:sample/avatars"
+                        tools:visibility="visible" />
 
                     <EditText
                         android:id="@+id/commu_img_explain5"

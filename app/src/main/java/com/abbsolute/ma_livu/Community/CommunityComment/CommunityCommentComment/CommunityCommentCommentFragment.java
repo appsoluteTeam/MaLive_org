@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -67,6 +68,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
     private String commentDate;
     private String commentComment;
     private String commentLike;
+    private Boolean commentLikeCheck;
 
     private TextView commentname;
     private TextView commentdate;
@@ -77,6 +79,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
 
     private Button btn_back;
     private Button btn_insert;
+    private Button btn_comment_like;
 
     private EditText recomment;
     private static int count;
@@ -90,6 +93,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
 
         btn_back = view.findViewById(R.id.btn_back);
         btn_insert = view.findViewById(R.id.btn_comment_comment_insert);
+        btn_comment_like = view.findViewById(R.id.btn_comment_like);
 
         commentname = view.findViewById(R.id.CommentName);
         commentdate = view.findViewById(R.id.CommentDate);
@@ -108,13 +112,22 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
             commentDate = getArguments().getString("CommentDate");
             commentComment = getArguments().getString("CommentComment");
             commentLike = getArguments().getString("CommentLike");
+            commentLikeCheck = getArguments().getBoolean("CommentLikeCheck");
         }
+
+        Toast.makeText(this.getContext(), "CommentLike " + commentLikeCheck, Toast.LENGTH_SHORT).show();
 
         // CommunityCommentFragment에서 받아온 텍스트 데이터 set
         commentname.setText(commentName);
         commentdate.setText(commentDate);
         commentcomment.setText(commentComment);
         commentlike.setText(commentLike);
+
+        if(commentLikeCheck == true) {
+            btn_comment_like.setSelected(!btn_comment_like.isSelected());
+        } else {
+            btn_comment_like.setSelected(btn_comment_like.isSelected());
+        }
 
         // '뒤로가기' 버튼 눌렀을 시
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +164,8 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                     // DB에 데이터 추가
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
-                    data.put(FirebaseID.commu_comment_comment_name, firebaseAuth.getCurrentUser().getEmail());
+                    data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());
+//                    data.put(FirebaseID.commu_comment_comment_name, firebaseAuth.getCurrentUser().getEmail());
                     data.put(FirebaseID.commu_comment_comment_comment, recomment.getText().toString());
                     data.put(FirebaseID.commu_comment_comment_date, dateform.format(date.getTime()));
                     data.put(FirebaseID.commu_comment_comment_like, comment_like_count);
@@ -162,6 +176,33 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                             .set(data, SetOptions.merge());
                 }
                 refresh();
+            }
+        });
+
+        btn_comment_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 현재의 좋아요 갯수 받아오기
+                int like_count;
+                like_count = Integer.parseInt(commentLike);
+
+                // 버튼이 눌리지 않은 상태를 기본으로 설정
+                if(v.isSelected() == true) {
+//                    v.setSelected(v.isSelected());
+
+                }
+                else {
+//                    v.setSelected(!v.isSelected());
+
+                }
+//                v.setSelected(!v.isSelected());
+//                if(v.isSelected()) {
+//                    commu_comment_like.setText(Integer.toString(like_count+1));
+//                    callback.commentLike(position);
+//                } else {
+//                    holder.commu_comment_like.setText(Integer.toString(like_count-1));
+//                    callback.commentDislike(position);
+//                }
             }
         });
 
@@ -179,7 +220,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
 
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     Map<String, Object> shot = snapshot.getData();
-                                    String CommentCommentName = String.valueOf(shot.get(FirebaseID.commu_comment_comment_name));
+                                    String CommentCommentName = String.valueOf(shot.get(FirebaseID.Email));
                                     String CommentComment = String.valueOf(shot.get(FirebaseID.commu_comment_comment_comment));
                                     String CommentCommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_comment_date));
                                     String CommentCommentLike = String.valueOf(shot.get(FirebaseID.commu_comment_comment_like));

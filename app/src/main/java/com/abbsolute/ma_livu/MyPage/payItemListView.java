@@ -6,14 +6,16 @@ public class payItemListView {
     private String pay_time_deposit_withdrawal;
     private String amount;
     private String balance;
+    private String pay_time;
 
 
-    public payItemListView(String pay_date,String pay_title,String pay_time_deposit_withdrawal, String amount, String balance){
+    public payItemListView(String pay_date,String pay_title,String pay_time_deposit_withdrawal, String amount, String balance,String pay_time){
         this.pay_date = pay_date;
         this.pay_title =  pay_title;
         this.pay_time_deposit_withdrawal = pay_time_deposit_withdrawal;
         this.amount = amount;
         this.balance = balance;
+        this.pay_time = pay_time;
     }
 
     public String getPay_date() {
@@ -54,5 +56,13 @@ public class payItemListView {
 
     public void setBalance(String balance) {
         this.balance = balance;
+    }
+
+    public String getPay_time() {
+        return pay_time;
+    }
+
+    public void setPay_time(String pay_time) {
+        this.pay_time = pay_time;
     }
 }

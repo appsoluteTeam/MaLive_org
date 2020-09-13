@@ -68,12 +68,14 @@ public class payFragment extends Fragment {
         layout_pay_sort = view.findViewById(R.id.layout_pay_sort);
         mRecyclerView = view.findViewById(R.id.pay_recyclerView);
         btn_back = view.findViewById(R.id.btn_back);
+
         fragmentStack = HomeActivity.fragmentStack;
         fm = getFragmentManager();
 
         //초기화면 정렬화면 안보이게
         layout_pay_sort.setVisibility(view.GONE);
 
+        //버튼 클릭 리스너
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +93,7 @@ public class payFragment extends Fragment {
                 }
             }
         };
+
         /* 각 버튼 setOnClickListener해주기 */
         btn_pay_sort.setOnClickListener(onClickListener);
         btn_back.setOnClickListener(onClickListener);
@@ -183,9 +186,11 @@ public class payFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.pay_title));
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
+                                            String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -211,9 +216,10 @@ public class payFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.pay_title));
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
+                                            String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance, pay_time);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -239,9 +245,11 @@ public class payFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.pay_title));
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
+                                            String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침

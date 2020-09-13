@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,48 +35,32 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-public class AlarmFragment extends Fragment {
-    //todo 모든 기능의 데이터가 구축되어야 할 수 있는 일
-    private View view;
-    private AlarmFriendRequestListAdapter alarmFriendRequestListAdapter;
-    private AlarmPrevNotificationListAdapter alarmPrevNotificationListAdapter;
-    private RecyclerView friendRequestListView;
-    private RecyclerView prevNotificationListView;
+public class AlarmFragmentAllLook extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private String nickName = "";
+    private RecyclerView prevNotificationListView;
+    private AlarmPrevNotificationListAdapter alarmPrevNotificationListAdapter;
+    private ArrayList<PrevNotificationInfo> prevNotificationInfos = new ArrayList<>();
     private ArrayList<String> dDayList = new ArrayList<>();
     private ArrayList<String> contentList = new ArrayList<>();
-    ///
-    private String nickName = "";
-    private ArrayList<AlarmFriendRequestInfo> alarmFriendRequestInfoArrayList = new ArrayList<>();
-    private ArrayList<PrevNotificationInfo> prevNotificationInfos = new ArrayList<>();
-    //
-    TextView allLook;
-    //user
-    String email;
+    String email = "";
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_alarm, container, false);
-        if (getArguments() != null) {//친구요청하는 부분에서 닉네임 넘겨받는 곳
-
-        }
-        allLook = view.findViewById(R.id.prev_notification_all_look);
-        allLook.setOnClickListener(new View.OnClickListener() {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.full_prevnotification_layout, container, false);
+        //goBack Button누르면 뒤로
+        Button goBack = view.findViewById(R.id.btn_back);
+        goBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity) getActivity()).setFragment(200);
+                ((HomeActivity) getActivity()).setFragment(201);
             }
         });
-        alarmFriendRequestListAdapter = new AlarmFriendRequestListAdapter();
         alarmPrevNotificationListAdapter = new AlarmPrevNotificationListAdapter();
-        friendRequestListView = view.findViewById(R.id.friend_request_list);
-        prevNotificationListView = view.findViewById(R.id.prev_notification_list);
-        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        friendRequestListView.setLayoutManager(layoutManager1);
+        prevNotificationListView = view.findViewById(R.id.prev_notification_full_list);
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        //닉네임 찾기
-        //todo 마이페이지 친구요청 부문완료하면 요청하는 부분에서 닉네임 넘겨받기
         email = user.getEmail();
         //닉네임찾기
         getNickName();
@@ -89,11 +73,13 @@ public class AlarmFragment extends Fragment {
         getWhatDoInfo();
         //내 댓글 가져오기(어떻게 하지?)
         getHowDoInfo();
+
         ///이전알림 끝
         return view;
     }
+
     //닉네임 얻기
-    public void getNickName(){
+    public void getNickName() {
         firestore.collection(FirebaseID.user).document(email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -142,8 +128,9 @@ public class AlarmFragment extends Fragment {
                     }
                 });
     }//getNickName()
+
     ///투두리스트 정보가져와서 이전알림
-    public void getToDoListInfo(){
+    public void getToDoListInfo() {
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         prevNotificationListView.setLayoutManager(layoutManager2);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
@@ -206,17 +193,15 @@ public class AlarmFragment extends Fragment {
                                         prevNotificationListView.setHasFixedSize(true);
                                         prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
                                     }
-
-                                }
-
-
+                                }//for문
                             }
                         }
                     }
                 });
     }///getToDoListInfo()
+
     //뭐먹지 정보
-    public void getWhatEatInfo(){
+    public void getWhatEatInfo() {
         final ArrayList<String> titleNameList = new ArrayList<>();
         firestore.collection(FirebaseID.Community).document("what_eat").
                 collection("sub_Community")
@@ -250,12 +235,12 @@ public class AlarmFragment extends Fragment {
                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                         Map<String, Object> data = snapshot.getData();
                                                                         String commentDate = "";
-                                                                        String content="";
+                                                                        String content = "";
                                                                         if (data.containsKey(FirebaseID.commu_comment_date)) {
                                                                             commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
                                                                         }
-                                                                        if(data.containsKey(FirebaseID.commu_comment_comment)){
-                                                                            content=String.valueOf(data.get(FirebaseID.commu_comment_comment));
+                                                                        if (data.containsKey(FirebaseID.commu_comment_comment)) {
+                                                                            content = String.valueOf(data.get(FirebaseID.commu_comment_comment));
                                                                         }
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
@@ -267,10 +252,10 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            if(date!=null){
-                                                                                Log.d("OK!!","Okay!!!~~");
+                                                                            if (date != null) {
+                                                                                Log.d("OK!!", "Okay!!!~~");
                                                                                 String res = prevTimeSetClass.formatTimeString(date);
-                                                                                String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                String responseText = "내 글에 댓글이 달렸어요" + "\n" + content;
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                         responseText, res);
                                                                                 //newArrays.add(prevNotificationInfo);
@@ -320,12 +305,12 @@ public class AlarmFragment extends Fragment {
                                                                                                     if (snapshot1.exists()) {
                                                                                                         Map<String, Object> newData = snapshot1.getData();
                                                                                                         String CommentCommentDate = "";
-                                                                                                        String content="";
+                                                                                                        String content = "";
                                                                                                         if (newData.containsKey(FirebaseID.commu_comment_comment_date)) {
                                                                                                             CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
                                                                                                         }
-                                                                                                        if(newData.containsKey(FirebaseID.commu_comment_comment_comment)){
-                                                                                                            content=String.valueOf(newData.get(FirebaseID.commu_comment_comment_comment));
+                                                                                                        if (newData.containsKey(FirebaseID.commu_comment_comment_comment)) {
+                                                                                                            content = String.valueOf(newData.get(FirebaseID.commu_comment_comment_comment));
                                                                                                         }
                                                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
@@ -339,10 +324,10 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            if(date!=null){
-                                                                                                                Log.d("OK!!","Okay!!!~~");
+                                                                                                            if (date != null) {
+                                                                                                                Log.d("OK!!", "Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요" + "\n" + content;
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 //newArrays.add(prevNotificationInfo);
@@ -372,8 +357,9 @@ public class AlarmFragment extends Fragment {
                     }
                 });
     }//
+
     //뭐하지 정보가져오기
-    public void getWhatDoInfo(){
+    public void getWhatDoInfo() {
         firestore.collection(FirebaseID.Community).document("what_do").
                 collection("sub_Community")
                 .get()
@@ -405,9 +391,9 @@ public class AlarmFragment extends Fragment {
                                                                         Map<String, Object> data = snapshot.getData();
                                                                         if (data.containsKey(FirebaseID.commu_comment_date)) {
                                                                             String commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
-                                                                            String content="";
-                                                                            if(data.containsKey(FirebaseID.commu_comment_comment)){
-                                                                                content=String.valueOf(data.get(FirebaseID.commu_comment_comment));
+                                                                            String content = "";
+                                                                            if (data.containsKey(FirebaseID.commu_comment_comment)) {
+                                                                                content = String.valueOf(data.get(FirebaseID.commu_comment_comment));
                                                                             }
                                                                             SimpleDateFormat formatter = null;
                                                                             Date date = null;
@@ -419,11 +405,11 @@ public class AlarmFragment extends Fragment {
                                                                                     e.printStackTrace();
                                                                                 }
                                                                                 PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                String res="";
-                                                                                if(date!=null){
-                                                                                    Log.d("OK!!","Okay!!!~~");
+                                                                                String res = "";
+                                                                                if (date != null) {
+                                                                                    Log.d("OK!!", "Okay!!!~~");
                                                                                     res = prevTimeSetClass.formatTimeString(date);
-                                                                                    String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                    String responseText = "내 글에 댓글이 달렸어요" + "\n" + content;
                                                                                     PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                             responseText, res);
                                                                                     //newArrays.add(prevNotificationInfo);
@@ -475,12 +461,12 @@ public class AlarmFragment extends Fragment {
                                                                                                     if (snapshot1.exists()) {
                                                                                                         Map<String, Object> newData = snapshot1.getData();
                                                                                                         String CommentCommentDate = "";
-                                                                                                        String content="";
+                                                                                                        String content = "";
                                                                                                         if (newData.containsKey(FirebaseID.commu_comment_comment_date)) {
                                                                                                             CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
                                                                                                         }
-                                                                                                        if(newData.containsKey(FirebaseID.commu_comment_comment_comment)){
-                                                                                                            content=String.valueOf(newData.get(FirebaseID.commu_comment_comment_comment));
+                                                                                                        if (newData.containsKey(FirebaseID.commu_comment_comment_comment)) {
+                                                                                                            content = String.valueOf(newData.get(FirebaseID.commu_comment_comment_comment));
                                                                                                         }
                                                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
@@ -494,10 +480,10 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            if(date!=null){
-                                                                                                                Log.d("OK!!","Okay!!!~~");
+                                                                                                            if (date != null) {
+                                                                                                                Log.d("OK!!", "Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요" + "\n" + content;
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 // newArrays.add(prevNotificationInfo);
@@ -527,8 +513,9 @@ public class AlarmFragment extends Fragment {
                     }
                 });
     }//
+
     //뭐하지
-    public void getHowDoInfo(){
+    public void getHowDoInfo() {
         firestore.collection(FirebaseID.Community).document("how_do").
                 collection("sub_Community")
                 .get()
@@ -559,12 +546,12 @@ public class AlarmFragment extends Fragment {
                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
                                                                         Map<String, Object> data = snapshot.getData();
                                                                         String commentDate = "";
-                                                                        String content="";
+                                                                        String content = "";
                                                                         if (data.containsKey(FirebaseID.commu_comment_date)) {
                                                                             commentDate = String.valueOf(data.get(FirebaseID.commu_comment_date));
                                                                         }
-                                                                        if(data.containsKey(FirebaseID.commu_comment_comment)){
-                                                                            content=String.valueOf(data.get(FirebaseID.commu_comment_comment));
+                                                                        if (data.containsKey(FirebaseID.commu_comment_comment)) {
+                                                                            content = String.valueOf(data.get(FirebaseID.commu_comment_comment));
                                                                         }
                                                                         SimpleDateFormat formatter = null;
                                                                         Date date = null;
@@ -576,10 +563,10 @@ public class AlarmFragment extends Fragment {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                            if(date!=null){
-                                                                                Log.d("OK!!","Okay!!!~~");
+                                                                            if (date != null) {
+                                                                                Log.d("OK!!", "Okay!!!~~");
                                                                                 String res = prevTimeSetClass.formatTimeString(date);
-                                                                                String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                String responseText = "내 글에 댓글이 달렸어요" + "\n" + content;
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                         responseText, res);
                                                                                 //  newArrays.add(prevNotificationInfo);
@@ -629,12 +616,12 @@ public class AlarmFragment extends Fragment {
                                                                                                     if (snapshot1.exists()) {
                                                                                                         Map<String, Object> newData = snapshot1.getData();
                                                                                                         String CommentCommentDate = "";
-                                                                                                        String content="";
+                                                                                                        String content = "";
                                                                                                         if (newData.containsKey(FirebaseID.commu_comment_comment_date)) {
                                                                                                             CommentCommentDate = String.valueOf(newData.get(FirebaseID.commu_comment_comment_date));
                                                                                                         }
-                                                                                                        if(newData.containsKey(FirebaseID.commu_comment_comment_comment)){
-                                                                                                            content=String.valueOf(newData.get(FirebaseID.commu_comment_comment_comment));
+                                                                                                        if (newData.containsKey(FirebaseID.commu_comment_comment_comment)) {
+                                                                                                            content = String.valueOf(newData.get(FirebaseID.commu_comment_comment_comment));
                                                                                                         }
                                                                                                         HashSet<PrevNotificationInfo> set = new HashSet<PrevNotificationInfo>(prevNotificationInfos);
                                                                                                         ArrayList<PrevNotificationInfo> newArrays = new ArrayList<>(set);
@@ -648,10 +635,10 @@ public class AlarmFragment extends Fragment {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
-                                                                                                            if(date!=null){
-                                                                                                                Log.d("OK!!","Okay!!!~~");
+                                                                                                            if (date != null) {
+                                                                                                                Log.d("OK!!", "Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요" + "\n" + content;
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 //newArrays.add(prevNotificationInfo);
@@ -682,3 +669,4 @@ public class AlarmFragment extends Fragment {
                 });
     }
 }
+

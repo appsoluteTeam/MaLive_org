@@ -205,12 +205,18 @@
             android:layout_margin="15dp"
             android:orientation="horizontal">
 
-            <TextView
+
+            <Button
+                android:id="@+id/btn_myPost"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:fontFamily="sans-serif"
+                android:gravity="left|center_vertical"
+
                 android:text="내가 쓴 글"
-                android:textColor="@android:color/black"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <TextView
@@ -230,13 +236,16 @@
             android:layout_margin="15dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView15"
+            <Button
+                android:id="@+id/btn_myComment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="내가 쓴 댓글"
-                android:textColor="@android:color/black"
+                android:background="#00FFFFFF"
+                android:fontFamily="sans-serif"
+                android:gravity="left|center_vertical"
+                android:text="댓글 단 글"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <TextView
@@ -256,13 +265,16 @@
             android:layout_margin="15dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView22"
+            <Button
+                android:id="@+id/btn_myScrape"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:fontFamily="sans-serif"
+                android:gravity="left|center_vertical"
                 android:text="스크랩한 글"
-                android:textColor="@android:color/black"
+                android:textColor="#000000"
                 android:textSize="18sp" />
 
             <TextView
