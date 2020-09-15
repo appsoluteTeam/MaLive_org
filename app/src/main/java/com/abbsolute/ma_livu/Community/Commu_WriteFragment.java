@@ -299,6 +299,7 @@ public class Commu_WriteFragment extends Fragment {
         }
     }
 
+    //파이어 스토리지에 사진 올리기
     private void uploadFile(Uri image, final int idx) {
             final StorageReference sRef = storageReference.child(FirebaseID.STORAGE_PATH_UPLOADS+
                         et_title.getText().toString()+"/" + System.currentTimeMillis() + "." + getFileExtension(String.valueOf(image)));
