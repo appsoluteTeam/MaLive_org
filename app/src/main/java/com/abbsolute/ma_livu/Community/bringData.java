@@ -1,6 +1,8 @@
 package com.abbsolute.ma_livu.Community;
 
 public class bringData {
+    private String img1;
+
 
     // 리사이클러뷰 데이터
 
@@ -10,25 +12,22 @@ public class bringData {
     private String date;
     private String category;
 
-    private String img_uri;
     private String writer;
     private String likeCount;
     private String saveCount;
   
 
-    public bringData(String documentID, String title, String category, String content, String date,String writer,String likeCount, String saveCount) {
+    public bringData(String documentID, String title, String category, String content, String date,String writer,String likeCount, String saveCount,String img1) {
 
         this.documentID = documentID;
         this.title = title;
         this.content = content;
         this.category =category;
         this.date = date;
-
-        this.img_uri= img_uri;
         this.writer=writer;
-
         this.likeCount = likeCount;
         this.saveCount = saveCount;
+        this.img1 = img1;
 
     }
 
@@ -74,14 +73,6 @@ public class bringData {
     }
 
 
-    public String getImg_uri() {
-        return img_uri;
-    }
-
-    public void setImg_uri(String img_uri) {
-        this.img_uri = img_uri;
-    }
-
     public String getWriter() {
         return writer;
     }
@@ -105,5 +96,13 @@ public class bringData {
     public void setSaveCount(String saveCount) {
         this.saveCount = saveCount;
 
+    }
+
+    public String getImg1() {
+        return img1;
+    }
+
+    public void setImg1(String img1) {
+        this.img1 = img1;
     }
 }
