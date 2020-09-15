@@ -98,11 +98,9 @@ public class CommunityPostsFragment extends Fragment {
         commu_date.setText(date);
         if (category.equals("what_eat")) {
             commu_category.setText("뭐 먹지?");
-        }
-        if (category.equals("what_do")) {
+        }else if (category.equals("what_do")) {
             commu_category.setText("뭐 하지?");
-        }
-        if (category.equals("how_do")) {
+        }else if(category.equals("how_do")){
             commu_category.setText("어떻게 하지?");
         }
 
