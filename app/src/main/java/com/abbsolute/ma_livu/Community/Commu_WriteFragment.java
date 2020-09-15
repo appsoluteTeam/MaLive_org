@@ -2,6 +2,7 @@ package com.abbsolute.ma_livu.Community;
 
 import android.content.ClipData;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -25,7 +26,9 @@ import androidx.loader.content.CursorLoader;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Login.Login2Activity;
 import com.abbsolute.ma_livu.R;
+import com.android.volley.toolbox.ImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +56,7 @@ import static com.google.common.io.Files.getFileExtension;
 public class Commu_WriteFragment extends Fragment {
 
     private View view;
+    private Context context;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); // 작성자UID를 가져오기 위해서 선언
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance(); // 파이어스토어를 사용하기 위해서 선언
     private StorageReference storageReference=FirebaseStorage.getInstance().getReference(); // 슽호리쥐~
@@ -64,7 +68,11 @@ public class Commu_WriteFragment extends Fragment {
     //작성한 글
     private EditText et_title,et_content;
     private ImageView img1,img2,img3,img4,img5;
+    private ImageView[] img;
+    private TextView[] expain;
+    private ImageButton[] remove;
     private EditText commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5;
+    private ImageButton remove1,remove2,remove3,remove4,remove5;
     private static String email,str_nickname;
     private static int comment_count,save_count,like_count;
 
@@ -120,6 +128,7 @@ public class Commu_WriteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.commu_write_fragment, container, false);
+        context=container.getContext();
 
         et_title = view.findViewById(R.id.et_title);
         et_content = view.findViewById(R.id.et_content);
@@ -163,11 +172,19 @@ public class Commu_WriteFragment extends Fragment {
         img3=view.findViewById(R.id.commu_img3);
         img4=view.findViewById(R.id.commu_img4);
         img5=view.findViewById(R.id.commu_img5);
+        img = new ImageView[]{img1, img2, img3, img4, img5};
         commu_img_explain1=view.findViewById(R.id.commu_img_explain1);commu_img_explain1.setVisibility(view.INVISIBLE);
         commu_img_explain2=view.findViewById(R.id.commu_img_explain2);commu_img_explain2.setVisibility(view.INVISIBLE);
         commu_img_explain3=view.findViewById(R.id.commu_img_explain3);commu_img_explain3.setVisibility(view.INVISIBLE);
         commu_img_explain4=view.findViewById(R.id.commu_img_explain4);commu_img_explain4.setVisibility(view.INVISIBLE);
         commu_img_explain5=view.findViewById(R.id.commu_img_explain5);commu_img_explain5.setVisibility(view.INVISIBLE);
+        expain = new TextView[]{commu_img_explain1, commu_img_explain2, commu_img_explain3, commu_img_explain4, commu_img_explain5};
+        remove1=view.findViewById(R.id.remove1);remove1.setVisibility(view.INVISIBLE);
+        remove2=view.findViewById(R.id.remove2);remove2.setVisibility(view.INVISIBLE);
+        remove3=view.findViewById(R.id.remove3);remove3.setVisibility(view.INVISIBLE);
+        remove4=view.findViewById(R.id.remove4);remove4.setVisibility(view.INVISIBLE);
+        remove5=view.findViewById(R.id.remove5);remove5.setVisibility(view.INVISIBLE);
+        remove= new ImageButton[]{remove1, remove2, remove3, remove4, remove5};
 
 
         //사진 업로드드 눌렀을 때
@@ -175,12 +192,62 @@ public class Commu_WriteFragment extends Fragment {
         btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.setType("image/*");
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                startActivityForResult(intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_CODE);
+                if(image_list.size()== 5){
+                    Toast.makeText(context, "사진은 최대 5장 입니다.", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    startActivityForResult(intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_CODE);
+                }
             }
         });
+
+        ImageButton.OnClickListener ImageListener = new ImageButton.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.remove1:
+                        image_list.remove(0);
+                        break;
+                    case R.id.remove2:
+                        image_list.remove(1);
+                        break;
+                    case R.id.remove3:
+                        image_list.remove(2);
+                        break;
+                    case R.id.remove4:
+                        image_list.remove(3);
+                        break;
+                    case R.id.remove5:
+                        image_list.remove(4);
+                        break;
+                }
+                if(image_list.isEmpty()){
+                    img1.setImageResource(0);
+                    remove1.setVisibility(view.INVISIBLE);
+                    commu_img_explain1.setVisibility(view.INVISIBLE);
+                }else{
+                    for(int i=0; i<image_list.size(); i++){
+                        img[i].setImageURI(image_list.get(i));
+                        remove[i].setVisibility(view.VISIBLE);
+                        expain[i].setVisibility(view.VISIBLE);
+                        if( i == (image_list.size()-1)) {
+                            img[i+1].setImageResource(0);
+                            remove[i+1].setVisibility(view.INVISIBLE);
+                            expain[i+1].setVisibility(view.INVISIBLE);
+                        }
+                    }
+                }
+            }
+        };
+
+        remove1.setOnClickListener(ImageListener);
+        remove2.setOnClickListener(ImageListener);
+        remove3.setOnClickListener(ImageListener);
+        remove4.setOnClickListener(ImageListener);
+        remove5.setOnClickListener(ImageListener);
+
 
         //저장하기 버튼을 눌렀을 때 파이어스토어로 저장
         btn_commu_upload = view.findViewById(R.id.btn_commu_upload);
@@ -264,30 +331,35 @@ public class Commu_WriteFragment extends Fragment {
                                 if (img1.getDrawable() == null) {
                                     img1.setImageURI(urione);
                                     commu_img_explain1.setVisibility(View.VISIBLE);
+                                    remove1.setVisibility(View.VISIBLE);
                                     break;
                                 }
                             case 1:
                                 if (img2.getDrawable() == null) {
                                     img2.setImageURI(urione);
                                     commu_img_explain2.setVisibility(View.VISIBLE);
+                                    remove2.setVisibility(View.VISIBLE);
                                     break;
                                 }
                             case 2:
                                 if (img3.getDrawable() == null) {
                                     img3.setImageURI(urione);
                                     commu_img_explain3.setVisibility(View.VISIBLE);
+                                    remove3.setVisibility(View.VISIBLE);
                                     break;
                                 }
                             case 3:
                                 if (img4.getDrawable() == null) {
                                     img4.setImageURI(urione);
                                     commu_img_explain4.setVisibility(View.VISIBLE);
+                                    remove4.setVisibility(View.VISIBLE);
                                     break;
                                 }
                             case 4:
                                 if (img5.getDrawable() == null) {
                                     img5.setImageURI(urione);
                                     commu_img_explain5.setVisibility(View.VISIBLE);
+                                    remove5.setVisibility(View.VISIBLE);
                                 }
                                 break;
                         }
@@ -296,8 +368,10 @@ public class Commu_WriteFragment extends Fragment {
                     }
                 }
             }
+
         }
     }
+
 
     //파이어 스토리지에 사진 올리기
     private void uploadFile(Uri image, final int idx) {
@@ -330,5 +404,7 @@ public class Commu_WriteFragment extends Fragment {
             }
 
 
-    }
+}
+
+
 
