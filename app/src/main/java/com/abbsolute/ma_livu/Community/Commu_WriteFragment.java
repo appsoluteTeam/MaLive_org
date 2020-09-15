@@ -247,7 +247,7 @@ public class Commu_WriteFragment extends Fragment {
     //사진 셋팅하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE  && data != null && data.getData() != null) {
+        if (requestCode == IMAGE_REQUEST_CODE && data != null && data.getData() != null) {
 
             //데이터 가져오기
             image = data.getData();
@@ -255,35 +255,46 @@ public class Commu_WriteFragment extends Fragment {
 
             //사진 여러장 보이게 하기 
             if (data != null) {
-                for(int i = 0; i < 5; i++)
-                {
-                    if(i<clipData.getItemCount()){
-                        urione =  clipData.getItemAt(i).getUri();
+                for (int i = 0; i <clipData.getItemCount(); i++) {
+                    if (i < clipData.getItemCount()) {
+                        urione = clipData.getItemAt(i).getUri();
                         image_list.add(urione);
-                        switch (i){
+                        switch (i) {
                             case 0:
-                                img1.setImageURI(urione);
-                                commu_img_explain1.setVisibility(View.VISIBLE);
-                                break;
+                                if (img1.getDrawable() == null) {
+                                    img1.setImageURI(urione);
+                                    commu_img_explain1.setVisibility(View.VISIBLE);
+                                    break;
+                                }
                             case 1:
-                                img2.setImageURI(urione);
-                                commu_img_explain2.setVisibility(View.VISIBLE);
-                                break;
+                                if (img2.getDrawable() == null) {
+                                    img2.setImageURI(urione);
+                                    commu_img_explain2.setVisibility(View.VISIBLE);
+                                    break;
+                                }
                             case 2:
-                                img3.setImageURI(urione);
-                                commu_img_explain3.setVisibility(View.VISIBLE);
-                                break;
+                                if (img3.getDrawable() == null) {
+                                    img3.setImageURI(urione);
+                                    commu_img_explain3.setVisibility(View.VISIBLE);
+                                    break;
+                                }
                             case 3:
-                                img4.setImageURI(urione);
-                                commu_img_explain4.setVisibility(View.VISIBLE);
+                                if (img4.getDrawable() == null) {
+                                    img4.setImageURI(urione);
+                                    commu_img_explain4.setVisibility(View.VISIBLE);
+                                    break;
+                                }
                             case 4:
-                                img5.setImageURI(urione);
-                                commu_img_explain5.setVisibility(View.VISIBLE);
+                                if (img5.getDrawable() == null) {
+                                    img5.setImageURI(urione);
+                                    commu_img_explain5.setVisibility(View.VISIBLE);
+                                }
+                                break;
                         }
+                    }else if (image != null) {
+                        img1.setImageURI(image);
                     }
                 }
-            }else if(image !=null){
-                img1.setImageURI(image);
             }
         }
     }
