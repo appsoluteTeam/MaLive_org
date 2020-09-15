@@ -1,6 +1,7 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,6 +110,7 @@ public class CommunityFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.what_eat: //뭐 먹지 카테고리 선택
+
                         callRecycler(0);
                         break;
                     case R.id.what_do: //뭐 하지 카테고리 선택
