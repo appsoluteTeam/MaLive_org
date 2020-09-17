@@ -13,7 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.HomeFragment;
+import com.abbsolute.ma_livu.MyPage.MyPageFragment;
+import com.abbsolute.ma_livu.MyPage.TitleFragment;
+import com.abbsolute.ma_livu.MyPage.activeFragment;
+import com.abbsolute.ma_livu.MyPage.informationSetFragment;
+import com.abbsolute.ma_livu.MyPage.payFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -49,6 +56,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
+
+
+    private HomeFragment homeFragment;
+
+    //MyPage title fragment
+    private TitleFragment titleFragment;
+    private MyPageFragment myPageFragment;
+    private payFragment payFragment;
+    private informationSetFragment informationSetFragment;
+    private activeFragment activeFragment;
+    private Commu_WriteFragment commu_writeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +147,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 userMap.put(FirebaseID.Nickname,account.getDisplayName());
                                 String email=account.getEmail();
                                 firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
+
+                                //email필요한 fragment에 생성자로 email값 넘겨줌
+                                titleFragment = new TitleFragment(email);
+                                myPageFragment = new MyPageFragment(email);
+                                payFragment = new payFragment(email);
+                                informationSetFragment = new informationSetFragment(email);
+                                homeFragment = new HomeFragment(email);
+                                activeFragment = new activeFragment(email);
+
+
 
                                 finish();
                             }

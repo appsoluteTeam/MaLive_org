@@ -21,6 +21,7 @@ import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -29,7 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +69,21 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         this.email = email;
         Log.d("email",email);
 
+        SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+
+
+        Calendar calendar = Calendar.getInstance();
+
+        String format_time = format1.format(calendar.getTime());
+
+        String year_month = format_time.substring(0,7);
+
+        Log.d("year_month",year_month);
+
+//        calendar.get(Calendar.YEAR);
+//        calendar.get(Calendar.MONTH);
+
+
         /*user firestore에서 닉네임 정보 가져오기 */
         firestore.collection(FirebaseID.user).document(email)
                 .get()
@@ -91,8 +109,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                     }
                 });
 
-        /*todo 각 횟수 가져오기*/
-        firestore.collection(FirebaseID.ToDoLists).document(email)
+        /*이번 달 todo 각 횟수 가져오기*/
+        //todo:로그인할때만 받아오니까 수정필요 메인에서 받아오든가 해야함..
+        firestore.collection(FirebaseID.ToDoLists).document(email).collection("EveryMonth").document(year_month)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -103,25 +122,57 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
 
                             if (document.exists()) {
                                 Map<String, Object> shot = document.getData();
-                                clean_complete = (long) shot.get(FirebaseID.clean_complete);
-                                wash_complete = (long) shot.get(FirebaseID.wash_complete);
-                                trash_complete = (long) shot.get(FirebaseID.trash_complete);
-                                todo_complete = (long) shot.get(FirebaseID.todo_complete);
+                                /*
+                                editor.putLong(emailCleanComplete,(long)shot.get(FirebaseID.clean_complete));
+                                editor.putLong(emailWashComplete,(long)shot.get(FirebaseID.wash_complete));
+                                editor.putLong(emailTrashComplete,(long)shot.get(FirebaseID.trash_complete));
+                                editor.putLong(emailTodoComplete,(long)shot.get(FirebaseID.todo_complete));
+                                editor.commit();
+                                */
 
+                                if(shot.get(FirebaseID.clean_complete)== null){
+                                    clean_complete = 0;
+                                }else{
+                                    clean_complete = (long) shot.get(FirebaseID.clean_complete);
+
+                                }
+
+                                if(shot.get(FirebaseID.trash_complete)== null){
+                                    trash_complete = 0;
+                                }else{
+                                    trash_complete = (long) shot.get(FirebaseID.trash_complete);
+
+                                }
+
+                                if(shot.get(FirebaseID.wash_complete)== null){
+                                    wash_complete = 0;
+                                }else{
+                                    wash_complete = (long) shot.get(FirebaseID.wash_complete);
+
+                                }
+
+                                if(shot.get(FirebaseID.todo_complete)== null){
+                                    todo_complete = 0;
+                                }else{
+                                    todo_complete = (long) shot.get(FirebaseID.todo_complete);
+
+                                }
                                 Log.d("MyPageFragment", "todo 가져오기 완료");
-
+                                Log.d("washComplte",Long.valueOf(wash_complete).toString());
                             } else {
                                 clean_complete = 0;
                                 wash_complete = 0;
                                 trash_complete = 0;
                                 todo_complete = 0;
-                                Log.d("MyPageFragment", "No such document");
+
+                                Log.d("myPageFragment", "No such document");
                             }
                         } else {
-                            Log.d("MyPageFragment", "get failed with ", task.getException());
+                            Log.d("myPageFragment", "get failed with ", task.getException());
                         }
                     }
                 });
+
         /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
         //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨,,,,,,왜그래...
 
@@ -224,6 +275,23 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         wash_percent.setText(String.valueOf(wash_complete%100));
         trash_percent.setText(String.valueOf(trash_complete%100));
         todo_percent.setText(String.valueOf(todo_complete%100));
+
+
+        //firestore TODOList 디비 삭제
+        firestore.collection("ToDoList").document("0914@naver.com")
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("delte TODO","delteTODO");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+
 
         return view;
     }
