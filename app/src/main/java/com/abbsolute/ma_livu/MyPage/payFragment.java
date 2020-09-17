@@ -72,7 +72,7 @@ public class payFragment extends Fragment {
         fragmentStack = HomeActivity.fragmentStack;
         fm = getFragmentManager();
 
-        //초기화면 정렬화면 안보이게
+        //초기화면 정렬버튼 안보이게
         layout_pay_sort.setVisibility(view.GONE);
 
         //버튼 클릭 리스너
@@ -187,10 +187,10 @@ public class payFragment extends Fragment {
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
                                             String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
-
+                                            String order = String.valueOf(shot.get(FirebaseID.order));
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time,order);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -217,9 +217,10 @@ public class payFragment extends Fragment {
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
                                             String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+                                            String order = String.valueOf(shot.get(FirebaseID.order));
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance, pay_time);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance, pay_time,order);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -246,10 +247,11 @@ public class payFragment extends Fragment {
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
                                             String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+                                            String order = String.valueOf(shot.get(FirebaseID.order));
 
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time,order);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침

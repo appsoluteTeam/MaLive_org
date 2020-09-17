@@ -168,7 +168,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         /*칭호 획득 여부 가져오기*/
         //TODO:앱을 새로 킬 때 마다 업데이트 해줘야함 .. 메인에서 불러오기..?
-        firestore.collection(FirebaseID.ToDoLists).document(email)
+        firestore.collection(FirebaseID.ToDoLists).document(email).collection("total").document("sub")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -187,13 +187,35 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                                 editor.commit();
                                 */
 
-                                clean_complete = (long) shot.get(FirebaseID.clean_complete);
-                                wash_complete = (long) shot.get(FirebaseID.wash_complete);
-                                trash_complete = (long) shot.get(FirebaseID.trash_complete);
-                                todo_complete = (long) shot.get(FirebaseID.todo_complete);
+                                if(shot.get(FirebaseID.clean_complete)== null){
+                                    clean_complete = 0;
+                                }else{
+                                    clean_complete = (long) shot.get(FirebaseID.clean_complete);
 
+                                }
 
+                                if(shot.get(FirebaseID.trash_complete)== null){
+                                    trash_complete = 0;
+                                }else{
+                                    trash_complete = (long) shot.get(FirebaseID.trash_complete);
+
+                                }
+
+                                if(shot.get(FirebaseID.wash_complete)== null){
+                                    wash_complete = 0;
+                                }else{
+                                    wash_complete = (long) shot.get(FirebaseID.wash_complete);
+
+                                }
+
+                                if(shot.get(FirebaseID.todo_complete)== null){
+                                    todo_complete = 0;
+                                }else{
+                                    todo_complete = (long) shot.get(FirebaseID.todo_complete);
+
+                                }
                                 Log.d("TitleFragment", "todo 가져오기 완료");
+                                Log.d("washComplte",Long.valueOf(wash_complete).toString());
                             } else {
                                 clean_complete = 0;
                                 wash_complete = 0;
@@ -556,6 +578,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     public void getToll(String recentBalance,long recentPayDocumentNum){
 
         Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+        String format_time = format.format(calendar.getTime());
+
+
         String month = Integer.valueOf(calendar.get(Calendar.MONTH)).toString();
         String date = Integer.valueOf(calendar.get(Calendar.DATE)).toString();
 
@@ -569,16 +596,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         int amount = 400;//임시로
         int balance = Integer.parseInt(recentBalance) + amount;
 
-        payItemListView payItemListView =
-                new payItemListView(today,"칭호 획득 보상","입금","+400",Integer.valueOf(balance).toString(),time);
+        String order = String.valueOf(recentPayDocumentNum + 1);
 
-        String documentName = String.valueOf(recentPayDocumentNum + 1);
+        payItemListView payItemListView =
+                new payItemListView(today,"칭호 획득 보상","입금","+400",Integer.valueOf(balance).toString(),time,order);
 
         //파이어스토어 저장
         firestore.collection(FirebaseID.myPage)
                 .document(email)
                 .collection(FirebaseID.pay)
-                .document(documentName)
+                .document(format_time)
                 .set(payItemListView,SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -595,7 +622,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         //최근문서 바꾸기
         Map<String,Object> payMap = new HashMap<>();
-        payMap.put(FirebaseID.recentDocument,documentName);
+        payMap.put(FirebaseID.recentDocument,order);
 
         firestore.collection(FirebaseID.myPage)
                 .document(email)
