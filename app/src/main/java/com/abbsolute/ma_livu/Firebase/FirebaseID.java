@@ -24,6 +24,7 @@ public class FirebaseID {
     public static String category ="category";
     public static String content ="content";
     public static String commu_date ="commu_date";
+    public static String writer = "writer";
     public static String commu_img_explain="commu_img_explain";
     public static String Url ="Url";
 
@@ -99,7 +100,7 @@ public class FirebaseID {
     public static String clean_complete = "청소complete";
     public static String trash_complete = "쓰레기complete";
     public static String todo_complete = "투두complete";
-
+    public static String savedPosts = "savedPosts";
 
     //출석관련
     //attendance 이름 바꾸기 중복
