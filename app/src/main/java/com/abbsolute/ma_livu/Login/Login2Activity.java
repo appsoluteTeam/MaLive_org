@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentFragment;
+import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentFragment;
+import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
@@ -44,8 +48,15 @@ public class Login2Activity extends AppCompatActivity {
     private payFragment payFragment;
     private informationSetFragment informationSetFragment;
     private activeFragment activeFragment;
-    private Commu_WriteFragment commu_writeFragment;
 
+    //Community Fragment
+    private Commu_WriteFragment commu_writeFragment;
+    private CommunityCommentFragment communityCommentFragment;
+    private CommunityCommentCommentFragment communityCommentCommentFragment;
+    private CommunityPostsFragment communityPostsFragment;
+
+    //GuestBook Fragment
+    private GuestBookWriteFragment guestBookWriteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +66,6 @@ public class Login2Activity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
 
         titleFragment = (TitleFragment)getSupportFragmentManager().findFragmentById(R.id.main_frame);//titleFragment
-
 
         email_login =(EditText) findViewById(R.id.btn_email_login); //이메일 입력
         pass_login =(EditText) findViewById(R.id.pass_login); // 패스워드 입력
@@ -82,8 +92,11 @@ public class Login2Activity extends AppCompatActivity {
                                     informationSetFragment = new informationSetFragment(email);
                                     homeFragment = new HomeFragment(email);
                                     activeFragment = new activeFragment(email);
-
                                     commu_writeFragment =new Commu_WriteFragment(email);
+                                    communityCommentFragment = new CommunityCommentFragment(email);
+                                    communityCommentCommentFragment = new CommunityCommentCommentFragment(email);
+                                    communityPostsFragment = new CommunityPostsFragment(email);
+                                    guestBookWriteFragment = new GuestBookWriteFragment(email);
 
                                     Intent intent = new Intent(Login2Activity.this, HomeActivity.class);
                                     SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);

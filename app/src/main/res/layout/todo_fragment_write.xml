@@ -56,23 +56,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="15sp">
+
             <TextView
-                android:layout_marginTop="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="할 일 추가하기"
-                android:layout_marginLeft="12sp"
-                android:textSize="20sp">
-            </TextView>
-            <EditText
+                android:layout_margin="10dp"
                 android:layout_marginTop="10sp"
-                android:layout_width="370dp"
-                android:layout_height="40sp"
+                android:text="할 일 추가하기"
+                android:textSize="20sp"></TextView>
+
+            <EditText
                 android:id="@+id/write_todo"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:background="@drawable/edit_black"
-                android:hint="할 일 입력">
-            </EditText>
+                android:hint="할 일 입력"
+                android:padding="10dp"></EditText>
         </LinearLayout>
         <View
             android:layout_marginTop="60sp"

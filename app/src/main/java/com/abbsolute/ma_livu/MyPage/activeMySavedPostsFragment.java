@@ -1,11 +1,11 @@
 package com.abbsolute.ma_livu.MyPage;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,27 +16,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
-import com.abbsolute.ma_livu.Community.CommunityComment.CommuCommentOnItemClick;
-import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentAdapter;
-import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentItem;
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
-import com.abbsolute.ma_livu.Community.bringData;
-import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Stack;
 
-public class activeMyPostFragment extends Fragment {
+public class activeMySavedPostsFragment extends Fragment {
     private View view;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -44,22 +31,22 @@ public class activeMyPostFragment extends Fragment {
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
-    public static Stack<Fragment> fragmentStack;
+    private Button btn_back;
 
     private RecyclerView recyclerView;
     public static RecyclerPostAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<postItemListView> arrayList;
 
-    private Button btn_back;
     private static String str_nickname, myPost_count , myComment_count ;
     private String[] category;
+
+    private TextView commu_title;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mypost_fragment,container,false);
-
         fm = getFragmentManager();
         fragmentTransaction = fm.beginTransaction();
 
@@ -88,8 +75,11 @@ public class activeMyPostFragment extends Fragment {
             }
         });
 
-        //MyPageFragment에서 받아온 내가 쓴 글 데이터 ArrayList<postItemListView>에 집어넣기
-        arrayList = MyPageFragment.arrayList;
+        commu_title = view.findViewById(R.id.commu_title);
+        commu_title.setText("댓글 단 글");
+
+        //MyPageFragment에서 받아온 '저장한 글' 데이터 ArrayList<postItemListView>에 집어넣기
+        arrayList = MyPageFragment.arrayList3;
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
         recyclerView = (RecyclerView) view.findViewById(R.id.active_recyclerVIew);
@@ -107,13 +97,13 @@ public class activeMyPostFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
+
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         adapter.setOnItemClickListener(new RecyclerPostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -123,7 +113,7 @@ public class activeMyPostFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("Category", item.getPost_category());
                 bundle.putString("Title", item.getPost_title());
-                bundle.putString("Writer", str_nickname);
+                bundle.putString("Writer", item.getPost_writer());
                 bundle.putString("Content", item.getPost_content());
                 bundle.putString("Date", item.getPost_date());
 

@@ -19,7 +19,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -43,9 +46,39 @@ public class GuestBookWriteFragment extends Fragment {
 
     // 값 받아오는 변수들
     private int CommentCount;
-    private String newCount;
+    private static String str_nickname, email;
     private SimpleDateFormat dateform;
     private Calendar date;
+
+    public GuestBookWriteFragment(){};
+    public GuestBookWriteFragment(String email) {
+        this.email = email;
+        Log.d("email",email);
+
+        /*user firestore에서 닉네임 정보 가져오기 */
+        firestore.collection(FirebaseID.user).document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                str_nickname  = shot.get(FirebaseID.Nickname).toString();
+                                Log.d("activeFragment", "user nickname Get 완료");
+
+                            } else {
+                                Log.d("activeFragment", "No such document");
+                            }
+                        } else {
+                            Log.d("activeFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
 
     @Nullable
     @Override
@@ -81,23 +114,22 @@ public class GuestBookWriteFragment extends Fragment {
 
                         // 게시글 작성 시간 받아오기
                         long now = System.currentTimeMillis();
-                        dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         date = Calendar.getInstance();
-
                         // 게시글 Number 증가
-                        newCount = String.valueOf(CommentCount + 1);
+                        CommentCount++;
 
                         // DB에 데이터 추가
                         Map<String, Object> data = new HashMap<>();
                         data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
-                        data.put(FirebaseID.num, newCount);
-                        data.put(FirebaseID.name, "name");
+                        data.put(FirebaseID.num, CommentCount);
+                        data.put(FirebaseID.name, str_nickname);
                         //TODO 후에 icon부분 사용자가 직접 설정한 아이콘으로 변경
                         data.put(FirebaseID.icon, "https://firebasestorage.googleapis.com/v0/b/malivelogin.appspot.com/o/profile.png?alt=media&token=d2130f80-1023-440f-a9cc-6a183f88a975");
                         data.put(FirebaseID.comment, Comment.getText().toString());
                         data.put(FirebaseID.date, dateform.format(date.getTime()));
 
-                        firestore.collection(FirebaseID.GuestBook).document(newCount).set(data, SetOptions.merge());
+                        firestore.collection(FirebaseID.GuestBook).document(Comment.getText().toString()).set(data, SetOptions.merge());
                     }
                 ((HomeActivity)getActivity()).setFragment(4);
             }

@@ -55,6 +55,9 @@ import java.util.Stack;
 
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
 
+    //fragment저장할 stack
+    public static Stack<Fragment> fragmentStack;
+
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -70,9 +73,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private payFragment payFragment;
     private activeFragment activeFragment;
     private informationSetFragment informationSetFragment;
-
-    //fragment저장할 stack
-    public static Stack<Fragment> fragmentStack;
 
     //출석체크 관련 변수
     public static final long milli24hour = 86400000; //24시간 초기준 상수
@@ -294,7 +294,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     }
 
     /* myPage카테고리에 따라서 fragment 교체 */
-    /* 0:칭호 , 1:결제, 2:활동 , 3:친구, 4:정보설정 */
+    /* 0:칭호 , 1:결제, 2:활동 , 3:친구, 4:정보설정 창*/
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

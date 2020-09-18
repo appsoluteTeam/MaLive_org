@@ -31,8 +31,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import org.w3c.dom.Comment;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +51,7 @@ public class CommunityPostsFragment extends Fragment {
 
     public static bringData data;
     private String get_images,get_explain_temp;
+    private static String email;
 
     // 값 받아오는 변수들
     private String title, writer, content, date, category, commentCount, saveCount, likeCount;
@@ -54,6 +61,13 @@ public class CommunityPostsFragment extends Fragment {
     private ImageView get_commu_img1, get_commu_img2, get_commu_img3,get_commu_img4,get_commu_img5;
     private TextView get_commu_explain1,get_commu_explain2,get_commu_explain3,get_commu_explain4,get_commu_explain5;
 
+
+    public CommunityPostsFragment() { }
+
+    public CommunityPostsFragment(String email) {
+        this.email = email;
+        Log.d("email",email);
+    }
 
     @Nullable
     @Override
@@ -202,6 +216,7 @@ public class CommunityPostsFragment extends Fragment {
                         data.update(FirebaseID.commu_save_count, String.valueOf(save_count + 1));
                         //TODO 저장버튼 눌렀을 시 데이터가 어디에 저장될지 구현하기
                     }
+                    postsSave();
 
                 } else {
                     commu_save_count.setText(Integer.toString(save_count - 1));
@@ -234,6 +249,24 @@ public class CommunityPostsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void postsSave () {
+        if (firebaseAuth.getCurrentUser() != null) {
+            // DB에 데이터 추가
+            Map<String, Object> data = new HashMap<>();
+            data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
+            data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());
+            data.put(FirebaseID.category, category);
+            data.put(FirebaseID.title, title);
+            data.put(FirebaseID.content, content);
+            data.put(FirebaseID.commu_date, date);
+            data.put(FirebaseID.writer, writer);
+
+            // DB에 저장되는 경로 MyPage->email->savedPosts
+            firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.savedPosts).document(title)
+                    .set(data, SetOptions.merge());
+        }
     }
 }
 

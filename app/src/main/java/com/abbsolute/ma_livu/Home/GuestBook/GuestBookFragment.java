@@ -61,6 +61,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
     private TextView CommentDate;
     private ImageView CommentIcon;
     private String CommentCount;
+    private String currentDate;
 
     private Button btn_guestbook_write;
     private Button btn_insert;
@@ -120,6 +121,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
         // DB의 데이터 불러와 어레이리스트에 넣기
         arrayList = new ArrayList<>();
         firestore.collection(FirebaseID.GuestBook)
+                .orderBy("date")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -136,7 +138,9 @@ public class GuestBookFragment extends Fragment implements OnItemClick {
                                     String CommentIcon = String.valueOf(shot.get(FirebaseID.icon));
                                     String CommentDate = String.valueOf(shot.get(FirebaseID.date));
 
-                                    CommentItem data = new CommentItem(CommentNum, CommentName, Comment, CommentIcon, CommentDate);
+                                    currentDate = CommentDate.substring(0, CommentDate.length()-3);
+
+                                    CommentItem data = new CommentItem(CommentNum, CommentName, Comment, CommentIcon, currentDate);
                                     arrayList.add(data);
                                 }
                                 adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침

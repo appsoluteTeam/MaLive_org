@@ -44,7 +44,7 @@ public class activeMyCommentFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<postItemListView> arrayList;
 
-    private String nickname;
+    private static String str_nickname, myPost_count , myComment_count ;
     private String[] category;
 
     private TextView commu_title;
@@ -54,13 +54,15 @@ public class activeMyCommentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mypost_fragment,container,false);
 
+        // activeFragment에서 데이터 받아오기
+//        if(getArguments() != null){
+//            str_nickname = getArguments().getString("nickname");
+//            myPost_count  = getArguments().getString("MyPost_count");
+//            myComment_count = getArguments().getString("MyComment_count");
+//        }
+
         fm = getFragmentManager();
         fragmentTransaction = fm.beginTransaction();
-
-        // activeFragment에서 데이터 받아오기
-        if(getArguments() != null){
-            nickname = getArguments().getString("Nickname");
-        }
 
         commu_title = view.findViewById(R.id.commu_title);
         commu_title.setText("댓글 단 글");
@@ -70,11 +72,19 @@ public class activeMyCommentFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 activeFragment activeFragment = new activeFragment();
+
+//                Bundle bundle = new Bundle();
+//                bundle.putString("nickname", str_nickname);
+//                bundle.putString("MyPost_count", String.valueOf(myPost_count));
+//                bundle.putString("MyComment_count", String.valueOf(myComment_count));
+//                activeFragment.setArguments(bundle);
+
                 fragmentTransaction.replace(R.id.main_frame, activeFragment).commit();
             }
         });
 
-        arrayList = activeFragment.arrayList2;
+        //MyPageFragment에서 받아온 댓글 단 글 데이터 ArrayList<postItemListView>에 집어넣기
+        arrayList = MyPageFragment.arrayList2;
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
         recyclerView = (RecyclerView) view.findViewById(R.id.active_recyclerVIew);
@@ -92,7 +102,6 @@ public class activeMyCommentFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
         return view;
     }
 
@@ -103,15 +112,13 @@ public class activeMyCommentFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerPostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
                 postItemListView item = adapter.getItem(position);
 
                 // CommunityPostsFragment로 데이터 넘기기
                 Bundle bundle = new Bundle();
-
                 bundle.putString("Category", item.getPost_category());
                 bundle.putString("Title", item.getPost_title());
-                bundle.putString("Writer", nickname);
+                bundle.putString("Writer", item.getPost_writer());
                 bundle.putString("Content", item.getPost_content());
                 bundle.putString("Date", item.getPost_date());
 
@@ -121,6 +128,7 @@ public class activeMyCommentFragment extends Fragment {
 
                 // 버튼 누르면 화면 전환
                 fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
