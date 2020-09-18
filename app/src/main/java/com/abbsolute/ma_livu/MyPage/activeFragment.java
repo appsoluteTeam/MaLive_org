@@ -43,11 +43,11 @@ public class activeFragment extends Fragment {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-    public static Stack<Fragment> fragmentStack;
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
     private Fragment activeFragment;
+    public static Stack<Fragment> fragmentStack;
 
     private Button btn_back;
 
@@ -57,57 +57,29 @@ public class activeFragment extends Fragment {
     private static String str_nickname;
     private static String email;
 
-    private TextView myPost_count_top, myPost_count_bottom, myComment_count_top, myComment_count_bottom;
-    private static int myPost_count = 0  , myComment_count = 0;
+    private TextView myPost_count_top, myPost_count_bottom, myComment_count_top, myComment_count_bottom, myScrape_count_top, myScrape_count_bottom;
+    private static String myPost_count , myComment_count, mySavedPosts_count;
 
     public static RecyclerPostAdapter adapter;
     public static ArrayList<postItemListView> arrayList;
     public static ArrayList<postItemListView> arrayList2;
-
-    //활동창 관련 SharedPreferences 변수
-
-//    private SharedPreferences sharedPreferences;
-
-//    private int myPost_count = 0;
-//    private String  myPostCountName;
-//
-//    private int myComment_count = 0;
-//    private String myCommentCountName;
 
     public activeFragment() { }
 
     public activeFragment(String email) {
         this.email = email;
         Log.d("email",email);
-
-        /*user firestore에서 닉네임 정보 가져오기 */
-        firestore.collection(FirebaseID.user).document(email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // 컬렉션 내의 document에 접근
-                            DocumentSnapshot document = task.getResult();
-
-                            if (document.exists()) {
-                                Map<String, Object> shot = document.getData();
-                                str_nickname  = shot.get(FirebaseID.Nickname).toString();
-                                Log.d("activeFragment", "user nickname Get 완료");
-
-                            } else {
-                                Log.d("activeFragment", "No such document");
-                            }
-                        } else {
-                            Log.d("activeFragment", "get failed with ", task.getException());
-                        }
-                    }
-                });
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // MyPageFragment에서 값 받아오기
+        if(getArguments() != null){
+            str_nickname = getArguments().getString("nickname");
+            myPost_count  = getArguments().getString("MyPost_count");
+            myComment_count = getArguments().getString("MyComment_count");
+            mySavedPosts_count = getArguments().getString("MySavedPosts_count");
+        }
         // SharedPreferences로 값 저장시키는 부분
 //            myPostCountName = email + "-myPostCountFile";
 //            myPost_count = 0;
@@ -124,26 +96,6 @@ public class activeFragment extends Fragment {
 //
 //           sharedPreferences = getActivity().getSharedPreferences(myCommentCountName,MODE_PRIVATE);
 //           myComment_count = sharedPreferences.getInt("myComment_count",0);
-
-            arrayList = new ArrayList<>();
-            arrayList2 = new ArrayList<>();
-            final String[] communityCategory = {"how_do","what_do","what_eat"};
-
-            adapter = new RecyclerPostAdapter(arrayList);
-            adapter = new RecyclerPostAdapter(arrayList2);
-            arrayList.clear();
-            arrayList2.clear();
-
-            for(int i = 0; i < communityCategory.length; i++) {
-                final String Category2 = communityCategory[i];
-                final ArrayList<String> Title = new ArrayList<String>();
-
-                // 내가 쓴 글 불러오기
-                bringMyPost(Category2);
-
-                // 댓글 단 글 불러오기
-                bringMyCommentPost(Category2, Title);
-            }
         }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -164,15 +116,24 @@ public class activeFragment extends Fragment {
          myPost_count_bottom = view.findViewById(R.id.myPost_count_bottom);
          myComment_count_top = view.findViewById(R.id.myComment_count_top);
          myComment_count_bottom = view.findViewById(R.id.myComment_count_bottom);
+         myScrape_count_top = view.findViewById(R.id.myScrape_count_top);
+        myScrape_count_bottom = view.findViewById(R.id.myScrape_count_bottom);
 
-        Log.d("Check 2 Post", Integer.valueOf(myPost_count).toString());
-
+//        // MyPageFragment에서 값 받아오기
+//        if(getArguments() != null){
+//            str_nickname = getArguments().getString("nickname");
+//            myPost_count  = getArguments().getString("MyPost_count");
+//            myComment_count = getArguments().getString("MyComment_count");
+//            mySavedPosts_count = getArguments().getString("MySavedPosts_count");
+//        }
 
 //        각 값 setText
-         myPost_count_top.setText(Integer.valueOf(myPost_count).toString());
-         myPost_count_bottom.setText(Integer.valueOf(myPost_count).toString());
-         myComment_count_top.setText(Integer.valueOf(myComment_count).toString());
-         myComment_count_bottom.setText(Integer.valueOf(myComment_count).toString());
+        myPost_count_top.setText(myPost_count);
+        myPost_count_bottom.setText(myPost_count);
+        myComment_count_top.setText(myComment_count);
+        myComment_count_bottom.setText(myComment_count);
+        myScrape_count_top.setText(mySavedPosts_count);
+        myScrape_count_bottom.setText(mySavedPosts_count);
 
         Toast.makeText(this.getContext(), "닉네임 : "+ str_nickname, Toast.LENGTH_LONG).show();
 
@@ -182,37 +143,56 @@ public class activeFragment extends Fragment {
             @SuppressLint("LongLogTag")
             @Override
             public void onClick(View v) {
-//                fragmentTransaction = fm.beginTransaction();
                 switch (v.getId()) {
                     case R.id.btn_back:
                         Log.d("activeFragment back","back buttonclick");
-                        Fragment nextFragment = fragmentStack.pop();
-                        fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
+//                        Fragment nextFragment = fragmentStack.pop();
+//                        fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
+
+                        MyPageFragment myPageFragment = new MyPageFragment();
+                        fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
                         break;
 
                     case R.id. btn_myPost:
                         Log.d("activeFragment go myPostFragment","myPost buttonclick");
                         activeMyPostFragment activeMyPostFragment = new activeMyPostFragment();
+//                        fragmentStack.push(activeMyPostFragment);
 
                         // activeMyPostFragment로 데이터 넘기기
-                        bundle.putString("Nickname", str_nickname);
+                        bundle.putString("nickname", str_nickname);
                         activeMyPostFragment.setArguments(bundle);
-
                         fragmentTransaction.replace(R.id.main_frame, activeMyPostFragment);
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         break;
-                    case R.id. btn_myComment:
-                        Log.d("activeFragment go myPostFragment","myPost buttonclick");
-                        activeMyCommentFragment activeMyCommentFragment = new activeMyCommentFragment();
 
-                        // activeMyPostFragment로 데이터 넘기기
-                        bundle.putString("Nickname", str_nickname);
+                    case R.id. btn_myComment:
+                        Log.d("activeFragment go myCommentFragment","myComment buttonclick");
+                        activeMyCommentFragment activeMyCommentFragment = new activeMyCommentFragment();
+//                        fragmentStack.push(activeMyCommentFragment);
+
+                        // activeMyCommentFragment로 데이터 넘기기
+//                        bundle.putString("nickname", str_nickname);
+//                        bundle.putString("MyPost_count", String.valueOf(myPost_count));
+//                        bundle.putString("MyComment_count", String.valueOf(myComment_count));
                         activeMyCommentFragment.setArguments(bundle);
 
                         fragmentTransaction.replace(R.id.main_frame, activeMyCommentFragment);
+                        fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
                         break;
                     case R.id. btn_myScrape:
+                        Log.d("activeFragment go myMySavedPostsFragment","myMySavedPosts buttonclick");
+                        activeMySavedPostsFragment activeMySavedPostsFragment = new activeMySavedPostsFragment();
+//                        fragmentStack.push(activeMyCommentFragment);
+
+//                        // activeactiveMySavedPostsFragmentFragment로 데이터 넘기기
+//                        bundle.putString("nickname", str_nickname);
+//                        activeMySavedPostsFragment.setArguments(bundle);
+
+                        fragmentTransaction.replace(R.id.main_frame, activeMySavedPostsFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
                         break;
 
                 }
@@ -227,94 +207,4 @@ public class activeFragment extends Fragment {
 
         return view;
     }
-
-    // 내가 쓴 글 불러오기
-    public void bringMyPost(String Category2) {
-        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-//                            내가 쓴 글 불러오기
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                for (DocumentSnapshot snapshot : task.getResult()) {
-
-                                    Map<String, Object> shot = snapshot.getData();
-
-                                    String Category = String.valueOf(shot.get(FirebaseID.category));
-                                    String Title = String.valueOf(shot.get(FirebaseID.title));
-                                    String Content = String.valueOf(shot.get(FirebaseID.content));
-                                    String Date = String.valueOf(shot.get(FirebaseID.commu_date));
-
-                                    postItemListView data = new postItemListView(Category, Title, Content, Date);
-                                    arrayList.add(data);
-                                    myPost_count++;
-                                    Log.d("Post", Integer.valueOf(myPost_count).toString());
-                                }
-                                adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
-
-                            } else {
-                                myPost_count = 0;
-                                arrayList.clear();
-                            }
-//                            //todo: sharedPreference에 count 값 저장하기
-//                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = sharedPreferences.edit();
-//                            editor.putInt("myPost_count", myPost_count);
-//                            editor.commit();
-                        }
-                    }
-                });
-    }
-
-    // 댓글 단 글 불러오기
-    public void bringMyCommentPost(final String Category2, final ArrayList<String> Title) {
-        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        // 댓글 단 글 받아오기
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                for (DocumentSnapshot snapshot : task.getResult()) {
-                                    Map<String, Object> shot = snapshot.getData();
-                                    Title.add(String.valueOf(shot.get(FirebaseID.title)));
-                                }
-                                for (int j = 0; j < Title.size(); j++) {
-                                    final String Title2 = Title.get(j);
-                                    firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").document(Title2).collection("Community_comment")
-                                            .whereEqualTo("email", email)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        if (task.getResult() != null) {
-                                                            for (DocumentSnapshot snapshot : task.getResult()) {
-                                                                Map<String, Object> shot2 = snapshot.getData();
-                                                                final String Content = String.valueOf(shot2.get(FirebaseID.content));
-                                                                final String Date = String.valueOf(shot2.get(FirebaseID.commu_date));
-                                                                postItemListView data = new postItemListView(Category2, Title2, Content, Date);
-                                                                arrayList2.add(data);
-                                                                myComment_count++;
-                                                                Log.d("Comment", Integer.valueOf(myComment_count).toString());
-                                                            }
-                                                        } else {
-                                                            myComment_count = 0;
-                                                            arrayList2.clear();
-                                                        }
-                                                    }
-                                                }
-                                            });
-                                }
-                            }
-                        }
-                    }
-                });
-    }
-
-
 }
