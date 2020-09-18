@@ -60,7 +60,7 @@
                     <Button
                         android:id="@+id/btn_friend_delete"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
+                        android:layout_height="20dp"
                         android:background="#00FFFFFF"
                         android:text="친구삭제"
                         android:textSize="12sp"
@@ -77,7 +77,7 @@
                     <Button
                         android:id="@+id/btn_friend_block"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
+                        android:layout_height="20dp"
                         android:background="#00FFFFFF"
                         android:text="차단"
                         android:textSize="12sp"
@@ -88,7 +88,7 @@
                 android:id="@+id/go_room"
                 android:layout_marginLeft="3sp"
                 android:layout_marginTop="5sp"
-                android:layout_marginBottom="7sp"
+                android:layout_marginBottom="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="25sp"
                 android:background="@drawable/button_background"

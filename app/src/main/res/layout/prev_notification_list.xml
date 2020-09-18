@@ -20,8 +20,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/prev_notification_text_apart"
-                android:textSize="17sp"
-                android:textColor="#2E2E2E"
+                android:textSize="14sp"
+                android:textColor="#585858"
                 android:text="분리수거 지정일이 지났어요!">
             </TextView>
             <TextView
