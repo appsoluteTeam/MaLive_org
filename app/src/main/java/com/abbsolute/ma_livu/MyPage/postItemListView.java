@@ -5,12 +5,14 @@ public class postItemListView {
     private String post_title;
     private String post_content;
     private String post_date;
+    private String post_writer;
 
-    public postItemListView(String post_category,String post_title, String post_content, String post_date){
+    public postItemListView(String post_category,String post_title, String post_content, String post_date, String post_writer){
         this.post_category = post_category;
         this.post_title = post_title;
         this.post_content = post_content;
         this.post_date = post_date;
+        this.post_writer = post_writer;
     }
 
 
@@ -44,5 +46,13 @@ public class postItemListView {
 
     public void setPost_date(String post_date) {
         this.post_date = post_date;
+    }
+
+    public String getPost_writer() {
+        return post_writer;
+    }
+
+    public void setPost_writer(String post_writer) {
+        this.post_writer = post_writer;
     }
 }
