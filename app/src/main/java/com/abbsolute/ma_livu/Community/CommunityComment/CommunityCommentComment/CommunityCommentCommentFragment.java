@@ -62,29 +62,46 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
     private SimpleDateFormat dateform;
     private Calendar date;
 
-    private String category;
-    private String title;
-    private String commentName;
-    private String commentDate;
-    private String commentComment;
-    private String commentLike;
+    private static String str_nickname, email;
+    private String category, title, commentName, commentDate, commentComment, commentLike;
     private Boolean commentLikeCheck;
-
-    private TextView commentname;
-    private TextView commentdate;
-    private TextView commentcomment;
-    private TextView commentlike;
-    private TextView commentcommentcount;
-    private TextView recommentCount;
-
-    private Button btn_back;
-    private Button btn_insert;
-    private Button btn_comment_like;
-
+    private TextView commentname, commentdate, commentcomment, commentlike, commentcommentcount, recommentCount;
     private EditText recomment;
+
+    private Button btn_back, btn_insert, btn_comment_like;
+
     private static int count;
     private static int comment_like_count;
 
+    public CommunityCommentCommentFragment(){};
+    public CommunityCommentCommentFragment(String email) {
+        this.email = email;
+        Log.d("email",email);
+
+        /*user firestore에서 닉네임 정보 가져오기 */
+        firestore.collection(FirebaseID.user).document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                str_nickname  = shot.get(FirebaseID.Nickname).toString();
+                                Log.d("activeFragment", "user nickname Get 완료");
+
+                            } else {
+                                Log.d("activeFragment", "No such document");
+                            }
+                        } else {
+                            Log.d("activeFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
 
     @Nullable
     @Override
@@ -140,6 +157,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                 Bundle bundle = new Bundle();
                 bundle.putString("Category", category);
                 bundle.putString("Title", title);
+                bundle.putBoolean("CommentLikeCheck", commentLikeCheck);
                 communityCommentFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
@@ -165,7 +183,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
                     data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());
-//                    data.put(FirebaseID.commu_comment_comment_name, firebaseAuth.getCurrentUser().getEmail());
+                    data.put(FirebaseID.commu_comment_comment_name, str_nickname);
                     data.put(FirebaseID.commu_comment_comment_comment, recomment.getText().toString());
                     data.put(FirebaseID.commu_comment_comment_date, dateform.format(date.getTime()));
                     data.put(FirebaseID.commu_comment_comment_like, comment_like_count);

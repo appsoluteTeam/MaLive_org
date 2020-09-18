@@ -62,25 +62,46 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     private SimpleDateFormat dateform;
     private Calendar date;
 
-    private static int count;
-    private static int like_count;
-    private static int comment_count;
-    private static boolean btn_like_check = false;
-    private TextView CommentCount;
-    private TextView CommentName;
-    private TextView CommentDate;
+    private static int count, like_count, comment_count;
+    private static boolean commentLikeCheck = false;
+    private boolean iscommentLikeCheck;
+    private TextView CommentCount, CommentName, CommentDate;
     private ImageView CommentIcon;
     private EditText Comment;
+    private Button btn_back, btn_insert, btn_comment_like;
+    private static String str_nickname, email;
+    private String category, title, writer, content, posts_date,commentLikeCount;
 
-    private Button btn_back;
-    private Button btn_insert;
 
-    private String category;
-    private String title;
-    private String writer;
-    private String content;
-    private String posts_date;
-    private String commentLikeCount;
+    public CommunityCommentFragment(){};
+    public CommunityCommentFragment(String email) {
+        this.email = email;
+        Log.d("email",email);
+
+        /*user firestore에서 닉네임 정보 가져오기 */
+        firestore.collection(FirebaseID.user).document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                str_nickname  = shot.get(FirebaseID.Nickname).toString();
+                                Log.d("activeFragment", "user nickname Get 완료");
+
+                            } else {
+                                Log.d("activeFragment", "No such document");
+                            }
+                        } else {
+                            Log.d("activeFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+    }
 
     @Nullable
     @Override
@@ -92,6 +113,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 
         btn_back = view.findViewById(R.id.btn_back);
         btn_insert = view.findViewById(R.id.btn_comment_insert);
+        btn_comment_like = view.findViewById(R.id.btn_comment_like);
 //        btn_delete = view.findViewById(R.id.btn_delete);
 
         // CommunityFragment에서 데이터 받아오기
@@ -101,7 +123,17 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
             writer = getArguments().getString("Writer");
             content = getArguments().getString("Content");
             posts_date = getArguments().getString("Date");
+            iscommentLikeCheck = getArguments().getBoolean("CommentLikeCheck");
         }
+
+        Log.d("commentLikeCheck", String.valueOf(iscommentLikeCheck));
+//        if(iscommentLikeCheck == true) {
+//            btn_comment_like.setSelected(!btn_comment_like.isSelected());
+//        } else {
+//            btn_comment_like.setSelected(btn_comment_like.isSelected());
+//        }
+
+
         // '뒤로가기' 버튼 눌렀을 시
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +174,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                     Map<String, Object> data = new HashMap<>();
                     data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid());
                     data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());
-//                    data.put(FirebaseID.commu_comment_name, firebaseAuth.getCurrentUser().getDisplayName());
+                    data.put(FirebaseID.commu_comment_name, str_nickname);
                     data.put(FirebaseID.commu_comment_comment, Comment.getText().toString());
                     data.put(FirebaseID.commu_comment_date, dateform.format(date.getTime()));
                     data.put(FirebaseID.commu_comment_like, like_count);
@@ -172,7 +204,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     Map<String, Object> shot = snapshot.getData();
-                                    String CommentName = String.valueOf(shot.get(FirebaseID.Email));
+                                    String CommentName = String.valueOf(shot.get(FirebaseID.commu_comment_name));
                                     String Comment = String.valueOf(shot.get(FirebaseID.commu_comment_comment));
                                     String CommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_date));
                                     String CommentLike = String.valueOf(shot.get(FirebaseID.commu_comment_like));
@@ -214,7 +246,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     // 댓글 좋아요 메소드
     @Override
     public void commentLike(int position) {
-        btn_like_check = true;
+        commentLikeCheck = true;
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
@@ -225,7 +257,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     // 댓글 좋아요 취소 메소드
     @Override
     public void commentDislike(int position) {
-        btn_like_check = false;
+        commentLikeCheck = false;
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
@@ -246,7 +278,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         bundle.putString("CommentDate", item.getDate());
         bundle.putString("CommentComment", item.getComment());
         bundle.putString("CommentLike", item.getComment_like() );
-        bundle.putBoolean("CommentLikeCheck", btn_like_check);
+        bundle.putBoolean("CommentLikeCheck", commentLikeCheck);
 
         transaction = getActivity().getSupportFragmentManager().beginTransaction();
         CommunityCommentCommentFragment communityCommentCommentFragment = new CommunityCommentCommentFragment();
