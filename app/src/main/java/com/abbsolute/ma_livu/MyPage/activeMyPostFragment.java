@@ -44,14 +44,15 @@ public class activeMyPostFragment extends Fragment {
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
-    private Button btn_back;
+    public static Stack<Fragment> fragmentStack;
 
     private RecyclerView recyclerView;
     public static RecyclerPostAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<postItemListView> arrayList;
 
-    private String nickname;
+    private Button btn_back;
+    private static String str_nickname, myPost_count , myComment_count ;
     private String[] category;
 
     @Nullable
@@ -64,50 +65,31 @@ public class activeMyPostFragment extends Fragment {
 
         // activeFragment에서 데이터 받아오기
         if(getArguments() != null){
-            nickname = getArguments().getString("Nickname");
+            str_nickname = getArguments().getString("nickname");
+            myPost_count  = getArguments().getString("MyPost_count");
+            myComment_count = getArguments().getString("MyComment_count");
         }
 
         btn_back = view.findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Fragment nextFragment = fragmentStack.pop();
+//                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
                 activeFragment activeFragment = new activeFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("nickname", str_nickname);
+                bundle.putString("MyPost_count", String.valueOf(myPost_count));
+                bundle.putString("MyComment_count", String.valueOf(myComment_count));
+                activeFragment.setArguments(bundle);
+
                 fragmentTransaction.replace(R.id.main_frame, activeFragment).commit();
             }
         });
 
-//        // DB의 데이터 불러와 어레이리스트에 넣기
-//        arrayList = new ArrayList<>();
-//        String[] category = {"what_eat", "what_do", "how_do"};
-//        arrayList.clear();
-//
-//        for(int i = 0; i < 3; i++) {
-//            firestore.collection("Community").document(category[i]).collection("sub_Community")
-//                    .whereEqualTo("nickname", nickname)
-//                    .get()
-//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                if (task.getResult() != null) {
-//                                    for (DocumentSnapshot snapshot : task.getResult()) {
-//                                        Map<String, Object> shot = snapshot.getData();
-//                                        String Category = String.valueOf(shot.get(FirebaseID.category));
-//                                        String Title = String.valueOf(shot.get(FirebaseID.title));
-//                                        String Content = String.valueOf(shot.get(FirebaseID.content));
-//                                        String Date = String.valueOf(shot.get(FirebaseID.commu_date));
-//
-//                                        postItemListView data = new postItemListView(Category, Title, Content, Date);
-//                                        arrayList.add(data);
-//                                    }
-//                                    adapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
-//                                }
-//                            }
-//                        }
-//                    });
-//        }
-
-        arrayList = activeFragment.arrayList;
+        //MyPageFragment에서 받아온 내가 쓴 글 데이터 ArrayList<postItemListView>에 집어넣기
+        arrayList = MyPageFragment.arrayList;
 
         // 어댑터와 리사이클러뷰 연결해서 화면에 띄우기
         recyclerView = (RecyclerView) view.findViewById(R.id.active_recyclerVIew);
@@ -125,7 +107,6 @@ public class activeMyPostFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
         return view;
     }
 
@@ -136,15 +117,13 @@ public class activeMyPostFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerPostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-
                 postItemListView item = adapter.getItem(position);
 
                 // CommunityPostsFragment로 데이터 넘기기
                 Bundle bundle = new Bundle();
-
                 bundle.putString("Category", item.getPost_category());
                 bundle.putString("Title", item.getPost_title());
-                bundle.putString("Writer", nickname);
+                bundle.putString("Writer", str_nickname);
                 bundle.putString("Content", item.getPost_content());
                 bundle.putString("Date", item.getPost_date());
 
@@ -154,6 +133,7 @@ public class activeMyPostFragment extends Fragment {
 
                 // 버튼 누르면 화면 전환
                 fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
