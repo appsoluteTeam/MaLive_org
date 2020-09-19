@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
+//import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -242,7 +242,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
         btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
         //btnMyPage_friend 클릭시 친구목록으로 간다
-        btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
+       /* btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();

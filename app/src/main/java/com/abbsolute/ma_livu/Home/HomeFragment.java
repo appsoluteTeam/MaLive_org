@@ -3,11 +3,14 @@ package com.abbsolute.ma_livu.Home;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +47,8 @@ public class HomeFragment extends Fragment {
 
     //출석체크 관련 변수
     private String beforeCalendar;
+    private LinearLayout layout_checkin;
+    private TextView at_close_button;
 
     //파이어스토에 저장하기 위한 변수
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -59,6 +64,9 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home,container,false);
+
+        layout_checkin = view.findViewById(R.id.layout_checkin);
+        at_close_button = view.findViewById(R.id.at_close_button);
 
         attendance_check();
 
@@ -80,6 +88,15 @@ public class HomeFragment extends Fragment {
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });
+
+        at_close_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout_checkin.setVisibility(View.GONE);
+            }
+        });
+
+
 
         return view;
     }
@@ -106,11 +123,16 @@ public class HomeFragment extends Fragment {
         Log.d("beforeCalendar",beforeCalendar);
 
         if(beforeCalendar.equals(currentCalendar)) {//둘의 날짜가 같으면 중복인것임...
+            layout_checkin.setVisibility(View.GONE);
             Toast.makeText(getContext(),"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
         }else{//두 값이 다르면 중복이 아님 -> 즉 출석체크 해줘야한다.
-            //todo: 출첵 팝업창(dialog)띄어주고, 파이어스토어 저장(완료)
-            //파이어스토어 데이터 조회하고 +1 update
-            /*user firestore에서 출석체크 카운트 정보 가져오기 */
+            //todo: 출첵 팝업창(dialog)띄어주고(해야함), 파이어스토어 저장(완료)
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable()  {
+                public void run() { // 시간 지난 후 실행할 코딩
+                    layout_checkin.setVisibility(View.VISIBLE);
+                }
+            }, 3000); // 0.5초후
             firestore.collection(FirebaseID.Attendance).document(email)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
