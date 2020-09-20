@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -212,15 +213,15 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         arrayList3.clear();
 
         for(int i = 0; i < communityCategory.length; i++) {
-            final String Category2 = communityCategory[i];
+            final String CategoryAll = communityCategory[i];
 //            final ArrayList<String> Title = new ArrayList<String>();
 
 
             // 내가 쓴 글 불러오기
-            bringMyPost(Category2);
+            bringMyPost(CategoryAll);
 
             // 댓글 단 글 불러오기
-            bringMyCommentPost(Category2);
+            bringMyCommentPost(CategoryAll);
 
         }
         // 저장한 글 불러오기
@@ -358,8 +359,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     }
 
     // 내가 쓴 글 불러오기
-    public void bringMyPost(String Category2) {
-        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").whereEqualTo("email", email)
+    public void bringMyPost(String CategoryAll) {
+        firestore.collection(FirebaseID.Community).document(CategoryAll).collection("sub_Community")
+                .whereEqualTo("email", email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -397,8 +399,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     }
 
     // 댓글 단 글 불러오기
-    public void bringMyCommentPost(final String Category2) {
-        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community")
+    public void bringMyCommentPost(final String CategoryAll) {
+        firestore.collection(FirebaseID.Community).document(CategoryAll).collection("sub_Community")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -406,27 +408,31 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                         // 댓글 단 글 받아오기
                         if (task.isSuccessful()) {
                             if (task.getResult() != null) {
-
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     final Map<String, Object> shot = snapshot.getData();
 //                                  Title.add(String.valueOf(shot.get(FirebaseID.title)));
-                                    firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community")
-                                            .document(String.valueOf(shot.get(FirebaseID.title))).collection(FirebaseID.Community_Comment)
+
+                                    firestore.collection(FirebaseID.Community).document(CategoryAll).collection("sub_Community")
+                                            .document(String.valueOf(shot.get(FirebaseID.title))).collection("Community_comment")
                                             .whereEqualTo("email", email)
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        Log.d("결과 값 : ", String.valueOf(shot.get(FirebaseID.title)));
-                                                    String Email = (String) shot.get(FirebaseID.Email);
-                                                    String Title = String.valueOf(shot.get(FirebaseID.title));
-                                                    String Content = String.valueOf(shot.get(FirebaseID.content));
-                                                    String Date = String.valueOf(shot.get(FirebaseID.commu_date));
-                                                    String Writer = String.valueOf(shot.get(FirebaseID.Nickname));
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                                                String Title = String.valueOf(shot.get(FirebaseID.title));
+                                                                String Content = String.valueOf(shot.get(FirebaseID.content));
+                                                                String Date = String.valueOf(shot.get(FirebaseID.commu_date));
+                                                                String Writer = String.valueOf(shot.get(FirebaseID.Nickname));
 
-                                                    postItemListView data = new postItemListView(Category2, Title, Content, Date, Writer);
-                                                    arrayList2.add(data);
-                                                    myComment_count++;
+                                                                postItemListView data = new postItemListView(CategoryAll, Title, Content, Date, Writer);
+                                                                arrayList2.add(data);
+                                                                myComment_count++;
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             });
                                     }
