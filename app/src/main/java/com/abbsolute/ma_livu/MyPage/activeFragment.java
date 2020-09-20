@@ -161,6 +161,7 @@ public class activeFragment extends Fragment {
                         // activeMyPostFragment로 데이터 넘기기
                         bundle.putString("nickname", str_nickname);
                         activeMyPostFragment.setArguments(bundle);
+
                         fragmentTransaction.replace(R.id.main_frame, activeMyPostFragment);
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
@@ -171,12 +172,6 @@ public class activeFragment extends Fragment {
                         activeMyCommentFragment activeMyCommentFragment = new activeMyCommentFragment();
 //                        fragmentStack.push(activeMyCommentFragment);
 
-                        // activeMyCommentFragment로 데이터 넘기기
-//                        bundle.putString("nickname", str_nickname);
-//                        bundle.putString("MyPost_count", String.valueOf(myPost_count));
-//                        bundle.putString("MyComment_count", String.valueOf(myComment_count));
-                        activeMyCommentFragment.setArguments(bundle);
-
                         fragmentTransaction.replace(R.id.main_frame, activeMyCommentFragment);
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
@@ -185,10 +180,6 @@ public class activeFragment extends Fragment {
                         Log.d("activeFragment go myMySavedPostsFragment","myMySavedPosts buttonclick");
                         activeMySavedPostsFragment activeMySavedPostsFragment = new activeMySavedPostsFragment();
 //                        fragmentStack.push(activeMyCommentFragment);
-
-//                        // activeactiveMySavedPostsFragmentFragment로 데이터 넘기기
-//                        bundle.putString("nickname", str_nickname);
-//                        activeMySavedPostsFragment.setArguments(bundle);
 
                         fragmentTransaction.replace(R.id.main_frame, activeMySavedPostsFragment);
                         fragmentTransaction.addToBackStack(null);
