@@ -506,7 +506,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             newBtn.setVisibility(view.VISIBLE);
 
             Handler handler = new Handler();
-            //5초만 파란 불 띄어주기
             handler.postDelayed(new Runnable() {
                 public void run() {
                     newBtn.setVisibility(view.INVISIBLE);
