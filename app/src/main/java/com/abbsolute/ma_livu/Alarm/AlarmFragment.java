@@ -273,8 +273,8 @@ public class AlarmFragment extends Fragment {
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                             if(date!=null){
                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                String responseText = "내 글에 댓글이 달렸어요";
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                         responseText, res);
                                                                                 //newArrays.add(prevNotificationInfo);
@@ -345,8 +345,8 @@ public class AlarmFragment extends Fragment {
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 //newArrays.add(prevNotificationInfo);
@@ -395,7 +395,7 @@ public class AlarmFragment extends Fragment {
                                 if(snapshot.exists()){
                                     content="빨래complete";
                                     if(data.containsKey(content)){
-                                        long cnt=(long)data.get(content);
+                                        long cnt=(long)data.get(content);//누적횟수
                                         if(cnt==5){//5회
                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                             long systemTime = System.currentTimeMillis();
@@ -454,7 +454,8 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            //일단 되는 지 점검용으로 한거니 숫자는 때에 따라 수정요망
                                             String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
@@ -476,8 +477,8 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
-                                            String notifiText="칭호 업그레이드 보상이 도착했어요!"+" | "+" +3000톨";
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
                                                             notifiText, date);
@@ -503,8 +504,8 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
-                                            String notifiText="칭호 업그레이드 보상이 도착했어요!"+" | "+" +3000톨";
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
                                                             notifiText, date);
@@ -525,7 +526,7 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
                                             String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
@@ -596,7 +597,7 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
                                             String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
@@ -618,7 +619,7 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
                                             String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
@@ -640,7 +641,7 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
                                             String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
@@ -662,7 +663,7 @@ public class AlarmFragment extends Fragment {
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
-                                            date=prevTimeSetClass.formatTimeString(tmp);
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
                                             String notifiText="칭호 업그레이드 보상이 도착했어요!";
                                             PrevNotificationInfo prevNotificationInfo =
                                                     new PrevNotificationInfo(R.drawable.title_upgrade,
@@ -672,7 +673,100 @@ public class AlarmFragment extends Fragment {
                                             prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
                                         }
                                     }//청소complete 업그레이드
-                                }
+                                    content="투두complete";
+                                    if(data.containsKey(content)){
+                                        long cnt=(long)data.get(content);
+                                        if(cnt==5){//5회
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==10){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==30){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==50){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }
+                                    }//투두complete 업그레이드
+                                }//
 
 
 
@@ -732,8 +826,8 @@ public class AlarmFragment extends Fragment {
                                                                                 String res="";
                                                                                 if(date!=null){
                                                                                     Log.d("OK!!","Okay!!!~~");
-                                                                                    res = prevTimeSetClass.formatTimeString(date);
-                                                                                    String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                    res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                    String responseText = "내 글에 댓글이 달렸어요";
                                                                                     PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                             responseText, res);
                                                                                     //newArrays.add(prevNotificationInfo);
@@ -806,8 +900,8 @@ public class AlarmFragment extends Fragment {
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 // newArrays.add(prevNotificationInfo);
@@ -888,8 +982,8 @@ public class AlarmFragment extends Fragment {
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                             if(date!=null){
                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                String responseText = "내 글에 댓글이 달렸어요";
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                         responseText, res);
                                                                                 //  newArrays.add(prevNotificationInfo);
@@ -960,8 +1054,8 @@ public class AlarmFragment extends Fragment {
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 //newArrays.add(prevNotificationInfo);
