@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,7 +38,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-public class AlarmFragment extends Fragment {
+public class AlarmFragment extends Fragment implements OnBackPressedListener {
     //todo 모든 기능의 데이터가 구축되어야 할 수 있는 일
     private View view;
     private AlarmFriendRequestListAdapter alarmFriendRequestListAdapter;
@@ -94,6 +95,8 @@ public class AlarmFragment extends Fragment {
         //내 댓글 가져오기(어떻게 하지?)
         getHowDoInfo();
         ///이전알림 끝
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         return view;
     }
     //닉네임 얻기
@@ -1084,5 +1087,10 @@ public class AlarmFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(0);
     }
 }

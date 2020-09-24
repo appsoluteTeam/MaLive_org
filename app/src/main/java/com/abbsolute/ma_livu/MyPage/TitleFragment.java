@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,7 +52,7 @@ import androidx.fragment.app.FragmentTransaction;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
-public class TitleFragment extends Fragment implements View.OnClickListener {
+public class TitleFragment extends Fragment implements View.OnClickListener, OnBackPressedListener {
 
     private View view;
 
@@ -266,7 +267,8 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.title,container,false);
-
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         myPageRef = firestore.collection(FirebaseID.myPage).document(email);
 
         TODOFragment = new TODOtitleFragment();
@@ -833,5 +835,10 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                     .document(email).set(isLocked, SetOptions.merge());
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(2);
     }
 }

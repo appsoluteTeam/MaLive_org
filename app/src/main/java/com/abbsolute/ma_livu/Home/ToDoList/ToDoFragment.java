@@ -587,8 +587,11 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     //뒤로가기 이벤트
     @Override
     public void onBackPressed() {
-        Toast.makeText(getContext(),getContext().getClass().getName(),Toast.LENGTH_SHORT).show();
-        ((HomeActivity)getActivity()).setCurrentScene(this);
+        if(this!=null)
+        {
+            ((HomeActivity)getActivity()).setCurrentScene(this);
+        }
+
     }
 }
 

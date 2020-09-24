@@ -19,9 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentAdapter;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommunityPostsFragment extends Fragment {
+public class CommunityPostsFragment extends Fragment implements OnBackPressedListener {
     //프래그먼트 전환 변수
     FragmentTransaction transaction;
 
@@ -73,7 +75,8 @@ public class CommunityPostsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_community_posts, container, false);
-
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         commu_title = view.findViewById(R.id.commu_title);
         commu_date = view.findViewById(R.id.commu_date);
         commu_writer = view.findViewById(R.id.commu_writer);
@@ -267,6 +270,11 @@ public class CommunityPostsFragment extends Fragment {
             firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.savedPosts).document(title)
                     .set(data, SetOptions.merge());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(50);
     }
 }
 

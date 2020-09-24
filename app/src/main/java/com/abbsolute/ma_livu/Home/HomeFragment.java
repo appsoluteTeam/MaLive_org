@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,7 +37,7 @@ import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnBackPressedListener {
 
     private View view;
     private Button go_Todo;
@@ -64,7 +65,8 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home,container,false);
-
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         layout_checkin = view.findViewById(R.id.layout_checkin);
         at_close_button = view.findViewById(R.id.at_close_button);
 
@@ -166,5 +168,10 @@ public class HomeFragment extends Fragment {
         //commit해야지 sharedPreference에 저장 완료
         editor.putString(emailBeforeCalendar,currentCalendar);
         editor.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        getActivity().finish();
     }
 }

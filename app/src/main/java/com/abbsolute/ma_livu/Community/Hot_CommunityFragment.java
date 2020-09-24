@@ -12,10 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.MainActivity;
 import com.abbsolute.ma_livu.R;
 
-public class Hot_CommunityFragment extends Fragment {
+public class Hot_CommunityFragment extends Fragment implements OnBackPressedListener {
 
     private View view;
     private Button btn_more_text;
@@ -25,7 +26,8 @@ public class Hot_CommunityFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.hot_community_fragment,container,false);
-
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         //커뮤니티에서 더 많은 글 버튼을 눌렀을 때
         btn_more_text=view.findViewById(R.id.btn_more_text);
         btn_more_text.setOnClickListener(new View.OnClickListener() {
@@ -44,5 +46,10 @@ public class Hot_CommunityFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(0);
     }
 }
