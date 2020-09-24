@@ -16,8 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 //import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +46,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 /* 마이페이지 메인 fragment */
 
-public class MyPageFragment extends Fragment implements View.OnClickListener{
+public class MyPageFragment extends Fragment implements View.OnClickListener, OnBackPressedListener {
     private View view;
 
     //reCyclerView 관련 변수
@@ -231,6 +233,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         /* myPage fragment 처음 */
         view = inflater.inflate(R.layout.fragment_mypage,container,false);
+
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
         Log.d("Mypage-Email",email);
 
@@ -475,5 +480,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(0);
     }
 }

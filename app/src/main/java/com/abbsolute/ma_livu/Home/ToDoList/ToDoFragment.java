@@ -337,6 +337,10 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Toast.makeText(getContext(), "삭제성공", Toast.LENGTH_SHORT).show();
+                                                toDoInfos.remove(position);
+                                                toDoAdapter.setItem(toDoInfos);
+                                                toDoAdapter.notifyDataSetChanged();
+                                                recyclerView.setAdapter(toDoAdapter);
                                                 refresh();
                                             }
                                         })
@@ -352,10 +356,6 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                         customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
                                 "그래도 삭제하시겠습니까?", leftListener, rightListener);
                         customDialog.show();
-                        toDoInfos.remove(position);
-                        toDoAdapter.setItem(toDoInfos);
-                        toDoAdapter.notifyDataSetChanged();
-                        recyclerView.setAdapter(toDoAdapter);
 
                     }//chk false
 
@@ -376,6 +376,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         @Override
         public void onClick(View v) {
             Toast.makeText(getContext(), "오른쪽 버튼 클릭", Toast.LENGTH_SHORT).show();
+            refresh();
             customDialog.dismiss();
         }
     };
@@ -586,8 +587,11 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     //뒤로가기 이벤트
     @Override
     public void onBackPressed() {
-        Toast.makeText(getContext(),getContext().getClass().getName(),Toast.LENGTH_SHORT).show();
-        ((HomeActivity)getActivity()).setCurrentScene(this);
+        if(this!=null)
+        {
+            ((HomeActivity)getActivity()).setCurrentScene(this);
+        }
+
     }
 }
 

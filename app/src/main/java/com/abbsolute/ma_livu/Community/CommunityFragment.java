@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
 import com.bumptech.glide.Glide;
@@ -47,7 +48,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Stack;
 
-public class CommunityFragment extends Fragment {
+public class CommunityFragment extends Fragment implements OnBackPressedListener {
     // 프래그먼트
     public static Stack<Fragment> fragmentStack;
     private FragmentTransaction fragmentTransaction;
@@ -81,6 +82,9 @@ public class CommunityFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.community_fragment,container,false);
+
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
         // 카테고리 버튼 눌렸을 때 버튼리스너
         btn_what_eat=(Button)view.findViewById(R.id.what_eat);
@@ -423,6 +427,9 @@ public class CommunityFragment extends Fragment {
                break;
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(1);//hot_communtity로 뒤로가기
+    }
 }
 

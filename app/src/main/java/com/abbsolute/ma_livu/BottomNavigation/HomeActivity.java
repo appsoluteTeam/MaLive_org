@@ -1,6 +1,8 @@
 package com.abbsolute.ma_livu.BottomNavigation;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -326,37 +329,46 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void onBackPressed() {
         if(listener!=null){
             listener.onBackPressed();
+            listener=null;
         }
         else
             super.onBackPressed();
 
     }
     public void setCurrentScene(Fragment fragment){
-
-        if(fragment instanceof ToDoFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, homeFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoWriteFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoFixWriteFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoFixModifyingFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoWriteMainFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoFixListRemoveFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoWriteMainFragment);
-            transaction.commit();
+        if(fragment!=null){
+            if(!isFinishing()){
+                if(fragment instanceof ToDoFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    HomeFragment goHome=new HomeFragment();
+                    transaction.replace(R.id.main_frame, goHome);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoWriteFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoFragment goToDo=new ToDoFragment();
+                    transaction.replace(R.id.main_frame, goToDo);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoFixWriteFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoFragment goToDo=new ToDoFragment();
+                    transaction.replace(R.id.main_frame, goToDo);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoFixModifyingFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoWriteMainFragment goToDoWriteMain=new ToDoWriteMainFragment();
+                    transaction.replace(R.id.main_frame, goToDoWriteMain);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoFixListRemoveFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoWriteMainFragment goToDoWriteMain=new ToDoWriteMainFragment();
+                    transaction.replace(R.id.main_frame, goToDoWriteMain);
+                    transaction.commit();
+                }
+            }
         }
     }
 }

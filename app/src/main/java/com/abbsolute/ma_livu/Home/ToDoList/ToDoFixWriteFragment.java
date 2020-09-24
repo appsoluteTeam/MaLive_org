@@ -3,9 +3,9 @@ package com.abbsolute.ma_livu.Home.ToDoList;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,24 +36,18 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
-import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertData;
-import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.insertFixData;
-import static com.abbsolute.ma_livu.Home.ToDoList.ToDoAppHelper.selectFixTodoInfo;
 
 public class ToDoFixWriteFragment extends Fragment implements refreshInterface,OnBackPressedListener {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    ToDoCategoryAdapter categoryAdapter;
     ToDoFixListAdapter toDoFixListAdapter;
     ArrayList<ToDoFixInfo> toDoFixInfos=new ArrayList<>();
     RecyclerView fixTodoRecyclerview;
     RecyclerView categoryRecyclerview;
-    ArrayList<ToDoCategoryInfo> categoryInfos=new ArrayList<>();
     NumberPicker setPeriodDay;
     NumberPicker setPeriod;
     final String[] values={"매주","격주","매달"};
@@ -75,25 +69,135 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
         return fragment;
     }
     //
-
+    protected TextView cleanText;
+    protected TextView laundryText;
+    protected TextView trashText;
+    protected TextView etcText;
+    ///
+    boolean cleanFlag=false;
+    boolean laundryFlag=false;
+    boolean trashFlag=false;
+    boolean todoFlag=false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_fragment_fix,container,false);
 
         //todo : 페이지 2 카테고리 리스트 어뎁터 생성
-        categoryRecyclerview=view.findViewById(R.id.todo_list_category2);
+        cleanText=view.findViewById(R.id.clean_todo_image_text);
+        laundryText=view.findViewById(R.id.laundry_todo_image_text);
+        trashText=view.findViewById(R.id.trash_todo_image_text);
+        etcText=view.findViewById(R.id.etc_todo_image_text);
+        cleanText.setText("청소하기");
+        laundryText.setText("빨래하기");
+        trashText.setText("쓰레기");
+        etcText.setText("기타");
+        cleanText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cleanFlag=false;
+                //다른애들 다 흰색으로
+                laundryText.setBackgroundResource(R.drawable.todo_text_background);
+                laundryText.setTextColor(Color.BLACK);
+                trashText.setBackgroundResource(R.drawable.todo_text_background);
+                trashText.setTextColor(Color.BLACK);
+                etcText.setBackgroundResource(R.drawable.todo_text_background);
+                etcText.setTextColor(Color.BLACK);
+                SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                Toast.makeText(getContext(), "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
+                editor.putString("toDo", "청소");
+                editor.commit();
+                if (cleanFlag == false) {
+                    cleanText.setBackgroundResource(R.drawable.todo_text_background2);
+                    cleanText.setTextColor(Color.WHITE);
+                    cleanFlag = true;
+                } else {
+                    cleanFlag = false;
+                    cleanText.setBackgroundResource(R.drawable.todo_text_background);
+                    cleanText.setTextColor(Color.BLACK);
+                }
+            }
+        });
+        laundryText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                laundryFlag=false;
+                cleanText.setBackgroundResource(R.drawable.todo_text_background);
+                cleanText.setTextColor(Color.BLACK);
+                trashText.setBackgroundResource(R.drawable.todo_text_background);
+                trashText.setTextColor(Color.BLACK);
+                etcText.setBackgroundResource(R.drawable.todo_text_background);
+                etcText.setTextColor(Color.BLACK);
+                SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                Toast.makeText(getContext(), "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
+                editor.putString("toDo", "빨래");
+                editor.commit();
+                if (laundryFlag == false) {
+                    laundryText.setBackgroundResource(R.drawable.todo_text_background2);
+                    laundryText.setTextColor(Color.WHITE);
+                    laundryFlag = true;
+                } else {
+                    laundryFlag = false;
+                    laundryText.setBackgroundResource(R.drawable.todo_text_background);
+                    laundryText.setTextColor(Color.BLACK);
+                }
+            }
+        });
+        trashText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trashFlag=false;
+                cleanText.setBackgroundResource(R.drawable.todo_text_background);
+                cleanText.setTextColor(Color.BLACK);
+                laundryText.setBackgroundResource(R.drawable.todo_text_background);
+                laundryText.setTextColor(Color.BLACK);
+                etcText.setBackgroundResource(R.drawable.todo_text_background);
+                etcText.setTextColor(Color.BLACK);
+                SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                Toast.makeText(getContext(), "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
+                editor.putString("toDo", "쓰레기");
+                editor.commit();
+                if (trashFlag == false) {
+                    trashText.setBackgroundResource(R.drawable.todo_text_background2);
+                    trashText.setTextColor(Color.WHITE);
+                    trashFlag = true;
+                } else {
+                    trashFlag = false;
+                    trashText.setBackgroundResource(R.drawable.todo_text_background);
+                    trashText.setTextColor(Color.BLACK);
+                }
+            }
+        });
+        etcText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todoFlag=false;
+                cleanText.setBackgroundResource(R.drawable.todo_text_background);
+                cleanText.setTextColor(Color.BLACK);
+                laundryText.setBackgroundResource(R.drawable.todo_text_background);
+                laundryText.setTextColor(Color.BLACK);
+                trashText.setBackgroundResource(R.drawable.todo_text_background);
+                trashText.setTextColor(Color.BLACK);
+                SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                Toast.makeText(getContext(), "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
+                editor.putString("toDo", "기타");
+                editor.commit();
+                if (todoFlag == false) {
+                    etcText.setBackgroundResource(R.drawable.todo_text_background2);
+                    etcText.setTextColor(Color.WHITE);
+                    todoFlag = true;
+                } else {
+                    todoFlag = false;
+                    etcText.setBackgroundResource(R.drawable.todo_text_background);
+                    etcText.setTextColor(Color.BLACK);
+                }
+            }
+        });
         fixTodoRecyclerview=view.findViewById(R.id.fix_list);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
-        categoryRecyclerview.setLayoutManager(linearLayoutManager);
-        categoryAdapter=new ToDoCategoryAdapter();
-        categoryInfos.add(new ToDoCategoryInfo("청소하기"));
-        categoryInfos.add(new ToDoCategoryInfo("빨래하기"));
-        categoryInfos.add(new ToDoCategoryInfo("쓰레기"));
-        categoryInfos.add(new ToDoCategoryInfo("기타"));
-        categoryAdapter.setItem(categoryInfos);
-        categoryAdapter.getCategoryContext(getContext());
-        categoryRecyclerview.setAdapter(categoryAdapter);
         ///기본 카데고리
         setPeriod=view.findViewById(R.id.set_period);
         setPeriodDay=view.findViewById(R.id.set_period_day);

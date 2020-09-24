@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.Alarm;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +38,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-public class AlarmFragment extends Fragment {
+public class AlarmFragment extends Fragment implements OnBackPressedListener {
     //todo 모든 기능의 데이터가 구축되어야 할 수 있는 일
     private View view;
     private AlarmFriendRequestListAdapter alarmFriendRequestListAdapter;
@@ -81,6 +84,8 @@ public class AlarmFragment extends Fragment {
         //닉네임찾기
         getNickName();
         ///이전알림 시작
+        //칭호얻기
+        getTitle();
         //투두리스트 정보 가져오기
         getToDoListInfo();
         //내 댓글 가져오기(뭐먹지)
@@ -90,6 +95,8 @@ public class AlarmFragment extends Fragment {
         //내 댓글 가져오기(어떻게 하지?)
         getHowDoInfo();
         ///이전알림 끝
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         return view;
     }
     //닉네임 얻기
@@ -269,8 +276,8 @@ public class AlarmFragment extends Fragment {
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                             if(date!=null){
                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                String responseText = "내 글에 댓글이 달렸어요";
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                         responseText, res);
                                                                                 //newArrays.add(prevNotificationInfo);
@@ -341,8 +348,8 @@ public class AlarmFragment extends Fragment {
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 //newArrays.add(prevNotificationInfo);
@@ -372,6 +379,406 @@ public class AlarmFragment extends Fragment {
                     }
                 });
     }//
+    //칭호얻기
+    public void getTitle(){
+        String userEmail=firebaseAuth.getCurrentUser().getEmail();
+        firestore.collection(FirebaseID.ToDoLists).document(userEmail)
+                .collection("total")
+                .document("sub")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult()!=null){
+                                DocumentSnapshot snapshot=task.getResult();
+                                String content="";
+                                Map<String,Object> data=snapshot.getData();
+                                if(snapshot.exists()){
+                                    content="빨래complete";
+                                    if(data.containsKey(content)){
+                                        long cnt=(long)data.get(content);//누적횟수
+                                        if(cnt==5){//5회
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==10){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==30){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            //일단 되는 지 점검용으로 한거니 숫자는 때에 따라 수정요망
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==50){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }
+                                    }//빨래complete 업그레이드
+                                    content="쓰레기complete";
+                                    if(data.containsKey(content)){
+                                        long cnt=(long)data.get(content);
+                                        if(cnt==5){//5회
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==10){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==30){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==50){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }
+                                    }//쓰레기complete 업그레이드
+                                    content="청소complete";
+                                    if(data.containsKey(content)){
+                                        long cnt=(long)data.get(content);
+                                        if(cnt==5){//5회
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==10){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==30){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==50){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }
+                                    }//청소complete 업그레이드
+                                    content="투두complete";
+                                    if(data.containsKey(content)){
+                                        long cnt=(long)data.get(content);
+                                        if(cnt==5){//5회
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==10){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==30){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }else if(cnt==50){
+                                            PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            String date = formatter.format(systemTime);
+                                            Date tmp=null;
+                                            try {
+                                                tmp=formatter.parse(date);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                            date=prevTimeSetClass.formatTimeString(tmp)+" | "+" +3000톨";
+                                            String notifiText="칭호 업그레이드 보상이 도착했어요!";
+                                            PrevNotificationInfo prevNotificationInfo =
+                                                    new PrevNotificationInfo(R.drawable.title_upgrade,
+                                                            notifiText, date);
+                                            alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
+                                            prevNotificationListView.setHasFixedSize(true);
+                                            prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
+                                        }
+                                    }//투두complete 업그레이드
+                                }//
+
+
+
+                            }
+                        }
+                    }
+                });
+
+    }
     //뭐하지 정보가져오기
     public void getWhatDoInfo(){
         firestore.collection(FirebaseID.Community).document("what_do").
@@ -422,8 +829,8 @@ public class AlarmFragment extends Fragment {
                                                                                 String res="";
                                                                                 if(date!=null){
                                                                                     Log.d("OK!!","Okay!!!~~");
-                                                                                    res = prevTimeSetClass.formatTimeString(date);
-                                                                                    String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                    res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                    String responseText = "내 글에 댓글이 달렸어요";
                                                                                     PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                             responseText, res);
                                                                                     //newArrays.add(prevNotificationInfo);
@@ -496,8 +903,8 @@ public class AlarmFragment extends Fragment {
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 // newArrays.add(prevNotificationInfo);
@@ -578,8 +985,8 @@ public class AlarmFragment extends Fragment {
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                             if(date!=null){
                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                String responseText = "내 글에 댓글이 달렸어요"+"\n"+content;
+                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                String responseText = "내 글에 댓글이 달렸어요";
                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                         responseText, res);
                                                                                 //  newArrays.add(prevNotificationInfo);
@@ -650,8 +1057,8 @@ public class AlarmFragment extends Fragment {
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
-                                                                                                                String res = prevTimeSetClass.formatTimeString(date);
-                                                                                                                String responseText = "내 글에 대댓글이 달렸어요"+"\n"+content;
+                                                                                                                String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
+                                                                                                                String responseText = "내 글에 대댓글이 달렸어요";
                                                                                                                 PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
                                                                                                                         responseText, res);
                                                                                                                 //newArrays.add(prevNotificationInfo);
@@ -680,5 +1087,10 @@ public class AlarmFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(0);
     }
 }
