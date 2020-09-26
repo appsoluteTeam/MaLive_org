@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
@@ -108,6 +109,31 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
         try {
             int backs=arrayList.get(position).color;
+            if(backs==2131231008){
+                String email=firebaseAuth.getCurrentUser().getEmail();
+                firestore.collection(FirebaseID.ToDoLists).document(email).collection("FixToDo")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    if(task.getResult()!=null){
+                                        for(DocumentSnapshot snapshot:task.getResult()){
+                                            Map<String,Object> data=snapshot.getData();
+                                            String detail=(String)data.get("todo");
+                                            String periods=(String)data.get("period");
+                                            if(detail.equals(detailContent)){
+                                                String category=toDoInfo.getContent();
+                                                String contentText=category+"\n"+periods;
+                                                holder.Contents.setText(contentText);
+                                                holder.dDays.setText("고정리스트");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+            }
             holder.Contents.setBackgroundResource(backs);
             holder.ContentsDetail.setBackgroundResource(backs);
         } catch (Resources.NotFoundException e) {
