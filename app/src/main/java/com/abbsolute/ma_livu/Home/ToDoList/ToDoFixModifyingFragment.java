@@ -71,10 +71,18 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
     boolean laundryFlag=false;
     boolean trashFlag=false;
     boolean todoFlag=false;
+    TextView goRemoveFragment;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup view=(ViewGroup)inflater.inflate(R.layout.todo_fix_modify_fragment,container,false);
+        goRemoveFragment=view.findViewById(R.id.fix_todo_remove);
+        goRemoveFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((HomeActivity)getActivity()).setFragment(104);
+            }
+        });
         //count받아오기
         //todo : 페이지 2 카테고리 리스트 어뎁터 생성
         cleanText=view.findViewById(R.id.clean_todo_image_text);
@@ -324,8 +332,8 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
                             for(QueryDocumentSnapshot snapshot:task.getResult()){
                                 Map<String,Object> data=snapshot.getData();
                                 String detailData=fixWrite.getText().toString();
-                                data.put("todo",detailData);
-                                data.put("period", finalFixDate);
+                                data.put("todo",toDoFixInfo.fixToDo);
+                                data.put("period", toDoFixInfo.fixPeriod);
                                 firestore.collection(FirebaseID.ToDoLists).document(email)
                                         .collection("FixToDo")
                                         .document(upDateContent)
@@ -381,17 +389,17 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
                             }
                             for(QueryDocumentSnapshot snapshot:task.getResult()){
                                 Map<String,Object> data=snapshot.getData();
-                                data.put("content",toDoInfo.content);
-                                data.put("detailContent",toDoInfo.detailContent);
-                                data.put("date",toDoInfo.dates);
-                                data.put("dDay",toDoInfo.dDay);
-                                data.put("num",cnt);
+                                data.put("content", toDoInfo.content);
+                                data.put("detailContent", toDoInfo.detailContent);
+                                data.put("date", toDoInfo.dates);
+                                data.put("dDay", toDoInfo.dDay);
+                                data.put("color", toDoInfo.color + "");
                                 firestore.collection(FirebaseID.ToDoLists).document(email)
-                                        .collection("FixToDo")
+                                        .collection("ToDo")
                                         .document(upDateContent)
                                         .delete();
                                 firestore.collection(FirebaseID.ToDoLists).document(email)
-                                        .collection("FixToDo")
+                                        .collection("ToDo")
                                         .document(toDoInfo.detailContent)
                                         .set(data, SetOptions.merge());
 

@@ -171,10 +171,10 @@
         </TextView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100sp">
+            android:layout_height="70sp">
             <NumberPicker
                 android:layout_width="wrap_content"
-                android:layout_height="100sp"
+                android:layout_height="70sp"
                 android:id="@+id/set_period"
                 android:layout_weight="1">
             </NumberPicker>
@@ -189,13 +189,13 @@
             </TextView>
             <NumberPicker
                 android:layout_width="wrap_content"
-                android:layout_height="100sp"
+                android:layout_height="70sp"
                 android:layout_weight="1"
                 android:id="@+id/set_period_day">
             </NumberPicker>
         </LinearLayout>
         <Button
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="17sp"
             android:layout_width="120sp"
             android:layout_height="40sp"
             android:id="@+id/write"
