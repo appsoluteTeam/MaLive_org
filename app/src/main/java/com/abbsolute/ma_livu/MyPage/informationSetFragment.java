@@ -1,6 +1,8 @@
 package com.abbsolute.ma_livu.MyPage;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -215,7 +217,11 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                             });
 
                     //startActivity(loginHome);
-                }else if(approveNum == 2){
+                }else if(approveNum == 2){//로그아웃
+                    SharedPreferences sharedPreferences=getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.remove("email_id");
+                    editor.commit();
                     FirebaseAuth.getInstance().signOut();
                     startActivity(loginHome);
                 }

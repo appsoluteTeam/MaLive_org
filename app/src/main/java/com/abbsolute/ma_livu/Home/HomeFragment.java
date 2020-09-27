@@ -126,13 +126,13 @@ public class HomeFragment extends Fragment {
             layout_checkin.setVisibility(View.GONE);
             Toast.makeText(getContext(),"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
         }else{//두 값이 다르면 중복이 아님 -> 즉 출석체크 해줘야한다.
-            //todo: 출첵 팝업창(dialog)띄어주고(해야함), 파이어스토어 저장(완료)
+            //todo: 출첵 팝업창(dialog)띄어주고(완료), 파이어스토어 저장(완료)
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable()  {
                 public void run() { // 시간 지난 후 실행할 코딩
                     layout_checkin.setVisibility(View.VISIBLE);
                 }
-            }, 3000); // 0.5초후
+            }, 3000); // 0.3초후
             firestore.collection(FirebaseID.Attendance).document(email)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -146,7 +146,7 @@ public class HomeFragment extends Fragment {
                                     atCount = (long)shot.get(FirebaseID.attendanceCount);
                                     atCount += 1;
 
-                                    //출석체크 +1 추가한 값 저장장
+                                    //출석체크 +1 추가한 값 저장
                                    firestore.collection(FirebaseID.Attendance).document(email).update(FirebaseID.attendanceCount,atCount);
                                     Log.d("HomeFragment", "at count get 완료");
                                 } else {
