@@ -85,7 +85,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/repTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="말리브 머니"
@@ -94,7 +93,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/representationTitle"
+                    android:id="@+id/totalPay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="nn톨"
@@ -102,20 +101,6 @@
                     android:textSize="22sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_charge"
-                android:layout_width="0dp"
-                android:layout_height="34dp"
-                android:layout_gravity="bottom"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="3"
-                android:background="@drawable/mint_rectangle"
-                android:text="충전하기"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textStyle="bold" />
 
         </LinearLayout>
 
