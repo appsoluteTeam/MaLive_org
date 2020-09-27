@@ -549,29 +549,32 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
     //가장 최근 문서의 잔액 알아내기
     public void getRecentBalance(final long recentPayDocumentNum){
-        firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.pay).document(Long.valueOf(recentPayDocumentNum).toString())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // 컬렉션 내의 document에 접근
-                            DocumentSnapshot document = task.getResult();
-
-                            if (document.exists()) {
-                                Map<String, Object> shot = document.getData();
-                                recentBalance =shot.get(FirebaseID.balance).toString();
-                                Log.d("recentBalance final",recentBalance);
-                            }else{
-                                recentBalance = "0";
+        Log.d("getRecentBalance","접근완료");
+        if(recentPayDocumentNum == 0){
+            recentBalance = "0";
+            Log.d("recentBalance final", recentBalance);
+            getToll(recentBalance,recentPayDocumentNum);
+        }else{
+            Log.d("else문","else");
+            firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.pay)
+                    .whereEqualTo(FirebaseID.order,Long.valueOf(recentPayDocumentNum).toString())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> shot = snapshot.getData();
+                                    recentBalance = shot.get(FirebaseID.balance).toString();
+                                    Log.d("recentBalance final", recentBalance);
+                                    getToll(recentBalance,recentPayDocumentNum);
+                                }
                             }
-                            getToll(recentBalance,recentPayDocumentNum);
-
-                        } else {
                         }
+                    });
 
-                    }
-                });
+        }
+
 
     }
 
@@ -620,6 +623,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+
 
         //최근문서 바꾸기
         Map<String,Object> payMap = new HashMap<>();
