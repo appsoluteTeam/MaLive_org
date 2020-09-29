@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
@@ -92,13 +94,13 @@ public class SignupActivity extends AppCompatActivity {
                 email = email_sign.getText().toString();
                 password = pass_sign.getText().toString();
                 calldate();
-                if(isValidEmail() && isValidPasswd() && isSamePasswd() &&overlabemail()  ) {
-                    Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
-                    intent.putExtra("email",email);
-                    intent.putExtra("password",password);
-                    startActivity(intent);
-
-                }
+//                if(isValidEmail() && isValidPasswd() && isSamePasswd() &&overlabemail()  ) {
+//                    Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+//                    intent.putExtra("email",email);
+//                    intent.putExtra("password",password);
+//                    startActivity(intent);
+//
+//                }
             }
         });
 
@@ -147,14 +149,26 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            boolean EmailDouble = false;
                             for (DocumentSnapshot snapshot : task.getResult()) {
+                                //겹치는 이메일이 있는것
                                 Map<String, Object> shot = snapshot.getData();
-                                emailtemp = String.valueOf(shot.get("email"));
+                               // emailtemp = String.valueOf(shot.get("email"));
+                                tv_wanning.setText("이미 등록된 계정입니다.");
+                                EmailDouble = true;
                                 break;
                             }
-                            return;
+                            if(EmailDouble == false){//중복이 아닐 때
+                                if(isValidEmail() && isValidPasswd() && isSamePasswd()) {//유효성 검사
+                                    Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+                                    intent.putExtra("email",email);
+                                    intent.putExtra("password",password);
+                                    startActivity(intent);
+                                }
+                            }
+//                            return;
                         }else {
-                            emailtemp = null;
+                            //emailtemp = null;
                         }
                     }
                 });
@@ -163,7 +177,7 @@ public class SignupActivity extends AppCompatActivity {
     private boolean overlabemail() {
         if (emailtemp != null) {
             // 이메일 공백
-            tv_wanning.setText("이미 등록된 계정입니다.");
+            //tv_wanning.setText("이미 등록된 계정입니다.");
             return false;
         } else if (emailtemp == null) {
             return true;
