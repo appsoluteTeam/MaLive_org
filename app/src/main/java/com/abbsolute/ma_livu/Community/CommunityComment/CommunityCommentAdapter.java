@@ -36,6 +36,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //뷰홀더 최초로 만들어내는 역할
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.community_comment_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
+//        callback.checkLikePressed();
         return holder;
     }
 
@@ -50,6 +51,9 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         holder.commu_comment_like.setText(arrayList.get(position).getComment_like());
         holder.commu_comment_comment_count.setText(arrayList.get(position).getComment_count());
 
+        // 이 유저가 '좋아요'버튼을 눌렀었는지 판단
+//        callback.checkLikePressed(position);
+//        holder.btn_comment_like.setSelected(! holder.btn_comment_like.isSelected());
 
         // '삭제' 버튼 클릭 시 데이터 삭제하기
         holder.btn_commu_delete.setOnClickListener(new View.OnClickListener() {
