@@ -8,10 +8,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -27,7 +32,7 @@ public class Signup3Activity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private String email;
+    private String email,password,nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +52,13 @@ public class Signup3Activity extends AppCompatActivity {
         //파이어스토어 도큐먼트 이름 넘겨받기
         Intent intent = getIntent();
         email = intent.getStringExtra("email");
+        password = intent.getStringExtra("password");
+        nickname=intent.getStringExtra("nickname");
 
         btn_next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaveTest();
+                createUser(email, password);
             }
         });
     }
@@ -68,9 +75,42 @@ public class Signup3Activity extends AppCompatActivity {
             userMap.put(FirebaseID.Test2,selectedButton2.getText().toString());
             firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
 
-            Intent intent = new Intent(Signup3Activity.this, LoginActivity.class);
-            Toast.makeText(this.getApplicationContext(),"회원가입 성공", Toast.LENGTH_SHORT);
-            startActivity(intent);
+
         }
+    }
+
+    private void createUser(final String email, final String password) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            //파이어스토어에 정보 저장
+                            if (firebaseAuth.getCurrentUser() != null){
+                                Map<String,Object> userMap = new HashMap<>();
+                                userMap.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
+                                userMap.put(FirebaseID.Email,email);
+                                userMap.put(FirebaseID.Nickname,nickname);
+
+                                int id = rg_test1.getCheckedRadioButtonId();
+                                RadioButton selectedButton = (RadioButton) findViewById(id);
+                                int id2 =rg_test2.getCheckedRadioButtonId();
+                                RadioButton selectedButton2 =(RadioButton)findViewById(id2);
+
+                                userMap.put(FirebaseID.Test1,selectedButton.getText().toString());
+                                userMap.put(FirebaseID.Test2,selectedButton2.getText().toString());
+                                firestore.collection(FirebaseID.user).document(email).set(userMap,SetOptions.merge());
+                                finish();
+                            }
+                            // 회원가입 성공
+                            Intent intent = new Intent(Signup3Activity.this, LoginActivity.class);
+                            //Toast.makeText(this.getApplicationContext(),"회원가입 성공", Toast.LENGTH_SHORT);
+                            startActivity(intent);
+                        } else {
+
+                        }
+                    }
+                });
     }
 }
