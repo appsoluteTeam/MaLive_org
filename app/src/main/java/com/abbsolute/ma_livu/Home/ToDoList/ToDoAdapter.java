@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
@@ -89,25 +90,54 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         final ToDoInfo toDoInfo=arrayList.get(position);
         final String detailContent=toDoInfo.getDetailContent();
         String dDay=toDoInfo.getdDay();
-        holder.Contents.setText(toDoInfo.getContent());
-        holder.ContentsDetail.setText(toDoInfo.getDetailContent());
-        if (dDay != null) {
-            holder.dDays.setText(dDay);
-            holder.dDays.setTextColor(Color.BLACK);
-        }
-        if (position >= 1) {
-            int pos = position;
-            if (pos > 0)
-                pos--;
-            String tmp = arrayList.get(pos).dDay;
-            ;
-            if (tmp.equals(dDay)) {
-                holder.dDays.setVisibility(View.GONE);
-            }
-        }
         //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
         try {
             int backs=arrayList.get(position).color;
+            if(backs==2131231008){
+                String email=firebaseAuth.getCurrentUser().getEmail();
+                firestore.collection(FirebaseID.ToDoLists).document(email).collection("FixToDo")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    if(task.getResult()!=null){
+                                        for(DocumentSnapshot snapshot:task.getResult()){
+                                            Map<String,Object> data=snapshot.getData();
+                                            String detail=(String)data.get("todo");
+                                            String periods=(String)data.get("period");
+                                            if(detail.equals(detailContent)){
+                                                String category=toDoInfo.getContent();
+                                                String contentText=category+"\n"+periods;
+                                                holder.Contents.setText(contentText);
+                                                holder.dDays.setVisibility(View.VISIBLE);
+                                                holder.dDays.setText("고정리스트");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                holder.Contents.setText(toDoInfo.getContent());
+                holder.ContentsDetail.setText(toDoInfo.getDetailContent());
+            }else if(backs==2131231007){
+                holder.Contents.setText(toDoInfo.getContent());
+                holder.ContentsDetail.setText(toDoInfo.getDetailContent());
+                if (dDay != null) {
+                    holder.dDays.setText(dDay);
+                    holder.dDays.setTextColor(Color.BLACK);
+                }
+                if (position >= 1) {
+                    int pos = position;
+                    if (pos > 0)
+                        pos--;
+                    String tmp = arrayList.get(pos).dDay;
+                    ;
+                    if (tmp.equals(dDay)) {
+                        holder.dDays.setVisibility(View.GONE);
+                    }
+                }
+            }
             holder.Contents.setBackgroundResource(backs);
             holder.ContentsDetail.setBackgroundResource(backs);
         } catch (Resources.NotFoundException e) {

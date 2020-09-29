@@ -70,6 +70,14 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
             Log.d("받아오기5!!!~~",count+"");
         }
         ///카테고리
+        cleanText=view.findViewById(R.id.clean_todo_image_text);
+        laundryText=view.findViewById(R.id.laundry_todo_image_text);
+        trashText=view.findViewById(R.id.trash_todo_image_text);
+        etcText=view.findViewById(R.id.etc_todo_image_text);
+        cleanText.setText("청소하기");
+        laundryText.setText("빨래하기");
+        trashText.setText("쓰레기");
+        etcText.setText("기타");
         cleanText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
