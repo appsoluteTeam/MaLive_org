@@ -2,6 +2,7 @@ package com.abbsolute.ma_livu.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class Signup2Activity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private String email, password;
-    private String nicknametemp;
+    private String nicknametemp = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,32 +50,23 @@ public class Signup2Activity extends AppCompatActivity {
         tv_warning2 = (TextView) findViewById(R.id.tv_wanning2);
         et_nickname = (EditText) findViewById(R.id.et_nickname);
         btn_next2 = (Button) findViewById(R.id.btn_next2);
+
+        //TODO : 닉네임 중복 검사 , 이메일중복검사랑 알고리즘 같음
+        
         btn_next2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 isSameNickname();
-                if(nicknametemp == null){
+                if (nicknametemp == null) {
                     Intent intent = new Intent(Signup2Activity.this, Signup3Activity.class);
                     intent.putExtra("nickname", et_nickname.getText().toString());
-                    intent.putExtra("email",email);
-                    intent.putExtra("password",password);
+                    intent.putExtra("email", email);
+                    intent.putExtra("password", password);
                     startActivity(intent);
                 }
             }
         });
 
-    }
-
-    //파이어스토어에 닉네임 저장
-    public void Savenickname() {
-        if (firebaseAuth.getCurrentUser() != null) {
-            Map<String, Object> userMap = new HashMap<>();
-            userMap.put(FirebaseID.Nickname, et_nickname.getText().toString());
-            firestore.collection(FirebaseID.user).document(email).set(userMap, SetOptions.merge());
-            Intent intent = new Intent(Signup2Activity.this, Signup3Activity.class);
-            intent.putExtra("email", email);
-            startActivity(intent);
-        }
     }
 
     private void isSameNickname() {
@@ -87,7 +79,6 @@ public class Signup2Activity extends AppCompatActivity {
                             if (task.getResult() != null) {
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     Map<String, Object> shot = snapshot.getData();
-                                    tv_warning2.setText("이미 등록된 닉네임입니다..");
                                     nicknametemp = String.valueOf(shot.get("email"));
                                 }
                             }
