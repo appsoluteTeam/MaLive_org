@@ -15,17 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -54,6 +52,8 @@ public class SignupActivity extends AppCompatActivity {
     //
     public String email = "";
     public String password = "";
+    private String emailtemp;
+    private String emailtemp2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +69,24 @@ public class SignupActivity extends AppCompatActivity {
         tv_wanning = (TextView) findViewById(R.id.tv_wanning);
         tv_top=(TextView)findViewById(R.id.tv_top);
 
+
+
         //다음 버튼을 눌렀을 때
         btn_next1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 email = email_sign.getText().toString();
                 password = pass_sign.getText().toString();
-
-                if(isValidEmail() && isValidPasswd() && isSamePasswd()) {
-                    createUser(email, password);
+                if(isValidEmail() && isValidPasswd() && isSamePasswd() ) {
+                    overlabemail();
+                    if(emailtemp == null ){
+                        Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+                        intent.putExtra("email",email);
+                        intent.putExtra("password",password);
+                        startActivity(intent);
+                    }else{
+                        tv_wanning.setText("이미 등록된 계정입니다.");
+                    }
                 }
             }
         });
@@ -118,6 +127,26 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void overlabemail() {
+        firestore.collection("user").whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> shot = snapshot.getData();
+                                    emailtemp = String.valueOf(shot.get("email"));
+                                }
+                            }
+                        }else {
+                            emailtemp = null;
+                        }
+                    }
+                });
     }
 
     // 이메일 유효성 검사
@@ -170,18 +199,19 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //파이어스토어에 정보 저장
-                            if (firebaseAuth.getCurrentUser() != null){
-                                Map<String,Object> userMap = new HashMap<>();
-                                userMap.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                userMap.put(FirebaseID.Email,email);
-                                firestore.collection(FirebaseID.user).document(email).set(userMap,SetOptions.merge());
-                                finish();
-                            }
-                            // 회원가입 성공
-                            Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
-                            intent.putExtra("email",email);
-                            startActivity(intent);
+
+//                            //파이어스토어에 정보 저장
+//                            if (firebaseAuth.getCurrentUser() != null){
+//                                Map<String,Object> userMap = new HashMap<>();
+//                                userMap.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
+//                                userMap.put(FirebaseID.Email,email);
+//                                firestore.collection(FirebaseID.user).document(email).set(userMap,SetOptions.merge());
+//                                finish();
+//                            }
+//                            // 회원가입 성공
+//                            Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+//                            intent.putExtra("email",email);
+//                            startActivity(intent);
                         } else {
                             // 회원가입 실패
                             tv_wanning.setText("이미 등록된 계정입니다.");

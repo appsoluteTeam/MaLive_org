@@ -7,6 +7,7 @@ public class CommunityCommentItem {
     private String comment;
 //    private String icon;
     private String date;
+    private String num;
     private String comment_like;
     private String comment_count;
 //    private Boolean comment_like_check;

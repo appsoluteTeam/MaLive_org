@@ -193,6 +193,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                             .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(recomment.getText().toString())
                             .set(data, SetOptions.merge());
                 }
+                recomment.setText(null);
                 refresh();
             }
         });
@@ -293,6 +294,12 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                     .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(arrayList.get(position).getComment());
             data.update(FirebaseID.commu_comment_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())+1));
         }
+        if(firebaseAuth.getCurrentUser() != null) {
+            firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                    .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(recomment.getText().toString())
+                    .collection("commentcomment_Like").document(email)
+                    .set(SetOptions.merge());
+        }
     }
 
     @Override
@@ -301,6 +308,12 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(arrayList.get(position).getComment());
             data.update(FirebaseID.commu_comment_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())));
+        }
+        if(firebaseAuth.getCurrentUser() != null) {
+            firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                    .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(recomment.getText().toString())
+                    .collection("commentcomment_Like").document(email)
+                    .delete();
         }
     }
 

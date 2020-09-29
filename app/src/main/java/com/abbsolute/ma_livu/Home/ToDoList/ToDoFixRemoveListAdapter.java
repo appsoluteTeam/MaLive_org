@@ -104,6 +104,21 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
 
                             }
                         });
+                firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
+                        .document(deleteData)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
 
             }
         });
