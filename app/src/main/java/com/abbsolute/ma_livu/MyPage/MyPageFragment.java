@@ -411,9 +411,11 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     final Map<String, Object> shot = snapshot.getData();
 //                                  Title.add(String.valueOf(shot.get(FirebaseID.title)));
+                                         String idGet = snapshot.getId();
 
                                     firestore.collection(FirebaseID.Community).document(CategoryAll).collection("sub_Community")
-                                            .document(String.valueOf(shot.get(FirebaseID.title))).collection("Community_comment")
+//                                            .document(String.valueOf(shot.get(FirebaseID.title))).collection("Community_comment")
+                                            .document(idGet).collection("Community_comment")
                                             .whereEqualTo("email", email)
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

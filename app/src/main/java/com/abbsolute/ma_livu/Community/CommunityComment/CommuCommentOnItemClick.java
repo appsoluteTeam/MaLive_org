@@ -6,4 +6,5 @@ public interface CommuCommentOnItemClick {
         void deleteItem(int position);
         void reportItem(int position);
         void goCommunityCommentComment(int position);
+        void checkLikePressed(int position);
 }
