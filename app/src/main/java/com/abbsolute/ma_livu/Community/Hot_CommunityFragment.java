@@ -114,6 +114,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
                                     bringData data = new bringData(documentID, title, category, content, date, writer, likeCount, saveCount, img1);
                                     arrayList.add(data);
                                 }
+                                adapter.notifyDataSetChanged();
                             }
                         }
                     }
