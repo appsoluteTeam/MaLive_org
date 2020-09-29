@@ -261,7 +261,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     }
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -332,9 +331,13 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
         setAttendanceIslocked(attendanceCount);
         attendanceIslocked = new ArrayList<Boolean>(Arrays.asList(attendanceList));
 
-        //파이어스토어 저장
-        saveFirebaseIsLocked();
 
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+              saveFirebaseIsLocked();
+            }
+        }, 5000);
         getRecentPayDocument();
 
         return view;
@@ -365,16 +368,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     public void countCleanTitleIsLocked(long clean_complete){
         if(clean_complete >= 5 && clean_complete < 10){
             setCleanTitleIsLocked(true,false,false,false);
-            checkFirstGetTitle(todoTitleFile,0);
+            checkFirstGetTitle("TODO",0);
         }else if(clean_complete >= 10 && clean_complete < 30){
             setCleanTitleIsLocked(true,true,false,false);
-            checkFirstGetTitle(todoTitleFile,1);
+            checkFirstGetTitle("TODO",1);
         }else if(clean_complete >= 30 && clean_complete < 50){
             setCleanTitleIsLocked(true,true,true,false);
-            checkFirstGetTitle(todoTitleFile,2);
+            checkFirstGetTitle("TODO",2);
         }else if(clean_complete >= 50){
             setCleanTitleIsLocked(true,true,true,true);
-            checkFirstGetTitle(todoTitleFile,3);
+            checkFirstGetTitle("TODO",3);
         }else if(clean_complete < 5){
             setCleanTitleIsLocked(false,false,false,false);
         }
@@ -391,16 +394,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     public void countWashTitleIsLocked(long wash_complete){
         if(wash_complete >= 5 && wash_complete < 10){
             setWashTitleIsLocked(true,false,false,false);
-            checkFirstGetTitle(todoTitleFile,4);
+            checkFirstGetTitle("TODO",4);
         }else if(wash_complete >= 10 && wash_complete < 30){
             setWashTitleIsLocked(true,true,false,false);
-            checkFirstGetTitle(todoTitleFile,5);
+            checkFirstGetTitle("TODO",5);
         }else if(wash_complete >= 30 && wash_complete < 50){
             setWashTitleIsLocked(true,true,true,false);
-            checkFirstGetTitle(todoTitleFile,6);
+            checkFirstGetTitle("TODO",6);
         }else if(wash_complete >= 50){
             setWashTitleIsLocked(true,true,true,true);
-            checkFirstGetTitle(todoTitleFile,7);
+            checkFirstGetTitle("TODO",7);
         }else if(wash_complete < 5){
             setWashTitleIsLocked(false,false,false,false);
         }
@@ -416,16 +419,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     public void countTrashTitleIsLocked(long trash_complete){
         if(trash_complete >= 4 && trash_complete < 8){
             setTrashTitleIsLocked(true,false,false,false);
-            checkFirstGetTitle(todoTitleFile,8);
+            checkFirstGetTitle("TODO",8);
         }else if(trash_complete >= 8 && trash_complete < 20){
             setTrashTitleIsLocked(true,true,false,false);
-            checkFirstGetTitle(todoTitleFile,9);
+            checkFirstGetTitle("TODO",9);
         }else if(trash_complete >= 20 && trash_complete < 40){
             setTrashTitleIsLocked(true,true,true,false);
-            checkFirstGetTitle(todoTitleFile,10);
+            checkFirstGetTitle("TODO",10);
         }else if(trash_complete >= 40){
             setTrashTitleIsLocked(true,true,true,true);
-            checkFirstGetTitle(todoTitleFile,11);
+            checkFirstGetTitle("TODO",11);
         }else if(trash_complete < 4){
             setTrashTitleIsLocked(false,false,false,false);
         }
@@ -441,13 +444,13 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     public void countTodoTitleIsLocked(long todo_complete){
         if(todo_complete >= 10 && todo_complete < 20){
             setTodoTitleIsLocked(true,false,false);
-            checkFirstGetTitle(todoTitleFile,12);
+            checkFirstGetTitle("TODO",12);
         }else if(todo_complete >= 20 && todo_complete < 40){
             setTodoTitleIsLocked(true,true,false);
-            checkFirstGetTitle(todoTitleFile,13);
+            checkFirstGetTitle("TODO",13);
         }else if(todo_complete >= 40){
             setTodoTitleIsLocked(true,true,true);
-            checkFirstGetTitle(todoTitleFile,14);
+            checkFirstGetTitle("TODO",14);
         }else if(todo_complete < 10){
             setTodoTitleIsLocked(false,false,false);
         }
@@ -462,13 +465,13 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     public void setAttendanceIslocked(long attendanceCount){
         if(attendanceCount >= 15 && attendanceCount < 30){//새내기
             setAttendanceTitleIsLocked(true,false,false);
-            checkFirstGetTitle(attendanceTitleFile,0);
+            checkFirstGetTitle("Attendance",0);
         }else if(attendanceCount >= 30 && attendanceCount < 100){//정든내기
             setAttendanceTitleIsLocked(true,true,false);
-            checkFirstGetTitle(attendanceTitleFile,1);
+            checkFirstGetTitle("Attendance",1);
         }else if(attendanceCount >= 100){//껌딱지
             setAttendanceTitleIsLocked(true,true,true);
-            checkFirstGetTitle(attendanceTitleFile,2);
+            checkFirstGetTitle("Attendance",2);
         }else if(attendanceCount < 15){
             setAttendanceTitleIsLocked(false,false,false);
         }
@@ -481,7 +484,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     }
 
     //최초로 얻은 칭호인지 check하는 메소드
-    public void checkFirstGetTitle(String category, int index){
+    public void checkFirstGetTitle(final String category, final int index){
          /*
             0이면(아직 얻지않은거니까){//최초한번이니까
                 칭호 얻은거 톨 얻게 해주고
@@ -491,35 +494,78 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
                 to-do 파란불꺼주기
             }
           */
-         String keyname = category + "-" + Integer.valueOf(index).toString();
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(category,MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+//         String keyname = category + "-" + Integer.valueOf(index).toString();
+//        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(category,MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        boolean checkFisrt = sharedPreferences.getBoolean(keyname,false);
 
-        if(category.equals(todoTitleFile)) {
+        if(category.equals("TODO")) {
+            Log.d("here","TODO");
             newBtn = newTODO;
-        }else if(category.equals(attendanceTitleFile)){
+        }else if(category.equals("Attendance")){
+            Log.d("here","AT");
             newBtn = newAttendance;
         }
 
+        //false인지 확인
+        firestore.collection(FirebaseID.myPage).document(email).collection("title").document("titleIsLocked")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
 
-        if(checkFisrt == false){    //최초 한 번 일 때
-            newBtn.setVisibility(view.VISIBLE);
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    newBtn.setVisibility(view.INVISIBLE);
-                }
-            }, 1000000);
+                                Boolean lock = (Boolean)shot.get(category+"-" + Integer.toString(index));
+                                Log.d("lock",lock.toString());
+                                if(lock == false){ //최초로 칭호 얻음
+                                    Log.d("false","false");
+                                    newBtn.setVisibility(view.VISIBLE);
+
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            newBtn.setVisibility(view.INVISIBLE);
+                                        }
+                                    }, 1000000);
+
+                                    //todo:getRecentPayDocument() 호출
+
+                                //    firestore.collection(FirebaseID.myPage)
+                                 //           .document(email)
+                                 //           .collection("title")
+                                 //           .document("titleIsLocked")
+                                 //           .update(category+"-" + Integer.toString(index),true);
+                                }
+                            } else {}
+                        } else {
+                        }
+                    }
+                });
+   //     boolean checkFisrt = sharedPreferences.getBoolean(keyname,false);
+
+//
+//
+//        if(checkFisrt == false){    //최초 한 번 일 때
+//            newBtn.setVisibility(view.VISIBLE);
+//
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                public void run() {
+//                    newBtn.setVisibility(view.INVISIBLE);
+//                }
+//            }, 1000000);
 
             //톨 얻기
             //todo:getRecentPayDocument() 호출
 
-            editor.putBoolean(keyname,true);
-            editor.commit();
-        }
+           // editor.putBoolean(keyname,true);
+           // editor.commit();
+//        }
     }
 
     //가장 최근 문서 알아내기
@@ -829,14 +875,45 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
         if(firebaseAuth.getCurrentUser() != null){
             //Map<String, Object> myPageTitle = new HashMap<>();
             //isLocked Custom Class 호출
-            isLocked isLocked = new isLocked(1,TODOIslocked,attendanceIslocked,todayIslocked,roomIslocked,category,repTitleIndex);
+            //isLocked isLocked = new isLocked(1,TODOIslocked,attendanceIslocked,todayIslocked,roomIslocked,category,repTitleIndex);
 
-            myPageRef.set(isLocked);
+            //대표 칭호 정보
+            Map<String,Object> repTitleInfo = new HashMap<>();
+            repTitleInfo.put("category",category);
+            repTitleInfo.put("index",repTitleIndex);
+
+            //대표 칭호 정보 저장
+            firestore.collection(FirebaseID.myPage).document(email)
+                    .set(repTitleInfo, SetOptions.merge());
 
 
-            //email을 문서이름으로 해서 firestore에 저장
-            firestore.collection(FirebaseID.myPage)
-                    .document(email).set(isLocked, SetOptions.merge());
+            //칭호 잠금 여부
+            Map<String, Boolean> locked = new HashMap<>();
+
+            for(int i = 0; i < TODOIslocked.size(); i++){
+                locked.put("TODO-" + i,TODOIslocked.get(i));
+            }
+            for(int i = 0; i < attendanceIslocked.size(); i++){
+                locked.put("Attendance-" + i,attendanceIslocked.get(i));
+            }
+            for(int i = 0; i < todayIslocked.size(); i++){
+                locked.put("Today-" + i,todayIslocked.get(i));
+            }
+            for(int i = 0; i< roomIslocked.size(); i++){
+                locked.put("Room-" + i, roomIslocked.get(i));
+            }
+
+            //칭호잠금여부 firestore 저장
+            firestore.collection(FirebaseID.myPage).document(email)
+                    .collection("title")
+                    .document("titleIsLocked")
+                    .set(locked, SetOptions.merge());
+//                //myPageRef.set(isLocked);
+//
+//
+//                //email을 문서이름으로 해서 firestore에 저장
+//                firestore.collection(FirebaseID.myPage)
+//                        .document(email).set(isLocked, SetOptions.merge());
 
         }
     }
