@@ -12,6 +12,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,19 +50,12 @@ public class SignupActivity extends AppCompatActivity {
 
     private Button btn_next1;
     private TextView tv_wanning;
+    private ImageButton btn_back;
 
     //
     public String email = "";
     public String password = "";
-    private static String emailtemp;
-    private String emailtemp2;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +80,13 @@ public class SignupActivity extends AppCompatActivity {
              중복이 안됐을 때만 return을 true로 해줌
         */
 
+        btn_back=(ImageButton)findViewById(R.id.btn_backkey);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+        });
 
         //다음 버튼을 눌렀을 때
         btn_next1.setOnClickListener(new View.OnClickListener() {
@@ -93,14 +94,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = email_sign.getText().toString();
                 password = pass_sign.getText().toString();
-                calldate();
-//                if(isValidEmail() && isValidPasswd() && isSamePasswd() &&overlabemail()  ) {
-//                    Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
-//                    intent.putExtra("email",email);
-//                    intent.putExtra("password",password);
-//                    startActivity(intent);
-//
-//                }
+                CheckSameEmail();
             }
         });
 
@@ -142,7 +136,7 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    private void calldate() {
+    private void CheckSameEmail() {
         firestore.collection("user").whereEqualTo("email", email_sign.getText().toString())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -153,7 +147,6 @@ public class SignupActivity extends AppCompatActivity {
                             for (DocumentSnapshot snapshot : task.getResult()) {
                                 //겹치는 이메일이 있는것
                                 Map<String, Object> shot = snapshot.getData();
-                               // emailtemp = String.valueOf(shot.get("email"));
                                 tv_wanning.setText("이미 등록된 계정입니다.");
                                 EmailDouble = true;
                                 break;
@@ -166,24 +159,11 @@ public class SignupActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 }
                             }
-//                            return;
-                        }else {
-                            //emailtemp = null;
                         }
                     }
                 });
     }
 
-    private boolean overlabemail() {
-        if (emailtemp != null) {
-            // 이메일 공백
-            //tv_wanning.setText("이미 등록된 계정입니다.");
-            return false;
-        } else if (emailtemp == null) {
-            return true;
-        }
-        return false;
-    }
 
     // 이메일 유효성 검사
     private boolean isValidEmail() {
