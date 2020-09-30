@@ -88,7 +88,7 @@ public class ToDoFixRemoveListAdapter extends RecyclerView.Adapter<ToDoFixRemove
                 notifyItemRangeChanged(position,arrayList.size());
                // deleteFixData("fixToDoInfo",toDoFixInfo.getFixToDo());
                 SharedPreferences sharedPreferences=context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                final String id=sharedPreferences.getString("email_id","");
+                final String id=firebaseAuth.getCurrentUser().getEmail();
                 firestore.collection(FirebaseID.ToDoLists).document(id).collection("FixToDo")
                         .document(deleteData)
                         .delete()
