@@ -1,9 +1,11 @@
 package com.abbsolute.ma_livu.Login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -29,6 +31,7 @@ public class Signup3Activity extends AppCompatActivity {
     private RadioGroup rg_test1;
     private RadioGroup rg_test2;
     private Button btn_next3;
+    private ImageButton btn_back;
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -54,6 +57,14 @@ public class Signup3Activity extends AppCompatActivity {
         email = intent.getStringExtra("email");
         password = intent.getStringExtra("password");
         nickname=intent.getStringExtra("nickname");
+
+        btn_back=(ImageButton)findViewById(R.id.btn_backkey);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Signup2Activity.class));
+            }
+        });
 
         btn_next3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +116,6 @@ public class Signup3Activity extends AppCompatActivity {
                             }
                             // 회원가입 성공
                             Intent intent = new Intent(Signup3Activity.this, LoginActivity.class);
-                            //Toast.makeText(this.getApplicationContext(),"회원가입 성공", Toast.LENGTH_SHORT);
                             startActivity(intent);
                         } else {
 
