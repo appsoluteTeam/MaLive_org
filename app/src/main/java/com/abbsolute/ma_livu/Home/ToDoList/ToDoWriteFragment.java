@@ -107,7 +107,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "청소");
                 editor.commit();
                 if (cleanFlag == false) {
@@ -133,7 +132,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "빨래");
                 editor.commit();
                 if (laundryFlag == false) {
@@ -159,7 +157,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "쓰레기");
                 editor.commit();
                 if (trashFlag == false) {
@@ -185,7 +182,6 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                 trashText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "기타");
                 editor.commit();
                 if (todoFlag == false) {
@@ -266,7 +262,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
                 SharedPreferences pf = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 if (isUpdated == true) {//수정작업
                     SharedPreferences getEmail = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                    final String email = getEmail.getString("email_id", "");
+                    final String email = firebaseAuth.getCurrentUser().getEmail();
                     SharedPreferences getDetail=getContext().getSharedPreferences("pref2",Activity.MODE_PRIVATE);
                     final String detail=getDetail.getString("modifyContent","");
                     String res = pf.getString("toDo", "");
@@ -376,7 +372,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
         //insertData("todoInfo", toDoInfo);
         //파이어베이스에 todo데이터 올리기
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        final String email = sharedPreferences.getString("email_id", "");
+        final String email = firebaseAuth.getCurrentUser().getEmail();
         counts++;//다음꺼
         String nowCount = Integer.toString(counts);
         //이 번호가 있는지 조회해보고 있다면 counts++하여 없는 번호에 등록

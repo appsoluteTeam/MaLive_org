@@ -115,7 +115,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
         });
         ///파이어스토어에서 할 일을 불러옴
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        String id = sharedPreferences.getString("email_id", "");
+        String id = firebaseAuth.getCurrentUser().getEmail();
         firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -178,46 +178,58 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                     boolean chk = pf.getBoolean("chk" + detailContentes, false);
                     ///파이어베이스 db삭제
                     SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-                    final String id = sharedPreferences.getString("email_id", "");
+                    final String id = firebaseAuth.getCurrentUser().getEmail();
                     if (chk == true) {
                         ///파이어스토어 달성횟수 업로드
                         Log.d("체크","체크됨");
-                        firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
-                                .document(deleteData + "")
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getContext(), "삭제성공", Toast.LENGTH_SHORT).show();
-                                        firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub")
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            if (task.getResult() != null) {
-                                                                //전체 달성횟수-> 칭호
-                                                                DocumentSnapshot totalCompleteSnapShot = task.getResult();
-                                                                if (totalCompleteSnapShot.exists()) {
-                                                                    Map<String,Object> map=totalCompleteSnapShot.getData();
-                                                                    if (map.containsKey(content+"complete")
-                                                                            ||map.containsKey("투두complete")) {
-                                                                        long completeCount=0;
-                                                                        if(map.containsKey(content+"complete"))
-                                                                             completeCount = (long) totalCompleteSnapShot.getData().get(content + "complete");
-                                                                        long completeCountForToDo=0;
-                                                                        if(map.containsKey("투두complete"))
-                                                                             completeCountForToDo=(long)totalCompleteSnapShot.getData().get("투두complete");
-                                                                        completeCount++;
-                                                                        completeCountForToDo++;
-                                                                        HashMap<String, Object> data = new HashMap<>();
-                                                                        if (content.equals("기타")) {
-                                                                            data.put("투두complete", completeCountForToDo);
+                        long color=toDoInfos.get(position).getColor();
+                        if(color==2131231007){//흰색 하루할일
+                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
+                                    .document(deleteData + "")
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(getContext(), "삭제성공", Toast.LENGTH_SHORT).show();
+                                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub")
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                if (task.getResult() != null) {
+                                                                    //전체 달성횟수-> 칭호
+                                                                    DocumentSnapshot totalCompleteSnapShot = task.getResult();
+                                                                    if (totalCompleteSnapShot.exists()) {
+                                                                        Map<String,Object> map=totalCompleteSnapShot.getData();
+                                                                        if (map.containsKey(content+"complete")
+                                                                                ||map.containsKey("투두complete")) {
+                                                                            long completeCount=0;
+                                                                            if(map.containsKey(content+"complete"))
+                                                                                completeCount = (long) totalCompleteSnapShot.getData().get(content + "complete");
+                                                                            long completeCountForToDo=0;
+                                                                            if(map.containsKey("투두complete"))
+                                                                                completeCountForToDo=(long)totalCompleteSnapShot.getData().get("투두complete");
+                                                                            completeCount++;
+                                                                            completeCountForToDo++;
+                                                                            HashMap<String, Object> data = new HashMap<>();
+                                                                            if (content.equals("기타")) {
+                                                                                data.put("투두complete", completeCountForToDo);
+                                                                            } else {
+                                                                                data.put(content + "complete", completeCount);
+                                                                            }
+                                                                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
+                                                                            ////
                                                                         } else {
-                                                                            data.put(content + "complete", completeCount);
+                                                                            HashMap<String, Object> data = new HashMap<>();
+                                                                            long completeCount = 1;
+                                                                            if (content.equals("기타")) {
+                                                                                data.put("투두complete", completeCount);
+                                                                            } else {
+                                                                                data.put(content + "complete", completeCount);
+                                                                            }
+                                                                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
                                                                         }
-                                                                        firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
-                                                                        ////
                                                                     } else {
                                                                         HashMap<String, Object> data = new HashMap<>();
                                                                         long completeCount = 1;
@@ -228,61 +240,62 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                                         }
                                                                         firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
                                                                     }
-                                                                } else {
-                                                                    HashMap<String, Object> data = new HashMap<>();
-                                                                    long completeCount = 1;
-                                                                    if (content.equals("기타")) {
-                                                                        data.put("투두complete", completeCount);
-                                                                    } else {
-                                                                        data.put(content + "complete", completeCount);
-                                                                    }
-                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("total").document("sub").set(data, SetOptions.merge());
                                                                 }
                                                             }
                                                         }
-                                                    }
-                                                });//전체 달성횟수 데이터
-                                        //// 월별 달성률 측정
-                                        long systemTime = System.currentTimeMillis();
-                                        SimpleDateFormat formatter = null;
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                            formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                                        }
-                                        final String date = formatter.format(systemTime);
-                                        String[] dates = date.split("-");
-                                        String year = dates[0];
-                                        String month = dates[1];
-                                        final String updateDate = year + "-" + month;
-                                        firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            if (task.getResult() != null) {
-                                                                DocumentSnapshot completeMonthSnapshot = task.getResult();
-                                                                if (completeMonthSnapshot.exists()) {
-                                                                    Map<String,Object> map=completeMonthSnapshot.getData();
-                                                                    if (map.containsKey(content+"complete")
-                                                                    ||map.containsKey("투두complete")) {
-                                                                        long completeMonthCount=0;
-                                                                        if(map.containsKey(content+"complete"))//청소, 빨래, 쓰레기
-                                                                            completeMonthCount = (long) completeMonthSnapshot.getData().get(content + "complete");
-                                                                        long completeCountForToDo=0;
-                                                                        if(map.containsKey("투두complete"))
-                                                                            completeCountForToDo=(long)completeMonthSnapshot.getData().get("투두complete");
-                                                                        Toast.makeText(getContext(), ""+completeCountForToDo, Toast.LENGTH_SHORT).show();
-                                                                        completeMonthCount++;
-                                                                        completeCountForToDo++;
-                                                                        HashMap<String, Object> data = new HashMap<>();
-                                                                        if (content.equals("기타")) {
-                                                                            data.put("투두complete", completeCountForToDo);
+                                                    });//전체 달성횟수 데이터
+                                            //// 월별 달성률 측정
+                                            long systemTime = System.currentTimeMillis();
+                                            SimpleDateFormat formatter = null;
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                                formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                            }
+                                            final String date = formatter.format(systemTime);
+                                            String[] dates = date.split("-");
+                                            String year = dates[0];
+                                            String month = dates[1];
+                                            final String updateDate = year + "-" + month;
+                                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                if (task.getResult() != null) {
+                                                                    DocumentSnapshot completeMonthSnapshot = task.getResult();
+                                                                    if (completeMonthSnapshot.exists()) {
+                                                                        Map<String,Object> map=completeMonthSnapshot.getData();
+                                                                        if (map.containsKey(content+"complete")
+                                                                                ||map.containsKey("투두complete")) {
+                                                                            long completeMonthCount=0;
+                                                                            if(map.containsKey(content+"complete"))//청소, 빨래, 쓰레기
+                                                                                completeMonthCount = (long) completeMonthSnapshot.getData().get(content + "complete");
+                                                                            long completeCountForToDo=0;
+                                                                            if(map.containsKey("투두complete"))
+                                                                                completeCountForToDo=(long)completeMonthSnapshot.getData().get("투두complete");
+                                                                            Toast.makeText(getContext(), ""+completeCountForToDo, Toast.LENGTH_SHORT).show();
+                                                                            completeMonthCount++;
+                                                                            completeCountForToDo++;
+                                                                            HashMap<String, Object> data = new HashMap<>();
+                                                                            if (content.equals("기타")) {
+                                                                                data.put("투두complete", completeCountForToDo);
+                                                                            } else {
+                                                                                data.put(content + "complete", completeMonthCount);
+                                                                            }
+                                                                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                                    .set(data, SetOptions.merge());
                                                                         } else {
-                                                                            data.put(content + "complete", completeMonthCount);
+                                                                            HashMap<String, Object> data = new HashMap<>();
+                                                                            long completeMonthCount = 1;
+                                                                            if (content.equals("기타")) {
+                                                                                data.put("투두complete", completeMonthCount);
+                                                                            } else {
+                                                                                data.put(content + "complete", completeMonthCount);
+                                                                            }
+                                                                            firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
+                                                                                    .set(data, SetOptions.merge());
                                                                         }
-                                                                        firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
-                                                                                .set(data, SetOptions.merge());
-                                                                    } else {
+                                                                    }else{
                                                                         HashMap<String, Object> data = new HashMap<>();
                                                                         long completeMonthCount = 1;
                                                                         if (content.equals("기타")) {
@@ -293,69 +306,81 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                                                                         firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
                                                                                 .set(data, SetOptions.merge());
                                                                     }
-                                                                }else{
-                                                                    HashMap<String, Object> data = new HashMap<>();
-                                                                    long completeMonthCount = 1;
-                                                                    if (content.equals("기타")) {
-                                                                        data.put("투두complete", completeMonthCount);
-                                                                    } else {
-                                                                        data.put(content + "complete", completeMonthCount);
-                                                                    }
-                                                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("EveryMonth").document(updateDate)
-                                                                            .set(data, SetOptions.merge());
                                                                 }
                                                             }
                                                         }
-                                                    }
-                                                });
-                                        SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
-                                        SharedPreferences.Editor Checkeditor = pfComplete.edit();
-                                        Checkeditor.putBoolean("chk" +detailContentes, false);
-                                        Checkeditor.commit();
+                                                    });
+                                            SharedPreferences pfComplete = getContext().getSharedPreferences("pref", MODE_PRIVATE);
+                                            SharedPreferences.Editor Checkeditor = pfComplete.edit();
+                                            Checkeditor.putBoolean("chk" +detailContentes, false);
+                                            Checkeditor.commit();
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getContext(), "삭제실패", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                        toDoInfos.remove(position);
-                        recyclerView.setAdapter(toDoAdapter);
-                        refresh();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getContext(), "삭제실패", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            toDoInfos.remove(position);
+                            recyclerView.setAdapter(toDoAdapter);
+                            refresh();
+                        }//흰색 하루할일
+                        else if(color==2131231008){//회색 고정리스트
+                            refresh();
+                        }//회색 고정리스트
+
+
                     } else {
                         //todo: 삭제 시 java.lang.IndexOutOfBoundsException: Index: 0, Size: 0 오류 발생으로 수정해야함
                         Log.d("배열의 크기", tmpArray.size() + "");
-                        View.OnClickListener leftListener = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
-                                        .document(deleteData + "")
-                                        .delete()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Toast.makeText(getContext(), "삭제성공", Toast.LENGTH_SHORT).show();
-                                                toDoInfos.remove(position);
-                                                toDoAdapter.setItem(toDoInfos);
-                                                toDoAdapter.notifyDataSetChanged();
-                                                recyclerView.setAdapter(toDoAdapter);
-                                                refresh();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(getContext(), "삭제실패", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                customDialog.dismiss();
-                            }//onClick
-                        };
-                        customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
-                                "그래도 삭제하시겠습니까?", leftListener, rightListener);
-                        customDialog.show();
+                        long color=toDoInfos.get(position).getColor();
+                        if(color==2131231007){
+                            View.OnClickListener leftListener = new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
+                                            .document(deleteData + "")
+                                            .delete()
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(getContext(), "삭제성공", Toast.LENGTH_SHORT).show();
+                                                    toDoInfos.remove(position);
+                                                    toDoAdapter.setItem(toDoInfos);
+                                                    toDoAdapter.notifyDataSetChanged();
+                                                    recyclerView.setAdapter(toDoAdapter);
+                                                    refresh();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(getContext(), "삭제실패", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                    customDialog.dismiss();
+                                }//onClick
+                            };
+                            customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
+                                    "그래도 삭제하시겠습니까?", leftListener, rightListener);
+                            customDialog.show();
+                        }else if(color==2131231008){//고정리스트
+                            View.OnClickListener leftListener=new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    customDialog.dismiss();
+                                    refresh();
+                                    Toast.makeText(getContext(),"고정리스트는 추가하는 부분에서 삭제가능합니다"
+                                    ,Toast.LENGTH_SHORT).show();
+                                }
+                            };
+                            customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
+                                    "그래도 삭제하시겠습니까?", leftListener, rightListener);
+                            customDialog.show();
+
+                        }
 
                     }//chk false
 
@@ -385,11 +410,10 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getContext(), "On Resume!!!", Toast.LENGTH_SHORT).show();
         toDoInfos = new ArrayList<>();
         SharedPreferences pf = getContext().getSharedPreferences("pref2", Activity.MODE_PRIVATE);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        String id = sharedPreferences.getString("email_id", "");
+        String id = firebaseAuth.getCurrentUser().getEmail();
         firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

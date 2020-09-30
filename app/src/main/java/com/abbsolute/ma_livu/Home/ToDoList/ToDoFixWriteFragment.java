@@ -105,7 +105,6 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "청소");
                 editor.commit();
                 if (cleanFlag == false) {
@@ -131,7 +130,6 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "빨래");
                 editor.commit();
                 if (laundryFlag == false) {
@@ -157,7 +155,6 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "쓰레기");
                 editor.commit();
                 if (trashFlag == false) {
@@ -183,7 +180,6 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
                 trashText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "기타");
                 editor.commit();
                 if (todoFlag == false) {
@@ -274,7 +270,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
         toDoFixListAdapter=new ToDoFixListAdapter();
         toDoFixListAdapter.getFixContext(getContext());
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
-        final String email=sharedPreferences.getString("email_id","");
+        final String email=firebaseAuth.getCurrentUser().getEmail();
         firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("FixToDo")
                 .get()
@@ -340,7 +336,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
         // toDoFixInfos.add(toDoFixInfo);
         //insertFixData("fixToDoInfo",toDoFixInfo);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
-        final String email=sharedPreferences.getString("email_id","");
+        final String email=firebaseAuth.getCurrentUser().getEmail();
         final String nowCount = Integer.toString(counts+1);
         final DocumentReference documentReference = firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("FixToDo")

@@ -106,7 +106,6 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "청소");
                 editor.commit();
                 if (cleanFlag == false) {
@@ -132,7 +131,6 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "빨래");
                 editor.commit();
                 if (laundryFlag == false) {
@@ -158,7 +156,6 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "쓰레기");
                 editor.commit();
                 if (trashFlag == false) {
@@ -184,7 +181,6 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
                 trashText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "기타");
                 editor.commit();
                 if (todoFlag == false) {
@@ -272,7 +268,7 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
         toDoFixListAdapter=new ToDoFixListAdapter();
         toDoFixListAdapter.getFixContext(getContext());
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
-        final String email=sharedPreferences.getString("email_id","");
+        final String email=firebaseAuth.getCurrentUser().getEmail();
         firestore.collection(FirebaseID.ToDoLists).document(email).collection("FixToDo")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -318,7 +314,7 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
         final String upDateContent=pref.getString("upDateToDo","");
         //updateFixData("fixToDoInfo",toDoFixInfo,upDateContent);//고정리스트 데이터 db 삽입
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
-        final String email=sharedPreferences.getString("email_id","");
+        final String email=firebaseAuth.getCurrentUser().getEmail();
         final String finalFixDate = fixDate;
         firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("FixToDo")
@@ -372,7 +368,7 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
         final ToDoInfo toDoInfo=new ToDoInfo(data,detailData,date,dDate, R.drawable.todo_border2);
         //파이어베이스에 FixTodo 수정 데이터 올리기
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref",Activity.MODE_PRIVATE);
-        final String email=sharedPreferences.getString("email_id","");
+        final String email=firebaseAuth.getCurrentUser().getEmail();
         firestore.collection(FirebaseID.ToDoLists).document(email)
                 .collection("ToDo")
                 .whereEqualTo("detailContent",upDateContent)

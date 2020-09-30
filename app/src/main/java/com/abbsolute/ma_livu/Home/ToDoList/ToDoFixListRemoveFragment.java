@@ -24,6 +24,7 @@ import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -61,6 +62,7 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
     boolean laundryFlag=false;
     boolean trashFlag=false;
     boolean todoFlag=false;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,7 +93,6 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "청소하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "청소");
                 editor.commit();
                 if (cleanFlag == false) {
@@ -117,7 +118,6 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "빨래하기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "빨래");
                 editor.commit();
                 if (laundryFlag == false) {
@@ -143,7 +143,6 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
                 etcText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "쓰레기 이미지 클릭!", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "쓰레기");
                 editor.commit();
                 if (trashFlag == false) {
@@ -169,7 +168,6 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
                 trashText.setTextColor(Color.BLACK);
                 SharedPreferences pref = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
-                Toast.makeText(getContext(), "기타 이미지 클릭", Toast.LENGTH_SHORT).show();
                 editor.putString("toDo", "기타");
                 editor.commit();
                 if (todoFlag == false) {
@@ -192,7 +190,7 @@ public class ToDoFixListRemoveFragment extends Fragment implements OnBackPressed
         toDoFixRemoveListAdapter=new ToDoFixRemoveListAdapter();
         toDoFixRemoveListAdapter.getFixContext(getContext());
         SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-        final String email=sharedPreferences.getString("email_id","");
+        final String email=firebaseAuth.getCurrentUser().getEmail();
         firestore.collection(FirebaseID.ToDoLists).document(email).collection("FixToDo")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
