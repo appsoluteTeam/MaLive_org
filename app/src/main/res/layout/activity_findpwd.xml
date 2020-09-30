@@ -6,17 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".Login.FindpwdActivity">
 
+    <ImageButton
+        android:id="@+id/btn_backkey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="50dp"
+        android:background="#FFFFFF"
+        android:src="@drawable/back_key"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginLeft="56dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="80dp"
         android:text="비밀번호를 \n잊으셨나요?"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/btn_backkey" />
 
     <EditText
         android:id="@+id/et_sendemail"
@@ -44,15 +56,26 @@
         android:id="@+id/btn_sendemail"
         android:layout_width="160dp"
         android:layout_height="45dp"
-        android:background="@drawable/todo_button_background"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/button_background"
         android:stateListAnimator="@null"
         android:text="인증메일 전송"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toEndOf="@+id/et_sendemail"
+        app:layout_constraintEnd_toEndOf="@+id/tv_wanning3"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/et_sendemail"
+        app:layout_constraintStart_toStartOf="@+id/tv_wanning3"
         app:layout_constraintTop_toBottomOf="@+id/et_sendemail" />
+
+    <TextView
+        android:id="@+id/tv_wanning3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textColor="#90DCEE"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sendemail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
