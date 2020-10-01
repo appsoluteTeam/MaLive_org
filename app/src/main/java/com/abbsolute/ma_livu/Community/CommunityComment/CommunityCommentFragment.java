@@ -69,9 +69,10 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     private ImageView CommentIcon;
     private EditText Comment;
     private Button btn_back, btn_insert, btn_comment_like;
+
     private static String str_nickname, email;
-    private String category, title, writer, content, posts_date,commentLikeCount;
-    private ArrayList<String> LikeUser;
+    private String category, title, writer, content, posts_date,commentLikeCount, currentDate;
+//    private ArrayList<String> LikeUser;
 
     public CommunityCommentFragment(){};
     public CommunityCommentFragment(String email) {
@@ -125,13 +126,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
             iscommentLikeCheck = getArguments().getBoolean("CommentLikeCheck");
         }
 
-        Log.d("commentLikeCheck", String.valueOf(iscommentLikeCheck));
-//        if(iscommentLikeCheck == true) {
-//            btn_comment_like.setSelected(!btn_comment_like.isSelected());
-//        } else {
-//            btn_comment_like.setSelected(btn_comment_like.isSelected());
-//        }
-
         // '뒤로가기' 버튼 눌렀을 시
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,9 +159,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                     dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     date = Calendar.getInstance();
 
-//                    count =  adapter.getItemCount();
-//                    count = count + 1;
-
                     like_count = 0;
                     comment_count = 0;
 
@@ -187,10 +178,11 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                             .collection(FirebaseID.Community_Comment)
                             .document(Comment.getText().toString())
                             .set(data, SetOptions.merge());
-//                            .add(data);
-
                 }
+                // editText에 남아있는 값 지우기
                 Comment.setText(null);
+
+                // 새로고침
                 refresh();
             }
         });
@@ -213,11 +205,13 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                                     String CommentName = String.valueOf(shot.get(FirebaseID.commu_comment_name));
                                     String Comment = String.valueOf(shot.get(FirebaseID.commu_comment_comment));
                                     String CommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_date));
-//                                    String CommentNum = String.valueOf(shot.get(FirebaseID.commu_comment_num));
                                     String CommentLike = String.valueOf(shot.get(FirebaseID.commu_comment_like));
                                     String CommentCount = String.valueOf(shot.get(FirebaseID.commu_comment_comment_count)); //답글 수
 
-                                    CommunityCommentItem data = new CommunityCommentItem(CommentName, Comment, CommentDate, CommentLike, CommentCount);
+                                    // 받아온 date값에 HH:mm 자르기
+                                    currentDate = CommentDate.substring(0, CommentDate.length()-6);
+
+                                    CommunityCommentItem data = new CommunityCommentItem(CommentName, Comment, currentDate, CommentLike, CommentCount);
                                     arrayList.add(data);
                                 }
                                 // 전체 댓글 수 받아오기
@@ -274,11 +268,13 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     @Override
     public void commentLike(int position) {
         commentLikeCheck = true;
+        // 댓글의 commu_comment_like 값 증가
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
             data.update(FirebaseID.commu_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())+1));
         }
+        // 좋아요 버튼을 누른 사람들의 이메일값 저장
         if (firebaseAuth.getCurrentUser() != null) {
             firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())

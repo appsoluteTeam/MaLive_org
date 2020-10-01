@@ -63,7 +63,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
     private Calendar date;
 
     private static String str_nickname, email;
-    private String category, title, commentName, commentDate, commentComment, commentLike;
+    private String category, title, commentName, commentDate, commentComment, commentLike, currentDate;
     private Boolean commentLikeCheck;
     private TextView commentname, commentdate, commentcomment, commentlike, commentcommentcount, recommentCount;
     private EditText recomment;
@@ -193,7 +193,10 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                             .collection(FirebaseID.Community_Comment).document(commentComment).collection(FirebaseID.Community_Comment_Comment).document(recomment.getText().toString())
                             .set(data, SetOptions.merge());
                 }
+                // editText에 남아있는 값 지우기
                 recomment.setText(null);
+
+                // 새로고침
                 refresh();
             }
         });
@@ -208,12 +211,10 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                 // 버튼이 눌리지 않은 상태를 기본으로 설정
                 if(v.isSelected() == true) {
 //                    v.setSelected(v.isSelected());
-
                 }
                 else {
-//                    v.setSelected(!v.isSelected());
-
                 }
+                //TODO 구현한거 아님 걍 복붙한 코드
 //                v.setSelected(!v.isSelected());
 //                if(v.isSelected()) {
 //                    commu_comment_like.setText(Integer.toString(like_count+1));
@@ -239,12 +240,15 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
 
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     Map<String, Object> shot = snapshot.getData();
-                                    String CommentCommentName = String.valueOf(shot.get(FirebaseID.Email));
+                                    String CommentCommentName = String.valueOf(shot.get(FirebaseID.commu_comment_comment_name));
                                     String CommentComment = String.valueOf(shot.get(FirebaseID.commu_comment_comment_comment));
                                     String CommentCommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_comment_date));
                                     String CommentCommentLike = String.valueOf(shot.get(FirebaseID.commu_comment_comment_like));
 
-                                    CommunityCommentCommentItem data = new CommunityCommentCommentItem(CommentCommentName, CommentComment, CommentCommentDate, CommentCommentLike);
+                                    // 받아온 date값에 HH:mm 자르기
+                                    currentDate = CommentCommentDate.substring(0, CommentCommentDate.length()-6);
+
+                                    CommunityCommentCommentItem data = new CommunityCommentCommentItem(CommentCommentName, CommentComment, currentDate, CommentCommentLike);
                                     arrayList.add(data);
                                 }
                                 // 전체 답글 수 받아오기

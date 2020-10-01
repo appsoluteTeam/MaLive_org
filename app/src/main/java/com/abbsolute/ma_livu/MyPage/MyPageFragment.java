@@ -371,7 +371,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                        arrayList.clear();
 //                            내가 쓴 글 불러오기
                         if (task.isSuccessful()) {
                             if (task.getResult() != null) {
@@ -410,6 +410,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        arrayList2.clear();
                         // 댓글 단 글 받아오기
                         if (task.isSuccessful()) {
                             if (task.getResult() != null) {
@@ -458,6 +459,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        arrayList3.clear();
 //                            내가 저장한 글 불러오기
                         if (task.isSuccessful()) {
                             if (task.getResult() != null) {
@@ -477,7 +479,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                                 }
                             } else {
                                 mySavedPosts_count = 0;
-                                arrayList.clear();
+                                arrayList3.clear();
                             }
                         }
                     }
