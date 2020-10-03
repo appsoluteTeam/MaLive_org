@@ -22,6 +22,7 @@ import com.abbsolute.ma_livu.Customize.ColorFragment;
 import com.abbsolute.ma_livu.Customize.FaceBottom;
 import com.abbsolute.ma_livu.Customize.FaceFragment;
 import com.abbsolute.ma_livu.Customize.ItemBottom;
+import com.abbsolute.ma_livu.Customize.UnityItem;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.abbsolute.ma_livu.UnityPlugin.CustomPlugin;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
 import com.unity3d.player.UnityPlayer;
 
 import java.util.Calendar;
@@ -165,6 +167,12 @@ public class HomeFragment extends Fragment {
     }
     public void moveCameraToInit(){
         mUnityPlayer.UnitySendMessage("쌀알1", "MoveCameraToInit", "");
+    }
+
+    public void AssignEquipment(UnityItem unityItem){
+        Gson gson = new Gson();
+        String json = gson.toJson(unityItem);
+        mUnityPlayer.UnitySendMessage("쌀알1", "AssignEquipment", json);
     }
 
 
