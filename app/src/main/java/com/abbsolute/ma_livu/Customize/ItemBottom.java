@@ -9,12 +9,16 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -24,6 +28,7 @@ public class ItemBottom extends BottomSheetDialogFragment implements AccessoryAd
     private RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     AccessoryAdapter itemRecyclerAdapter;
+    private HomeFragment homeFragment;
 
     UnityItem[] sample = {
             new UnityItem(0,"모자",2,0),
@@ -59,6 +64,8 @@ public class ItemBottom extends BottomSheetDialogFragment implements AccessoryAd
         recyclerView.setHasFixedSize(true);
         SnapToBlock snapToBlock = new SnapToBlock(8);
        snapToBlock.attachToRecyclerView(recyclerView);
+        homeFragment = (HomeFragment)getFragmentManager().findFragmentById(R.id.unity_frame);
+
         return v;
     }
 
@@ -77,7 +84,10 @@ public class ItemBottom extends BottomSheetDialogFragment implements AccessoryAd
 
     @Override
     public void onItemClick(View view, UnityItem item) {
-        mListener.onButtonClicked(item.getName());
+        Toast.makeText(getContext(),"item 클릭됨",Toast.LENGTH_LONG).show();
+      //  mListener.onButtonClicked(item.getName());
+        homeFragment.AssignEquipment(item);
+
     }
 
 

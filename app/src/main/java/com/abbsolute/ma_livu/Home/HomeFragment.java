@@ -172,6 +172,7 @@ public class HomeFragment extends Fragment {
     public void AssignEquipment(UnityItem unityItem){
         Gson gson = new Gson();
         String json = gson.toJson(unityItem);
+        Log.d("whiy",json);
         mUnityPlayer.UnitySendMessage("쌀알1", "AssignEquipment", json);
     }
 

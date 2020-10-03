@@ -5,7 +5,8 @@ apply plugin: 'com.android.library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-}
+    implementation "androidx.multidex:multidex:2.0.1"
+    }
 
 android {
     compileSdkVersion 28
@@ -24,9 +25,12 @@ android {
         }
         versionCode 1
         versionName '0.1'
-        consumerProguardFiles 'proguard-unity.txt'
-    }
 
+        multiDexEnabled true
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
     lintOptions {
         abortOnError false
     }
