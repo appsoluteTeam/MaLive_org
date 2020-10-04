@@ -278,6 +278,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
                     data.put(FirebaseID.commu_like_count, like_count); //좋아요
                     data.put(FirebaseID.commu_save_count, save_count); //스크랩수
                     data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
+                    data.put("hot",false);//핫게시글 선정 여부
 
                     //파이어 스토리지 사진 올리기
                     for(Uri image:image_list){
