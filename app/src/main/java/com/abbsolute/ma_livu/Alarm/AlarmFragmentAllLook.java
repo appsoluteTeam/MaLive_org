@@ -68,9 +68,13 @@ public class AlarmFragmentAllLook extends Fragment {
         getNickName();
         ///이전알림 시작
         //칭호얻기
-        getTitle();
+//        getTitle();
         //투두리스트 정보 가져오기
-        getToDoListInfo();
+        //getToDoListInfo();
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        prevNotificationListView.setLayoutManager(layoutManager2);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        String id = sharedPreferences.getString("email_id", "");
         //내 댓글 가져오기(뭐먹지)
         getWhatEatInfo();
         //내 댓글 가져오기(뭐하지)
@@ -108,15 +112,15 @@ public class AlarmFragmentAllLook extends Fragment {
                                                                 DocumentSnapshot snapshot1 = task.getResult();
                                                                 if (!snapshot1.exists()) {
                                                                     String requestMessage = nickName + "님이 친구요청을 보냈습니다.";
-                                                                    //todo 마이페이지에서 친구요청 구현하면 시간데이터 넣기
-                                                                    AlarmFriendRequestInfo friendRequestInfo =
-                                                                            new AlarmFriendRequestInfo(R.drawable.user1,
-                                                                                    requestMessage, "4시간전");
-                                                                    //alarmFriendRequestInfoArrayList.add(friendRequestInfo);
-                                                                    //  alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
-                                                                    //  alarmFriendRequestListAdapter.notifyDataSetChanged();
-                                                                    // friendRequestListView.setHasFixedSize(true);
-                                                                    // friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
+//                                                                    //todo 마이페이지에서 친구요청 구현하면 시간데이터 넣기
+//                                                                    AlarmFriendRequestInfo friendRequestInfo =
+//                                                                            new AlarmFriendRequestInfo(R.drawable.user1,
+//                                                                                    requestMessage, "4시간전");
+//                                                                    //alarmFriendRequestInfoArrayList.add(friendRequestInfo);
+//                                                                    //  alarmFriendRequestListAdapter.setItem(alarmFriendRequestInfoArrayList, nickName);
+//                                                                    //  alarmFriendRequestListAdapter.notifyDataSetChanged();
+//                                                                    // friendRequestListView.setHasFixedSize(true);
+//                                                                    // friendRequestListView.setAdapter(alarmFriendRequestListAdapter);
                                                                 }
                                                             }
                                                         }

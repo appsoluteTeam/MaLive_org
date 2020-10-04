@@ -1,7 +1,7 @@
 package com.abbsolute.ma_livu.Home;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,11 +18,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Customize.ColorFragment;
+import com.abbsolute.ma_livu.Customize.FaceFragment;
+import com.abbsolute.ma_livu.Customize.ItemFragment;
+import com.abbsolute.ma_livu.Customize.UnityItem;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
@@ -30,6 +35,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.gson.Gson;
+import com.unity3d.player.UnityPlayer;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -43,6 +50,9 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
     private Button go_Todo;
     private Button go_GuestBook;
 
+    private ImageButton colorBtt;
+    private ImageButton accessoryBtt;
+    private ImageButton expressionBtt;
     private static String email;
     private long atCount;
 
@@ -55,15 +65,21 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-    public HomeFragment(){};
+    // 유니티
+    protected UnityPlayer mUnityPlayer;
+    private FrameLayout fl_forUnity;
+    public HomeFragment(){}
+
     public HomeFragment(String email){
-        this.email = email;
+        HomeFragment.email = email;
     }
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mUnityPlayer = new UnityPlayer(getActivity());
+
         view = inflater.inflate(R.layout.fragment_home,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
         ((HomeActivity)getActivity()).setOnBackPressedListener(this);
@@ -72,7 +88,7 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
 
         attendance_check();
 
-        go_GuestBook = (Button)view.findViewById(R.id.go_GuestBook);
+        go_GuestBook = view.findViewById(R.id.go_GuestBook);
         go_GuestBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +106,56 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });
+        LinearLayout floatingBtns = view.findViewById(R.id.customize_floating_buttons);
+        Button goCustomize = view.findViewById(R.id.go_customize);
+        goCustomize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUnityPlayer.UnitySendMessage("SceneManager", "LoadCustomizeScene","");
+                floatingBtns.setVisibility(View.VISIBLE);
+            }
+        });
+
+        //customize listners
+        colorBtt = floatingBtns.findViewById(R.id.btn_fragment);
+        accessoryBtt = floatingBtns.findViewById(R.id.accessory_btn);
+        expressionBtt = floatingBtns.findViewById(R.id.expression_btn);
+        colorBtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                ColorBottom bottomSheet = new ColorBottom();
+//                bottomSheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+                ColorFragment colorFragment = new ColorFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,colorFragment).commit();
+            }
+        });
+        accessoryBtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+           //     ItemBottom bottomSheet = new ItemBottom();
+                ItemFragment itemFragment = new ItemFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,itemFragment).commit();
+           //     bottomSheet.show(getFragmentManager(), "bottomSheet");
+
+            }
+        });
+        expressionBtt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FaceFragment faceFragment = new FaceFragment();
+                moveCameraToFace();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,faceFragment).commit();
+
+            }
+        });
+
+
+        // 여기서부터 유니티
+        this.fl_forUnity = view.findViewById(R.id.fl_forUnity);
+        this.fl_forUnity.addView(mUnityPlayer.getView(),
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        mUnityPlayer.requestFocus();
+        mUnityPlayer.windowFocusChanged(true);//First fix Line
 
         at_close_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +168,33 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
 
         return view;
     }
+
+    public void AssignSkin(String color){
+        mUnityPlayer.UnitySendMessage("쌀알1", "AssignSkin", color);
+    }
+
+    public void cancelColorChange() {
+        mUnityPlayer.UnitySendMessage("쌀알1", "cancleSkin", "");
+    }
+
+    public void saveColorChange(String color){
+        mUnityPlayer.UnitySendMessage("쌀알1", "saveSkin", color);
+    }
+
+    public void moveCameraToFace(){
+        mUnityPlayer.UnitySendMessage("쌀알1", "MoveCameraToFace", "");
+    }
+    public void moveCameraToInit(){
+        mUnityPlayer.UnitySendMessage("쌀알1", "MoveCameraToInit", "");
+    }
+
+    public void AssignEquipment(UnityItem unityItem){
+        Gson gson = new Gson();
+        String json = gson.toJson(unityItem);
+        Log.d("whiy",json);
+        mUnityPlayer.UnitySendMessage("쌀알1", "AssignEquipment", json);
+    }
+
 
     //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나
     public void attendance_check(){
@@ -170,8 +263,30 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
         editor.commit();
     }
 
+    // 유니티 함수
+    @Override
+    public void onPause() {
+        super.onPause();
+        mUnityPlayer.pause();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mUnityPlayer.resume();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mUnityPlayer.configurationChanged(newConfig);
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public void onBackPressed() {
         getActivity().finish();
+
     }
 }

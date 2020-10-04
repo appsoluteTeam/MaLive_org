@@ -42,15 +42,15 @@ public class Signup3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup3);
 
-        rg_test1 =(RadioGroup) findViewById(R.id.rg_test1);
-        rg_test2=(RadioGroup)findViewById(R.id.rg_test2);
-        btn_next3=(Button)findViewById(R.id.btn_next3);
+        rg_test1 = findViewById(R.id.rg_test1);
+        rg_test2= findViewById(R.id.rg_test2);
+        btn_next3= findViewById(R.id.btn_next3);
 
         //선택된 라디오버튼값 가져오기
        int id = rg_test1.getCheckedRadioButtonId();
-        RadioButton selectedButton = (RadioButton) findViewById(id);
+        RadioButton selectedButton = findViewById(id);
         int id2 =rg_test2.getCheckedRadioButtonId();
-        RadioButton selectedButton2 =(RadioButton)findViewById(id2);
+        RadioButton selectedButton2 = findViewById(id2);
 
         //파이어스토어 도큐먼트 이름 넘겨받기
         Intent intent = getIntent();
@@ -77,9 +77,9 @@ public class Signup3Activity extends AppCompatActivity {
     public void SaveTest(){
         if (firebaseAuth.getCurrentUser() != null){
             int id = rg_test1.getCheckedRadioButtonId();
-            RadioButton selectedButton = (RadioButton) findViewById(id);
+            RadioButton selectedButton = findViewById(id);
             int id2 =rg_test2.getCheckedRadioButtonId();
-            RadioButton selectedButton2 =(RadioButton)findViewById(id2);
+            RadioButton selectedButton2 = findViewById(id2);
 
             Map<String,Object> userMap = new HashMap<>();
             userMap.put(FirebaseID.Test1,selectedButton.getText().toString());

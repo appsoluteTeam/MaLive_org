@@ -51,12 +51,14 @@ public class Signup2Activity extends AppCompatActivity {
         password = intent.getStringExtra("password");
         nickname="";
 
+
         tv_warning2 = (TextView) findViewById(R.id.tv_wanning2);
         et_nickname = (EditText) findViewById(R.id.et_nickname);
         btn_next2 = (Button) findViewById(R.id.btn_next2);
 
         btn_back=(ImageButton)findViewById(R.id.btn_backkey);
         btn_back.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));

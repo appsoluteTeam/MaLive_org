@@ -169,7 +169,7 @@ public class TODOtitleFragment extends Fragment {
                             titleList[a].setSelected(true);//전에꺼는 회색
                             TL.setSelected(false);//현재 흰색으로 변환
                             a = real;
-                            ((DataListener)dataListener).dataSet(totalTitleList[a],a,1);
+                            dataListener.dataSet(totalTitleList[a],a,1);
                         }
                     });
                 }

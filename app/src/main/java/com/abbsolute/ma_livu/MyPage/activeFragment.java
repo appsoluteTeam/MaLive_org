@@ -62,7 +62,6 @@ public class activeFragment extends Fragment {
 
     public static RecyclerPostAdapter adapter;
     public static ArrayList<postItemListView> arrayList;
-    public static ArrayList<postItemListView> arrayList2;
 
     public activeFragment() { }
 
@@ -73,13 +72,7 @@ public class activeFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // MyPageFragment에서 값 받아오기
-        if(getArguments() != null){
-            str_nickname = getArguments().getString("nickname");
-            myPost_count  = getArguments().getString("MyPost_count");
-            myComment_count = getArguments().getString("MyComment_count");
-            mySavedPosts_count = getArguments().getString("MySavedPosts_count");
-        }
+
         // SharedPreferences로 값 저장시키는 부분
 //            myPostCountName = email + "-myPostCountFile";
 //            myPost_count = 0;
@@ -119,13 +112,13 @@ public class activeFragment extends Fragment {
          myScrape_count_top = view.findViewById(R.id.myScrape_count_top);
         myScrape_count_bottom = view.findViewById(R.id.myScrape_count_bottom);
 
-//        // MyPageFragment에서 값 받아오기
-//        if(getArguments() != null){
-//            str_nickname = getArguments().getString("nickname");
-//            myPost_count  = getArguments().getString("MyPost_count");
-//            myComment_count = getArguments().getString("MyComment_count");
-//            mySavedPosts_count = getArguments().getString("MySavedPosts_count");
-//        }
+        // MyPageFragment에서 값 받아오기
+        if(getArguments() != null){
+            str_nickname = getArguments().getString("nickname");
+            myPost_count  = getArguments().getString("MyPost_count");
+            myComment_count = getArguments().getString("MyComment_count");
+            mySavedPosts_count = getArguments().getString("MySavedPosts_count");
+        }
 
 //        각 값 setText
         myPost_count_top.setText(myPost_count);

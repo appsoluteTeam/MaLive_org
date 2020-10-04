@@ -32,6 +32,9 @@
     <string name="withdrawWarning">회원 탈퇴와 동시에 서비스 이용내역 및 모든 데이터가 삭제됩니다. 이후 동일한 계정으로 가입이 가능하지만 기록은 남아있지 않습니다.</string>
     <string name="logoutWarning">로그아웃 하시겠습니까?</string>
 
+    //unity
+    <string name="game_view_content_description">Game view</string>
+
     //활동
     <string name="myPost">내가 쓴 글</string>
 

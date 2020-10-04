@@ -62,14 +62,14 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        email_sign =(EditText) findViewById(R.id.email_sign);
-        pass_sign =(EditText) findViewById(R.id.pass_sign);
-        pwd_check =(EditText) findViewById(R.id.pwd_check);
-        img_check =(ImageView)findViewById(R.id.img_check);
-        img_check2 =(ImageView)findViewById(R.id.img_check2);
-        btn_next1 =(Button) findViewById(R.id.btn_next1);
-        tv_wanning = (TextView) findViewById(R.id.tv_wanning);
-        tv_top=(TextView)findViewById(R.id.tv_top);
+        email_sign = findViewById(R.id.email_sign);
+        pass_sign = findViewById(R.id.pass_sign);
+        pwd_check = findViewById(R.id.pwd_check);
+        img_check = findViewById(R.id.img_check);
+        img_check2 = findViewById(R.id.img_check2);
+        btn_next1 = findViewById(R.id.btn_next1);
+        tv_wanning = findViewById(R.id.tv_wanning);
+        tv_top= findViewById(R.id.tv_top);
 
 
         /*TODO:: 이메일 중복검사

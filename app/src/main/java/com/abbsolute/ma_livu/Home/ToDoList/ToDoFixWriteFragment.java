@@ -297,8 +297,8 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
        // toDoFixListAdapter.setFixItem(toDoFixInfos);
         //fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
         ///fixToDoList 수정, 삭제 변수 정의
-        modifying=(TextView)view.findViewById(R.id.fix_todo_modify);
-        removing=(TextView)view.findViewById(R.id.fix_todo_remove);
+        modifying= view.findViewById(R.id.fix_todo_modify);
+        removing= view.findViewById(R.id.fix_todo_remove);
         // fixToDoList 수정 기능 정의
         modifying.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,7 +365,7 @@ public class ToDoFixWriteFragment extends Fragment implements refreshInterface,O
             formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         }
         String date=formatter.format(systemTime);
-        String dates[]=date.split("-");
+        String[] dates =date.split("-");
         String dYear=dates[0];
         String dMonth=dates[1];
         String dDay=dates[2];

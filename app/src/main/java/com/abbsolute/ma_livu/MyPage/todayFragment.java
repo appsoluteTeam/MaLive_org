@@ -111,7 +111,7 @@ public class todayFragment extends Fragment {
                             titleList[a].setSelected(true);//전에꺼는 회색배경
                             TL.setSelected(false);//누른건 흰색으로 변환
                             a = real;
-                            ((DataListener)dataListener).dataSet(todayTitleList[a],a,3);
+                            dataListener.dataSet(todayTitleList[a],a,3);
                         }
                     });
                 }
