@@ -52,7 +52,7 @@ public class activeMyPostFragment extends Fragment {
     private ArrayList<postItemListView> arrayList;
 
     private Button btn_back;
-    private static String str_nickname, myPost_count , myComment_count ;
+    private static String str_nickname, myPost_count , myComment_count, mySavedPosts_count ;
     private String[] category;
 
     @Nullable
@@ -68,6 +68,7 @@ public class activeMyPostFragment extends Fragment {
             str_nickname = getArguments().getString("nickname");
             myPost_count  = getArguments().getString("MyPost_count");
             myComment_count = getArguments().getString("MyComment_count");
+            mySavedPosts_count = getArguments().getString("MySavedPosts_count");
         }
 
         btn_back = view.findViewById(R.id.btn_back);
@@ -82,6 +83,7 @@ public class activeMyPostFragment extends Fragment {
                 bundle.putString("nickname", str_nickname);
                 bundle.putString("MyPost_count", String.valueOf(myPost_count));
                 bundle.putString("MyComment_count", String.valueOf(myComment_count));
+                bundle.putString("MySavedPosts_count", String.valueOf(mySavedPosts_count));
                 activeFragment.setArguments(bundle);
 
                 fragmentTransaction.replace(R.id.main_frame, activeFragment).commit();
