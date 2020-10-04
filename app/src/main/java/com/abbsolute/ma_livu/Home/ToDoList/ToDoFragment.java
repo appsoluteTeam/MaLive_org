@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,11 +51,18 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshInterface,OnBackPressedListener {//ToDoList 추가, 삭제, 수정 클래스
     RecyclerView recyclerView;
     public ToDoAdapter toDoAdapter;
+
+    //pay관련 변수들
+    private String recentBalance;
+    private long recentPayDocumentNum;
+
+    private static String email;
 
     private static int WRITE_RESULT = 100;
     String res;
@@ -81,6 +89,10 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
     private FragmentTransaction transaction;
     LinearLayoutManager layoutManager;
 
+    public ToDoFragment(){}
+    public ToDoFragment(String email){
+        this.email = email;
+    }
     ///
     @Nullable
     @Override
@@ -183,6 +195,9 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                         ///파이어스토어 달성횟수 업로드
                         Log.d("체크","체크됨");
                         long color=toDoInfos.get(position).getColor();
+
+                        getRecentPayDocument(); //toll얻기
+
                         if(color==2131231007){//흰색 하루할일
                             firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo")
                                     .document(deleteData + "")
@@ -601,6 +616,125 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
             ((HomeActivity) getActivity()).setFragment(101);// 투두 메인 작성화면으로 이동
         }
     }
+
+    /* getRecentPayDoument(),  getRecentBalance(), getToll() : toll얻는 메소드 */
+
+    //가장 최근 문서 알아내기
+    public void getRecentPayDocument(){
+        firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.tmpData).document("recentPayNum")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                recentPayDocumentNum = Long.parseLong(shot.get(FirebaseID.recentDocument).toString());
+                                Log.d("getRecentPayDocument 안",Long.valueOf(recentPayDocumentNum).toString());
+                            } else {
+                                recentPayDocumentNum = 0;
+                            }
+                            getRecentBalance(recentPayDocumentNum);
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    //가장 최근 문서의 잔액 알아내기
+    public void getRecentBalance(final long recentPayDocumentNum){
+        Log.d("getRecentBalance","접근완료");
+        if(recentPayDocumentNum == 0){
+            recentBalance = "0";
+            Log.d("recentBalance final", recentBalance);
+            getToll(recentBalance,recentPayDocumentNum);
+        }else{
+            Log.d("else문","else");
+            firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.pay)
+                    .whereEqualTo(FirebaseID.order,Long.valueOf(recentPayDocumentNum).toString())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> shot = snapshot.getData();
+                                    recentBalance = shot.get(FirebaseID.balance).toString();
+                                    Log.d("recentBalance final", recentBalance);
+                                    getToll(recentBalance,recentPayDocumentNum);
+                                }
+                            }
+                        }
+                    });
+
+        }
+
+
+    }
+
+    //직전의 balance에 근거해서 톨 파이어스토어에 저장
+    public void getToll(String recentBalance,long recentPayDocumentNum){
+
+        Calendar calendar = Calendar.getInstance();
+
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+        String format_time = format.format(calendar.getTime());
+
+
+        String month = Integer.valueOf(calendar.get(Calendar.MONTH)).toString();
+        String date = Integer.valueOf(calendar.get(Calendar.DATE)).toString();
+
+        String today = month + "." + date;
+
+        String hour = Integer.valueOf(calendar.get(Calendar.HOUR)).toString();
+        String minute = Integer.valueOf(calendar.get(Calendar.MINUTE)).toString();
+
+        String time = hour + ":" + minute;
+
+        int amount = 10;//임시로
+        int balance = Integer.parseInt(recentBalance) + amount;
+
+        String order = String.valueOf(recentPayDocumentNum + 1);
+
+        payItemListView payItemListView =
+                new payItemListView(today,"TODO 달성 보상","입금","+10",Integer.valueOf(balance).toString(),time,order);
+
+        //파이어스토어 저장
+        firestore.collection(FirebaseID.myPage)
+                .document(email)
+                .collection(FirebaseID.pay)
+                .document(format_time)
+                .set(payItemListView,SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+
+        //최근문서 바꾸기
+        Map<String,Object> payMap = new HashMap<>();
+        payMap.put(FirebaseID.recentDocument,order);
+
+        firestore.collection(FirebaseID.myPage)
+                .document(email)
+                .collection(FirebaseID.tmpData)
+                .document("recentPayNum")
+                .set(payMap);
+
+
+    }
+
 
     @Override
     public void refresh() {
