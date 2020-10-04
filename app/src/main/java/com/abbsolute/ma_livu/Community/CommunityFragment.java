@@ -54,6 +54,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
     private FragmentTransaction fragmentTransaction;
 
     private View view;
+    private View view1,view2,view3;
     private ImageButton btn_commu_write,btn_back;
     private Button btn_what_eat,btn_what_do,btn_how_do;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -86,12 +87,16 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
         ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
-        // 카테고리 버튼 눌렸을 때 버튼리스너
-        btn_what_eat= view.findViewById(R.id.what_eat);
-        btn_what_do= view.findViewById(R.id.what_do);
-        btn_how_do= view.findViewById(R.id.how_do);
-        btn_commu_write = view.findViewById(R.id.btn_commu_write);
-        btn_back = view.findViewById(R.id.btn_back);
+
+        btn_what_eat=(Button)view.findViewById(R.id.what_eat);
+        btn_what_do=(Button)view.findViewById(R.id.what_do);
+        btn_how_do=(Button)view.findViewById(R.id.how_do);
+        btn_commu_write =(ImageButton)view.findViewById(R.id.btn_commu_write);
+        btn_back = (ImageButton)view.findViewById(R.id.btn_back);
+        view1=view.findViewById(R.id.view_what_eat);view1.setVisibility(View.VISIBLE);
+        view2=view.findViewById(R.id.view_what_do);view2.setVisibility(View.INVISIBLE);
+        view3=view.findViewById(R.id.view_howdo);view3.setVisibility(View.INVISIBLE);
+
 
         // 정렬 버튼 눌렸을 때 리스너
         recycler_community = view.findViewById(R.id.recycler_community);
@@ -114,13 +119,21 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.what_eat: //뭐 먹지 카테고리 선택
-
+                        view1.setVisibility(View.VISIBLE);
+                        view2.setVisibility(view.INVISIBLE);
+                        view3.setVisibility(view.INVISIBLE);
                         callRecycler(0);
                         break;
                     case R.id.what_do: //뭐 하지 카테고리 선택
+                        view2.setVisibility(View.VISIBLE);
+                        view3.setVisibility(view.INVISIBLE);
+                        view1.setVisibility(view.INVISIBLE);
                         callRecycler(1);
                         break;
                     case R.id.how_do: //어떻게 하지 카테고리 선택
+                        view3.setVisibility(View.VISIBLE);
+                        view2.setVisibility(view.INVISIBLE);
+                        view1.setVisibility(view.INVISIBLE);
                         callRecycler(2);
                         break;
                     case R.id.btn_commu_write: // 작성하기 아이콘 클릭

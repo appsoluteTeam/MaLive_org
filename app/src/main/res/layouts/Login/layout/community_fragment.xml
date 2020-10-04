@@ -7,113 +7,170 @@
     android:background="#F1F1F1"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/frame"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="20dp"
-            android:layout_height="28dp"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/back_key"
-            android:visibility="visible" />
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_commu_upload"
-            android:layout_width="20dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="28dp"
-            android:layout_marginRight="75dp"
-            android:background="@drawable/icon_search"
-            app:srcCompat="@drawable/icon_search" />
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="20dp"
+                android:layout_height="28dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/back_key"
+                android:visibility="visible" />
 
-        <ImageButton
-            android:id="@+id/btn_commu_write"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/icon_write" />
+            <ImageButton
+                android:id="@+id/btn_commu_upload"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="28dp"
+                android:layout_marginRight="75dp"
+                android:background="@drawable/icon_search"
+                app:srcCompat="@drawable/icon_search" />
+
+            <ImageButton
+                android:id="@+id/btn_commu_write"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginRight="30dp"
+                android:background="@drawable/icon_write" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/commu_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="@string/Community"
+                    android:textColor="@android:color/black"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:background="#FFFFFF"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
-            <TextView
-                android:id="@+id/commu_title"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
+                android:layout_weight="3"
                 android:gravity="center"
-                android:text="@string/Community"
-                android:textColor="@android:color/black"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                tools:layout_marginBottom="2dp">
+
+                <Button
+                    android:id="@+id/what_eat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:stateListAnimator="@null"
+                    android:text="뭐 먹지?"
+                    android:textColor="#777575" />
+
+                <View
+                    android:id="@+id/view_what_eat"
+                    android:layout_width="70dp"
+                    android:layout_height="2dp"
+                    android:background="#90DCEE"
+                    tools:visibility="invisible" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/what_do"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:stateListAnimator="@null"
+                    android:text="뭐 하지?"
+                    android:textColor="@color/community_seletor" />
+
+                <View
+                    android:id="@+id/view_what_do"
+                    android:layout_width="70dp"
+                    android:layout_height="2dp"
+                    android:background="#90DCEE" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/how_do"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:stateListAnimator="@null"
+                    android:text="어떻게 하지?"
+                    android:textColor="@color/community_seletor" />
+
+                <View
+                    android:id="@+id/view_howdo"
+                    android:layout_width="70dp"
+                    android:layout_height="2dp"
+                    android:background="#90DCEE" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_commu_sort"
+                android:layout_width="20dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@drawable/icon_sort"
+                android:stateListAnimator="@null" />
 
         </LinearLayout>
 
-    </FrameLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#FFFFFF"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        android:paddingTop="10dp">
-
-        <Button
-            android:id="@+id/what_eat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:stateListAnimator="@null"
-            android:text="뭐 먹지?" />
-
-        <Button
-            android:id="@+id/what_do"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:stateListAnimator="@null"
-            android:text="뭐 하지?" />
-
-        <Button
-            android:id="@+id/how_do"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:stateListAnimator="@null"
-            android:text="어떻게 하지?" />
-
-        <ImageButton
-            android:id="@+id/btn_commu_sort"
-            android:layout_width="25dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/icon_sort"
-            android:stateListAnimator="@null" />
     </LinearLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"

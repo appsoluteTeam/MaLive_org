@@ -319,14 +319,18 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
     //사진 셋팅하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE && data != null && data.getData() != null) {
-
-            //데이터 가져오기
+        if(requestCode == IMAGE_REQUEST_CODE ){
             image = data.getData();
             ClipData clipData = data.getClipData();
-
-            //사진 여러장 보이게 하기 
-            if (data != null) {
+            if(clipData == null){
+                urione =data.getData();
+                image_list.add(urione);
+                if (img1.getDrawable() == null) {
+                    img1.setImageURI(urione);
+                    commu_img_explain1.setVisibility(View.VISIBLE);
+                    remove1.setVisibility(View.VISIBLE);
+                }
+            }else {
                 for (int i = 0; i <clipData.getItemCount(); i++) {
                     if (i < clipData.getItemCount()) {
                         urione = clipData.getItemAt(i).getUri();
@@ -373,7 +377,6 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
                     }
                 }
             }
-
         }
     }
 
