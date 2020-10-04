@@ -20,57 +20,7 @@
         android:layout_height="1dp"
         android:background="#BDBDBD">
     </View>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_weight="1"
-            android:padding="10sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="친구 요청"
-            android:textSize="22sp"
-            android:textColor="#2E2E2E">
-        </TextView>
-        <TextView
-            android:layout_weight="1"
-            android:layout_marginLeft="8sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/friend_request"
-            android:text="요청 횟수"
-            android:textColor="#2E9AFE">
-        </TextView>
-        <TextView
-            android:layout_weight="1"
-            android:textSize="15sp"
-            android:layout_marginLeft="150sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/friend_all_look"
-            android:text="모두보기"
-            android:textColor="#2E9AFE">
-        </TextView>
-    </LinearLayout>
-    <View
-        android:layout_marginTop="7sp"
-        android:layout_marginBottom="7sp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#BDBDBD">
-    </View>
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/friend_request_list">
-    </androidx.recyclerview.widget.RecyclerView>
-    <View
-        android:layout_marginTop="7sp"
-        android:layout_marginBottom="7sp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#BDBDBD">
-    </View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -82,16 +32,6 @@
             android:text="이전 알림"
             android:textSize="24sp"
             android:textColor="#151515">
-        </TextView>
-        <TextView
-            android:layout_weight="1"
-            android:textSize="15sp"
-            android:layout_marginLeft="205sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/prev_notification_all_look"
-            android:text="모두보기"
-            android:textColor="#2E9AFE">
         </TextView>
     </LinearLayout>
     <View

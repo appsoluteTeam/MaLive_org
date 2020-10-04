@@ -16,6 +16,7 @@ import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.HomeFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.activeFragment;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private informationSetFragment informationSetFragment;
     private activeFragment activeFragment;
     private Commu_WriteFragment commu_writeFragment;
+    private ToDoFragment ToDoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +157,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 informationSetFragment = new informationSetFragment(email);
                                 homeFragment = new HomeFragment(email);
                                 activeFragment = new activeFragment(email);
+                                ToDoFragment = new ToDoFragment(email);
 
 
 
