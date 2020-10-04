@@ -282,6 +282,7 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
 
     @Override
     public void onBackPressed() {

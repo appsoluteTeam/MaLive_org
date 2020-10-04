@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:text="커스텀"
         app:layout_constraintEnd_toEndOf="parent"
-=
+
         app:layout_constraintTop_toBottomOf="@+id/go_Todo" />
 
     <FrameLayout
@@ -126,5 +126,6 @@
         layout="@layout/customize_floating_buttons"/>
     </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
+</FrameLayout>
