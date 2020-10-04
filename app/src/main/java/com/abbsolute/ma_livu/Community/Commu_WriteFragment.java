@@ -94,7 +94,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
 
     public Commu_WriteFragment() {}
     public Commu_WriteFragment(String email) {
-        this.email = email;
+        Commu_WriteFragment.email = email;
         Log.d("email",email);
 
         /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
@@ -135,6 +135,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
 
         et_title = view.findViewById(R.id.et_title);
         et_content = view.findViewById(R.id.et_content);
+
         category_eat = (TextView) view.findViewById(R.id.category_eat);
         category_do = (TextView) view.findViewById(R.id.category_do);
         category_how = (TextView) view.findViewById(R.id.category_how);
@@ -191,7 +192,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
 
 
         //사진 업로드드 눌렀을 때
-        btn_image = (ImageButton) view.findViewById(R.id.btn_image);
+        btn_image = view.findViewById(R.id.btn_image);
         btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -278,6 +279,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
                     data.put(FirebaseID.commu_like_count, like_count); //좋아요
                     data.put(FirebaseID.commu_save_count, save_count); //스크랩수
                     data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
+                    data.put("hot",false);//핫게시글 선정 여부
 
                     //파이어 스토리지 사진 올리기
                     for(Uri image:image_list){
@@ -303,7 +305,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
         });
 
         //뒤로가기 버튼 눌렀을 때
-        btn_back = (ImageButton) view.findViewById(R.id.btn_back);
+        btn_back = view.findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

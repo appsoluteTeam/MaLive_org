@@ -24,7 +24,6 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
-import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
@@ -37,7 +36,6 @@ import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
 import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
-import com.abbsolute.ma_livu.Login.Login2Activity;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
@@ -47,16 +45,10 @@ import com.abbsolute.ma_livu.MyPage.activeFragment;
 import com.abbsolute.ma_livu.MyPage.informationSetFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Stack;
 
-public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener {
+public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener{
 
     //fragment저장할 stack
     public static Stack<Fragment> fragmentStack;
@@ -185,6 +177,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         toDoFixModifyingFragment=new ToDoFixModifyingFragment();
 
         setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
+
+        getSupportFragmentManager().beginTransaction().add(R.id.unity_frame,homeFragment).commit();
     }
 
     // 프래그먼트 교체가 일어나는 함수
@@ -194,23 +188,56 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (n) {
             case 0:
-                fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
+                if(homeFragment.isHidden()) {
+                    fragmentTransaction.show(homeFragment).commit();
+                }
+
+        //        fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
+//>>>>>>> cheer-up
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.main_frame, hotCommunityFragment).commit();
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_frame,myPageFragment).commit();
                 break;
             case 3:
-                fragmentTransaction.replace(R.id.main_frame, alarmFragment).commit();
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
                 break;
             case 4:
-                fragmentTransaction.replace(R.id.main_frame, guestBookFragment);
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
                 fragmentTransaction.commit();
                 break;
             case 5:
-                fragmentTransaction.replace(R.id.main_frame, guestBookWriteFragment);
+                if(!homeFragment.isHidden()){
+                    fragmentTransaction.hide(homeFragment).commit();
+                }
+                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
+// =======
+//                 fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
+//                 break;
+//             case 3:
+//                 fragmentTransaction.replace(R.id.main_frame, alarmFragment).commit();
+//                 break;
+//             case 4:
+//                 fragmentTransaction.replace(R.id.main_frame, guestBookFragment);
+//                 fragmentTransaction.commit();
+//                 break;
+//             case 5:
+//                 fragmentTransaction.replace(R.id.main_frame, guestBookWriteFragment);
+// >>>>>>> cheer-up
                 fragmentTransaction.commit();
                 break;
 
@@ -256,7 +283,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
                 break;
-
         }
     }
 
@@ -327,6 +353,13 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void setOnBackPressedListener(OnBackPressedListener listener){ this.listener = listener; }
     @Override
     public void onBackPressed() {
+
+        //커스터마이즈 뒤로가기
+        if(getSupportFragmentManager().findFragmentById(R.id.customize_frame).isVisible()){
+            Fragment ft = getSupportFragmentManager().findFragmentById(R.id.customize_frame);
+            getSupportFragmentManager().beginTransaction().remove(ft).commit();
+            return;
+        }
         if(listener!=null){
             listener.onBackPressed();
             listener=null;
@@ -371,4 +404,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             }
         }
     }
+
+
 }

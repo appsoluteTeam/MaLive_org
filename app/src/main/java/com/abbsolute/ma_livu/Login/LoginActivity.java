@@ -16,6 +16,7 @@ import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.HomeFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.activeFragment;
@@ -67,6 +68,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private informationSetFragment informationSetFragment;
     private activeFragment activeFragment;
     private Commu_WriteFragment commu_writeFragment;
+    private ToDoFragment ToDoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
 
         //이메일로 로그인 버튼을 눌렀을 때
-        btn_email_login =(Button) findViewById(R.id.btn_email_login);
+        btn_email_login = findViewById(R.id.btn_email_login);
         btn_email_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
         //회원가입 버튼을 눌렀을 때
-        btn_signup =(TextView)findViewById(R.id.btn_signup);
+        btn_signup = findViewById(R.id.btn_signup);
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +157,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 informationSetFragment = new informationSetFragment(email);
                                 homeFragment = new HomeFragment(email);
                                 activeFragment = new activeFragment(email);
+                                ToDoFragment = new ToDoFragment(email);
 
 
 

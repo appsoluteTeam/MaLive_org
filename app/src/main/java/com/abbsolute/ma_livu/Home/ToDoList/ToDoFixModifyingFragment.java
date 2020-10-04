@@ -294,7 +294,7 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
         toDoFixListAdapter.setFixItem(toDoFixInfos);
         fixTodoRecyclerview.setAdapter(toDoFixListAdapter);
         ///fixToDoList 삭제 변수 정의
-        removing=(TextView)view.findViewById(R.id.fix_todo_remove);
+        removing= view.findViewById(R.id.fix_todo_remove);
         //todo: fixToDoList 수정 기능 정의
         return view;
     }
@@ -359,7 +359,7 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
             formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         }
         String date=formatter.format(systemTime);
-        String dates[]=date.split("-");
+        String[] dates =date.split("-");
         String dYear=dates[0];
         String dMonth=dates[1];
         String dDay=dates[2];
