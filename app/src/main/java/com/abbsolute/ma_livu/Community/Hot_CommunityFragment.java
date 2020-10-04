@@ -84,6 +84,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
             }
         };
 
+
         btn_today_post.setOnClickListener(onClickListener);
         btn_more_text.setOnClickListener(onClickListener);
         btn_commu_write.setOnClickListener(onClickListener);
@@ -159,6 +160,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
 
         // 리사이클러뷰 클릭 이벤트
         adapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(View v, int position) {
                 bringData item = adapter.getItem(position);

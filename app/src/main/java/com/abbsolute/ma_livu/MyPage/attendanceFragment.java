@@ -114,7 +114,7 @@ public class attendanceFragment extends Fragment {
                             titleList[a].setSelected(true);//전에꺼는 회색으로
                             TL.setSelected(false);//현재누른거 흰색으로 변환
                             a = real;
-                            ((DataListener)dataListener).dataSet(attendanceTitleList[a],a,2);
+                            dataListener.dataSet(attendanceTitleList[a],a,2);
                         }
                     });
                 }

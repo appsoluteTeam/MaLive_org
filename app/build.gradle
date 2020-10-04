@@ -1,17 +1,43 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     defaultConfig {
         applicationId "com.abbsolute.ma_livu"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+    }
+    packagingOptions {
+        doNotStrip '*/armeabi-v7a/*.so'
+    }
+    aaptOptions {
+        noCompress = ['.unity3d', '.ress', '.resource', '.obb']
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+    signingConfigs {
+        release {
+            storeFile file('C:\\Users\\samer\\Desktop\\test\\MaLive_org\\key\\user.keystore')
+            storePassword 'malive123'
+            keyAlias 'malive_key'
+            keyPassword 'malive123'
+        }
+    }
+    lintOptions {
+        abortOnError false
     }
     buildTypes {
         release {
@@ -38,6 +64,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.firebase:firebase-storage:16.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
@@ -63,4 +90,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4' //파이어스토어 데이터베이스
     implementation 'de.hdodenhof:circleimageview:3.0.0' //동그란 이미지 위젯 추가
     implementation 'com.google.firebase:firebase-messaging:20.2.0' //푸쉬 메시지 보내기
+
+    implementation project(':unityLibrary')     // 유니티 모듈
+    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"  // 유니티 라이브러리
+
+    implementation 'com.thebluealliance:spectrum:0.7.1'     //color picker
+    implementation 'de.hdodenhof:circleimageview:3.1.0'     //customize_menu_btt image view
+    implementation 'com.azoft.carousellayoutmanager:carousel:1.2.4' //carousel layout
+}
+repositories {
+    mavenCentral()
 }

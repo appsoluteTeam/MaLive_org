@@ -196,8 +196,10 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                         String res = "";
                                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                                             try {
+
                                                 parseDate = simpleDateFormat.parse(dDay);
                                                 res = prevTimeSetClass.formatTimeString(parseDate);//~전 으로 변경
+                                              
                                             } catch (ParseException e) {
                                                 e.printStackTrace();
                                             }
@@ -274,6 +276,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+
                                                                             if(date!=null){
                                                                                 Log.d("OK!!","Okay!!!~~");
                                                                                 String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
@@ -346,6 +349,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
@@ -358,6 +362,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                                                 alarmPrevNotificationListAdapter.notifyDataSetChanged();
                                                                                                                 prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
                                                                                                             }
+
 
                                                                                                         }
                                                                                                     }
@@ -841,6 +846,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                 }
 
                                                                             }
+
                                                                         }
 
                                                                     }
@@ -901,6 +907,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
@@ -983,6 +990,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                 e.printStackTrace();
                                                                             }
                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+
                                                                             if(date!=null){
                                                                                 Log.d("OK!!","Okay!!!~~");
                                                                                 String res = prevTimeSetClass.formatTimeString(date)+" | "+content;
@@ -1055,6 +1063,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                                                 e.printStackTrace();
                                                                                                             }
                                                                                                             PrevTimeSetClass prevTimeSetClass = new PrevTimeSetClass();
+
                                                                                                             if(date!=null){
                                                                                                                 Log.d("OK!!","Okay!!!~~");
                                                                                                                 String res = prevTimeSetClass.formatTimeString(date)+" | "+content;

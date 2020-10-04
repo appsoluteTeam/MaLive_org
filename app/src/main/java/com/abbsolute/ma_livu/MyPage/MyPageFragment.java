@@ -68,6 +68,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
     private static String str_nickname;
     private static long clean_complete, trash_complete, todo_complete, wash_complete;
 
+
     public static RecyclerPostAdapter adapter;
     public static ArrayList<postItemListView> arrayList, arrayList2, arrayList3;
     private static int myPost_count = 0  , myComment_count = 0, mySavedPosts_count = 0;
@@ -75,9 +76,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 
     public MyPageFragment(){};
 
+
     /*login2Activity에서 데이터 받음*/
     public MyPageFragment(String email){
-        this.email = email;
+        MyPageFragment.email = email;
         Log.d("email",email);
 
         SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");

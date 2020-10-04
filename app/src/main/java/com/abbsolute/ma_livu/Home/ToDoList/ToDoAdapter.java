@@ -90,6 +90,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         final ToDoInfo toDoInfo=arrayList.get(position);
         final String detailContent=toDoInfo.getDetailContent();
         String dDay=toDoInfo.getdDay();
+
         //고정 할 일 데이터는 뒷배경 회색으로, 카테고리는 흰색
         try {
             int backs=arrayList.get(position).color;

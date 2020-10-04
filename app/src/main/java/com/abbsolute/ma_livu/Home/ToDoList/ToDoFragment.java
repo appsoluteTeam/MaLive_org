@@ -552,7 +552,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                 //                SharedPreferences.Editor editor = pref.edit();
                 SharedPreferences preferences = getActivity().getSharedPreferences("daily_alarm", MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putLong("nextNotifyTime", (long) calendar.getTimeInMillis());
+                editor.putLong("nextNotifyTime", calendar.getTimeInMillis());
                 editor.commit();
 
                 AlarmNotification(calendar, contents, flag);
