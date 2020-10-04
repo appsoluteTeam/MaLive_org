@@ -34,4 +34,13 @@
 
     //unity
     <string name="game_view_content_description">Game view</string>
+
+    //활동
+    <string name="myPost">내가 쓴 글</string>
+
+    ///알람프래그 먼트 String
+    <string name="prevAlarm">이전 알림</string>
+    //친구
+    <string name="friend">친구</string>
+
 </resources>

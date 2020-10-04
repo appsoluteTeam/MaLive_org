@@ -75,12 +75,65 @@
             android:textSize="15sp"
             android:textColor="#2E2E2E">
         </TextView>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/todo_fix_modified_list_category"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10sp">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginRight="5sp"
+            android:layout_marginLeft="7sp"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:layout_marginLeft="10sp"
+                android:layout_width="80sp"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:text="청소하기"
+                android:textSize="13sp"
+                android:textColor="#1C1C1C"
+                android:textAlignment="center"
+                android:background="@drawable/todo_text_background"
+                android:id="@+id/clean_todo_image_text"
+                android:gravity="center_horizontal">
+            </TextView>
+            <TextView
+                android:layout_marginLeft="10sp"
+                android:layout_width="80sp"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:text="빨래하기"
+                android:textSize="13sp"
+                android:textColor="#1C1C1C"
+                android:textAlignment="center"
+                android:background="@drawable/todo_text_background"
+                android:id="@+id/laundry_todo_image_text"
+                android:gravity="center_horizontal">
+            </TextView>
+            <TextView
+                android:layout_marginLeft="10sp"
+                android:layout_width="80sp"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:text="쓰레기"
+                android:textSize="13sp"
+                android:textColor="#1C1C1C"
+                android:textAlignment="center"
+                android:background="@drawable/todo_text_background"
+                android:id="@+id/trash_todo_image_text"
+                android:gravity="center_horizontal">
+            </TextView>
+            <TextView
+                android:layout_marginLeft="10sp"
+                android:layout_width="80sp"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:text="기타"
+                android:textSize="13sp"
+                android:textColor="#1C1C1C"
+                android:textAlignment="center"
+                android:background="@drawable/todo_text_background"
+                android:id="@+id/etc_todo_image_text"
+                android:gravity="center_horizontal">
+            </TextView>
+        </LinearLayout>
         <TextView
             android:layout_marginLeft="5sp"
             android:layout_marginBottom="5sp"
@@ -118,10 +171,10 @@
         </TextView>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100sp">
+            android:layout_height="70sp">
             <NumberPicker
                 android:layout_width="wrap_content"
-                android:layout_height="100sp"
+                android:layout_height="70sp"
                 android:id="@+id/set_period"
                 android:layout_weight="1">
             </NumberPicker>
@@ -136,13 +189,13 @@
             </TextView>
             <NumberPicker
                 android:layout_width="wrap_content"
-                android:layout_height="100sp"
+                android:layout_height="70sp"
                 android:layout_weight="1"
                 android:id="@+id/set_period_day">
             </NumberPicker>
         </LinearLayout>
         <Button
-            android:layout_marginTop="40sp"
+            android:layout_marginTop="17sp"
             android:layout_width="120sp"
             android:layout_height="40sp"
             android:id="@+id/write"

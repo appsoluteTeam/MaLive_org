@@ -84,6 +84,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
     implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.support:multidex:1.0.3' // 이미지 업로드
+    implementation 'com.google.firebase:firebase-storage:19.1.0'
 
     implementation 'com.google.firebase:firebase-database:16.0.4' //파이어스토어 데이터베이스
     implementation 'de.hdodenhof:circleimageview:3.0.0' //동그란 이미지 위젯 추가

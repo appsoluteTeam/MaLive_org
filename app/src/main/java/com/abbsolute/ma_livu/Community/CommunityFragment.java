@@ -1,6 +1,7 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,8 +28,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,7 +48,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Stack;
 
-public class CommunityFragment extends Fragment {
+public class CommunityFragment extends Fragment implements OnBackPressedListener {
     // 프래그먼트
     public static Stack<Fragment> fragmentStack;
     private FragmentTransaction fragmentTransaction;
@@ -59,24 +63,14 @@ public class CommunityFragment extends Fragment {
     private LinearLayout layout_commu_sort;
     private View view_darker;
 
-
-
     //리사이클러뷰
     public CommunityAdapter adapter;
     private RecyclerView recycler_community;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<bringData> arrayList;
 
-    private String title;
-    private String content;
-    private String category;
-    private String date;
-    private String writer;
+    private String title,content,category,date,writer,likeCount,saveCount,img1;
 
-    private String[] img_uri;
-
-    private String likeCount;
-    private String saveCount;
 
     // 정렬 라디오 버튼 관련
     private RadioButton commu_sort_date, commu_sort_like, commu_sort_save;
@@ -88,6 +82,9 @@ public class CommunityFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.community_fragment,container,false);
+
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
         // 카테고리 버튼 눌렸을 때 버튼리스너
         btn_what_eat= view.findViewById(R.id.what_eat);
@@ -117,6 +114,7 @@ public class CommunityFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.what_eat: //뭐 먹지 카테고리 선택
+
                         callRecycler(0);
                         break;
                     case R.id.what_do: //뭐 하지 카테고리 선택
@@ -162,7 +160,6 @@ public class CommunityFragment extends Fragment {
         adapter = new CommunityAdapter(arrayList);
         layoutManager = new LinearLayoutManager(getActivity());
 
-
         // 리사이클러뷰 역순 출력
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
@@ -198,13 +195,11 @@ public class CommunityFragment extends Fragment {
         });
     }
 
-
     public void callRecycler(int n){
         switch (n){
             case 0:
                 // 처음엔 날짜순 정렬로 세팅
                 callSortRecycler(0, what_eat);
-
                 btn_commu_sort.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -223,7 +218,6 @@ public class CommunityFragment extends Fragment {
 //                                if(task.isSuccessful()){
 //                                    if(task.getResult() != null){
 //                                        arrayList.clear();
-//
 //                                        for(DocumentSnapshot snapshot : task.getResult()){
 //                                            Map<String,Object> shot = snapshot.getData();
 //                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
@@ -345,7 +339,12 @@ public class CommunityFragment extends Fragment {
                                             likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
                                             saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
+                                            if(String.valueOf(shot.get((FirebaseID.Url)+0))!=null) {
+                                                img1= ((String)shot.get((FirebaseID.Url)+0));
+                                            }else{
+                                                img1=null;
+                                            }
+                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount,img1);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -376,7 +375,12 @@ public class CommunityFragment extends Fragment {
                                             likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
                                             saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
+                                            if(String.valueOf(shot.get((FirebaseID.Url)+0))!=null) {
+                                                img1= ((String)shot.get((FirebaseID.Url)+0));
+                                            }else{
+                                                img1=null;
+                                            }
+                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount,img1);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -407,7 +411,12 @@ public class CommunityFragment extends Fragment {
                                             likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
                                             saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
+                                            if(String.valueOf(shot.get((FirebaseID.Url)+0))!=null) {
+                                                img1= ((String)shot.get((FirebaseID.Url)+0));
+                                            }else{
+                                                img1=null;
+                                            }
+                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount,img1);
                                             arrayList.add(data);
                                         }
                                         adapter.notifyDataSetChanged();
@@ -418,6 +427,9 @@ public class CommunityFragment extends Fragment {
                break;
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(1);//hot_communtity로 뒤로가기
+    }
 }
 

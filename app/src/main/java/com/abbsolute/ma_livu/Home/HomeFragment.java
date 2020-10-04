@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.Home;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,9 @@ import com.abbsolute.ma_livu.Customize.FaceFragment;
 import com.abbsolute.ma_livu.Customize.ItemFragment;
 import com.abbsolute.ma_livu.Customize.UnityItem;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+
+import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,7 +44,7 @@ import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements OnBackPressedListener {
 
     private View view;
     private Button go_Todo;
@@ -53,6 +58,8 @@ public class HomeFragment extends Fragment {
 
     //출석체크 관련 변수
     private String beforeCalendar;
+    private LinearLayout layout_checkin;
+    private TextView at_close_button;
 
     //파이어스토에 저장하기 위한 변수
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -74,6 +81,10 @@ public class HomeFragment extends Fragment {
         mUnityPlayer = new UnityPlayer(getActivity());
 
         view = inflater.inflate(R.layout.fragment_home,container,false);
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+        layout_checkin = view.findViewById(R.id.layout_checkin);
+        at_close_button = view.findViewById(R.id.at_close_button);
 
         attendance_check();
 
@@ -146,6 +157,15 @@ public class HomeFragment extends Fragment {
         mUnityPlayer.requestFocus();
         mUnityPlayer.windowFocusChanged(true);//First fix Line
 
+        at_close_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout_checkin.setVisibility(View.GONE);
+            }
+        });
+
+
+
         return view;
     }
 
@@ -198,11 +218,16 @@ public class HomeFragment extends Fragment {
         Log.d("beforeCalendar",beforeCalendar);
 
         if(beforeCalendar.equals(currentCalendar)) {//둘의 날짜가 같으면 중복인것임...
+            layout_checkin.setVisibility(View.GONE);
             Toast.makeText(getContext(),"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
         }else{//두 값이 다르면 중복이 아님 -> 즉 출석체크 해줘야한다.
-            //todo: 출첵 팝업창(dialog)띄어주고, 파이어스토어 저장(완료)
-            //파이어스토어 데이터 조회하고 +1 update
-            /*user firestore에서 출석체크 카운트 정보 가져오기 */
+            //todo: 출첵 팝업창(dialog)띄어주고(완료), 파이어스토어 저장(완료)
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable()  {
+                public void run() { // 시간 지난 후 실행할 코딩
+                    layout_checkin.setVisibility(View.VISIBLE);
+                }
+            }, 3000); // 0.3초후
             firestore.collection(FirebaseID.Attendance).document(email)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -214,6 +239,10 @@ public class HomeFragment extends Fragment {
                                 if (document.exists()) {
                                     Map<String, Object> shot = document.getData();
                                     atCount = (long)shot.get(FirebaseID.attendanceCount);
+                                    atCount += 1;
+
+                                    //출석체크 +1 추가한 값 저장
+                                   firestore.collection(FirebaseID.Attendance).document(email).update(FirebaseID.attendanceCount,atCount);
                                     Log.d("HomeFragment", "at count get 완료");
                                 } else {
                                     Log.d("HomeFragment", "No such document");
@@ -224,13 +253,6 @@ public class HomeFragment extends Fragment {
                         }
                     });
 
-            atCount += 1;
-
-            if (firebaseAuth.getCurrentUser() != null) {
-                Map<String, Object> userMap = new HashMap<>();
-                userMap.put(FirebaseID.attendanceCount,atCount);
-                firestore.collection(FirebaseID.Attendance).document(email).set(userMap, SetOptions.merge());
-            }
             Toast.makeText(getContext(), "출석체크 완료!", Toast.LENGTH_SHORT).show();
         }
 
@@ -260,5 +282,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+    @Override
+    public void onBackPressed() {
+        getActivity().finish();
+
     }
 }

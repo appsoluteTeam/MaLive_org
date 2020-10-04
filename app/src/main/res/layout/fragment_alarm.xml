@@ -89,7 +89,7 @@
             android:layout_marginLeft="205sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/notification_all_look"
+            android:id="@+id/prev_notification_all_look"
             android:text="모두보기"
             android:textColor="#2E9AFE">
         </TextView>

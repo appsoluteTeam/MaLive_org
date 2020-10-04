@@ -46,6 +46,7 @@ public class AlarmPrevNotificationListAdapter extends RecyclerView.Adapter<Alarm
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PrevNotificationInfo info=prevInfoArrayList.get(position);
         holder.user.setBackgroundResource(info.getFriendImage());
+        //todo: prevMsg 클릭시 대댓글 창으로 이동하기 구현
         holder.prevMsg.setText(info.getNotifiedText());
         holder.prevTime.setText(info.getPrevNotificationTime());
     }

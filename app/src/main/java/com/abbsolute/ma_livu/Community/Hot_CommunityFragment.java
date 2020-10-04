@@ -10,39 +10,183 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.MainActivity;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
-public class Hot_CommunityFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
+public class Hot_CommunityFragment extends Fragment implements OnBackPressedListener {
 
     private View view;
+    private FragmentTransaction fragmentTransaction;
     private Button btn_more_text;
     private ImageButton btn_commu_write;
+
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private Button btn_today_post,btn_today_room;
+    private String[] categoryarray={"what_eat","what_do","how_do"};
+
+    //리사이클러뷰
+    public CommunityAdapter adapter;
+    private RecyclerView recycler_hot_community;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<bringData> arrayList;
+
+    private String title,content,category,date,writer,likeCount,saveCount,img1;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.hot_community_fragment,container,false);
+        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
-        //커뮤니티에서 더 많은 글 버튼을 눌렀을 때
+
+        //버튼 아이디값 찾기
         btn_more_text=view.findViewById(R.id.btn_more_text);
-        btn_more_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(50);
-            }
-        });
+        btn_commu_write=(ImageButton)view.findViewById(R.id.btn_commu_write);
+        btn_today_post=(Button)view.findViewById(R.id.btn_today_post);
 
-        btn_commu_write= view.findViewById(R.id.btn_commu_write);
-        btn_commu_write.setOnClickListener(new View.OnClickListener() {
+
+        //버튼리스너 생성
+        Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(51);
+                switch (v.getId()){
+                    case R.id.btn_today_post: //오늘의 글 선택
+                        callRecycler();
+                        break;
+                    case R.id.btn_more_text: // 작성하기 아이콘 클릭
+                        ((HomeActivity)getActivity()).setFragment(50);
+                        break;
+                    case R.id.btn_commu_write: // 작성하기 아이콘 클릭
+                        ((HomeActivity)getActivity()).setFragment(51);
+                        break;
+                }
             }
-        });
+        };
+
+
+        btn_today_post.setOnClickListener(onClickListener);
+        btn_more_text.setOnClickListener(onClickListener);
+        btn_commu_write.setOnClickListener(onClickListener);
 
         return view;
+    }
+
+    private void callRecycler() {
+        for(int i=0; i<3; i++){
+            firestore.collection("Community").document(categoryarray[i]).collection("sub_Community")
+                    .orderBy("commu_like_count", Query.Direction.DESCENDING).limit(3)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult() != null) {
+                                    boolean like_count = false;
+                                    for (DocumentSnapshot snapshot : task.getResult()) {
+                                        Map<String, Object> shot = snapshot.getData();
+                                        if( String.valueOf(shot.get(FirebaseID.commu_like_count)).equals("0")) {
+                                            break;
+                                        } else{
+                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                            title = String.valueOf(shot.get(FirebaseID.title));
+                                            content = String.valueOf(shot.get(FirebaseID.content));
+                                            category = String.valueOf(shot.get(FirebaseID.category));
+                                            date = String.valueOf(shot.get(FirebaseID.commu_date));
+                                            writer = String.valueOf(shot.get(FirebaseID.Nickname));
+
+                                            likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+                                            saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+
+                                            if (String.valueOf(shot.get((FirebaseID.Url) + 0)) != null) {
+                                                img1 = ((String) shot.get((FirebaseID.Url) + 0));
+                                            } else {
+                                                img1 = null;
+                                            }
+                                            bringData data = new bringData(documentID, title, category, content, date, writer, likeCount, saveCount, img1);
+                                            arrayList.add(data);
+                                        }
+                                    }
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        arrayList = new ArrayList<>();
+        callRecycler();
+
+        //배열 섞어주기
+        Collections.shuffle(arrayList);
+
+        // 리사이클러뷰에 가져온 정보 넣기
+        recycler_hot_community=(RecyclerView)view.findViewById(R.id.recycler_hot_community);
+        recycler_hot_community.setHasFixedSize(true);
+        adapter = new CommunityAdapter(arrayList);
+        layoutManager = new LinearLayoutManager(getActivity());
+
+
+        recycler_hot_community.scrollToPosition(0);
+        recycler_hot_community.setItemAnimator(new DefaultItemAnimator());
+
+        recycler_hot_community.setLayoutManager(layoutManager);
+        recycler_hot_community.setAdapter(adapter);
+
+        // 리사이클러뷰 클릭 이벤트
+        adapter.setOnItemClickListener(new CommunityAdapter.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View v, int position) {
+                bringData item = adapter.getItem(position);
+
+                // CommunityPostsFragment로 데이터 넘기기
+                Bundle bundle = new Bundle();
+                bundle.putString("Title", item.getTitle());
+                bundle.putString("Content", item.getContent());
+                bundle.putString("Date", item.getDate());
+                bundle.putString("Category", item.getCategory());
+                bundle.putString("Writer",item.getWriter());
+
+                fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
+                communityPostsFragment.setArguments(bundle);
+
+                // 버튼 누르면 화면 전환
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.commit();
+
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(0);
     }
 }

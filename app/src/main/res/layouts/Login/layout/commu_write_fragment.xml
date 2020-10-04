@@ -37,12 +37,12 @@
 
         <TextView
             android:id="@+id/btn_commu_upload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
             android:layout_gravity="right"
             android:layout_marginTop="25dp"
-            android:layout_marginRight="25dp"
-            android:text="등록"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/icon_post_save"
             android:textAllCaps="false"
             android:textColor="#9F9F9F"
             android:textSize="20dp" />
@@ -190,16 +190,26 @@
 
                     <EditText
                         android:id="@+id/commu_img_explain1"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="사진에 대한 설명을 입력하세요."
                         android:inputType="textPersonName"
                         android:padding="10dp"
                         android:textSize="14sp"
-                        tools:visibility="gone" />
+                        tools:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/remove1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/icon_image_remove"
+                        tools:layout_marginRight="8dp" />
 
                 </LinearLayout>
 
@@ -218,16 +228,26 @@
 
                     <EditText
                         android:id="@+id/commu_img_explain2"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="사진에 대한 설명을 입력하세요."
                         android:inputType="textPersonName"
                         android:padding="10dp"
                         android:textSize="14sp"
-                        tools:visibility="invisible" />
+                        tools:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/remove2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/icon_image_remove"
+                        tools:layout_marginRight="8dp" />
 
                 </LinearLayout>
 
@@ -246,16 +266,26 @@
 
                     <EditText
                         android:id="@+id/commu_img_explain3"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="사진에 대한 설명을 입력하세요."
                         android:inputType="textPersonName"
                         android:padding="10dp"
                         android:textSize="14sp"
-                        tools:visibility="invisible" />
+                        tools:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/remove3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/icon_image_remove"
+                        tools:layout_marginRight="8dp" />
 
                 </LinearLayout>
 
@@ -274,16 +304,26 @@
 
                     <EditText
                         android:id="@+id/commu_img_explain4"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="사진에 대한 설명을 입력하세요."
                         android:inputType="textPersonName"
                         android:padding="10dp"
                         android:textSize="14sp"
-                        tools:visibility="invisible" />
+                        tools:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/remove4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/icon_image_remove"
+                        tools:layout_marginRight="8dp" />
 
                 </LinearLayout>
 
@@ -298,20 +338,31 @@
                         android:id="@+id/commu_img5"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        tools:src="@tools:sample/avatars" />
+                        tools:src="@tools:sample/avatars"
+                        tools:visibility="visible" />
 
                     <EditText
                         android:id="@+id/commu_img_explain5"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="사진에 대한 설명을 입력하세요."
                         android:inputType="textPersonName"
                         android:padding="10dp"
                         android:textSize="14sp"
-                        tools:visibility="invisible" />
+                        tools:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/remove5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/icon_image_remove"
+                        tools:layout_marginRight="8dp" />
 
                 </LinearLayout>
 

@@ -1,6 +1,8 @@
 package com.abbsolute.ma_livu.MyPage;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +24,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Stack;
 
 import androidx.annotation.NonNull;
@@ -100,7 +107,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                 information_noti.setVisibility(View.VISIBLE);
                 approveNum = 1;//탈퇴
                 break;
-            case R.id.btn_logout:
+            case R.id.btn_logout://로그아웃
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#F5F5F5"));
                 notiContents.setText(notiContents_logout);
                 approve.setText(approve_logout);
@@ -110,19 +117,8 @@ public class informationSetFragment extends Fragment implements View.OnClickList
             case R.id.approve:
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 final Intent loginHome = new Intent(getContext(), LoginActivity.class);
-                if(approveNum == 1){
+                if(approveNum == 1){//탈퇴 승인
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                    //Authentication 계정삭제
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        startActivity(loginHome);
-                                    }
-                                }
-                            });
 
                     //firestore user 디비 삭제
                     firestore.collection(FirebaseID.user).document(email)
@@ -137,19 +133,174 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                                 public void onFailure(@NonNull Exception e) {
                                 }
                             });
-                }else if(approveNum == 2){
+
+                    //firestore TODOList 디비 삭제
+                    firestore.collection(FirebaseID.ToDoLists).document(email)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+
+                    //firestore MyPage 디비 삭제
+                    firestore.collection(FirebaseID.myPage).document(email)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+
+                    //firestore Attendance 디비 삭제
+                    firestore.collection(FirebaseID.Attendance).document(email)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+
+                    //firestore AlarmFragment 디비 삭제
+                    firestore.collection("AlarmFragment").document(email)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                }
+                            });
+
+                    //내가 쓴 글 지우기
+                    final String[] communityCategory = {"how_do","what_do","what_eat"};
+
+                    for(int i = 0; i < communityCategory.length; i++) {
+                        final String Category2 = communityCategory[i];
+                        final ArrayList<String> Title = new ArrayList<String>();
+
+                        // 내가 쓴 글 불러와서 삭제
+                        deleteMyPost(Category2);
+                        deleteMyComment(Category2);
+                        // 댓글 단 글 불러오기
+                       // bringMyCommentPost(Category2, Title);
+                    }
+
+                    //Authentication 계정삭제
+                    user.delete()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("delete OKAY","okay");
+                                        startActivity(loginHome);
+                                    }
+                                }
+                            });
+
+                    //startActivity(loginHome);
+                }else if(approveNum == 2){//로그아웃
+                    SharedPreferences sharedPreferences=getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.remove("email_id");
+                    editor.commit();
                     FirebaseAuth.getInstance().signOut();
                     startActivity(loginHome);
                 }
                 break;
             case R.id.cancel:
                 layout_fragment_information_set.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                information_noti.setVisibility(View.GONE);
+
+                information_noti.setVisibility(view.GONE);
+
                 break;
             case R.id.btn_back:
                 Fragment nextFragment = fragmentStack.pop();
                 fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
                 break;
         }
+    }
+
+    public void deleteMyPost(final String Category2){
+        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            //String category = Category2;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String idDelete = document.getId();
+                                firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").document(idDelete)
+                                        .delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void deleteMyComment(final String Category2){
+        firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        // 댓글 단 글 받아오기
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    final String documentName = document.getId();
+                                    firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").document(documentName).collection("Community_comment")
+                                            .whereEqualTo("email", email)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                                                                String deleteComment = snapshot.getId();
+                                                                Log.d("deleteComment",deleteComment);
+                                                                firestore.collection(FirebaseID.Community).document(Category2).collection("sub_Community").document(documentName).collection("Community_comment")
+                                                                        .document(deleteComment)
+                                                                        .delete()
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        }
+                    }
+                });
     }
 }

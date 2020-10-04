@@ -10,15 +10,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -34,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /* 결제 창 fragment */
 
-public class payFragment extends Fragment {
+public class payFragment extends Fragment implements OnBackPressedListener {
     private View view;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private RecyclerView mRecyclerView = null;
@@ -44,7 +48,11 @@ public class payFragment extends Fragment {
     private static String email;
     private Button btn_pay_sort,btn_back; //정렬버튼
     private LinearLayout layout_pay_sort;
+    private TextView totalPay;
     public static Stack<Fragment> fragmentStack;
+
+    private String recentBalance;
+    private long recentPayDocumentNum;
 
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
@@ -63,17 +71,23 @@ public class payFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mypage_pay, container, false);
-
+        //하단 탭 바에있는  이것을 수행하여 listener를 초기화한다->backPrssedListener
+        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         btn_pay_sort = view.findViewById(R.id.btn_pay_sort);
         layout_pay_sort = view.findViewById(R.id.layout_pay_sort);
         mRecyclerView = view.findViewById(R.id.pay_recyclerView);
         btn_back = view.findViewById(R.id.btn_back);
+        totalPay = view.findViewById(R.id.totalPay);
+
         fragmentStack = HomeActivity.fragmentStack;
         fm = getFragmentManager();
 
-        //초기화면 정렬화면 안보이게
-        layout_pay_sort.setVisibility(View.GONE);
 
+        //초기화면 정렬버튼 안보이게
+        layout_pay_sort.setVisibility(view.GONE);
+
+
+        //버튼 클릭 리스너
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,14 +105,70 @@ public class payFragment extends Fragment {
                 }
             }
         };
+
         /* 각 버튼 setOnClickListener해주기 */
         btn_pay_sort.setOnClickListener(onClickListener);
         btn_back.setOnClickListener(onClickListener);
 
+        getRecentPayDocument();
 
         return view;
     }
 
+    public void getRecentPayDocument(){
+        firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.tmpData).document("recentPayNum")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                recentPayDocumentNum = Long.parseLong(shot.get(FirebaseID.recentDocument).toString());
+                                Log.d("getRecentPayDocument 안",Long.valueOf(recentPayDocumentNum).toString());
+                            } else {
+                                recentPayDocumentNum = 0;
+                            }
+                            getRecentBalance(recentPayDocumentNum);
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    //가장 최근 문서의 잔액 알아내기
+    public void getRecentBalance(final long recentPayDocumentNum){
+        Log.d("getRecentBalance","접근완료");
+        if(recentPayDocumentNum == 0){
+            recentBalance = "0";
+            totalPay.setText(recentBalance+"톨");
+            Log.d("recentBalance final", recentBalance);
+        }else{
+            Log.d("else문","else");
+            firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.pay)
+                    .whereEqualTo(FirebaseID.order,Long.valueOf(recentPayDocumentNum).toString())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> shot = snapshot.getData();
+                                    recentBalance = shot.get(FirebaseID.balance).toString();
+                                    totalPay.setText(recentBalance+"톨");
+                                    Log.d("recentBalance final", recentBalance);
+                                }
+                            }
+                        }
+                    });
+
+        }
+
+
+    }
     public void onStart() {//fragment 처음
         super.onStart();
 
@@ -183,9 +253,11 @@ public class payFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.pay_title));
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
+                                            String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+                                            String order = String.valueOf(shot.get(FirebaseID.order));
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time,order);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -211,9 +283,11 @@ public class payFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.pay_title));
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
+                                            String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+                                            String order = String.valueOf(shot.get(FirebaseID.order));
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance, pay_time,order);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -239,9 +313,12 @@ public class payFragment extends Fragment {
                                             String title = String.valueOf(shot.get(FirebaseID.pay_title));
                                             String date = String.valueOf(shot.get(FirebaseID.pay_date));
                                             String inout = String.valueOf(shot.get(FirebaseID.inout));
+                                            String pay_time = String.valueOf(shot.get(FirebaseID.pay_time));
+                                            String order = String.valueOf(shot.get(FirebaseID.order));
+
 
                                             Log.d("amount", amount);
-                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance);
+                                            payItemListView payItemListView = new payItemListView(date, title, inout, amount, balance,pay_time,order);
                                             mList.add(payItemListView);
                                         }
                                         mAdapter.notifyDataSetChanged(); // 리스트 저장 및 새로고침
@@ -251,5 +328,10 @@ public class payFragment extends Fragment {
                         });
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((HomeActivity)getActivity()).setFragment(2);
     }
 }

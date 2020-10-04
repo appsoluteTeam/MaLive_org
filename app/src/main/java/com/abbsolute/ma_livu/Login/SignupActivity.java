@@ -7,25 +7,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -50,10 +50,12 @@ public class SignupActivity extends AppCompatActivity {
 
     private Button btn_next1;
     private TextView tv_wanning;
+    private ImageButton btn_back;
 
     //
     public String email = "";
     public String password = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +71,30 @@ public class SignupActivity extends AppCompatActivity {
         tv_wanning = findViewById(R.id.tv_wanning);
         tv_top= findViewById(R.id.tv_top);
 
+
+        /*TODO:: 이메일 중복검사
+          1. 버튼을 눌렀을 대 calldata를 호출해서 입력한 email이랑 같은 지 확인한다.
+             같은게 존재하면 emailtemp에 값을 저장
+             존재하지 않으면 emailtemp 에 null값 저장
+          2. overlabemail() 을 호출해서 emailtemp값에 따라 경고텍스트 띄어주고
+             중복이 안됐을 때만 return을 true로 해줌
+        */
+
+        btn_back=(ImageButton)findViewById(R.id.btn_backkey);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            }
+        });
+
         //다음 버튼을 눌렀을 때
         btn_next1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 email = email_sign.getText().toString();
                 password = pass_sign.getText().toString();
-
-                if(isValidEmail() && isValidPasswd() && isSamePasswd()) {
-                    createUser(email, password);
-                }
+                CheckSameEmail();
             }
         });
 
@@ -119,6 +135,35 @@ public class SignupActivity extends AppCompatActivity {
         });
 
     }
+
+    private void CheckSameEmail() {
+        firestore.collection("user").whereEqualTo("email", email_sign.getText().toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            boolean EmailDouble = false;
+                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                //겹치는 이메일이 있는것
+                                Map<String, Object> shot = snapshot.getData();
+                                tv_wanning.setText("이미 등록된 계정입니다.");
+                                EmailDouble = true;
+                                break;
+                            }
+                            if(EmailDouble == false){//중복이 아닐 때
+                                if(isValidEmail() && isValidPasswd() && isSamePasswd()) {//유효성 검사
+                                    Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
+                                    intent.putExtra("email",email);
+                                    intent.putExtra("password",password);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
 
     // 이메일 유효성 검사
     private boolean isValidEmail() {
@@ -163,31 +208,5 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    //이메일 정보과 파이어베이스와 연결
-    private void createUser(final String email, final String password) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //파이어스토어에 정보 저장
-                            if (firebaseAuth.getCurrentUser() != null){
-                                Map<String,Object> userMap = new HashMap<>();
-                                userMap.put(FirebaseID.documentID,firebaseAuth.getCurrentUser().getUid());
-                                userMap.put(FirebaseID.Email,email);
-                                firestore.collection(FirebaseID.user).document(email).set(userMap,SetOptions.merge());
-                                finish();
-                            }
-                            // 회원가입 성공
-                            Intent intent = new Intent(SignupActivity.this, Signup2Activity.class);
-                            intent.putExtra("email",email);
-                            startActivity(intent);
-                        } else {
-                            // 회원가입 실패
-                            tv_wanning.setText("이미 등록된 계정입니다.");
-                        }
-                    }
-                });
-    }
 
 }

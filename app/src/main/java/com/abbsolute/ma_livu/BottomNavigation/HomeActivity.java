@@ -1,6 +1,8 @@
 package com.abbsolute.ma_livu.BottomNavigation;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -9,12 +11,14 @@ import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
+import com.abbsolute.ma_livu.Alarm.AlarmFragmentAllLook;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
 
@@ -46,6 +50,9 @@ import java.util.Stack;
 
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener{
 
+    //fragment저장할 stack
+    public static Stack<Fragment> fragmentStack;
+
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -61,9 +68,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private payFragment payFragment;
     private activeFragment activeFragment;
     private informationSetFragment informationSetFragment;
-
-    //fragment저장할 stack
-    public static Stack<Fragment> fragmentStack;
 
     //출석체크 관련 변수
     public static final long milli24hour = 86400000; //24시간 초기준 상수
@@ -88,6 +92,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private ToDoFixModifyingFragment toDoFixModifyingFragment;
     //고정리스트 삭제화면
     ToDoFixListRemoveFragment toDoFixListRemoveFragment;
+    //이전알림 모두보기로 이동
+    AlarmFragmentAllLook alarmFragmentAllLook;
     private int count;
     //todoList관련 뒤로가기 이벤트
     OnBackPressedListener listener;
@@ -97,9 +103,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         setContentView(R.layout.activity_home);
 
         fragmentStack = new Stack<>();
-
-        //출석체크 메소드
-        //attendance_check();
 
         //기본 fragment
         homeFragment = new HomeFragment();
@@ -123,7 +126,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         toDoFragment=new ToDoFragment(); //투두 리스트 화면
         toDoWriteMainFragment=new ToDoWriteMainFragment();//투두 작성 메인 화면
         toDoFixModifyingFragment=new ToDoFixModifyingFragment();//고정리스트 수정 화면
-
+        /// alarm 프래그먼트들//
+        alarmFragmentAllLook=new AlarmFragmentAllLook();
 
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
@@ -178,15 +182,18 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     }
 
     // 프래그먼트 교체가 일어나는 함수
-    public void setFragment(int n){
+    public void setFragment(int n) {
         fragmentManager = getSupportFragmentManager();
 
         fragmentTransaction = fragmentManager.beginTransaction();
-        switch (n){
+        switch (n) {
             case 0:
                 if(homeFragment.isHidden()) {
                     fragmentTransaction.show(homeFragment).commit();
                 }
+
+        //        fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
+//>>>>>>> cheer-up
                 break;
             case 1:
                 if(!homeFragment.isHidden()){
@@ -218,67 +225,65 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                     fragmentTransaction.hide(homeFragment).commit();
                 }
                 fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
+// =======
+//                 fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
+//                 break;
+//             case 3:
+//                 fragmentTransaction.replace(R.id.main_frame, alarmFragment).commit();
+//                 break;
+//             case 4:
+//                 fragmentTransaction.replace(R.id.main_frame, guestBookFragment);
+//                 fragmentTransaction.commit();
+//                 break;
+//             case 5:
+//                 fragmentTransaction.replace(R.id.main_frame, guestBookWriteFragment);
+// >>>>>>> cheer-up
                 fragmentTransaction.commit();
                 break;
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
-                fragmentTransaction.replace(R.id.main_frame,communityFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, communityFragment).commit();
                 break;
             case 51:
-                fragmentTransaction.replace(R.id.main_frame,commu_writeFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, commu_writeFragment).commit();
                 break;
             case 52:
-                fragmentTransaction.replace(R.id.main_frame,communityPostsFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).commit();
                 break;
             //투두 프래그먼트로 이동
             case 100:
-                fragmentTransaction.replace(R.id.main_frame,toDoFragment);
+                fragmentTransaction.replace(R.id.main_frame, toDoFragment);
                 fragmentTransaction.commit();
                 break;
             //투두 작성메인 화면
             case 101:
-                fragmentTransaction.replace(R.id.main_frame,toDoWriteMainFragment);
+                fragmentTransaction.replace(R.id.main_frame, toDoWriteMainFragment);
                 fragmentTransaction.commit();
                 break;
             //고정리스트
             case 102:
-                fragmentTransaction.replace(R.id.main_frame,toDoFixModifyingFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, toDoFixModifyingFragment).commit();
                 break;
             //고정 할 일 프레그먼트
             case 103:
-                toDoFixWriteFragment=new ToDoFixWriteFragment();
-                fragmentTransaction.replace(R.id.main_frame,toDoFixWriteFragment).commit();
+                toDoFixWriteFragment = new ToDoFixWriteFragment();
+                fragmentTransaction.replace(R.id.main_frame, toDoFixWriteFragment).commit();
                 break;
             case 104:
-                toDoFixListRemoveFragment=new ToDoFixListRemoveFragment();
-                fragmentTransaction.replace(R.id.main_frame,toDoFixListRemoveFragment).commit();
-            break;
+                toDoFixListRemoveFragment = new ToDoFixListRemoveFragment();
+                fragmentTransaction.replace(R.id.main_frame, toDoFixListRemoveFragment).commit();
+                break;
+            //alarmFragment 프래그먼트
+            case 200:
+                fragmentTransaction.replace(R.id.main_frame,alarmFragmentAllLook);
+                fragmentTransaction.commit();
+                break;
+            case 201:
+                fragmentTransaction.replace(R.id.main_frame,alarmFragment);
+                fragmentTransaction.commit();
+                break;
         }
-    }
-
-    //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나
-    public void attendance_check(){
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        currentMills = System.currentTimeMillis();  //현재시간
-        beforeMills = sharedPreferences.getLong("beforeMills",0);
-
-        Log.d("currentMills",String.valueOf(currentMills));
-        Log.d("beforeMills",String.valueOf(beforeMills));
-
-        if(currentMills - beforeMills >= milli24hour) {   //하루이상 지남
-            //todo:출첵 팝업창 띄어주고 파이어스토어 저장
-            Toast.makeText(HomeActivity.this, "출석체크 완료!", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(HomeActivity.this,"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
-        }
-
-        //sharedPreference에 마지막 접속시간 저장
-        editor.putLong("beforeMills",currentMills);
-        editor.commit();
     }
 
 
@@ -288,6 +293,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void myPageDataSet(int myPageCategory){
         myPageCategoryIndex = myPageCategory;
     }
+
 
     /*각 프래그먼트에서 데이터 받는 메소드*/
     public void dataSet(String title, int index, int category){
@@ -317,7 +323,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     }
 
     /* myPage카테고리에 따라서 fragment 교체 */
-    /* 0:칭호 , 1:결제, 2:활동 , 3:친구, 4:정보설정 */
+    /* 0:칭호 , 1:결제, 2:활동 , 3:친구, 4:정보설정 창*/
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -356,37 +362,46 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         }
         if(listener!=null){
             listener.onBackPressed();
+            listener=null;
         }
         else
             super.onBackPressed();
 
     }
     public void setCurrentScene(Fragment fragment){
-
-        if(fragment instanceof ToDoFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, homeFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoWriteFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoFixWriteFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoFixModifyingFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoWriteMainFragment);
-            transaction.commit();
-        }
-        if(fragment instanceof ToDoFixListRemoveFragment){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.main_frame, toDoWriteMainFragment);
-            transaction.commit();
+        if(fragment!=null){
+            if(!isFinishing()){
+                if(fragment instanceof ToDoFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    HomeFragment goHome=new HomeFragment();
+                    transaction.replace(R.id.main_frame, goHome);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoWriteFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoFragment goToDo=new ToDoFragment();
+                    transaction.replace(R.id.main_frame, goToDo);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoFixWriteFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoFragment goToDo=new ToDoFragment();
+                    transaction.replace(R.id.main_frame, goToDo);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoFixModifyingFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoWriteMainFragment goToDoWriteMain=new ToDoWriteMainFragment();
+                    transaction.replace(R.id.main_frame, goToDoWriteMain);
+                    transaction.commit();
+                }
+                if(fragment instanceof ToDoFixListRemoveFragment){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    ToDoWriteMainFragment goToDoWriteMain=new ToDoWriteMainFragment();
+                    transaction.replace(R.id.main_frame, goToDoWriteMain);
+                    transaction.commit();
+                }
+            }
         }
     }
 
