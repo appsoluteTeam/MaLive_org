@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AccessoryAdapter extends RecyclerView.Adapter<AccessoryAdapter.ItemViewBinder> {
 
     public AccessoryAdapter(UnityItem[] items) {
@@ -37,6 +39,11 @@ public class AccessoryAdapter extends RecyclerView.Adapter<AccessoryAdapter.Item
     public void onBindViewHolder(@NonNull ItemViewBinder holder, int position) {
         //   holder.itemImageView.setImageResource(items[position]);
         holder.itemTextView.setText(items[position].getName());
+        if(items[position].getIsPossessed()==1){
+            holder.circleImageView.setVisibility(View.VISIBLE);
+        }else{
+            holder.itemImageView.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -49,11 +56,13 @@ public class AccessoryAdapter extends RecyclerView.Adapter<AccessoryAdapter.Item
 
         ImageView itemImageView;
         TextView itemTextView;
+        CircleImageView circleImageView;
 
         public ItemViewBinder(@NonNull View itemView) {
             super(itemView);
             itemImageView = itemView.findViewById(R.id.itemImageView);
             itemTextView = itemView.findViewById(R.id.itemTextView);
+            circleImageView = itemView.findViewById(R.id.itemCircleImage);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

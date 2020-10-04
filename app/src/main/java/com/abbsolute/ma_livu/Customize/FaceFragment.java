@@ -21,6 +21,8 @@ import com.azoft.carousellayoutmanager.DefaultChildSelectionListener;
 
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FaceFragment#newInstance} factory method to
@@ -41,6 +43,8 @@ public class FaceFragment extends Fragment {
     private FaceAdapter faceAdapter;
     private FaceFragment faceFragment;
     private HomeFragment homeFragment;
+
+    private int selectedPos;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,9 +92,9 @@ public class FaceFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.customize_face_fragment,container,false);
         homeFragment = (HomeFragment)getFragmentManager().findFragmentById(R.id.unity_frame);
-        faceAdapter = new FaceAdapter(items);
+        faceAdapter = new FaceAdapter(items,2);
         RecyclerView faceRecyclerview = v.findViewById(R.id.face_recyclerview);
-
+        selectedPos = 1;
         initRecyclerView(faceRecyclerview, new CarouselLayoutManager(CarouselLayoutManager.HORIZONTAL, false), faceAdapter);
 
         Button saveBtt = v.findViewById(R.id.save_color_btt);
@@ -127,11 +131,13 @@ public class FaceFragment extends Fragment {
         // enable center post scrolling
         recyclerView.addOnScrollListener(new CenterScrollListener());
         // enable center post touching on item and item click listener
+
         DefaultChildSelectionListener.initCenterItemListener(new DefaultChildSelectionListener.OnCenterItemClickListener() {
             @Override
             public void onCenterItemClicked(@NonNull final RecyclerView recyclerView, @NonNull final CarouselLayoutManager carouselLayoutManager, @NonNull final View v) {
                 final int position = recyclerView.getChildLayoutPosition(v);
                 final String msg = String.format(Locale.US, "Item %1$d was clicked", position);
+                faceAdapter.setItemViewSelected(position);
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         }, recyclerView, layoutManager);

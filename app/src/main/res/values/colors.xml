@@ -3,6 +3,7 @@
 <color name="colorPrimary">#008577</color>
 <color name="colorPrimaryDark">#00574B</color>
 <color name="colorAccent">#D81B60</color>
+    <color name="customize_face_border">#49C6F5</color>
 
     <!--reds-->
     <color name="md_red_50">#FFEBEE</color>

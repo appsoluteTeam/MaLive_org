@@ -19,13 +19,11 @@ import androidx.fragment.app.Fragment;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Customize.ColorFragment;
-import com.abbsolute.ma_livu.Customize.FaceBottom;
 import com.abbsolute.ma_livu.Customize.FaceFragment;
-import com.abbsolute.ma_livu.Customize.ItemBottom;
+import com.abbsolute.ma_livu.Customize.ItemFragment;
 import com.abbsolute.ma_livu.Customize.UnityItem;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
-import com.abbsolute.ma_livu.UnityPlugin.CustomPlugin;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -123,9 +121,10 @@ public class HomeFragment extends Fragment {
         accessoryBtt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ItemBottom bottomSheet = new ItemBottom();
-
-                bottomSheet.show(getFragmentManager(), "bottomSheet");
+           //     ItemBottom bottomSheet = new ItemBottom();
+                ItemFragment itemFragment = new ItemFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,itemFragment).commit();
+           //     bottomSheet.show(getFragmentManager(), "bottomSheet");
 
             }
         });

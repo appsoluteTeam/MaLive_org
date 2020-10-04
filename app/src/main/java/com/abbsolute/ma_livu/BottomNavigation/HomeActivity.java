@@ -20,8 +20,6 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
-import com.abbsolute.ma_livu.Customize.FaceBottom;
-import com.abbsolute.ma_livu.Customize.ItemBottom;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
@@ -46,7 +44,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Stack;
 
-public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener,ItemBottom.ItemBottomListener, FaceBottom.FaceBottomListener {
+public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener{
 
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
@@ -392,10 +390,5 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         }
     }
 
-    @Override
-    public void onButtonClicked(String text) {
-        //TODO: 처리
-
-    }
 
 }

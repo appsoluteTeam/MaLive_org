@@ -10,24 +10,42 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FaceAdapter extends RecyclerView.Adapter<FaceAdapter.FaceViewHolder> {
 
-    public FaceAdapter(UnityItem[] items) {
+    public FaceAdapter(UnityItem[] items,int selectedPos) {
         this.items = items;
+        this.selectedPos = selectedPos;
+        faceViewHolders = new ArrayList<>();
     }
 
 //    public ItemClickListener itemClickListener;
     private UnityItem[] items;
+    private int selectedPos;
+    private List<FaceViewHolder> faceViewHolders;
 
     @NonNull
     @Override
     public FaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customize_face_item_view,parent,false);
         FaceViewHolder faceViewHolder = new FaceViewHolder(view);
+        faceViewHolders.add(faceViewHolder);
         return faceViewHolder;
     }
+
+    public void setItemViewSelected(int pos){
+        FaceViewHolder prevItem = faceViewHolders.get(selectedPos);
+        prevItem.faceImageView.setBorderWidth(0);
+
+
+        FaceViewHolder selectedItem = faceViewHolders.get(pos);
+        prevItem.faceImageView.setBorderWidth(2);
+    }
+
 
     @Override
     public void onBindViewHolder(@NonNull FaceViewHolder holder, int position) {
@@ -42,6 +60,10 @@ public class FaceAdapter extends RecyclerView.Adapter<FaceAdapter.FaceViewHolder
     }
     public UnityItem getItem(int pos) {
         return items[pos];
+    }
+
+    public void setBorder(int pos){
+
     }
 
     public class FaceViewHolder extends RecyclerView.ViewHolder {
