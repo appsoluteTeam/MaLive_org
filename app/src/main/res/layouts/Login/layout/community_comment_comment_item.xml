@@ -95,7 +95,7 @@
                     android:textSize="16sp" />
 
                 <LinearLayout
-                    android:id="@+id/community_comment_comment_extra"
+                    android:id="@+id/community_comment_comment_extra_true"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -130,7 +130,25 @@
                         android:text="신고"
                         android:textSize="12sp"
                         android:textStyle="bold" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/community_comment_comment_extra_false"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/half_round_border"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <Button
+                        android:id="@+id/btn_commu_report_false"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+                        android:background="#00FFFFFF"
+                        android:text="신고"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
             </RelativeLayout>

@@ -241,6 +241,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                                 for (DocumentSnapshot snapshot : task.getResult()) {
                                     Map<String, Object> shot = snapshot.getData();
                                     String CommentCommentName = String.valueOf(shot.get(FirebaseID.commu_comment_comment_name));
+                                    String CommentCommentEmail = String.valueOf(shot.get(FirebaseID.Email));
                                     String CommentComment = String.valueOf(shot.get(FirebaseID.commu_comment_comment_comment));
                                     String CommentCommentDate = String.valueOf(shot.get(FirebaseID.commu_comment_comment_date));
                                     String CommentCommentLike = String.valueOf(shot.get(FirebaseID.commu_comment_comment_like));
@@ -248,7 +249,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                                     // 받아온 date값에 HH:mm 자르기
                                     currentDate = CommentCommentDate.substring(0, CommentCommentDate.length()-6);
 
-                                    CommunityCommentCommentItem data = new CommunityCommentCommentItem(CommentCommentName, CommentComment, currentDate, CommentCommentLike);
+                                    CommunityCommentCommentItem data = new CommunityCommentCommentItem(CommentCommentName, CommentCommentEmail, CommentComment, currentDate, CommentCommentLike);
                                     arrayList.add(data);
                                 }
                                 // 전체 답글 수 받아오기
@@ -291,6 +292,20 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
         transaction.detach(this).attach(this).commit();
     }
 
+    // 더보기 클릭 시 버튼 활성화 여부 판단 메소드
+    @Override
+    public boolean checkUser(int position) {
+        // '현재 접속한 유저' == '글쓴이'면 삭제, 신고기능 활성화
+        if(String.valueOf(arrayList.get(position).getEmail()).equals(email)) {
+            return true;
+        }
+        // 다르면 신고기능만 활성화
+        else {
+            return false;
+        }
+    }
+
+    // 답글 좋아요 메소드
     @Override
     public void commentLike(int position) {
         if (firebaseAuth.getCurrentUser() != null) {
@@ -306,6 +321,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
         }
     }
 
+    // 답글 좋아요 취소 메소드
     @Override
     public void commentDislike(int position) {
         if (firebaseAuth.getCurrentUser() != null) {
@@ -321,6 +337,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
         }
     }
 
+    // 답글 삭제 메소드
     @Override
     public void deleteItem(final int position) {
         //삭제 여부를 묻는 알림창 띄우기
@@ -370,6 +387,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
         dialog.show();
     }
 
+    // 답글 신고 메소드
     @Override
     public void reportItem(final int position) {
         // 신고 여부를 묻는 알림창 띄우기
@@ -438,6 +456,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
         dialog.show();
     }
 
+    // 전체 답글 수 받아오는 메소드
     private void commentCount() {
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
