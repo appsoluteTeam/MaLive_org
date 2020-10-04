@@ -107,9 +107,10 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
     public static String eamilAttendanceComplete;
 
-    public TitleFragment(){};
+    public TitleFragment(){}
+
     public TitleFragment(final String email){
-        this.email = email;
+        TitleFragment.email = email;
         Log.d("email",email);
 
 
@@ -494,6 +495,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
         //false인지 확인
         firestore.collection(FirebaseID.myPage).document(email).collection("title").document("titleIsLocked")
+
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -686,8 +688,8 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     }
 
     public void dataSet(String representationTitle,int repTitleIndex,int category){//DataListener 메소드
-        this.repTitleIndex = repTitleIndex;
-        this.category = category;
+        TitleFragment.repTitleIndex = repTitleIndex;
+        TitleFragment.category = category;
         setRepTitle(category,repTitleIndex);
     }
 
@@ -707,12 +709,12 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
             case R.id.tdBtn:
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력,즉 edit데이터 false넘겨주면 됨
                     bundle2.putBoolean("edit",false);
-                    editFinishBtn.setVisibility(v.GONE);
+                    editFinishBtn.setVisibility(View.GONE);
                 }else {//edit데이터 true넘겨줘야함
                     bundle2.putBoolean("edit",true);
-                    attendanceFragment.isClicked = false;
-                    todayFragment.isClicked = false;
-                    editFinishBtn.setVisibility(v.VISIBLE);
+                    com.abbsolute.ma_livu.MyPage.attendanceFragment.isClicked = false;
+                    com.abbsolute.ma_livu.MyPage.todayFragment.isClicked = false;
+                    editFinishBtn.setVisibility(View.VISIBLE);
                 }
                 TODOFragment.setArguments(bundle2);
                 fragmentTransaction.replace(R.id.frameLayout,TODOFragment).commitAllowingStateLoss();
@@ -727,12 +729,12 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
             case R.id.attendanceBtn://출석
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력, 즉 edit데이터 false넘겨주면 됨
                     bundle2.putBoolean("edit",false);
-                    editFinishBtn.setVisibility(v.GONE);
+                    editFinishBtn.setVisibility(View.GONE);
                 }else {//edit데이터 true넘겨줘야함
                     bundle2.putBoolean("edit",true);
-                    TODOFragment.isClicked = false;
-                    todayFragment.isClicked = false;
-                    editFinishBtn.setVisibility(v.VISIBLE);
+                    TODOtitleFragment.isClicked = false;
+                    com.abbsolute.ma_livu.MyPage.todayFragment.isClicked = false;
+                    editFinishBtn.setVisibility(View.VISIBLE);
                 }
 
                 //atBtn 버튼 제외하고 모두 회색
@@ -747,12 +749,12 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
             case R.id.todayBtn:
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력 , 즉 edit데이터 false넘겨주면 됨
                     bundle2.putBoolean("edit",false);
-                    editFinishBtn.setVisibility(v.GONE);
+                    editFinishBtn.setVisibility(View.GONE);
                 }else {//edit데이터 true넘겨줘야함
                     bundle2.putBoolean("edit",true);
-                    TODOFragment.isClicked = false;
-                    attendanceFragment.isClicked = false;
-                    editFinishBtn.setVisibility(v.VISIBLE);
+                    TODOtitleFragment.isClicked = false;
+                    com.abbsolute.ma_livu.MyPage.attendanceFragment.isClicked = false;
+                    editFinishBtn.setVisibility(View.VISIBLE);
                 }
 
                 //todayBtn버튼 제외하고 모두 회색
@@ -767,13 +769,13 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
             case R.id.roomBtn:
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력 ,즉 edit데이터 false넘겨주면 됨
                     bundle2.putBoolean("edit",false);
-                    editFinishBtn.setVisibility(v.GONE);
+                    editFinishBtn.setVisibility(View.GONE);
                 }else {//edit데이터 true넘겨줘야함
                     bundle2.putBoolean("edit",true);
-                    TODOFragment.isClicked = false;
-                    attendanceFragment.isClicked = false;
-                    todayFragment.isClicked = false;
-                    editFinishBtn.setVisibility(v.VISIBLE);
+                    TODOtitleFragment.isClicked = false;
+                    com.abbsolute.ma_livu.MyPage.attendanceFragment.isClicked = false;
+                    com.abbsolute.ma_livu.MyPage.todayFragment.isClicked = false;
+                    editFinishBtn.setVisibility(View.VISIBLE);
                 }
 
                 //roomBtn버튼 제외하고 모두 회색
@@ -800,7 +802,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
                 todayBtn.setSelected(false);
                 roomBtn.setSelected(false);
 
-                editFinishBtn.setVisibility(v.VISIBLE); //완료버튼 보이기
+                editFinishBtn.setVisibility(View.VISIBLE); //완료버튼 보이기
 
                 fragmentTransaction.add(R.id.frameLayout,TODOFragment).commitAllowingStateLoss();
                 break;
@@ -822,7 +824,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
                 myPageRef.update(FirebaseID.titleCategory,category);
                 myPageRef.update(FirebaseID.index,repTitleIndex);
 
-                editFinishBtn.setVisibility(v.GONE);//완료버튼 숨기기
+                editFinishBtn.setVisibility(View.GONE);//완료버튼 숨기기
                 fragmentTransaction.add(R.id.frameLayout,TODOFragment).commitAllowingStateLoss();
                 break;
             case R.id.btn_back:

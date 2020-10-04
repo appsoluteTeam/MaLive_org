@@ -63,7 +63,7 @@ public class ToDoFixListAdapter extends RecyclerView.Adapter<ToDoFixListAdapter.
         }
     }
     public void getFixContext(Context context){
-        this.context=context;
+        ToDoFixListAdapter.context =context;
     }
 
 

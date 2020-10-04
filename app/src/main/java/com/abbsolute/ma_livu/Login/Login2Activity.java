@@ -69,12 +69,13 @@ public class Login2Activity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance(); //파이어베이스 인증 객체 초기화
         titleFragment = (TitleFragment)getSupportFragmentManager().findFragmentById(R.id.main_frame);//titleFragment
+
         email_login =(EditText) findViewById(R.id.btn_email_login); //이메일 입력
         pass_login =(EditText) findViewById(R.id.pass_login); // 패스워드 입력
         tv_wanning4=findViewById(R.id.tv_wanning4);
 
         //로그인 버튼을 눌렀을 때
-        btn_login =(Button) findViewById(R.id.btn_login);
+        btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +119,7 @@ public class Login2Activity extends AppCompatActivity {
         });
 
         //비밀번호 찾기 버튼을 눌렀을 떄
-        btn_findpwd =(Button)findViewById(R.id.btn_findpwd);
+        btn_findpwd = findViewById(R.id.btn_findpwd);
         btn_findpwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
