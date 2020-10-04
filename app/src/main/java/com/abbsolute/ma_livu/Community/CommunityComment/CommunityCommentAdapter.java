@@ -23,9 +23,6 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
     private ArrayList<CommunityCommentItem> arrayList;
     private CommuCommentOnItemClick callback;
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
     public CommunityCommentAdapter(ArrayList<CommunityCommentItem> arrayList, CommuCommentOnItemClick listener) {
         this.arrayList = arrayList;
         this.callback = listener;
@@ -36,7 +33,6 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) { //뷰홀더 최초로 만들어내는 역할
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.community_comment_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
-//        callback.checkLikePressed();
         return holder;
     }
 
@@ -70,12 +66,17 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                 callback.reportItem(position);
             }
         });
+        holder.btn_commu_report_false.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.reportItem(position);
+            }
+        });
 
         // '좋아요' 버튼 클릭 시 count 증가
         holder.btn_comment_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
                 // 현재의 좋아요 갯수 받아오기
                 int like_count;
                 like_count = Integer.parseInt(holder.commu_comment_like.getText().toString());
@@ -104,11 +105,24 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         holder.btn_comment_extra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.community_comment_extra.getVisibility() == View.INVISIBLE) {
-                        holder.community_comment_extra.setVisibility(View.VISIBLE);
+                 // '현재 접속한 유저' == '글쓴이'면 삭제, 신고기능 활성화
+                if (callback.checkUser(position) == true) {
+                    if (holder.community_comment_extra_true.getVisibility() == View.INVISIBLE) {
+                        holder.community_comment_extra_true.setVisibility(View.VISIBLE);
                     } else {
-                        holder.community_comment_extra.setVisibility(View.INVISIBLE);
+                        holder.community_comment_extra_true.setVisibility(View.INVISIBLE);
                     }
+                }
+                // 다르면 신고기능만 활성화
+                else {
+                    holder.community_comment_extra_true.setVisibility(View.INVISIBLE);
+
+                    if (holder.community_comment_extra_false.getVisibility() == View.INVISIBLE) {
+                        holder.community_comment_extra_false.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.community_comment_extra_false.setVisibility(View.INVISIBLE);
+                    }
+                }
             }
         });
     }
@@ -133,9 +147,11 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
 
         Button btn_commu_delete;
         Button btn_commu_report;
+        Button btn_commu_report_false;
 
         ImageButton btn_comment_extra;
-        LinearLayout community_comment_extra;
+        LinearLayout community_comment_extra_true;
+        LinearLayout community_comment_extra_false;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -151,14 +167,16 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
             this.commu_comment_comment_count = itemView.findViewById(R.id.commu_comment_comment_count);
 
             this.btn_comment_extra = itemView.findViewById(R.id.btn_comment_extra);
-            this.community_comment_extra = itemView.findViewById(R.id.community_comment_extra);
+            this.community_comment_extra_true = itemView.findViewById(R.id.community_comment_extra_true);
+            this.community_comment_extra_false = itemView.findViewById(R.id.community_comment_extra_false);
 
             this.btn_commu_delete = itemView.findViewById(R.id.btn_commu_delete);
             this.btn_commu_report = itemView.findViewById(R.id.btn_commu_report);
+            this.btn_commu_report_false = itemView.findViewById(R.id.btn_commu_report_false);
+
         }
 
     }
-
     public CommunityCommentItem getItem(int position) {
         return arrayList.get(position);
     }

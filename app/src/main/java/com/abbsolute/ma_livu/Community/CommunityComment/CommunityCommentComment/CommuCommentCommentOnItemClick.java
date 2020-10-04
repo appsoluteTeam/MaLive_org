@@ -5,4 +5,5 @@ public interface CommuCommentCommentOnItemClick {
     void commentDislike(int position);
     void deleteItem(int position);
     void reportItem(int position);
+    boolean checkUser(int position);
 }

@@ -63,10 +63,21 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
         holder.btn_comment_comment_extra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (holder.community_comment_comment_extra.getVisibility() == View.INVISIBLE) {
-                    holder.community_comment_comment_extra.setVisibility(View.VISIBLE);
+                if (callback.checkUser(position) == true) {
+                        if (holder.community_comment_comment_extra_true.getVisibility() == View.INVISIBLE) {
+                        holder.community_comment_comment_extra_true.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.community_comment_comment_extra_true.setVisibility(View.INVISIBLE);
+                        }
                 } else {
-                    holder.community_comment_comment_extra.setVisibility(View.INVISIBLE);
+                    holder.community_comment_comment_extra_true.setVisibility(View.INVISIBLE);
+
+                    if (holder.community_comment_comment_extra_false.getVisibility() == View.INVISIBLE) {
+                        holder.community_comment_comment_extra_false.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.community_comment_comment_extra_false.setVisibility(View.INVISIBLE);
+                    }
+
                 }
             }
         });
@@ -81,6 +92,13 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
 
         // '신고' 버튼 클릭 시 데이터 신고하기
         holder.btn_commu_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callback.reportItem(position);
+            }
+        });
+        // '신고' 버튼 클릭 시 데이터 신고하기
+        holder.btn_commu_report_false.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callback.reportItem(position);
@@ -103,10 +121,12 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
         TextView commu_comment_comment_like;
 
         ImageButton btn_comment_comment_extra;
-        LinearLayout community_comment_comment_extra;
+        LinearLayout community_comment_comment_extra_true;
+        LinearLayout community_comment_comment_extra_false;
 
         Button btn_commu_delete;
         Button btn_commu_report;
+        Button btn_commu_report_false;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,10 +139,12 @@ public class CommunityCommentCommentAdapter extends RecyclerView.Adapter<Communi
             this.commu_comment_comment_like = itemView.findViewById(R.id.commu_comment_comment_like);
 
             this.btn_comment_comment_extra = itemView.findViewById(R.id.btn_comment_comment_extra);
-            this.community_comment_comment_extra = itemView.findViewById(R.id.community_comment_comment_extra);
+            this.community_comment_comment_extra_true = itemView.findViewById(R.id.community_comment_comment_extra_true);
+            this.community_comment_comment_extra_false = itemView.findViewById(R.id.community_comment_comment_extra_false);
 
             this.btn_commu_delete = itemView.findViewById(R.id.btn_commu_delete);
             this.btn_commu_report = itemView.findViewById(R.id.btn_commu_report);
+            this.btn_commu_report_false = itemView.findViewById(R.id.btn_commu_report_false);
 
         }
     }

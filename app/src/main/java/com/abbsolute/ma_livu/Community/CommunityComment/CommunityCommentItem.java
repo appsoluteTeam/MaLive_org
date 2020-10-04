@@ -4,6 +4,7 @@ import android.text.BoringLayout;
 
 public class CommunityCommentItem {
     private String name;
+    private String email;
     private String comment;
 //    private String icon;
     private String date;
@@ -12,8 +13,9 @@ public class CommunityCommentItem {
     private String comment_count;
 //    private Boolean comment_like_check;
 
-    public CommunityCommentItem(String name, String comment, String date, String comment_like, String comment_count) {
+    public CommunityCommentItem(String name, String email, String comment, String date, String comment_like, String comment_count) {
         this.name = name;
+        this.email = email;
         this.comment = comment;
         this.date = date;
         this.comment_like = comment_like;
@@ -76,4 +78,12 @@ public class CommunityCommentItem {
 //    public void setComment_like_check(Boolean comment_like_check) {
 //        this.comment_like_check = comment_like_check;
 //    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
