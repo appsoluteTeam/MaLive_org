@@ -76,7 +76,7 @@ public class CommunityPostsFragment extends Fragment implements OnBackPressedLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_community_posts, container, false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+ //       ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         commu_title = view.findViewById(R.id.commu_title);
         commu_date = view.findViewById(R.id.commu_date);
         commu_writer = view.findViewById(R.id.commu_writer);
@@ -170,7 +170,7 @@ public class CommunityPostsFragment extends Fragment implements OnBackPressedLis
                 CommunityFragment communityFragment = new CommunityFragment();
 
                 // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityFragment);
+                transaction.replace(R.id.main_frame, communityFragment).addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -247,7 +247,7 @@ public class CommunityPostsFragment extends Fragment implements OnBackPressedLis
                 communityCommentFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityCommentFragment);
+                transaction.replace(R.id.main_frame, communityCommentFragment).addToBackStack(null);
                 transaction.commit();
             }
         });

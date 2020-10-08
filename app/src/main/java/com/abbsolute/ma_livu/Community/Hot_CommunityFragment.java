@@ -70,7 +70,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.hot_community_fragment,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
 
         //버튼 아이디값 찾기
@@ -207,7 +207,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
                 communityPostsFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null);
                 fragmentTransaction.commit();
 
             }

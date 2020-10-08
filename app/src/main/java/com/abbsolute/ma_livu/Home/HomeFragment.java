@@ -82,23 +82,24 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
 
         view = inflater.inflate(R.layout.fragment_home,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+  //      ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         layout_checkin = view.findViewById(R.id.layout_checkin);
         at_close_button = view.findViewById(R.id.at_close_button);
 
         attendance_check();
 
-        go_GuestBook = view.findViewById(R.id.go_GuestBook);
-        go_GuestBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((HomeActivity)getActivity()).setFragment(4);
-            }
-        });
+//        go_GuestBook = view.findViewById(R.id.go_GuestBook);
+//        go_GuestBook.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((HomeActivity)getActivity()).setFragment(4);
+//            }
+//        });
         go_Todo=view.findViewById(R.id.go_Todo);
         go_Todo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("TODO CLick","todo");
                 SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("upload",0);
@@ -196,7 +197,6 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
     }
 
 
-    //출석체크 todo:로그인할때 받아오는데 자동로그인일 때는 어떻게 하징? 홈액티비티에서 말고 메인에서 보여줘야하나
     public void attendance_check(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("time",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

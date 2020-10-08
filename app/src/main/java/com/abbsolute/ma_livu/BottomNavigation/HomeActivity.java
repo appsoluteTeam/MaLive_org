@@ -1,24 +1,17 @@
 package com.abbsolute.ma_livu.BottomNavigation;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.abbsolute.ma_livu.Alarm.AlarmFragment;
-import com.abbsolute.ma_livu.Alarm.AlarmFragmentAllLook;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityFragment;
 
@@ -93,7 +86,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     //고정리스트 삭제화면
     ToDoFixListRemoveFragment toDoFixListRemoveFragment;
     //이전알림 모두보기로 이동
-    AlarmFragmentAllLook alarmFragmentAllLook;
+//    AlarmFragmentAllLook alarmFragmentAllLook;
     private int count;
     //todoList관련 뒤로가기 이벤트
     OnBackPressedListener listener;
@@ -127,8 +120,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         toDoWriteMainFragment=new ToDoWriteMainFragment();//투두 작성 메인 화면
         toDoFixModifyingFragment=new ToDoFixModifyingFragment();//고정리스트 수정 화면
         /// alarm 프래그먼트들//
-        alarmFragmentAllLook=new AlarmFragmentAllLook();
-
+//        alarmFragmentAllLook=new AlarmFragmentAllLook();
+//
         main_bottom =findViewById(R.id.main_bottom);
         BottomNavigationHelper.disableShiftMode(main_bottom); //  바텀 쉬프트모드 해제
 
@@ -199,18 +192,21 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).commit();
+                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).addToBackStack(null).commit();
                 break;
             case 2:
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
+                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame,myPageFragment).commit();
                 break;
             case 3:
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
+                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
                 break;
             case 4:
@@ -243,13 +239,13 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
-                fragmentTransaction.replace(R.id.main_frame, communityFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, communityFragment).addToBackStack(null).commit();
                 break;
             case 51:
-                fragmentTransaction.replace(R.id.main_frame, commu_writeFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, commu_writeFragment).addToBackStack(null).commit();
                 break;
             case 52:
-                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).commit();
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null).commit();
                 break;
             //투두 프래그먼트로 이동
             case 100:
@@ -275,10 +271,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentTransaction.replace(R.id.main_frame, toDoFixListRemoveFragment).commit();
                 break;
             //alarmFragment 프래그먼트
-            case 200:
-                fragmentTransaction.replace(R.id.main_frame,alarmFragmentAllLook);
-                fragmentTransaction.commit();
-                break;
+
             case 201:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
@@ -313,9 +306,9 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case R.id.btnMyPage_active:
                 setMyPageFragment(2);
                 break;
-            case R.id.btnMyPage_friend:
-                setMyPageFragment(3);
-                break;
+//            case R.id.btnMyPage_friend:
+//                setMyPageFragment(3);
+//                break;
             case R.id.btnMyPage_informationSet:
                 setMyPageFragment(4);
                 break;
@@ -331,25 +324,26 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         switch (myPageCategoryIndex){
             case 0:
                 fragmentTransaction.replace(R.id.main_frame,titleFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 break;
             case 1:
                 fragmentTransaction.replace(R.id.main_frame,payFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 break;
             case 2:
                 fragmentTransaction.replace(R.id.main_frame,activeFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 break;
             case 3:
                 break;
             case 4:
                 fragmentTransaction.replace(R.id.main_frame,informationSetFragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(null).commit();
                 break;
         }
     }
     //ToDoList 뒤로가기를 위한 함수
+    /*
     public void setOnBackPressedListener(OnBackPressedListener listener){ this.listener = listener; }
     @Override
     public void onBackPressed() {
@@ -368,6 +362,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             super.onBackPressed();
 
     }
+     */
     public void setCurrentScene(Fragment fragment){
         if(fragment!=null){
             if(!isFinishing()){

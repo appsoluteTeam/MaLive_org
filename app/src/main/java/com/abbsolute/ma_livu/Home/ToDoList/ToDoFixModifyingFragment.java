@@ -410,7 +410,7 @@ public class ToDoFixModifyingFragment extends Fragment implements OnBackPressedL
     @Override
     public void onResume() {
         super.onResume();
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
     }
 
     @Override

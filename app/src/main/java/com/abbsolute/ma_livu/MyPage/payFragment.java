@@ -72,7 +72,7 @@ public class payFragment extends Fragment implements OnBackPressedListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mypage_pay, container, false);
         //하단 탭 바에있는  이것을 수행하여 listener를 초기화한다->backPrssedListener
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         btn_pay_sort = view.findViewById(R.id.btn_pay_sort);
         layout_pay_sort = view.findViewById(R.id.layout_pay_sort);
         mRecyclerView = view.findViewById(R.id.pay_recyclerView);

@@ -409,7 +409,7 @@ public class ToDoWriteFragment extends Fragment implements refreshInterface,OnBa
     @Override
     public void onResume() {
         super.onResume();
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
     }
 
     @Override

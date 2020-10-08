@@ -142,7 +142,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                 communityPostsFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityPostsFragment);
+                transaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -336,7 +336,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         communityCommentCommentFragment.setArguments(bundle);
 
         // 버튼 누르면 화면 전환
-        transaction.replace(R.id.main_frame, communityCommentCommentFragment);
+        transaction.replace(R.id.main_frame, communityCommentCommentFragment).addToBackStack(null);
         transaction.commit();
      }
 

@@ -268,7 +268,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
         view = inflater.inflate(R.layout.title,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         myPageRef = firestore.collection(FirebaseID.myPage).document(email);
 
         TODOFragment = new TODOtitleFragment();

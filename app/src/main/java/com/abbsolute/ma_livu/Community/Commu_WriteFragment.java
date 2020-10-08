@@ -130,7 +130,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.commu_write_fragment, container, false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         context=container.getContext();
 
         et_title = view.findViewById(R.id.et_title);

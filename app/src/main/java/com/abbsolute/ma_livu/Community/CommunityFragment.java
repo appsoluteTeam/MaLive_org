@@ -85,7 +85,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
         view = inflater.inflate(R.layout.community_fragment,container,false);
 
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
 
         btn_what_eat=(Button)view.findViewById(R.id.what_eat);
@@ -139,7 +139,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
                     case R.id.btn_commu_write: // 작성하기 아이콘 클릭
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                         Commu_WriteFragment Commu_WriteFragment = new Commu_WriteFragment();
-                        transaction.replace(R.id.main_frame, Commu_WriteFragment);
+                        transaction.replace(R.id.main_frame, Commu_WriteFragment).addToBackStack(null);
                         transaction.commit();
                         break;
                     case R.id.btn_back: // 뒤로가기 아이콘 클릭
@@ -202,7 +202,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
                 communityPostsFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });

@@ -487,7 +487,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(toDoAdapter);
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);//뒤로가기 이벤트처리
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);//뒤로가기 이벤트처리
     }
 
 

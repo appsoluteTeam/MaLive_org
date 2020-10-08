@@ -240,7 +240,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         view = inflater.inflate(R.layout.fragment_mypage, container, false);
 
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity) getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity) getActivity()).setOnBackPressedListener(this);
 
         Log.d("Mypage-Email", email);
 
@@ -251,7 +251,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         btnMyPage_title = view.findViewById(R.id.btnMyPage_title);
         btnMyPage_pay = view.findViewById(R.id.btnMyPage_pay);
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
-        btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
+//        btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
         //btnMyPage_friend 클릭시 친구목록으로 간다
        /* btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -332,9 +332,9 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 //            case R.id.btnMyPage_active://활동
 //                dataListener.myPageDataSet(2);
 //                break;
-            case R.id.btnMyPage_friend://친구
-                dataListener.myPageDataSet(3);
-                break;
+//            case R.id.btnMyPage_friend://친구
+//                dataListener.myPageDataSet(3);
+//                break;
             case R.id.btnMyPage_informationSet://정보 설정
                 dataListener.myPageDataSet(4);
                 break;

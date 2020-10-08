@@ -161,7 +161,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                 communityCommentFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityCommentFragment);
+                transaction.replace(R.id.main_frame, communityCommentFragment).addToBackStack(null);
                 transaction.commit();
             }
         });
