@@ -148,11 +148,6 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
                                                 //toll 얻어주기
                                                 getRecentPayDocument(document,j);
 
-                                                //hot을 true로 업데이트
-                                                //여기서하면 getRecentPayDocument가 다 끝나기 전에 true로 바뀌줌 그래서 톨얻는 메소드 getToll에서 true로 바꿔줌,,,,
-//                                                firestore.collection("Community").document(categoryarray[j])
-//                                                        .collection("sub_Community").document(document)
-//                                                        .update("hot",true);
                                             }
                                         }
                                     }

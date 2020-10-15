@@ -196,7 +196,7 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
         mUnityPlayer.UnitySendMessage("쌀알1", "AssignEquipment", json);
     }
 
-
+    /*  출석체크 메소드    */
     public void attendance_check(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("time",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

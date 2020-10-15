@@ -19,7 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 //import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
+import com.abbsolute.ma_livu.Home.ToDoFragment_final;
 import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,7 +57,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
     public static Stack<Fragment> fragmentStack;
 
     private MyPageDataListener dataListener;
-    private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, btnMyPage_friend;
+    private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, todo;
     private TextView nickname, textView_email;
     private ProgressBar clean_progressBar, wash_progressBar, trash_progressBar, todo_progressBar;
     private TextView clean_percent, wash_percent, trash_percent, todo_percent;
@@ -247,23 +249,13 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         /* 정보설정*/
         btnMyPage_informationSet = view.findViewById(R.id.btnMyPage_informationSet);
 
+        todo = view.findViewById(R.id.todo_mypage);
+
         /* 칭호, 결제, 활동, 친구 아이디값 찾기 */
         btnMyPage_title = view.findViewById(R.id.btnMyPage_title);
         btnMyPage_pay = view.findViewById(R.id.btnMyPage_pay);
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
-//        btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
-        //btnMyPage_friend 클릭시 친구목록으로 간다
-       /* btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
-                FriendListFragment friendListFragment=new FriendListFragment();
-                fragmentTransaction.replace(R.id.main_frame,friendListFragment);
-                fragmentTransaction.commit();
 
-            }
-        });
-        //
 
         /*대표칭호,email findViewByID*/
         nickname = view.findViewById(R.id.nickname);
@@ -285,7 +277,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         textView_email.setText(email);
 
         /*progressBar,% (달성률) 설정*/
-        /*todo : 한달 기간으로 초기화해야한다*/
         //setProgree반응왤케느림;
         int cleanPercent = (int) clean_complete % 100;
         clean_progressBar.setProgress(cleanPercent);
@@ -332,9 +323,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 //            case R.id.btnMyPage_active://활동
 //                dataListener.myPageDataSet(2);
 //                break;
-//            case R.id.btnMyPage_friend://친구
-//                dataListener.myPageDataSet(3);
-//                break;
             case R.id.btnMyPage_informationSet://정보 설정
                 dataListener.myPageDataSet(4);
                 break;
@@ -347,24 +335,34 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 
         // MyPage -> 활동
         btnMyPage_active.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    @Override
+                    public void onClick(View v) {
 
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                activeFragment activeFragment = new activeFragment();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        activeFragment activeFragment = new activeFragment();
 
-                Bundle bundle = new Bundle();
-                bundle.putString("nickname", str_nickname);
-                bundle.putString("MyPost_count", String.valueOf(myPost_count));
-                bundle.putString("MyComment_count", String.valueOf(myComment_count));
-                bundle.putString("MySavedPosts_count", String.valueOf(mySavedPosts_count));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("nickname", str_nickname);
+                        bundle.putString("MyPost_count", String.valueOf(myPost_count));
+                        bundle.putString("MyComment_count", String.valueOf(myComment_count));
+                        bundle.putString("MySavedPosts_count", String.valueOf(mySavedPosts_count));
 
-                activeFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.main_frame, activeFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                        activeFragment.setArguments(bundle);
+                        fragmentTransaction.replace(R.id.main_frame, activeFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
             }
         });
+
+        //임시로 만든 투두 버튼
+        todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToDoFragment_final toDoFragment_final = new ToDoFragment_final();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, toDoFragment_final).commit();            }
+        });
+
     }
 
     // 내가 쓴 글 불러오기
@@ -395,11 +393,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                                 myPost_count = 0;
                                 arrayList.clear();
                             }
-                            // SharedPreference에 값 저장시키기
-//                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = sharedPreferences.edit();
-//                            editor.putInt("myPost_count", myPost_count);
-//                            editor.commit();
                         }
                     }
                 });
