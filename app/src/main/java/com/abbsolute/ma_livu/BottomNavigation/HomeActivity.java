@@ -3,6 +3,7 @@ package com.abbsolute.ma_livu.BottomNavigation;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     //fragment저장할 stack
     public static Stack<Fragment> fragmentStack;
 
+    private FrameLayout main_frame;
+    private FrameLayout unity_frame;
     private BottomNavigationView main_bottom; // 메인으로 고정되는 하단탭
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -96,6 +99,9 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         setContentView(R.layout.activity_home);
 
         fragmentStack = new Stack<>();
+
+        //main_frame
+        main_frame = findViewById(R.id.main_frame);
 
         //기본 fragment
         homeFragment = new HomeFragment();
@@ -169,7 +175,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         //고정리스트 수정 화면
         toDoFixModifyingFragment=new ToDoFixModifyingFragment();
 
-        setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
+       // setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
 
         getSupportFragmentManager().beginTransaction().add(R.id.unity_frame,homeFragment).commit();
     }
@@ -181,21 +187,23 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         fragmentTransaction = fragmentManager.beginTransaction();
         switch (n) {
             case 0:
+                main_frame.setVisibility(View.INVISIBLE);
                 if(homeFragment.isHidden()) {
                     fragmentTransaction.show(homeFragment).commit();
                 }
+       //         fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
 
-        //        fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
-//>>>>>>> cheer-up
                 break;
             case 1:
+                main_frame.setVisibility(View.VISIBLE);
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
                 fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
+                main_frame.setVisibility(View.VISIBLE);
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
@@ -203,6 +211,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentManager.beginTransaction().replace(R.id.main_frame,myPageFragment).commit();
                 break;
             case 3:
+                main_frame.setVisibility(View.VISIBLE);
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
@@ -247,9 +256,12 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 52:
                 fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null).commit();
                 break;
+
             //투두 프래그먼트로 이동
             case 100:
                 fragmentTransaction.replace(R.id.main_frame, toDoFragment);
+                main_frame.bringToFront();
+                main_frame.setVisibility(View.VISIBLE);
                 fragmentTransaction.commit();
                 break;
             //투두 작성메인 화면
@@ -343,7 +355,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         }
     }
     //ToDoList 뒤로가기를 위한 함수
-    /*
+/*
     public void setOnBackPressedListener(OnBackPressedListener listener){ this.listener = listener; }
     @Override
     public void onBackPressed() {
@@ -362,7 +374,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             super.onBackPressed();
 
     }
-     */
+*/
     public void setCurrentScene(Fragment fragment){
         if(fragment!=null){
             if(!isFinishing()){
