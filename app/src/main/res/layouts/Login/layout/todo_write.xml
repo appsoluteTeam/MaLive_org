@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/todo_list_border"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30sp"
+            android:layout_marginBottom="30sp"
+            android:text="TO DO LIST\n  하루 할 일"
+            android:textColor="#2E2E2E"
+            android:textSize="20dp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="카테고리"
+            android:textColor="#2E2E2E"
+            android:textSize="20dp"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/clean_todo_image_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="1"
+                android:background="@drawable/todo_text_background"
+                android:gravity="center_horizontal"
+                android:padding="7dp"
+                android:text="청소하기"
+                android:textAlignment="center"
+                android:textColor="#1C1C1C"
+                android:textSize="13sp"></TextView>
+
+            <TextView
+                android:id="@+id/laundry_todo_image_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2.5dp"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="1"
+                android:background="@drawable/todo_text_background"
+                android:gravity="center_horizontal"
+                android:padding="7dp"
+                android:text="빨래하기"
+                android:textAlignment="center"
+                android:textColor="#1C1C1C"
+                android:textSize="13sp"></TextView>
+
+            <TextView
+                android:id="@+id/trash_todo_image_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2.5dp"
+                android:layout_marginRight="2.5dp"
+                android:layout_weight="1"
+                android:background="@drawable/todo_text_background"
+                android:gravity="center_horizontal"
+                android:padding="7dp"
+                android:text="쓰레기"
+                android:textAlignment="center"
+                android:textColor="#1C1C1C"
+                android:textSize="13sp"></TextView>
+
+            <TextView
+                android:id="@+id/etc_todo_image_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2.5dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/todo_text_background"
+                android:gravity="center_horizontal"
+                android:padding="7dp"
+                android:text="기타"
+                android:textAlignment="center"
+                android:textColor="#1C1C1C"
+                android:textSize="13sp"></TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="할 일 추가하기"
+                android:textSize="20sp"></TextView>
+
+            <EditText
+                android:id="@+id/write_todo"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:layout_gravity="center"
+                android:layout_margin="20dp"
+                android:background="@drawable/edit_black"
+                android:hint="할 일 입력"
+                android:padding="10dp"></EditText>
+
+        </LinearLayout>
+        <View
+            android:layout_marginTop="60sp"
+            android:layout_width="70sp"
+            android:layout_height="1sp"
+            android:layout_gravity="center"
+            android:background="#000000">
+        </View>
+        <TextView
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="날짜"
+            android:textColor="#2E2E2E"
+            android:layout_gravity="center">
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:id="@+id/set_year"
+                android:layout_weight="1">
+            </NumberPicker>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="|"
+                android:textSize="30sp"
+                android:textColor="#BDBDBD"
+                android:elegantTextHeight="true">
+            </TextView>
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_weight="1"
+                android:id="@+id/set_month">
+            </NumberPicker>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="|"
+                android:textSize="30sp"
+                android:textColor="#BDBDBD"
+                android:elegantTextHeight="true">
+            </TextView>
+            <NumberPicker
+                android:layout_width="wrap_content"
+                android:layout_height="70sp"
+                android:layout_weight="1"
+                android:id="@+id/set_day">
+            </NumberPicker>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_todo_store"
+            android:layout_width="120sp"
+            android:layout_height="45sp"
+            android:layout_marginBottom="7sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/todo_button_background"
+            android:text="등록하기"
+            android:textColor="#2E2E2E">
+        </Button>
+    </LinearLayout>
+</LinearLayout>
