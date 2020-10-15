@@ -462,6 +462,7 @@ public class ToDoFragment extends Fragment implements OnToDoTextClick, refreshIn
                             toDoAdapter.notifyDataSetChanged();
                             recyclerView.setHasFixedSize(true);
                             recyclerView.setAdapter(toDoAdapter);
+
                             SharedPreferences pf = getContext().getSharedPreferences("pref2", MODE_PRIVATE);
                             int uploading = pf.getInt("upload", 0);
                             if (uploading == 1) {
