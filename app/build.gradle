@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0' //글라이드 이미지 로딩
     implementation 'com.google.android.material:material:1.0.0' // BottomNavigation 로딩
     implementation 'androidx.recyclerview:recyclerview:1.0.0' //리사이클러뷰 로딩
-    implementation 'com.google.firebase:firebase-firestore:17.1.2' //firestore 사용하기 위함
+    implementation 'com.google.firebase:firebase-firestore:20.0.0' //firestore 사용하기 위함
     implementation "androidx.multidex:multidex:2.0.1"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
