@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoAdapter;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoInfo;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
+import com.google.firebase.firestore.DocumentReference;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,12 +18,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -45,6 +48,7 @@ public class ToDoFragment_final extends Fragment {
     private LinearLayoutManager layoutManager;
     private ArrayList<ToDoList_Info> todoList;
     private ToDoAdapter_final adapter;
+    private long count = 0;
 
     private Button btn_addTodo;
 
@@ -161,12 +165,93 @@ public class ToDoFragment_final extends Fragment {
                             public void onSuccess(Void aVoid) {
                                 Log.d("ToDoFragment_final", "todo 삭제 완료!");
 
+                                //total, EveryMonth 파이어베이스 저장
+
+                                //현재 년도-월 찾기
+                                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Calendar calendar = Calendar.getInstance();
+                                String format_time = format1.format(calendar.getTime());
+                                String year_month = format_time.substring(0, 7);
+
+                                String todo_category = todoList.get(position).getTodo_category();
+
+                                //everyMonth저장
+                                DocumentReference ref = firestore.collection("ToDoList").document(id).collection("EveryMonth").document(year_month);
+                                ref.get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    // 컬렉션 내의 document에 접근
+                                                    DocumentSnapshot document = task.getResult();
+
+                                                    if (document.exists()) {
+                                                        Map<String, Object> shot = document.getData();
+                                                        count = (Long)shot.get(todo_category + "complete");
+                                                    } else {    //문서가 존재하지 않으면 모든 카테고리에 0넣어줘야한다.
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        data.put("빨래complete",0);
+                                                        data.put("청소complete",0);
+                                                        data.put("쓰레기complete",0);
+                                                        data.put("기타complete",0);
+                                                        ref.set(data, SetOptions.merge());
+
+                                                        count = 0;
+                                                    }
+
+                                                    Log.d("count",Long.toString(count));
+
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    data.put(todo_category + "complete",count+1);
+                                                    ref.set(data, SetOptions.merge());
+                                                } else {
+                                                }
+                                            }
+                                        });
+
+
+                                //total저장
+                                DocumentReference total_ref = firestore.collection("ToDoList").document(id).collection("total").document("sub");
+
+                                total_ref.get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    // 컬렉션 내의 document에 접근
+                                                    DocumentSnapshot document = task.getResult();
+
+                                                    if (document.exists()) {
+                                                        Map<String, Object> shot = document.getData();
+                                                        count = (Long)shot.get(todo_category + "complete");
+                                                    } else {    //문서가 존재하지 않으면 모든 카테고리에 0넣어줘야한다.
+                                                        Map<String, Object> data = new HashMap<>();
+                                                        data.put("빨래complete",0);
+                                                        data.put("청소complete",0);
+                                                        data.put("쓰레기complete",0);
+                                                        data.put("기타complete",0);
+                                                        total_ref.set(data, SetOptions.merge());
+
+                                                        count = 0;
+                                                    }
+
+                                                    Log.d("count",Long.toString(count));
+
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    data.put(todo_category + "complete",count+1);
+                                                    total_ref.set(data, SetOptions.merge());
+                                                } else {
+                                                }
+                                            }
+                                        });
+
                                 // 데이터의 해당 포지션을 삭제한다.
                                 todoList.remove(position);
 
                                 // 아답타에게 알린다
                                 adapter.notifyItemRemoved(position);
                                 adapter.notifyDataSetChanged(); //이거써줘야 리스트 초기화 후 갱신됨! 날짜 때문에 필요한 코드
+
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
