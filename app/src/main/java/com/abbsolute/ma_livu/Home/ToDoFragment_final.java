@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoListCustomDialog;
+import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.google.firebase.firestore.DocumentReference;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +42,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.content.ContentValues.TAG;
+
 public class ToDoFragment_final extends Fragment {
 
     private static String email;
@@ -49,8 +53,10 @@ public class ToDoFragment_final extends Fragment {
     private ArrayList<ToDoList_Info> todoList;
     private ToDoAdapter_final adapter;
     private long count = 0;
+    private boolean delete_todo;
 
     private Button btn_addTodo;
+    public ToDoListCustomDialog customDialog;
 
     //pay관련 변수들
     private String recentBalance;
@@ -150,123 +156,55 @@ public class ToDoFragment_final extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
 
-                //todo: 체크되어있는지 확인, every_month, total에 저장, toll
-
                 String id = firebaseAuth.getCurrentUser().getEmail();
-
-                // 삭제되는 아이템의 포지션을 가져온다
                 final int position = viewHolder.getAdapterPosition();
-
                 String documentName = todoList.get(position).getDetail_date();
-                firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo").document(documentName)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d("ToDoFragment_final", "todo 삭제 완료!");
 
-                                //total, EveryMonth 파이어베이스 저장
+                //custom Dialog 리스너 등록
+                View.OnClickListener positiveListener = new View.OnClickListener() {
+                    public void onClick(View v) {
+                        //to-do 삭제
+                        delete_todo(id,position,documentName);
 
-                                //현재 년도-월 찾기
-                                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                Calendar calendar = Calendar.getInstance();
-                                String format_time = format1.format(calendar.getTime());
-                                String year_month = format_time.substring(0, 7);
+                        //톨저장
+                        getRecentPayDocument(); //toll얻기
 
-                                String todo_category = todoList.get(position).getTodo_category();
+                        customDialog.dismiss();
+                    }
+                };
 
-                                //everyMonth저장
-                                DocumentReference ref = firestore.collection("ToDoList").document(id).collection("EveryMonth").document(year_month);
-                                ref.get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    // 컬렉션 내의 document에 접근
-                                                    DocumentSnapshot document = task.getResult();
+                View.OnClickListener negativeListener = new View.OnClickListener() {
+                    public void onClick(View v) {
+                        customDialog.dismiss();
 
-                                                    if (document.exists()) {
-                                                        Map<String, Object> shot = document.getData();
-                                                        count = (Long)shot.get(todo_category + "complete");
-                                                    } else {    //문서가 존재하지 않으면 모든 카테고리에 0넣어줘야한다.
-                                                        Map<String, Object> data = new HashMap<>();
-                                                        data.put("빨래complete",0);
-                                                        data.put("청소complete",0);
-                                                        data.put("쓰레기complete",0);
-                                                        data.put("기타complete",0);
-                                                        ref.set(data, SetOptions.merge());
+                        //리스트뷰 새로 띄우기!
+                        adapter.notifyDataSetChanged();
+                    }
+                };
 
-                                                        count = 0;
-                                                    }
+                //todoList 체크되어있는지 확인
+                boolean todo_check = todoList.get(position).isCheck();
 
-                                                    Log.d("count",Long.toString(count));
+                Log.d("todo_check",Boolean.toString(todo_check));
+                if(todo_check == true){
+                    //to-do 삭제
+                    delete_todo(id,position,documentName);
 
-                                                    Map<String, Object> data = new HashMap<>();
-                                                    data.put(todo_category + "complete",count+1);
-                                                    ref.set(data, SetOptions.merge());
-                                                } else {
-                                                }
-                                            }
-                                        });
+                    //톨저장
+                    getRecentPayDocument(); //toll얻기
 
-
-                                //total저장
-                                DocumentReference total_ref = firestore.collection("ToDoList").document(id).collection("total").document("sub");
-
-                                total_ref.get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    // 컬렉션 내의 document에 접근
-                                                    DocumentSnapshot document = task.getResult();
-
-                                                    if (document.exists()) {
-                                                        Map<String, Object> shot = document.getData();
-                                                        count = (Long)shot.get(todo_category + "complete");
-                                                    } else {    //문서가 존재하지 않으면 모든 카테고리에 0넣어줘야한다.
-                                                        Map<String, Object> data = new HashMap<>();
-                                                        data.put("빨래complete",0);
-                                                        data.put("청소complete",0);
-                                                        data.put("쓰레기complete",0);
-                                                        data.put("기타complete",0);
-                                                        total_ref.set(data, SetOptions.merge());
-
-                                                        count = 0;
-                                                    }
-
-                                                    Log.d("count",Long.toString(count));
-
-                                                    Map<String, Object> data = new HashMap<>();
-                                                    data.put(todo_category + "complete",count+1);
-                                                    total_ref.set(data, SetOptions.merge());
-                                                } else {
-                                                }
-                                            }
-                                        });
-
-                                // 데이터의 해당 포지션을 삭제한다.
-                                todoList.remove(position);
-
-                                // 아답타에게 알린다
-                                adapter.notifyItemRemoved(position);
-                                adapter.notifyDataSetChanged(); //이거써줘야 리스트 초기화 후 갱신됨! 날짜 때문에 필요한 코드
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("ToDoFragment_final", "todo 삭제 실패!");
-                            }
-                        });
+                }else{//체크가 안되어있을 때 다이얼로그 띄어주기
+                    customDialog = new ToDoListCustomDialog(getContext(), "완료하지 않은 리스트입니다.",
+                            "그래도 삭제하시겠습니까?", positiveListener, negativeListener);
+                    customDialog.show();
+                }
 
             }
+
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
         //to-do 추가 버튼 눌렀을 때
         btn_addTodo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,9 +220,232 @@ public class ToDoFragment_final extends Fragment {
         return view;
     }
 
-    public void onStart() {
-        super.onStart();
+    //todo 삭제
+    public void delete_todo(String id,int position, String documentName){
+        firestore.collection(FirebaseID.ToDoLists).document(id).collection("ToDo").document(documentName)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("ToDoFragment_final", "todo 삭제 완료!");
+
+                        //현재 년도-월 찾기
+                        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Calendar calendar = Calendar.getInstance();
+                        String format_time = format1.format(calendar.getTime());
+                        String year_month = format_time.substring(0, 7);
+
+                        String todo_category = todoList.get(position).getTodo_category();
+
+                        //everyMonth저장
+                        DocumentReference ref = firestore.collection("ToDoList").document(id).collection("EveryMonth").document(year_month);
+                        ref.get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            // 컬렉션 내의 document에 접근
+                                            DocumentSnapshot document = task.getResult();
+
+                                            if (document.exists()) {
+                                                Map<String, Object> shot = document.getData();
+                                                count = (Long)shot.get(todo_category + "complete");
+                                            } else {    //문서가 존재하지 않으면 모든 카테고리에 0넣어줘야한다.
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put("빨래complete",0);
+                                                data.put("청소complete",0);
+                                                data.put("쓰레기complete",0);
+                                                data.put("기타complete",0);
+                                                ref.set(data, SetOptions.merge());
+
+                                                count = 0;
+                                            }
+
+                                            Log.d("count",Long.toString(count));
+
+                                            Map<String, Object> data = new HashMap<>();
+                                            data.put(todo_category + "complete",count+1);
+                                            ref.set(data, SetOptions.merge());
+                                        } else {
+                                        }
+                                    }
+                                });
+
+
+                        //total저장
+                        DocumentReference total_ref = firestore.collection("ToDoList").document(id).collection("total").document("sub");
+
+                        total_ref.get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            // 컬렉션 내의 document에 접근
+                                            DocumentSnapshot document = task.getResult();
+
+                                            if (document.exists()) {
+                                                Map<String, Object> shot = document.getData();
+                                                count = (Long)shot.get(todo_category + "complete");
+                                            } else {    //문서가 존재하지 않으면 모든 카테고리에 0넣어줘야한다.
+                                                Map<String, Object> data = new HashMap<>();
+                                                data.put("빨래complete",0);
+                                                data.put("청소complete",0);
+                                                data.put("쓰레기complete",0);
+                                                data.put("기타complete",0);
+                                                total_ref.set(data, SetOptions.merge());
+
+                                                count = 0;
+                                            }
+
+                                            Log.d("count",Long.toString(count));
+
+                                            Map<String, Object> data = new HashMap<>();
+                                            data.put(todo_category + "complete",count+1);
+                                            total_ref.set(data, SetOptions.merge());
+                                        } else {
+                                        }
+                                    }
+                                });
+
+                        // 데이터의 해당 포지션을 삭제한다.
+                        todoList.remove(position);
+
+                        // 아답타에게 알린다
+                        adapter.notifyItemRemoved(position);
+                        adapter.notifyDataSetChanged(); //이거써줘야 리스트 초기화 후 갱신됨! 날짜 때문에 필요한 코드
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("ToDoFragment_final", "todo 삭제 실패!");
+                    }
+                });
+    }
+
+    /* getRecentPayDoument(),  getRecentBalance(), getToll() : toll얻는 메소드 */
+
+    //가장 최근 문서 알아내기
+    public void getRecentPayDocument(){
+        String id = firebaseAuth.getCurrentUser().getEmail();
+
+        firestore.collection(FirebaseID.myPage).document(id).collection(FirebaseID.tmpData).document("recentPayNum")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // 컬렉션 내의 document에 접근
+                            DocumentSnapshot document = task.getResult();
+
+                            if (document.exists()) {
+                                Map<String, Object> shot = document.getData();
+                                recentPayDocumentNum = Long.parseLong(shot.get(FirebaseID.recentDocument).toString());
+                                Log.d("getRecentPayDocument 안",Long.valueOf(recentPayDocumentNum).toString());
+                            } else {
+                                recentPayDocumentNum = 0;
+                            }
+                            getRecentBalance(recentPayDocumentNum);
+                        } else {
+                        }
+                    }
+                });
+    }
+
+    //가장 최근 문서의 잔액 알아내기
+    public void getRecentBalance(final long recentPayDocumentNum){
+        Log.d("getRecentBalance","접근완료");
+        String id = firebaseAuth.getCurrentUser().getEmail();
+
+        if(recentPayDocumentNum == 0){
+            recentBalance = "0";
+            Log.d("recentBalance final", recentBalance);
+            getToll(recentBalance,recentPayDocumentNum);
+        }else{
+            Log.d("else문","else");
+            firestore.collection(FirebaseID.myPage).document(id).collection(FirebaseID.pay)
+                    .whereEqualTo(FirebaseID.order,Long.valueOf(recentPayDocumentNum).toString())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot snapshot : task.getResult()) {
+                                    Map<String, Object> shot = snapshot.getData();
+                                    recentBalance = shot.get(FirebaseID.balance).toString();
+                                    Log.d("recentBalance final", recentBalance);
+                                    getToll(recentBalance,recentPayDocumentNum);
+                                }
+                            }
+                        }
+                    });
+
+        }
 
 
     }
+
+    //직전의 balance에 근거해서 톨 파이어스토어에 저장
+    public void getToll(String recentBalance,long recentPayDocumentNum){
+        String id = firebaseAuth.getCurrentUser().getEmail();
+
+        Calendar calendar = Calendar.getInstance();
+
+        java.text.SimpleDateFormat format = new java.text.SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
+        String format_time = format.format(calendar.getTime());
+
+
+        String month = Integer.valueOf(calendar.get(Calendar.MONTH)).toString();
+        String date = Integer.valueOf(calendar.get(Calendar.DATE)).toString();
+
+        String today = month + "." + date;
+
+        String hour = Integer.valueOf(calendar.get(Calendar.HOUR)).toString();
+        String minute = Integer.valueOf(calendar.get(Calendar.MINUTE)).toString();
+
+        String time = hour + ":" + minute;
+
+        int amount = 10;//임시로
+        int balance = Integer.parseInt(recentBalance) + amount;
+
+        String order = String.valueOf(recentPayDocumentNum + 1);
+
+        payItemListView payItemListView =
+                new payItemListView(today,"TODO 달성 보상","입금","+10",Integer.valueOf(balance).toString(),time,order);
+
+        //파이어스토어 저장
+        firestore.collection(FirebaseID.myPage)
+                .document(id)
+                .collection(FirebaseID.pay)
+                .document(format_time)
+                .set(payItemListView,SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+
+        //최근문서 바꾸기
+        Map<String,Object> payMap = new HashMap<>();
+        payMap.put(FirebaseID.recentDocument,order);
+
+        firestore.collection(FirebaseID.myPage)
+                .document(id)
+                .collection(FirebaseID.tmpData)
+                .document("recentPayNum")
+                .set(payMap);
+
+
+    }
+
+
 }

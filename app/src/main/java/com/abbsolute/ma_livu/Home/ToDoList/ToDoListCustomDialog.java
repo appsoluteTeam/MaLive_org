@@ -59,8 +59,8 @@ public class ToDoListCustomDialog extends Dialog {
             rightButton.setOnClickListener(rightClickListener);
         }else if(leftClickListener!=null&&rightClickListener==null){
             leftButton.setOnClickListener(leftClickListener);
-        }else {
-
+        }else if(leftClickListener==null&&rightClickListener!=null){
+            rightButton.setOnClickListener(rightClickListener);
         }
 
 

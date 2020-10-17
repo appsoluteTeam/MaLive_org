@@ -39,7 +39,7 @@ public class ToDoAdapter_final extends RecyclerView.Adapter<ToDoAdapter_final.Vi
     public ToDoAdapter_final(ArrayList<ToDoList_Info> arrayList) {
             this.arrayList = arrayList;
     }
- //   public ToDoAdapter_final(){}
+    public ToDoAdapter_final(){}
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView todo_date;
@@ -128,8 +128,8 @@ public class ToDoAdapter_final extends RecyclerView.Adapter<ToDoAdapter_final.Vi
                     data.update("check", true);
 
                     //ArrayList 업데이트
-//                    ToDoList_Info toDoInfo = new ToDoList_Info(todo_date,detail_date,todo_category,todo_detail,true);
-//                    arrayList.set(position,toDoInfo);
+                    ToDoList_Info toDoInfo = new ToDoList_Info(todo_date,detail_date,todo_category,todo_detail,true);
+                    arrayList.set(position,toDoInfo);
 
                 }else {
                     holder.check.setChecked(false);
@@ -139,10 +139,13 @@ public class ToDoAdapter_final extends RecyclerView.Adapter<ToDoAdapter_final.Vi
                     data.update("check",false);
 
                     //arrayList 업데이트
-//                    ToDoList_Info toDoInfo = new ToDoList_Info(todo_date,detail_date,todo_category,todo_detail,false);
-//                    arrayList.set(position,toDoInfo);
+                    ToDoList_Info toDoInfo = new ToDoList_Info(todo_date,detail_date,todo_category,todo_detail,false);
+                    arrayList.set(position,toDoInfo);
 
                 }
+                ToDoAdapter_final toDoAdapter_final = new ToDoAdapter_final(arrayList);
+                toDoAdapter_final.notifyDataSetChanged();
+
             }
         });
 
