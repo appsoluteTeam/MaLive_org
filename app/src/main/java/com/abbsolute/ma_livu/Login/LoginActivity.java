@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.HomeFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.activeFragment;
@@ -35,7 +33,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -68,7 +65,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private informationSetFragment informationSetFragment;
     private activeFragment activeFragment;
     private Commu_WriteFragment commu_writeFragment;
-    private ToDoFragment ToDoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +153,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 informationSetFragment = new informationSetFragment(email);
                                 homeFragment = new HomeFragment(email);
                                 activeFragment = new activeFragment(email);
-                                ToDoFragment = new ToDoFragment(email);
 
 
 

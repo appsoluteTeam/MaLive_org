@@ -1,6 +1,5 @@
-package com.abbsolute.ma_livu.Home;
+package com.abbsolute.ma_livu.Home.ToDoList;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;

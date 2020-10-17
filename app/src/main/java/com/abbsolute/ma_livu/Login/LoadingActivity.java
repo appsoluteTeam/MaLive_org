@@ -15,8 +15,6 @@ import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentFragment
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
-import com.abbsolute.ma_livu.MainActivity;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
 import com.abbsolute.ma_livu.MyPage.activeFragment;
@@ -27,9 +25,6 @@ import com.abbsolute.ma_livu.R;
 public class LoadingActivity extends AppCompatActivity {
 
     private HomeFragment homeFragment;
-
-    //To-Do fragment
-    private ToDoFragment ToDoFragment;
 
     //MyPage title fragment
     private TitleFragment titleFragment;
@@ -80,7 +75,6 @@ public class LoadingActivity extends AppCompatActivity {
                     communityCommentCommentFragment = new CommunityCommentCommentFragment(email);
                     communityPostsFragment = new CommunityPostsFragment(email);
                     guestBookWriteFragment = new GuestBookWriteFragment(email);
-                    ToDoFragment = new ToDoFragment(email);
 
                     intent = new Intent(getBaseContext(), HomeActivity.class);
                     startActivity(intent);

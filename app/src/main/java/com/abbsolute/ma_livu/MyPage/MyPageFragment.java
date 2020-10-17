@@ -1,7 +1,6 @@
 package com.abbsolute.ma_livu.MyPage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 //import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
-import com.abbsolute.ma_livu.Home.ToDoFragment_final;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment_final;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,24 +28,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import static android.content.Context.MODE_PRIVATE;
-
 /* 마이페이지 메인 fragment */
 
-public class MyPageFragment extends Fragment implements View.OnClickListener, OnBackPressedListener {
+public class MyPageFragment extends Fragment implements View.OnClickListener {
     private View view;
 
     //reCyclerView 관련 변수
@@ -480,8 +470,4 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                 });
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
-    }
 }

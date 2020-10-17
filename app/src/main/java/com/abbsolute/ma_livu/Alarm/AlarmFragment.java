@@ -3,18 +3,15 @@ package com.abbsolute.ma_livu.Alarm;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,9 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.MyPage.RecyclerPostAdapter;
-import com.abbsolute.ma_livu.MyPage.postItemListView;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +37,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-public class AlarmFragment extends Fragment implements OnBackPressedListener {
+public class AlarmFragment extends Fragment {
 
     private View view;
     private AlarmPrevNotificationListAdapter alarmPrevNotificationListAdapter;
@@ -315,8 +309,4 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
         prevNotificationInfos.clear();
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
-    }
 }

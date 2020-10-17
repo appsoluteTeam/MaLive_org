@@ -1,4 +1,4 @@
-package com.abbsolute.ma_livu.Home;
+package com.abbsolute.ma_livu.Home.ToDoList;
 
 public class ToDoList_Info {
     private String todo_date;

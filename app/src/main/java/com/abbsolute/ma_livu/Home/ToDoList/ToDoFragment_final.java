@@ -1,7 +1,5 @@
-package com.abbsolute.ma_livu.Home;
+package com.abbsolute.ma_livu.Home.ToDoList;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoListCustomDialog;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.google.firebase.firestore.DocumentReference;
 import com.abbsolute.ma_livu.R;
@@ -20,7 +17,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;

@@ -14,15 +14,12 @@ import android.widget.TextView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -38,7 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /* 결제 창 fragment */
 
-public class payFragment extends Fragment implements OnBackPressedListener {
+public class payFragment extends Fragment {
     private View view;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private RecyclerView mRecyclerView = null;
@@ -330,8 +327,4 @@ public class payFragment extends Fragment implements OnBackPressedListener {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(2);
-    }
 }

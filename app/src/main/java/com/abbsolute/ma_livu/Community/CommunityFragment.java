@@ -1,12 +1,7 @@
 package com.abbsolute.ma_livu.Community;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,28 +21,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Stack;
 
-public class CommunityFragment extends Fragment implements OnBackPressedListener {
+public class CommunityFragment extends Fragment {
     // 프래그먼트
     public static Stack<Fragment> fragmentStack;
     private FragmentTransaction fragmentTransaction;
@@ -440,9 +425,6 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
                break;
         }
     }
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(1);//hot_communtity로 뒤로가기
-    }
+
 }
 

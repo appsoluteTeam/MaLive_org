@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.MainActivity;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,14 +32,13 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class Hot_CommunityFragment extends Fragment implements OnBackPressedListener {
+public class Hot_CommunityFragment extends Fragment {
 
     private View view;
     private FragmentTransaction fragmentTransaction;
@@ -332,8 +329,4 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
 
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
-    }
 }

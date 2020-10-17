@@ -26,25 +26,21 @@ import com.abbsolute.ma_livu.Customize.ItemFragment;
 import com.abbsolute.ma_livu.Customize.UnityItem;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 import com.unity3d.player.UnityPlayer;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class HomeFragment extends Fragment implements OnBackPressedListener {
+public class HomeFragment extends Fragment {
 
     private View view;
     private Button go_Todo;
@@ -284,9 +280,5 @@ public class HomeFragment extends Fragment implements OnBackPressedListener {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onBackPressed() {
-        getActivity().finish();
 
-    }
 }

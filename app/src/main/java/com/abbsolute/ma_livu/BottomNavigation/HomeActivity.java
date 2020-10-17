@@ -23,13 +23,6 @@ import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixListRemoveFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixModifyingFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFixWriteFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.ToDoWriteMainFragment;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
@@ -78,21 +71,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private GuestBookFragment guestBookFragment;
     private GuestBookWriteFragment guestBookWriteFragment;
 
-    //투두 리스트 화면
-    private ToDoFragment toDoFragment;
-    //투두 작성 메인 화면
-    private ToDoWriteMainFragment toDoWriteMainFragment;
-    //고정리스트 작성 화면
-    ToDoFixWriteFragment toDoFixWriteFragment;
-    //고정리스트 수정화면
-    private ToDoFixModifyingFragment toDoFixModifyingFragment;
-    //고정리스트 삭제화면
-    ToDoFixListRemoveFragment toDoFixListRemoveFragment;
-    //이전알림 모두보기로 이동
-//    AlarmFragmentAllLook alarmFragmentAllLook;
     private int count;
     //todoList관련 뒤로가기 이벤트
-    OnBackPressedListener listener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,10 +101,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         guestBookFragment = new GuestBookFragment();
         guestBookWriteFragment = new GuestBookWriteFragment();
 
-        /* 투두리스트 프래그먼트들 */
-        toDoFragment=new ToDoFragment(); //투두 리스트 화면
-        toDoWriteMainFragment=new ToDoWriteMainFragment();//투두 작성 메인 화면
-        toDoFixModifyingFragment=new ToDoFixModifyingFragment();//고정리스트 수정 화면
         /// alarm 프래그먼트들//
 //        alarmFragmentAllLook=new AlarmFragmentAllLook();
 //
@@ -168,12 +144,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         guestBookFragment = new GuestBookFragment();
         guestBookWriteFragment = new GuestBookWriteFragment();
 
-        //투두 리스트 화면
-        toDoFragment=new ToDoFragment();
-        //투두 작성 메인 화면
-        toDoWriteMainFragment=new ToDoWriteMainFragment();
-        //고정리스트 수정 화면
-        toDoFixModifyingFragment=new ToDoFixModifyingFragment();
 
        // setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
 
@@ -258,31 +228,12 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 break;
 
             //투두 프래그먼트로 이동
-            case 100:
-                fragmentTransaction.replace(R.id.main_frame, toDoFragment);
-                main_frame.bringToFront();
-                main_frame.setVisibility(View.VISIBLE);
-                fragmentTransaction.commit();
-                break;
-            //투두 작성메인 화면
-            case 101:
-                fragmentTransaction.replace(R.id.main_frame, toDoWriteMainFragment);
-                fragmentTransaction.commit();
-                break;
-            //고정리스트
-            case 102:
-                fragmentTransaction.replace(R.id.main_frame, toDoFixModifyingFragment).commit();
-                break;
-            //고정 할 일 프레그먼트
-            case 103:
-                toDoFixWriteFragment = new ToDoFixWriteFragment();
-                fragmentTransaction.replace(R.id.main_frame, toDoFixWriteFragment).commit();
-                break;
-            case 104:
-                toDoFixListRemoveFragment = new ToDoFixListRemoveFragment();
-                fragmentTransaction.replace(R.id.main_frame, toDoFixListRemoveFragment).commit();
-                break;
-            //alarmFragment 프래그먼트
+//            case 100:
+//                fragmentTransaction.replace(R.id.main_frame, toDoFragment);
+//                main_frame.bringToFront();
+//                main_frame.setVisibility(View.VISIBLE);
+//                fragmentTransaction.commit();
+//                break;
 
             case 201:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
@@ -375,42 +326,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
     }
 */
-    public void setCurrentScene(Fragment fragment){
-        if(fragment!=null){
-            if(!isFinishing()){
-                if(fragment instanceof ToDoFragment){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    HomeFragment goHome=new HomeFragment();
-                    transaction.replace(R.id.main_frame, goHome);
-                    transaction.commit();
-                }
-                if(fragment instanceof ToDoWriteFragment){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    ToDoFragment goToDo=new ToDoFragment();
-                    transaction.replace(R.id.main_frame, goToDo);
-                    transaction.commit();
-                }
-                if(fragment instanceof ToDoFixWriteFragment){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    ToDoFragment goToDo=new ToDoFragment();
-                    transaction.replace(R.id.main_frame, goToDo);
-                    transaction.commit();
-                }
-                if(fragment instanceof ToDoFixModifyingFragment){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    ToDoWriteMainFragment goToDoWriteMain=new ToDoWriteMainFragment();
-                    transaction.replace(R.id.main_frame, goToDoWriteMain);
-                    transaction.commit();
-                }
-                if(fragment instanceof ToDoFixListRemoveFragment){
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    ToDoWriteMainFragment goToDoWriteMain=new ToDoWriteMainFragment();
-                    transaction.replace(R.id.main_frame, goToDoWriteMain);
-                    transaction.commit();
-                }
-            }
-        }
-    }
 
 
 }
