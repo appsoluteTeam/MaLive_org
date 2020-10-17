@@ -135,6 +135,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                             });
 
                     //firestore TODOList 디비 삭제
+                    //todo:수정필요
                     firestore.collection(FirebaseID.ToDoLists).document(email)
                             .delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
