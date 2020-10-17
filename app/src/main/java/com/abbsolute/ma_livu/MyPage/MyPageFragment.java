@@ -59,8 +59,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
     private MyPageDataListener dataListener;
     private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, todo;
     private TextView nickname, textView_email;
-    private ProgressBar clean_progressBar, wash_progressBar, trash_progressBar, todo_progressBar;
-    private TextView clean_percent, wash_percent, trash_percent, todo_percent;
+    private ProgressBar clean_progressBar, wash_progressBar, trash_progressBar, etc_progressBar;
+    private TextView clean_percent, wash_percent, trash_percent, etc_percent;
 
     /*파이어베이스 변수*/
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -68,7 +68,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
     private DocumentReference myPageRef;
     private static String email;
     private static String str_nickname;
-    private static long clean_complete, trash_complete, todo_complete, wash_complete;
+    private static long clean_complete, trash_complete, todo_complete, wash_complete,etc_complete;
 
 
     public static RecyclerPostAdapter adapter;
@@ -167,12 +167,15 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 
                                 }
 
-                                if (shot.get(FirebaseID.todo_complete) == null) {
-                                    todo_complete = 0;
-                                } else {
-                                    todo_complete = (long) shot.get(FirebaseID.todo_complete);
+                                if(shot.get("기타complete")== null){
+                                    etc_complete = 0;
+                                }else{
+                                    etc_complete = (long) shot.get("기타complete");
 
                                 }
+
+
+                                todo_complete = wash_complete + clean_complete + trash_complete + etc_complete;
                                 Log.d("MyPageFragment", "todo 가져오기 완료");
                                 Log.d("washComplte", Long.valueOf(wash_complete).toString());
                             } else {
@@ -180,6 +183,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                                 wash_complete = 0;
                                 trash_complete = 0;
                                 todo_complete = 0;
+                                etc_complete = 0;
 
                                 Log.d("myPageFragment", "No such document");
                             }
@@ -188,9 +192,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                         }
                     }
                 });
-
-        /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
-        //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨,,,,,,왜그래...
 
     }
 
@@ -265,12 +266,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         clean_progressBar = view.findViewById(R.id.clean_progressBar);
         wash_progressBar = view.findViewById(R.id.wash_progressBar);
         trash_progressBar = view.findViewById(R.id.trash_progressBar);
-        todo_progressBar = view.findViewById(R.id.todo_progressBar);
+        etc_progressBar = view.findViewById(R.id.etc_progressBar);
 
         clean_percent = view.findViewById(R.id.clean_percent);
         wash_percent = view.findViewById(R.id.wash_percent);
         trash_percent = view.findViewById(R.id.trash_percent);
-        todo_percent = view.findViewById(R.id.todo_percent);
+        etc_percent = view.findViewById(R.id.etc_percent);
 
         /*닉네임 ,email 설정*/
         nickname.setText(str_nickname);
@@ -282,12 +283,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         clean_progressBar.setProgress(cleanPercent);
         wash_progressBar.setProgress((int) wash_complete % 100);
         trash_progressBar.setProgress((int) trash_complete % 100);
-        todo_progressBar.setProgress((int) todo_complete % 100);
+        etc_progressBar.setProgress((int) etc_complete % 100);
 
         clean_percent.setText(String.valueOf(clean_complete % 100));
         wash_percent.setText(String.valueOf(wash_complete % 100));
         trash_percent.setText(String.valueOf(trash_complete % 100));
-        todo_percent.setText(String.valueOf(todo_complete % 100));
+        etc_percent.setText(String.valueOf(etc_complete % 100));
 
 
         //firestore TODOList 디비 삭제

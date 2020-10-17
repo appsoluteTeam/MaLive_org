@@ -89,7 +89,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
     private static int repTitleIndex,category;
     private static String str_nickname;
-    private static long clean_complete, trash_complete, todo_complete, wash_complete;
+    private static long clean_complete, trash_complete, todo_complete, wash_complete, etc_complete;
     private static long attendanceCount;
     public static int count = 0;
     private static boolean editFinish = true;//초기화 기본화면으로
@@ -210,18 +210,23 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
                                 }
 
-                                if(shot.get(FirebaseID.todo_complete)== null){
-                                    todo_complete = 0;
+
+                                if(shot.get("기타complete")== null){
+                                    etc_complete = 0;
                                 }else{
-                                    todo_complete = (long) shot.get(FirebaseID.todo_complete);
+                                    etc_complete = (long) shot.get("기타complete");
 
                                 }
+
+
+                                todo_complete = wash_complete + clean_complete + trash_complete + etc_complete;
+
                                 Log.d("TitleFragment", "todo 가져오기 완료");
-                                Log.d("washComplte",Long.valueOf(wash_complete).toString());
                             } else {
                                 clean_complete = 0;
                                 wash_complete = 0;
                                 trash_complete = 0;
+                                etc_complete = 0;
                                 todo_complete = 0;
 
                                 Log.d("TitleFragment", "No such document");
@@ -443,16 +448,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     }
 
     public void countTodoTitleIsLocked(long todo_complete){
-        if(todo_complete >= 10 && todo_complete < 20){
+        if(todo_complete >= 30 && todo_complete < 60){
             setTodoTitleIsLocked(true,false,false);
             checkFirstGetTitle("TODO",12);
-        }else if(todo_complete >= 20 && todo_complete < 40){
+        }else if(todo_complete >= 60 && todo_complete < 100){
             setTodoTitleIsLocked(true,true,false);
             checkFirstGetTitle("TODO",13);
-        }else if(todo_complete >= 40){
+        }else if(todo_complete >= 100){
             setTodoTitleIsLocked(true,true,true);
             checkFirstGetTitle("TODO",14);
-        }else if(todo_complete < 10){
+        }else if(todo_complete < 30){
             setTodoTitleIsLocked(false,false,false);
         }
     }

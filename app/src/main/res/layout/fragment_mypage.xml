@@ -242,7 +242,7 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
-                    android:id="@+id/todo_progressBar"
+                    android:id="@+id/etc_progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="0dp"
                     android:layout_height="10dp"
@@ -252,7 +252,7 @@
                     android:progressDrawable="@drawable/custom_progressbar" />
 
                 <TextView
-                    android:id="@+id/todo_percent"
+                    android:id="@+id/etc_percent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
