@@ -1,10 +1,7 @@
 package com.abbsolute.ma_livu.MyPage;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,17 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.shadow.ShadowRenderer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,27 +26,23 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import static android.content.ContentValues.TAG;
-import static android.content.Context.MODE_PRIVATE;
 
-public class TitleFragment extends Fragment implements View.OnClickListener, OnBackPressedListener {
+public class TitleFragment extends Fragment implements View.OnClickListener {
 
     private View view;
 
@@ -89,7 +79,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
     private static int repTitleIndex,category;
     private static String str_nickname;
-    private static long clean_complete, trash_complete, todo_complete, wash_complete;
+    private static long clean_complete, trash_complete, todo_complete, wash_complete, etc_complete;
     private static long attendanceCount;
     public static int count = 0;
     private static boolean editFinish = true;//초기화 기본화면으로
@@ -210,18 +200,23 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
                                 }
 
-                                if(shot.get(FirebaseID.todo_complete)== null){
-                                    todo_complete = 0;
+
+                                if(shot.get("기타complete")== null){
+                                    etc_complete = 0;
                                 }else{
-                                    todo_complete = (long) shot.get(FirebaseID.todo_complete);
+                                    etc_complete = (long) shot.get("기타complete");
 
                                 }
+
+
+                                todo_complete = wash_complete + clean_complete + trash_complete + etc_complete;
+
                                 Log.d("TitleFragment", "todo 가져오기 완료");
-                                Log.d("washComplte",Long.valueOf(wash_complete).toString());
                             } else {
                                 clean_complete = 0;
                                 wash_complete = 0;
                                 trash_complete = 0;
+                                etc_complete = 0;
                                 todo_complete = 0;
 
                                 Log.d("TitleFragment", "No such document");
@@ -268,7 +263,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
 
         view = inflater.inflate(R.layout.title,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         myPageRef = firestore.collection(FirebaseID.myPage).document(email);
 
         TODOFragment = new TODOtitleFragment();
@@ -443,16 +438,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
     }
 
     public void countTodoTitleIsLocked(long todo_complete){
-        if(todo_complete >= 10 && todo_complete < 20){
+        if(todo_complete >= 30 && todo_complete < 60){
             setTodoTitleIsLocked(true,false,false);
             checkFirstGetTitle("TODO",12);
-        }else if(todo_complete >= 20 && todo_complete < 40){
+        }else if(todo_complete >= 60 && todo_complete < 100){
             setTodoTitleIsLocked(true,true,false);
             checkFirstGetTitle("TODO",13);
-        }else if(todo_complete >= 40){
+        }else if(todo_complete >= 100){
             setTodoTitleIsLocked(true,true,true);
             checkFirstGetTitle("TODO",14);
-        }else if(todo_complete < 10){
+        }else if(todo_complete < 30){
             setTodoTitleIsLocked(false,false,false);
         }
     }
@@ -883,8 +878,4 @@ public class TitleFragment extends Fragment implements View.OnClickListener, OnB
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(2);
-    }
 }

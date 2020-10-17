@@ -2,7 +2,6 @@ package com.abbsolute.ma_livu.Home.GuestBook;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.HomeFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,7 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GuestBookFragment extends Fragment implements OnItemClick, OnBackPressedListener {
+public class GuestBookFragment extends Fragment implements OnItemClick {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
@@ -78,7 +75,7 @@ public class GuestBookFragment extends Fragment implements OnItemClick, OnBackPr
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_guestbook, container, false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         CommentNum = view.findViewById(R.id.CommentNum);
         CommentName = view.findViewById(R.id.CommentName);
         CommentDate = view.findViewById(R.id.CommentDate);
@@ -347,8 +344,5 @@ public class GuestBookFragment extends Fragment implements OnItemClick, OnBackPr
         transaction.detach(this).attach(this).commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
-    }
+
 }

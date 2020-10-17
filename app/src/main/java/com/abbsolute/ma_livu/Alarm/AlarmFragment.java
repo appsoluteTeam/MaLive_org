@@ -3,25 +3,24 @@ package com.abbsolute.ma_livu.Alarm;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,7 +37,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
-public class AlarmFragment extends Fragment implements OnBackPressedListener {
+public class AlarmFragment extends Fragment {
 
     private View view;
     private AlarmPrevNotificationListAdapter alarmPrevNotificationListAdapter;
@@ -48,6 +47,10 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
     private String nickName = "";
     private ArrayList<PrevNotificationInfo> prevNotificationInfos = new ArrayList<>();
 
+    //fragment 관련 변수
+    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fm;
+
     TextView allLook;
     String email;
     @Nullable
@@ -55,20 +58,15 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_alarm, container, false);
 
-//        allLook = view.findViewById(R.id.prev_notification_all_look);
-//        allLook.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ((HomeActivity) getActivity()).setFragment(200);
-//            }
-//        });
+        fm = getFragmentManager();
+        fragmentTransaction = fm.beginTransaction();
 
-        alarmPrevNotificationListAdapter = new AlarmPrevNotificationListAdapter();
         prevNotificationListView = view.findViewById(R.id.prev_notification_list);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         FirebaseUser user = firebaseAuth.getCurrentUser();
         email = user.getEmail();
 
+        alarmPrevNotificationListAdapter = new AlarmPrevNotificationListAdapter(prevNotificationInfos);
         //닉네임찾기
         getNickName();
 
@@ -80,7 +78,32 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
         //내 댓글 가져오기
         getCommentInfo();
 
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+  //      ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+
+        alarmPrevNotificationListAdapter.setOnItemClickListener(new AlarmPrevNotificationListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                PrevNotificationInfo item = alarmPrevNotificationListAdapter.getItem(position);
+
+                Log.d("category",item.getPost_title());
+                // CommunityPostsFragment로 데이터 넘기기
+                Bundle bundle = new Bundle();
+                bundle.putString("Category", item.getPost_category());
+                bundle.putString("Title", item.getPost_title());
+                bundle.putString("Writer", item.getPost_writer());
+                bundle.putString("Content", item.getPost_content());
+                bundle.putString("Date", item.getPost_date());
+
+                fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
+                communityPostsFragment.setArguments(bundle);
+
+                // 버튼 누르면 화면 전환
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         return view;
     }
@@ -108,7 +131,7 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                 });
     }//getNickName()
 
-    //뭐먹지 정보
+
     public void getCommentInfo() {
         final ArrayList<String> titleNameList = new ArrayList<>();
         final String[] category = {"what_eat", "what_do", "how_do"};
@@ -125,6 +148,11 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                     for (DocumentSnapshot snapshot : task.getResult()) {
                                         Map<String, Object> data = snapshot.getData();
                                         final String title = String.valueOf(data.get("title"));
+                                        final String Title = String.valueOf(snapshot.get(FirebaseID.title));
+                                        final String Content = String.valueOf(snapshot.get(FirebaseID.content));
+                                        final String Date = String.valueOf(snapshot.get(FirebaseID.commu_date));
+                                        final String Writer = String.valueOf(snapshot.get(FirebaseID.Nickname));
+
                                         String myNickName = String.valueOf(data.get("nickname"));
                                         Log.d("nickName", myNickName);
                                         Log.d("my", nickName);
@@ -167,8 +195,11 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
                                                                                     Log.d("OK!!", "Okay!!!~~");
                                                                                     String res = prevTimeSetClass.formatTimeString(date) + " | " + content;
                                                                                     String responseText = "내 글에 댓글이 달렸어요";
+
+
+                                                                                    Log.d("title,content",Title +  Content);
                                                                                     PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                            responseText, res);
+                                                                                            responseText, res, category[index],Title, Content, Date, Writer );
                                                                                     //newArrays.add(prevNotificationInfo);
                                                                                     alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
                                                                                     //alarmPrevNotificationListAdapter.setItem(newArrays);
@@ -239,8 +270,9 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
 
                                                                                                                     String res = prevTimeSetClass.formatTimeString(date) + " | " + content;
                                                                                                                     String responseText = "내 글에 대댓글이 달렸어요";
+
                                                                                                                     PrevNotificationInfo prevNotificationInfo = new PrevNotificationInfo(R.drawable.comments,
-                                                                                                                            responseText, res);
+                                                                                                                            responseText, res, category[index], Title, Content, Date, Writer);
                                                                                                                     //newArrays.add(prevNotificationInfo);
                                                                                                                     alarmPrevNotificationListAdapter.addItem(prevNotificationInfo);
                                                                                                                     //alarmPrevNotificationListAdapter.setItem(newArrays);
@@ -271,8 +303,10 @@ public class AlarmFragment extends Fragment implements OnBackPressedListener {
         prevNotificationListView.setAdapter(alarmPrevNotificationListAdapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
+    public void onStart() {
+        super.onStart();
+
+        prevNotificationInfos.clear();
     }
+
 }

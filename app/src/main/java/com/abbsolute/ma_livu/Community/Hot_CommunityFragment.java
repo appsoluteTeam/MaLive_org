@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.MainActivity;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,14 +32,13 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
-public class Hot_CommunityFragment extends Fragment implements OnBackPressedListener {
+public class Hot_CommunityFragment extends Fragment {
 
     private View view;
     private FragmentTransaction fragmentTransaction;
@@ -70,7 +67,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.hot_community_fragment,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
 
         //버튼 아이디값 찾기
@@ -148,11 +145,6 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
                                                 //toll 얻어주기
                                                 getRecentPayDocument(document,j);
 
-                                                //hot을 true로 업데이트
-                                                //여기서하면 getRecentPayDocument가 다 끝나기 전에 true로 바뀌줌 그래서 톨얻는 메소드 getToll에서 true로 바꿔줌,,,,
-//                                                firestore.collection("Community").document(categoryarray[j])
-//                                                        .collection("sub_Community").document(document)
-//                                                        .update("hot",true);
                                             }
                                         }
                                     }
@@ -207,7 +199,7 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
                 communityPostsFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null);
                 fragmentTransaction.commit();
 
             }
@@ -337,8 +329,4 @@ public class Hot_CommunityFragment extends Fragment implements OnBackPressedList
 
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
-    }
 }

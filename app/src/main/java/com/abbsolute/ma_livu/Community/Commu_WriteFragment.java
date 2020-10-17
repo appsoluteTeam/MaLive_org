@@ -1,10 +1,8 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.content.ClipData;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,14 +19,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.loader.content.CursorLoader;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.Login.Login2Activity;
 import com.abbsolute.ma_livu.R;
-import com.android.volley.toolbox.ImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,15 +30,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +44,7 @@ import java.util.Map;
 
 import static com.google.common.io.Files.getFileExtension;
 
-public class Commu_WriteFragment extends Fragment implements OnBackPressedListener {
+public class Commu_WriteFragment extends Fragment {
 
     private View view;
     private Context context;
@@ -130,7 +120,7 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.commu_write_fragment, container, false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         context=container.getContext();
 
         et_title = view.findViewById(R.id.et_title);
@@ -411,11 +401,6 @@ public class Commu_WriteFragment extends Fragment implements OnBackPressedListen
                 });
             }
 
-
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(50);
-    }
 }
 
 

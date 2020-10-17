@@ -1,12 +1,7 @@
 package com.abbsolute.ma_livu.Community;
 
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,28 +21,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
-import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.abbsolute.ma_livu.R;
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Stack;
 
-public class CommunityFragment extends Fragment implements OnBackPressedListener {
+public class CommunityFragment extends Fragment {
     // 프래그먼트
     public static Stack<Fragment> fragmentStack;
     private FragmentTransaction fragmentTransaction;
@@ -85,7 +70,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
         view = inflater.inflate(R.layout.community_fragment,container,false);
 
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
 
         btn_what_eat=(Button)view.findViewById(R.id.what_eat);
@@ -139,7 +124,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
                     case R.id.btn_commu_write: // 작성하기 아이콘 클릭
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                         Commu_WriteFragment Commu_WriteFragment = new Commu_WriteFragment();
-                        transaction.replace(R.id.main_frame, Commu_WriteFragment);
+                        transaction.replace(R.id.main_frame, Commu_WriteFragment).addToBackStack(null);
                         transaction.commit();
                         break;
                     case R.id.btn_back: // 뒤로가기 아이콘 클릭
@@ -202,7 +187,7 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
                 communityPostsFragment.setArguments(bundle);
 
                 // 버튼 누르면 화면 전환
-                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment);
+                fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -440,9 +425,6 @@ public class CommunityFragment extends Fragment implements OnBackPressedListener
                break;
         }
     }
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(1);//hot_communtity로 뒤로가기
-    }
+
 }
 

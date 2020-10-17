@@ -1,7 +1,6 @@
 package com.abbsolute.ma_livu.MyPage;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 //import com.abbsolute.ma_livu.MyPage.AboutFriends.FriendListFragment;
-import com.abbsolute.ma_livu.Home.ToDoList.OnBackPressedListener;
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment_final;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,24 +28,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import static android.content.Context.MODE_PRIVATE;
-
 /* 마이페이지 메인 fragment */
 
-public class MyPageFragment extends Fragment implements View.OnClickListener, OnBackPressedListener {
+public class MyPageFragment extends Fragment implements View.OnClickListener {
     private View view;
 
     //reCyclerView 관련 변수
@@ -55,10 +47,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
     public static Stack<Fragment> fragmentStack;
 
     private MyPageDataListener dataListener;
-    private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, btnMyPage_friend;
+    private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, todo;
     private TextView nickname, textView_email;
-    private ProgressBar clean_progressBar, wash_progressBar, trash_progressBar, todo_progressBar;
-    private TextView clean_percent, wash_percent, trash_percent, todo_percent;
+    private ProgressBar clean_progressBar, wash_progressBar, trash_progressBar, etc_progressBar;
+    private TextView clean_percent, wash_percent, trash_percent, etc_percent;
 
     /*파이어베이스 변수*/
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -66,7 +58,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
     private DocumentReference myPageRef;
     private static String email;
     private static String str_nickname;
-    private static long clean_complete, trash_complete, todo_complete, wash_complete;
+    private static long clean_complete, trash_complete, todo_complete, wash_complete,etc_complete;
 
 
     public static RecyclerPostAdapter adapter;
@@ -165,12 +157,15 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 
                                 }
 
-                                if (shot.get(FirebaseID.todo_complete) == null) {
-                                    todo_complete = 0;
-                                } else {
-                                    todo_complete = (long) shot.get(FirebaseID.todo_complete);
+                                if(shot.get("기타complete")== null){
+                                    etc_complete = 0;
+                                }else{
+                                    etc_complete = (long) shot.get("기타complete");
 
                                 }
+
+
+                                todo_complete = wash_complete + clean_complete + trash_complete + etc_complete;
                                 Log.d("MyPageFragment", "todo 가져오기 완료");
                                 Log.d("washComplte", Long.valueOf(wash_complete).toString());
                             } else {
@@ -178,6 +173,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                                 wash_complete = 0;
                                 trash_complete = 0;
                                 todo_complete = 0;
+                                etc_complete = 0;
 
                                 Log.d("myPageFragment", "No such document");
                             }
@@ -186,9 +182,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                         }
                     }
                 });
-
-        /*대표칭호 정보 myPage firestore에서 가져와서 category,index 변수에 저장*/
-        //TODO: 데이터 가져오는걸 onCreateView나 onCreate에서 하면 적용이 다른 함수들보다 느리게 됨,,,,,,왜그래...
 
     }
 
@@ -240,30 +233,20 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         view = inflater.inflate(R.layout.fragment_mypage, container, false);
 
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-        ((HomeActivity) getActivity()).setOnBackPressedListener(this);
+//        ((HomeActivity) getActivity()).setOnBackPressedListener(this);
 
         Log.d("Mypage-Email", email);
 
         /* 정보설정*/
         btnMyPage_informationSet = view.findViewById(R.id.btnMyPage_informationSet);
 
+        todo = view.findViewById(R.id.todo_mypage);
+
         /* 칭호, 결제, 활동, 친구 아이디값 찾기 */
         btnMyPage_title = view.findViewById(R.id.btnMyPage_title);
         btnMyPage_pay = view.findViewById(R.id.btnMyPage_pay);
         btnMyPage_active = view.findViewById(R.id.btnMyPage_active);
-        btnMyPage_friend = view.findViewById(R.id.btnMyPage_friend);
-        //btnMyPage_friend 클릭시 친구목록으로 간다
-       /* btnMyPage_friend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
-                FriendListFragment friendListFragment=new FriendListFragment();
-                fragmentTransaction.replace(R.id.main_frame,friendListFragment);
-                fragmentTransaction.commit();
 
-            }
-        });
-        //
 
         /*대표칭호,email findViewByID*/
         nickname = view.findViewById(R.id.nickname);
@@ -273,30 +256,29 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
         clean_progressBar = view.findViewById(R.id.clean_progressBar);
         wash_progressBar = view.findViewById(R.id.wash_progressBar);
         trash_progressBar = view.findViewById(R.id.trash_progressBar);
-        todo_progressBar = view.findViewById(R.id.todo_progressBar);
+        etc_progressBar = view.findViewById(R.id.etc_progressBar);
 
         clean_percent = view.findViewById(R.id.clean_percent);
         wash_percent = view.findViewById(R.id.wash_percent);
         trash_percent = view.findViewById(R.id.trash_percent);
-        todo_percent = view.findViewById(R.id.todo_percent);
+        etc_percent = view.findViewById(R.id.etc_percent);
 
         /*닉네임 ,email 설정*/
         nickname.setText(str_nickname);
         textView_email.setText(email);
 
         /*progressBar,% (달성률) 설정*/
-        /*todo : 한달 기간으로 초기화해야한다*/
         //setProgree반응왤케느림;
         int cleanPercent = (int) clean_complete % 100;
         clean_progressBar.setProgress(cleanPercent);
         wash_progressBar.setProgress((int) wash_complete % 100);
         trash_progressBar.setProgress((int) trash_complete % 100);
-        todo_progressBar.setProgress((int) todo_complete % 100);
+        etc_progressBar.setProgress((int) etc_complete % 100);
 
         clean_percent.setText(String.valueOf(clean_complete % 100));
         wash_percent.setText(String.valueOf(wash_complete % 100));
         trash_percent.setText(String.valueOf(trash_complete % 100));
-        todo_percent.setText(String.valueOf(todo_complete % 100));
+        etc_percent.setText(String.valueOf(etc_complete % 100));
 
 
         //firestore TODOList 디비 삭제
@@ -332,9 +314,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 //            case R.id.btnMyPage_active://활동
 //                dataListener.myPageDataSet(2);
 //                break;
-            case R.id.btnMyPage_friend://친구
-                dataListener.myPageDataSet(3);
-                break;
             case R.id.btnMyPage_informationSet://정보 설정
                 dataListener.myPageDataSet(4);
                 break;
@@ -347,24 +326,34 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
 
         // MyPage -> 활동
         btnMyPage_active.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    @Override
+                    public void onClick(View v) {
 
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                activeFragment activeFragment = new activeFragment();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        activeFragment activeFragment = new activeFragment();
 
-                Bundle bundle = new Bundle();
-                bundle.putString("nickname", str_nickname);
-                bundle.putString("MyPost_count", String.valueOf(myPost_count));
-                bundle.putString("MyComment_count", String.valueOf(myComment_count));
-                bundle.putString("MySavedPosts_count", String.valueOf(mySavedPosts_count));
+                        Bundle bundle = new Bundle();
+                        bundle.putString("nickname", str_nickname);
+                        bundle.putString("MyPost_count", String.valueOf(myPost_count));
+                        bundle.putString("MyComment_count", String.valueOf(myComment_count));
+                        bundle.putString("MySavedPosts_count", String.valueOf(mySavedPosts_count));
 
-                activeFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.main_frame, activeFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                        activeFragment.setArguments(bundle);
+                        fragmentTransaction.replace(R.id.main_frame, activeFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
             }
         });
+
+        //임시로 만든 투두 버튼
+        todo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToDoFragment_final toDoFragment_final = new ToDoFragment_final();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame, toDoFragment_final).commit();            }
+        });
+
     }
 
     // 내가 쓴 글 불러오기
@@ -395,11 +384,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                                 myPost_count = 0;
                                 arrayList.clear();
                             }
-                            // SharedPreference에 값 저장시키기
-//                            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(myPostCountName, MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = sharedPreferences.edit();
-//                            editor.putInt("myPost_count", myPost_count);
-//                            editor.commit();
                         }
                     }
                 });
@@ -486,8 +470,4 @@ public class MyPageFragment extends Fragment implements View.OnClickListener, On
                 });
     }
 
-    @Override
-    public void onBackPressed() {
-        ((HomeActivity)getActivity()).setFragment(0);
-    }
 }
