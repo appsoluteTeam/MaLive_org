@@ -61,6 +61,7 @@ public class Signup2Activity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                //getFragmentManager().popBackStack();
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
             }
         });

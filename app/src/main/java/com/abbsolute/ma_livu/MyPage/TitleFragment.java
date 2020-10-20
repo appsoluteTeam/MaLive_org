@@ -83,7 +83,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     private static long attendanceCount;
     public static int count = 0;
     private static boolean editFinish = true;//초기화 기본화면으로
-    public static Stack<Fragment> fragmentStack;
 
     //pay관련 변수들
     private String recentBalance;
@@ -284,8 +283,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         newTODO = view.findViewById(R.id.newTODO);
         newAttendance = view.findViewById(R.id.newAttendance);
 
-        //back버튼 적용 위해 stack에 담아둔 fragment
-        fragmentStack = HomeActivity.fragmentStack;
 
         editFinishBtn.setVisibility(View.GONE);//초기화면은 편집아닌 일반화면이니까 완료버튼숨기기
 
@@ -823,8 +820,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction.add(R.id.frameLayout,TODOFragment).commitAllowingStateLoss();
                 break;
             case R.id.btn_back:
-                Fragment nextFragment = fragmentStack.pop();
-                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
+               fm.popBackStack();
                 break;
         }
 

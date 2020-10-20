@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Stack;
 
 public class activeMyCommentFragment extends Fragment {
     private View view;
@@ -54,15 +56,9 @@ public class activeMyCommentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.mypost_fragment,container,false);
 
-        // activeFragment에서 데이터 받아오기
-//        if(getArguments() != null){
-//            str_nickname = getArguments().getString("nickname");
-//            myPost_count  = getArguments().getString("MyPost_count");
-//            myComment_count = getArguments().getString("MyComment_count");
-//        }
-
         fm = getFragmentManager();
         fragmentTransaction = fm.beginTransaction();
+
 
         commu_title = view.findViewById(R.id.commu_title);
         commu_title.setText("댓글 단 글");
@@ -71,15 +67,7 @@ public class activeMyCommentFragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activeFragment activeFragment = new activeFragment();
-
-//                Bundle bundle = new Bundle();
-//                bundle.putString("nickname", str_nickname);
-//                bundle.putString("MyPost_count", String.valueOf(myPost_count));
-//                bundle.putString("MyComment_count", String.valueOf(myComment_count));
-//                activeFragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.main_frame, activeFragment).commit();
+                fm.popBackStack();
             }
         });
 
@@ -112,6 +100,8 @@ public class activeMyCommentFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerPostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+                Fragment currentFragment = fm.findFragmentById(R.id.main_frame);
+
                 postItemListView item = adapter.getItem(position);
 
                 // CommunityPostsFragment로 데이터 넘기기

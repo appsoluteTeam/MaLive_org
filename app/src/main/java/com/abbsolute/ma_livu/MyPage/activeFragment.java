@@ -47,7 +47,6 @@ public class activeFragment extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
     private Fragment activeFragment;
-    public static Stack<Fragment> fragmentStack;
 
     private Button btn_back;
 
@@ -73,22 +72,6 @@ public class activeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // SharedPreferences로 값 저장시키는 부분
-//            myPostCountName = email + "-myPostCountFile";
-//            myPost_count = 0;
-
-//            myCommentCountName = email + "-myCommentCountFile";
-//            myComment_count = 0;
-
-        // SharedPreferences로 값 받아오는 부분 -> 값을 받아오는 프래그먼트에 정의하기
-//          myPostCountName = email + "-myPostCountFile";
-//          myCommentCountName = email + "-myCommentCountFile";
-//
-//           sharedPreferences = getActivity().getSharedPreferences(myPostCountName,MODE_PRIVATE);
-//           myPost_count = sharedPreferences.getInt("myPost_count",0);
-//
-//           sharedPreferences = getActivity().getSharedPreferences(myCommentCountName,MODE_PRIVATE);
-//           myComment_count = sharedPreferences.getInt("myComment_count",0);
         }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -101,7 +84,6 @@ public class activeFragment extends Fragment {
         btn_myComment = view.findViewById(R.id.btn_myComment);
         btn_myScrape = view.findViewById(R.id.btn_myScrape);
 
-        fragmentStack = HomeActivity.fragmentStack;
         fm = getFragmentManager();
         fragmentTransaction = fm.beginTransaction();
 
@@ -132,24 +114,20 @@ public class activeFragment extends Fragment {
 
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             Bundle bundle = new Bundle();
-
+            Fragment currentFragment = fm.findFragmentById(R.id.main_frame);
             @SuppressLint("LongLogTag")
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+//                    Fragment currentFragment = fm.findFragmentById(R.id.main_frame);
                     case R.id.btn_back:
                         Log.d("activeFragment back","back buttonclick");
-//                        Fragment nextFragment = fragmentStack.pop();
-//                        fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
-
-                        MyPageFragment myPageFragment = new MyPageFragment();
-                        fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
+                        fm.popBackStack();
                         break;
 
                     case R.id. btn_myPost:
                         Log.d("activeFragment go myPostFragment","myPost buttonclick");
                         activeMyPostFragment activeMyPostFragment = new activeMyPostFragment();
-//                        fragmentStack.push(activeMyPostFragment);
 
                         // activeMyPostFragment로 데이터 넘기기
                         bundle.putString("nickname", str_nickname);
@@ -163,7 +141,6 @@ public class activeFragment extends Fragment {
                     case R.id. btn_myComment:
                         Log.d("activeFragment go myCommentFragment","myComment buttonclick");
                         activeMyCommentFragment activeMyCommentFragment = new activeMyCommentFragment();
-//                        fragmentStack.push(activeMyCommentFragment);
 
                         fragmentTransaction.replace(R.id.main_frame, activeMyCommentFragment);
                         fragmentTransaction.addToBackStack(null);
@@ -172,7 +149,6 @@ public class activeFragment extends Fragment {
                     case R.id. btn_myScrape:
                         Log.d("activeFragment go myMySavedPostsFragment","myMySavedPosts buttonclick");
                         activeMySavedPostsFragment activeMySavedPostsFragment = new activeMySavedPostsFragment();
-//                        fragmentStack.push(activeMyCommentFragment);
 
                         fragmentTransaction.replace(R.id.main_frame, activeMySavedPostsFragment);
                         fragmentTransaction.addToBackStack(null);

@@ -43,7 +43,8 @@ public class FindpwdActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), Login2Activity.class));
+                getFragmentManager().popBackStack();
+                //startActivity(new Intent(getApplicationContext(), Login2Activity.class));
             }
         });
 
