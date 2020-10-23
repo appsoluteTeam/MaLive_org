@@ -141,6 +141,9 @@ public class Hot_CommunityFragment extends Fragment {
 
                                             //핫게시글로 선정된게 처음인지 확인하기
                                             hot = (Boolean)shot.get("hot");
+                                            if(hot == null){
+                                                Log.d("data",title);
+                                            }
                                             if(hot == false){   //핫게시글로 설정된 적 없음
                                                 //toll 얻어주기
                                                 getRecentPayDocument(document,j);
