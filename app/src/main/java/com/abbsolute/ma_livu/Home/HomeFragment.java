@@ -32,10 +32,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.gson.Gson;
 import com.unity3d.player.UnityPlayer;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -241,6 +243,9 @@ public class HomeFragment extends Fragment {
                                    firestore.collection(FirebaseID.Attendance).document(email).update(FirebaseID.attendanceCount,atCount);
                                     Log.d("HomeFragment", "at count get 완료");
                                 } else {
+                                    Map<String, Object> data = new HashMap<>();
+                                    data.put(FirebaseID.attendanceCount, 1);
+                                    firestore.collection(FirebaseID.Attendance).document(email).set(data, SetOptions.merge());
                                     Log.d("HomeFragment", "No such document");
                                 }
                             } else {
