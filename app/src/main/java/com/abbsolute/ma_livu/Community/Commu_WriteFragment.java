@@ -189,7 +189,7 @@ public class Commu_WriteFragment extends Fragment {
                 if(image_list.size()== 5){
                     Toast.makeText(context, "사진은 최대 5장 입니다.", Toast.LENGTH_SHORT).show();
                 }else{
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     startActivityForResult(intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_CODE);
@@ -248,6 +248,7 @@ public class Commu_WriteFragment extends Fragment {
         btn_commu_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isFilled())
                 if (firebaseAuth.getCurrentUser() != null) {
                     like_count  = 0;
                     save_count = 0;
@@ -306,21 +307,47 @@ public class Commu_WriteFragment extends Fragment {
 
     }
 
+    private boolean sFilled() {
+        if(category == null){
+            return false;
+        }else if(et_title.getText().toString().equals("")){
+            return false;
+        }
+    }
+
+
     //사진 셋팅하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == IMAGE_REQUEST_CODE ){
             image = data.getData();
             ClipData clipData = data.getClipData();
-            if(clipData == null){
+            if(clipData == null){ // 이미지가 한장 선택됐을 때
                 urione =data.getData();
                 image_list.add(urione);
                 if (img1.getDrawable() == null) {
                     img1.setImageURI(urione);
                     commu_img_explain1.setVisibility(View.VISIBLE);
                     remove1.setVisibility(View.VISIBLE);
+                }else if(img2.getDrawable() == null){
+                    img2.setImageURI(urione);
+                    commu_img_explain2.setVisibility(View.VISIBLE);
+                    remove2.setVisibility(View.VISIBLE);
+                }else if(img3.getDrawable() == null){
+                    img3.setImageURI(urione);
+                    commu_img_explain3.setVisibility(View.VISIBLE);
+                    remove3.setVisibility(View.VISIBLE);
+                }else if(img4.getDrawable() == null){
+                    img4.setImageURI(urione);
+                    commu_img_explain4.setVisibility(View.VISIBLE);
+                    remove4.setVisibility(View.VISIBLE);
+                }else {
+                    img5.setImageURI(urione);
+                    commu_img_explain5.setVisibility(View.VISIBLE);
+                    remove5.setVisibility(View.VISIBLE);
                 }
-            }else {
+
+            } else { // 이미지가 여러장 선택됐을 때
                 for (int i = 0; i <clipData.getItemCount(); i++) {
                     if (i < clipData.getItemCount()) {
                         urione = clipData.getItemAt(i).getUri();
