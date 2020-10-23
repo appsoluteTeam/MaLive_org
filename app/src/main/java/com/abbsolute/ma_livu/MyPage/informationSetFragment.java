@@ -172,20 +172,6 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                                 }
                             });
 
-                    //firestore AlarmFragment 디비 삭제
-                    firestore.collection("AlarmFragment").document(email)
-                            .delete()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                }
-                            });
-
                     //내가 쓴 글 지우기
                     final String[] communityCategory = {"how_do","what_do","what_eat"};
 
