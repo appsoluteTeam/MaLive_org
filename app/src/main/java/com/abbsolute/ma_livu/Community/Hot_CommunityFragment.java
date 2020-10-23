@@ -88,7 +88,7 @@ public class Hot_CommunityFragment extends Fragment {
                     case R.id.btn_today_post: //오늘의 글 선택
                         view1.setVisibility(View.VISIBLE);
                         view2.setVisibility(view.INVISIBLE);
-                        callRecycler();
+                        callRecycler(0);
                         break;
                     case R.id.btn_today_room:
                         view2.setVisibility(View.VISIBLE);
@@ -111,57 +111,64 @@ public class Hot_CommunityFragment extends Fragment {
         return view;
     }
 
-    private void callRecycler() {
-        for(int i=0; i<3; i++){
-            final int j = i;
-            firestore.collection("Community").document(categoryarray[i]).collection("sub_Community")
-                    .orderBy("commu_like_count", Query.Direction.DESCENDING).limit(3)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    boolean like_count = false;
-                                    for (DocumentSnapshot snapshot : task.getResult()) {
-                                        String document = snapshot.getId();
-                                        Map<String, Object> shot = snapshot.getData();
-                                        if( String.valueOf(shot.get(FirebaseID.commu_like_count)).equals("0")) {
-                                            break;
-                                        } else{
-                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-                                            title = String.valueOf(shot.get(FirebaseID.title));
-                                            content = String.valueOf(shot.get(FirebaseID.content));
-                                            category = String.valueOf(shot.get(FirebaseID.category));
-                                            date = String.valueOf(shot.get(FirebaseID.commu_date));
-                                            writer = String.valueOf(shot.get(FirebaseID.Nickname));
-                                            email = String.valueOf(shot.get("email"));
+    private void callRecycler(int n) {
+        switch (n){
+            case 0:
+                arrayList.clear();
+                for(int i=0; i<3; i++){
+                    final int j = i;
+                    firestore.collection("Community").document(categoryarray[i]).collection("sub_Community")
+                            .orderBy("commu_like_count", Query.Direction.DESCENDING).limit(3)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if (task.getResult() != null) {
+                                            boolean like_count = false;
+                                            for (DocumentSnapshot snapshot : task.getResult()) {
+                                                String document = snapshot.getId();
+                                                Map<String, Object> shot = snapshot.getData();
+                                                if( String.valueOf(shot.get(FirebaseID.commu_like_count)).equals("0")) {
+                                                    break;
+                                                } else{
+                                                    String documentID = String.valueOf(shot.get(FirebaseID.documentID));
+                                                    title = String.valueOf(shot.get(FirebaseID.title));
+                                                    content = String.valueOf(shot.get(FirebaseID.content));
+                                                    category = String.valueOf(shot.get(FirebaseID.category));
+                                                    date = String.valueOf(shot.get(FirebaseID.commu_date));
+                                                    writer = String.valueOf(shot.get(FirebaseID.Nickname));
+                                                    email = String.valueOf(shot.get("email"));
 
-                                            likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
-                                            saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
+                                                    likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
+                                                    saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
 
-                                            if (String.valueOf(shot.get((FirebaseID.Url) + 0)) != null) {
-                                                img1 = ((String) shot.get((FirebaseID.Url) + 0));
-                                            } else {
-                                                img1 = null;
+                                                    if (String.valueOf(shot.get((FirebaseID.Url) + 0)) != null) {
+                                                        img1 = ((String) shot.get((FirebaseID.Url) + 0));
+                                                    } else {
+                                                        img1 = null;
+                                                    }
+                                                    bringData data = new bringData(documentID, title, category, content, date, writer, likeCount, saveCount, img1);
+                                                    arrayList.add(data);
+
+                                                    //핫게시글로 선정된게 처음인지 확인하기
+                                                    hot = (Boolean)shot.get("hot");
+                                                    if(hot == false){   //핫게시글로 설정된 적 없음
+                                                        //toll 얻어주기
+                                                        getRecentPayDocument(document,j);
+
+                                                    }
+                                                }
                                             }
-                                            bringData data = new bringData(documentID, title, category, content, date, writer, likeCount, saveCount, img1);
-                                            arrayList.add(data);
-
-                                            //핫게시글로 선정된게 처음인지 확인하기
-                                            hot = (Boolean)shot.get("hot");
-                                            if(hot == false){   //핫게시글로 설정된 적 없음
-                                                //toll 얻어주기
-                                                getRecentPayDocument(document,j);
-
-                                            }
+                                            adapter.notifyDataSetChanged();
                                         }
                                     }
-                                    adapter.notifyDataSetChanged();
                                 }
-                            }
-                        }
-                    });
+                            });
+                }
+                break;
+            case 1:
+                break;
         }
     }
 
@@ -170,7 +177,7 @@ public class Hot_CommunityFragment extends Fragment {
         super.onStart();
 
         arrayList = new ArrayList<>();
-        callRecycler();
+        callRecycler(0);
 
         //배열 섞어주기
         Collections.shuffle(arrayList);
@@ -180,7 +187,6 @@ public class Hot_CommunityFragment extends Fragment {
         recycler_hot_community.setHasFixedSize(true);
         adapter = new CommunityAdapter(arrayList);
         layoutManager = new LinearLayoutManager(getActivity());
-
 
         recycler_hot_community.scrollToPosition(0);
         recycler_hot_community.setItemAnimator(new DefaultItemAnimator());
