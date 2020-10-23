@@ -60,19 +60,17 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
     private static ArrayList<Boolean> TODOIslocked;
     private static ArrayList<Boolean> attendanceIslocked;
 
-    private ArrayList<Boolean> todayIslocked = new ArrayList<Boolean>(Arrays.asList(true));
-    private ArrayList<Boolean> roomIslocked = new ArrayList<Boolean>(Arrays.asList(true,false,false,true,true,true,false));
+    private ArrayList<Boolean> roomIslocked = new ArrayList<Boolean>(Arrays.asList(true,true,true,false));
 
     //fragment 관련 변수들
     private TODOtitleFragment TODOFragment;
     private attendanceFragment attendanceFragment;
-    private todayFragment todayFragment;
     private roomFragment roomFragment;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
 
     //값 받아오는 변수들
-    private TextView tdBtn,attendanceBtn,todayBtn,roomBtn,editTitle,repTitle;
+    private TextView tdBtn,attendanceBtn,roomBtn,editTitle,repTitle;
     private Button editFinishBtn,btn_back,newTODO,newAttendance,newBtn;
     private ImageView titleImage;
     private Bundle bundle;
@@ -267,13 +265,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         TODOFragment = new TODOtitleFragment();
         attendanceFragment = new attendanceFragment();
-        todayFragment = new todayFragment();
         roomFragment = new roomFragment();
 
         repTitle = view.findViewById(R.id.representationTitle);
         tdBtn = view.findViewById(R.id.tdBtn);
         attendanceBtn = view.findViewById(R.id.attendanceBtn);
-        todayBtn = view.findViewById(R.id.todayBtn);
         roomBtn = view.findViewById(R.id.roomBtn);
         editFinishBtn = view.findViewById(R.id.editFinish);
         editTitle = view.findViewById(R.id.editTitle);
@@ -306,7 +302,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         /* 각 버튼 setOnClickListener해주기 */
         tdBtn.setOnClickListener(this);
         attendanceBtn.setOnClickListener(this);
-        todayBtn.setOnClickListener(this);
         roomBtn.setOnClickListener(this);
         editTitle.setOnClickListener(this);
         editFinishBtn.setOnClickListener(this);
@@ -331,7 +326,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
               saveFirebaseIsLocked();
             }
         }, 5000);
-        getRecentPayDocument();
 
         return view;
     }
@@ -487,7 +481,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
         //false인지 확인
         firestore.collection(FirebaseID.myPage).document(email).collection("title").document("titleIsLocked")
-
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -501,6 +494,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
                                 Boolean lock = (Boolean)shot.get(category+"-" + Integer.toString(index));
                                 Log.d("lock",lock.toString());
+
                                 if(lock == false){ //최초로 칭호 얻음
                                     Log.d("false","false");
                                     newBtn.setVisibility(view.VISIBLE);
@@ -512,7 +506,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                                         }
                                     }, 1000000);
 
-                                    //todo:getRecentPayDocument() 호출
+                                    //todo:getRecentPayDocument() 호출,팝업창 띄어줌(칭호알림:새로운칭호를획득했어요)
 
                                 }
                             } else {}
@@ -520,9 +514,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                         }
                     }
                 });
-            //톨 얻기
-            //todo:getRecentPayDocument() 호출
-
     }
 
     //가장 최근 문서 알아내기
@@ -628,6 +619,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 });
 
 
+        //todo: 팝업창 톨증정(nn톨을 받았어요)
         //최근문서 바꾸기
         Map<String,Object> payMap = new HashMap<>();
         payMap.put(FirebaseID.recentDocument,order);
@@ -647,7 +639,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
         //arrays.xml에서 각 title array불러오기
         TypedArray title_todo_image = getResources().obtainTypedArray(R.array.title_todo_image);
         TypedArray title_attendance_image = getResources().obtainTypedArray(R.array.title_attendance_image);
-        TypedArray title_today_image = getResources().obtainTypedArray(R.array.title_today_image);
         TypedArray title_room_image = getResources().obtainTypedArray(R.array.title_room_image);
         String strReptitle;
 
@@ -663,12 +654,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 repTitle.setText(strReptitle);
                 Drawable atTitleImage = title_attendance_image.getDrawable(repTitleIndex);
                 titleImage.setImageDrawable(atTitleImage);
-                break;
-            case 3:
-                strReptitle = titleList.getToday_titleList(repTitleIndex);
-                repTitle.setText(strReptitle);
-                Drawable todayTitleImage = title_today_image.getDrawable(repTitleIndex);
-                titleImage.setImageDrawable(todayTitleImage);
                 break;
             case 4:
                 strReptitle = titleList.getRoom_titleList(repTitleIndex);
@@ -705,7 +690,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 }else {//edit데이터 true넘겨줘야함
                     bundle2.putBoolean("edit",true);
                     com.abbsolute.ma_livu.MyPage.attendanceFragment.isClicked = false;
-                    com.abbsolute.ma_livu.MyPage.todayFragment.isClicked = false;
                     editFinishBtn.setVisibility(View.VISIBLE);
                 }
                 TODOFragment.setArguments(bundle2);
@@ -715,7 +699,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 tdBtn.setSelected(true);
                 attendanceBtn.setSelected(false);
                 roomBtn.setSelected(false);
-                todayBtn.setSelected(false);
 
                 break;
             case R.id.attendanceBtn://출석
@@ -725,38 +708,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 }else {//edit데이터 true넘겨줘야함
                     bundle2.putBoolean("edit",true);
                     TODOtitleFragment.isClicked = false;
-                    com.abbsolute.ma_livu.MyPage.todayFragment.isClicked = false;
                     editFinishBtn.setVisibility(View.VISIBLE);
                 }
 
                 //atBtn 버튼 제외하고 모두 회색
                 attendanceBtn.setSelected(true);
                 tdBtn.setSelected(false);
-                todayBtn.setSelected(false);
                 roomBtn.setSelected(false);
 
                 attendanceFragment.setArguments(bundle2);
                 fragmentTransaction.replace(R.id.frameLayout, attendanceFragment).commitAllowingStateLoss();
-                break;
-            case R.id.todayBtn:
-                if(editFinish == true){//편집화면이 아니라면 정상화면 출력 , 즉 edit데이터 false넘겨주면 됨
-                    bundle2.putBoolean("edit",false);
-                    editFinishBtn.setVisibility(View.GONE);
-                }else {//edit데이터 true넘겨줘야함
-                    bundle2.putBoolean("edit",true);
-                    TODOtitleFragment.isClicked = false;
-                    com.abbsolute.ma_livu.MyPage.attendanceFragment.isClicked = false;
-                    editFinishBtn.setVisibility(View.VISIBLE);
-                }
-
-                //todayBtn버튼 제외하고 모두 회색
-                todayBtn.setSelected(true);
-                tdBtn.setSelected(false);
-                attendanceBtn.setSelected(false);
-                roomBtn.setSelected(false);
-
-                todayFragment.setArguments(bundle2);
-                fragmentTransaction.replace(R.id.frameLayout, todayFragment).commitAllowingStateLoss();
                 break;
             case R.id.roomBtn:
                 if(editFinish == true){//편집화면이 아니라면 정상화면 출력 ,즉 edit데이터 false넘겨주면 됨
@@ -766,13 +727,11 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                     bundle2.putBoolean("edit",true);
                     TODOtitleFragment.isClicked = false;
                     com.abbsolute.ma_livu.MyPage.attendanceFragment.isClicked = false;
-                    com.abbsolute.ma_livu.MyPage.todayFragment.isClicked = false;
                     editFinishBtn.setVisibility(View.VISIBLE);
                 }
 
                 //roomBtn버튼 제외하고 모두 회색
                 roomBtn.setSelected(true);
-                todayBtn.setSelected(false);
                 tdBtn.setSelected(false);
                 attendanceBtn.setSelected(false);
 
@@ -791,7 +750,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 //편집하기 눌렀을 때 최초화면 to-do fragment 이기 떄문에 tdBtn빼고 다 회색
                 tdBtn.setSelected(true);
                 attendanceBtn.setSelected(false);
-                todayBtn.setSelected(false);
                 roomBtn.setSelected(false);
 
                 editFinishBtn.setVisibility(View.VISIBLE); //완료버튼 보이기
@@ -810,7 +768,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 tdBtn.setSelected(true);
                 attendanceBtn.setSelected(false);
                 roomBtn.setSelected(false);
-                todayBtn.setSelected(false);
 
                 //대표칭호 선택 될 때 파이어스토어 디비 업데이트
                 myPageRef.update(FirebaseID.titleCategory,category);
@@ -852,9 +809,6 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
             for(int i = 0; i < attendanceIslocked.size(); i++){
                 locked.put("Attendance-" + i,attendanceIslocked.get(i));
             }
-            for(int i = 0; i < todayIslocked.size(); i++){
-                locked.put("Today-" + i,todayIslocked.get(i));
-            }
             for(int i = 0; i< roomIslocked.size(); i++){
                 locked.put("Room-" + i, roomIslocked.get(i));
             }
@@ -864,12 +818,7 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                     .collection("title")
                     .document("titleIsLocked")
                     .set(locked, SetOptions.merge());
-//                //myPageRef.set(isLocked);
-//
-//
-//                //email을 문서이름으로 해서 firestore에 저장
-//                firestore.collection(FirebaseID.myPage)
-//                        .document(email).set(isLocked, SetOptions.merge());
+
 
         }
     }

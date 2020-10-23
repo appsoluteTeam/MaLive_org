@@ -24,18 +24,11 @@
         <item>@drawable/attendance3</item>
     </array>
 
-    <array name="title_today_image">
-        <item>@drawable/today1</item>
-    </array>
-
     <array name="title_room_image">
         <item>@drawable/room1</item>
         <item>@drawable/room2</item>
         <item>@drawable/room3</item>
         <item>@drawable/room4</item>
-        <item>@drawable/room5</item>
-        <item>@drawable/room6</item>
-        <item>@drawable/room7</item>
 
     </array>
 </resources>
