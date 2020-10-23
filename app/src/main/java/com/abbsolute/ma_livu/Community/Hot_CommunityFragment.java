@@ -47,6 +47,7 @@ public class Hot_CommunityFragment extends Fragment {
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private Button btn_today_post,btn_today_room;
+    private View view1,view2;
     private String[] categoryarray={"what_eat","what_do","how_do"};
 
     //리사이클러뷰
@@ -69,11 +70,14 @@ public class Hot_CommunityFragment extends Fragment {
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
 //        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
 
-
         //버튼 아이디값 찾기
         btn_more_text=view.findViewById(R.id.btn_more_text);
         btn_commu_write=(ImageButton)view.findViewById(R.id.btn_commu_write);
         btn_today_post=(Button)view.findViewById(R.id.btn_today_post);
+        btn_today_room=(Button)view.findViewById(R.id.btn_today_room);
+
+        view1=view.findViewById(R.id.view_today_post);view1.setVisibility(View.VISIBLE);
+        view2=view.findViewById(R.id.view_today_room);view2.setVisibility(View.INVISIBLE);
 
 
         //버튼리스너 생성
@@ -82,7 +86,13 @@ public class Hot_CommunityFragment extends Fragment {
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.btn_today_post: //오늘의 글 선택
+                        view1.setVisibility(View.VISIBLE);
+                        view2.setVisibility(view.INVISIBLE);
                         callRecycler();
+                        break;
+                    case R.id.btn_today_room:
+                        view2.setVisibility(View.VISIBLE);
+                        view1.setVisibility(view.INVISIBLE);
                         break;
                     case R.id.btn_more_text: // 작성하기 아이콘 클릭
                         ((HomeActivity)getActivity()).setFragment(50);
@@ -93,11 +103,10 @@ public class Hot_CommunityFragment extends Fragment {
                 }
             }
         };
-
-
         btn_today_post.setOnClickListener(onClickListener);
         btn_more_text.setOnClickListener(onClickListener);
         btn_commu_write.setOnClickListener(onClickListener);
+        btn_today_room.setOnClickListener(onClickListener);
 
         return view;
     }
