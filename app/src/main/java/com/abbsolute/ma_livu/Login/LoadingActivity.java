@@ -13,7 +13,6 @@ import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentFragment;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentFragment;
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
 import com.abbsolute.ma_livu.MyPage.TitleFragment;
@@ -39,8 +38,7 @@ public class LoadingActivity extends AppCompatActivity {
     private CommunityCommentCommentFragment communityCommentCommentFragment;
     private CommunityPostsFragment communityPostsFragment;
 
-    //GuestBook Fragment
-    private GuestBookWriteFragment guestBookWriteFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +72,6 @@ public class LoadingActivity extends AppCompatActivity {
                     communityCommentFragment = new CommunityCommentFragment(email);
                     communityCommentCommentFragment = new CommunityCommentCommentFragment(email);
                     communityPostsFragment = new CommunityPostsFragment(email);
-                    guestBookWriteFragment = new GuestBookWriteFragment(email);
 
                     intent = new Intent(getBaseContext(), HomeActivity.class);
                     startActivity(intent);

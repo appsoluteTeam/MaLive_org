@@ -8,4 +8,5 @@ public interface CommuCommentOnItemClick {
         void goCommunityCommentComment(int position);
         void checkLikePressed(int position);
         boolean checkUser(int position);
+        boolean returnBoolean(int position);
 }

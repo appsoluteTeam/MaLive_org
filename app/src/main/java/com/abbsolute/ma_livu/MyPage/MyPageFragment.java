@@ -414,7 +414,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.savedPosts)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
+                        @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
 //                     내가 저장한 글 불러오기

@@ -69,10 +69,6 @@ public class CommunityFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.community_fragment,container,false);
 
-        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
-
-
         btn_what_eat=(Button)view.findViewById(R.id.what_eat);
         btn_what_do=(Button)view.findViewById(R.id.what_do);
         btn_how_do=(Button)view.findViewById(R.id.how_do);
@@ -204,43 +200,6 @@ public class CommunityFragment extends Fragment {
                         radioSet(what_eat);
                     }
                 });
-
-                // 파이어 스토어에서 데이터 받아오는 부분 아래에 메소드로 뺐어용~~~~
-//                firestore.collection("Community").document("what_eat").collection("sub_Community")
-//                        .get()
-//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if(task.isSuccessful()){
-//                                    if(task.getResult() != null){
-//                                        arrayList.clear();
-//                                        for(DocumentSnapshot snapshot : task.getResult()){
-//                                            Map<String,Object> shot = snapshot.getData();
-//                                            String documentID = String.valueOf(shot.get(FirebaseID.documentID));
-//                                            title = String.valueOf(shot.get(FirebaseID.title));
-//                                            content =String.valueOf(shot.get(FirebaseID.content));
-//                                            category = String.valueOf(shot.get(FirebaseID.category));
-//                                            date = String.valueOf(shot.get(FirebaseID.commu_date));
-//
-////                                            for(int i=0; i<FirebaseID.Commu_image_URI.length(); i++){
-////                                                img_uri[i]= (String) shot.get(FirebaseID.Commu_image_URI);
-////                                            }
-////                                            Log.d("CommunityFragment", "img_uri = "+img_uri);
-//                                            writer=String.valueOf(shot.get(FirebaseID.Nickname));
-//
-//
-//                                            likeCount = String.valueOf(shot.get(FirebaseID.commu_like_count));
-//                                            saveCount = String.valueOf(shot.get(FirebaseID.commu_save_count));
-//
-//                                            bringData data = new bringData(documentID,title,category,content,date,writer,likeCount,saveCount);
-//
-//                                            arrayList.add(data);
-//                                        }
-//                                        adapter.notifyDataSetChanged();
-//                                    }
-//                                }
-//                            }
-//                        });
                 break;
             case 1:
                 callSortRecycler(0, what_do);
