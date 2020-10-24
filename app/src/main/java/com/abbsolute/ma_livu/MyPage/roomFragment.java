@@ -19,7 +19,7 @@ public class roomFragment extends Fragment {
     private String[] roomTitleList;
     private boolean[] islocked;
     private String repTitle;
-    private ConstraintLayout roomTitle1,roomTitle2,roomTitle3,roomTitle4,roomTitle5,roomTitle6,roomTitle7;
+    private ConstraintLayout roomTitle1,roomTitle2,roomTitle3,roomTitle4;
     private ConstraintLayout[] titleList;
     private boolean isedit,editFinish;
     private int repIndex,category;
@@ -62,24 +62,17 @@ public class roomFragment extends Fragment {
         roomTitle2 = v.findViewById(R.id.roomTitle2);
         roomTitle3 = v.findViewById(R.id.roomTitle3);
         roomTitle4 = v.findViewById(R.id.roomTitle4);
-        roomTitle5 = v.findViewById(R.id.roomTitle5);
-        roomTitle6 = v.findViewById(R.id.roomTitle6);
-        roomTitle7 = v.findViewById(R.id.roomTitle7);
 
 
-        titleList = new ConstraintLayout[]{roomTitle1,roomTitle2,roomTitle3,roomTitle4,roomTitle5,roomTitle6,roomTitle7};
+        titleList = new ConstraintLayout[]{roomTitle1,roomTitle2,roomTitle3,roomTitle4};
 
-        roomTitleList = new String[]{"금","은","동","미니멀리스트","살림뉴비","살림부자","맥시멈리스트"};
+        roomTitleList = new String[]{"미니멀리스트","살림뉴비","살림부자","맥시멈리스트"};
 
-        TextView[] roomTitleIdList = new TextView[]{roomTitle1.findViewById(R.id.name),roomTitle2.findViewById(R.id.name),roomTitle3.findViewById(R.id.name),roomTitle4.findViewById(R.id.name),
-                roomTitle5.findViewById(R.id.name),roomTitle6.findViewById(R.id.name),roomTitle7.findViewById(R.id.name)};
-        ImageView[] roomImageIdList = new ImageView[]{roomTitle1.findViewById(R.id.image),roomTitle2.findViewById(R.id.image),roomTitle3.findViewById(R.id.image),roomTitle4.findViewById(R.id.image),
-                roomTitle5.findViewById(R.id.image),roomTitle6.findViewById(R.id.image),roomTitle7.findViewById(R.id.image)};
+        TextView[] roomTitleIdList = new TextView[]{roomTitle1.findViewById(R.id.name), roomTitle2.findViewById(R.id.name), roomTitle3.findViewById(R.id.name), roomTitle4.findViewById(R.id.name)};
+        ImageView[] roomImageIdList = new ImageView[]{roomTitle1.findViewById(R.id.image), roomTitle2.findViewById(R.id.image), roomTitle3.findViewById(R.id.image), roomTitle4.findViewById(R.id.image),};
 
         Drawable lock_title = getResources().getDrawable(R.drawable.lock_title);
-        Drawable[] roomImage = new Drawable[]{getResources().getDrawable(R.drawable.room1),getResources().getDrawable(R.drawable.room2),getResources().getDrawable(R.drawable.room3),getResources().getDrawable(R.drawable.room4),
-                getResources().getDrawable(R.drawable.room5),getResources().getDrawable(R.drawable.room6),getResources().getDrawable(R.drawable.room7)};
-
+        Drawable[] roomImage = new Drawable[]{getResources().getDrawable(R.drawable.room1), getResources().getDrawable(R.drawable.room2), getResources().getDrawable(R.drawable.room3), getResources().getDrawable(R.drawable.room4)};
 
         for(int i = 0; i < titleList.length; i++){
             if(islocked[i] == true){//목표 달성할 시 칭호 부여
@@ -94,7 +87,7 @@ public class roomFragment extends Fragment {
         }
 
         if(isedit == true) {
-            if(category == 4) {//TODO category 일때
+            if(category == 4) {
                 for (int i = 0; i < titleList.length; i++) {
                     if (i == repIndex) {//대표칭호 선택되어있던것만 흰바탕
                         titleList[i].setSelected(false);

@@ -46,7 +46,6 @@ public class payFragment extends Fragment {
     private Button btn_pay_sort,btn_back; //정렬버튼
     private LinearLayout layout_pay_sort;
     private TextView totalPay;
-    public static Stack<Fragment> fragmentStack;
 
     private String recentBalance;
     private long recentPayDocumentNum;
@@ -76,7 +75,6 @@ public class payFragment extends Fragment {
         btn_back = view.findViewById(R.id.btn_back);
         totalPay = view.findViewById(R.id.totalPay);
 
-        fragmentStack = HomeActivity.fragmentStack;
         fm = getFragmentManager();
 
 
@@ -96,8 +94,7 @@ public class payFragment extends Fragment {
                         radioSet();
                         break;
                     case R.id.btn_back:
-                        Fragment nextFragment = fragmentStack.pop();
-                        fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
+                        fm.popBackStack();
                         break;
                 }
             }

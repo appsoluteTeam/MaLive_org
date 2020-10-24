@@ -44,7 +44,6 @@ public class activeMyPostFragment extends Fragment {
     //fragment 관련 변수
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
-    public static Stack<Fragment> fragmentStack;
 
     private RecyclerView recyclerView;
     public static RecyclerPostAdapter adapter;
@@ -63,6 +62,7 @@ public class activeMyPostFragment extends Fragment {
         fm = getFragmentManager();
         fragmentTransaction = fm.beginTransaction();
 
+
         // activeFragment에서 데이터 받아오기
         if(getArguments() != null){
             str_nickname = getArguments().getString("nickname");
@@ -75,18 +75,7 @@ public class activeMyPostFragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Fragment nextFragment = fragmentStack.pop();
-//                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
-                activeFragment activeFragment = new activeFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("nickname", str_nickname);
-                bundle.putString("MyPost_count", String.valueOf(myPost_count));
-                bundle.putString("MyComment_count", String.valueOf(myComment_count));
-                bundle.putString("MySavedPosts_count", String.valueOf(mySavedPosts_count));
-                activeFragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.main_frame, activeFragment).commit();
+                fm.popBackStack();
             }
         });
 
@@ -119,6 +108,7 @@ public class activeMyPostFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerPostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+
                 postItemListView item = adapter.getItem(position);
 
                 // CommunityPostsFragment로 데이터 넘기기

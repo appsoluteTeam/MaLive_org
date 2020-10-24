@@ -35,7 +35,7 @@ import java.util.Stack;
 
 public class CommunityFragment extends Fragment {
     // 프래그먼트
-    public static Stack<Fragment> fragmentStack;
+
     private FragmentTransaction fragmentTransaction;
 
     private View view;
@@ -124,9 +124,7 @@ public class CommunityFragment extends Fragment {
                         transaction.commit();
                         break;
                     case R.id.btn_back: // 뒤로가기 아이콘 클릭
-                        ((HomeActivity)getActivity()).setFragment(1);
-//                        Fragment nextFragment = fragmentStack.pop();
-//                        fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
+                        getFragmentManager().popBackStack();
                         break;
                 }
             }

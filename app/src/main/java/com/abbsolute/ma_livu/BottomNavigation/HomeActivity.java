@@ -37,7 +37,6 @@ import java.util.Stack;
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener{
 
     //fragment저장할 stack
-    public static Stack<Fragment> fragmentStack;
 
     private FrameLayout main_frame;
     private FrameLayout unity_frame;
@@ -73,8 +72,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        fragmentStack = new Stack<>();
 
         //main_frame
         main_frame = findViewById(R.id.main_frame);
@@ -157,7 +154,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
@@ -165,18 +163,19 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.main_frame,myPageFragment).commit();
+
+                //가장최신의 stack을 pop 해준다..mypage를 또 팝해주는꼴
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.main_frame, myPageFragment).commit();
                 break;
             case 3:
                 main_frame.setVisibility(View.VISIBLE);
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
                 break;
-
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
@@ -188,15 +187,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 52:
                 fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null).commit();
                 break;
-
-            //투두 프래그먼트로 이동
-//            case 100:
-//                fragmentTransaction.replace(R.id.main_frame, toDoFragment);
-//                main_frame.bringToFront();
-//                main_frame.setVisibility(View.VISIBLE);
-//                fragmentTransaction.commit();
-//                break;
-
             case 201:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
@@ -231,9 +221,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case R.id.btnMyPage_active:
                 setMyPageFragment(2);
                 break;
-//            case R.id.btnMyPage_friend:
-//                setMyPageFragment(3);
-//                break;
             case R.id.btnMyPage_informationSet:
                 setMyPageFragment(4);
                 break;
@@ -245,7 +232,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentStack.push(myPageFragment);
         switch (myPageCategoryIndex){
             case 0:
                 fragmentTransaction.replace(R.id.main_frame,titleFragment);

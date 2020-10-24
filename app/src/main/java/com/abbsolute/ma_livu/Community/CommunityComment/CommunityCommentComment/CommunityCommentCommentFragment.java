@@ -150,6 +150,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityCommentFragment communityCommentFragment = new CommunityCommentFragment();
 
@@ -163,7 +164,10 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                 // 버튼 누르면 화면 전환
                 transaction.replace(R.id.main_frame, communityCommentFragment).addToBackStack(null);
                 transaction.commit();
+            */
+                getFragmentManager().popBackStack();
             }
+
         });
 
         // '입력' 버튼 눌렀을 시 DB에 데이터 추가하기

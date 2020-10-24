@@ -34,6 +34,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 public class CommunityPostsFragment extends Fragment {
     //프래그먼트 전환 변수
@@ -66,6 +67,7 @@ public class CommunityPostsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_community_posts, container, false);
+
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
  //       ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         commu_title = view.findViewById(R.id.commu_title);
@@ -200,12 +202,15 @@ public class CommunityPostsFragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getFragmentManager().popBackStack();
+/*
                 transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityFragment communityFragment = new CommunityFragment();
 
                 // 버튼 누르면 화면 전환
                 transaction.replace(R.id.main_frame, communityFragment).addToBackStack(null);
                 transaction.commit();
+ */
             }
         });
 

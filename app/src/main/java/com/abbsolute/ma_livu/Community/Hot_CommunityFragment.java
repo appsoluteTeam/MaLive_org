@@ -94,7 +94,7 @@ public class Hot_CommunityFragment extends Fragment {
                         view2.setVisibility(View.VISIBLE);
                         view1.setVisibility(view.INVISIBLE);
                         break;
-                    case R.id.btn_more_text: // 작성하기 아이콘 클릭
+                    case R.id.btn_more_text: // 더많은글보기 아이콘 클릭
                         ((HomeActivity)getActivity()).setFragment(50);
                         break;
                     case R.id.btn_commu_write: // 작성하기 아이콘 클릭

@@ -300,7 +300,7 @@ public class Commu_WriteFragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HomeActivity) getActivity()).setFragment(50);
+                getFragmentManager().popBackStack();
             }
         });
         return view;
