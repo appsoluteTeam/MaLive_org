@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
@@ -43,7 +47,7 @@ public class CommunityPostsFragment extends Fragment {
     private static String email;
 
     // 값 받아오는 변수들
-    private String title, writer, content, date, category, commentCount, saveCount, likeCount;
+    private String title, writer, content, date, category, commentCount, saveCount, likeCount, likebtnEmail;
     private TextView commu_title, commu_writer, commu_date, commu_content, commu_category, commu_like_count, commu_save_count, commu_comment_count;
     private Button btn_back;
     private ImageButton btn_commu_like, btn_commu_save, btn_commu_comment;
@@ -149,6 +153,49 @@ public class CommunityPostsFragment extends Fragment {
                     }
                 });
 
+        // 좋아요 버튼 눌렀었는지 판별
+        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                .collection("comment_Like_email").document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("게시글 좋아요 버튼 판단", "True!!!");
+                                btn_commu_like.setSelected(!btn_commu_like.isSelected());
+                            }
+                            else {
+                                Log.d("게시글 좋아요 버튼 판단", "False!!!");
+                            }
+                        } else {
+                            Log.d("CommunityPostsFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
+        // 저장 버튼 눌렀었는지 판별
+        firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.savedPosts).document(title)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("저장 버튼 판단", "True!!!");
+                                btn_commu_save.setSelected(!btn_commu_save.isSelected());
+                            }
+                            else {
+                                Log.d("저장 버튼 판단", "False!!!");
+                            }
+                        } else {
+                            Log.d("CommunityPostsFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+
         // '뒤로가기' 버튼 눌렀을 시
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,12 +225,22 @@ public class CommunityPostsFragment extends Fragment {
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
                         data.update(FirebaseID.commu_like_count, String.valueOf(like_count + 1));
+
+                        // 좋아요 버튼을 누른 사람들의 이메일값 저장
+                        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                                .collection("comment_Like_email").document(email).set(SetOptions.merge());
                     }
+
                 } else {
                     commu_like_count.setText(Integer.toString(like_count - 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
                         data.update(FirebaseID.commu_like_count, String.valueOf(like_count - 1));
+
+                        // 좋아요 버튼 취소 시 저장된 이메일 값 삭제
+                        DocumentReference data2 = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                                .collection("comment_Like_email").document(email);
+                        data2.delete();
                     }
                 }
             }
@@ -204,7 +261,6 @@ public class CommunityPostsFragment extends Fragment {
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
                         data.update(FirebaseID.commu_save_count, String.valueOf(save_count + 1));
-                        //TODO 저장버튼 눌렀을 시 데이터가 어디에 저장될지 구현하기
                     }
                     postsSave();
 

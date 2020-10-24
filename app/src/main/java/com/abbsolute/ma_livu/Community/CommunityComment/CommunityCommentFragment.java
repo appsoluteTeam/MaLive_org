@@ -249,23 +249,39 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     public void checkLikePressed(int position) {
                 firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                 .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
-                .collection("comment_Like")
+                .collection("comment_Like").document(email)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("LongLogTag")
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-//                                arrayList.clear();
-
-                                for (DocumentSnapshot snapshot : task.getResult()) {
-                                    Map<String, Object> shot = snapshot.getData();
-                                    String CommentName = String.valueOf(shot.get(FirebaseID.commu_comment_name));
-                                }
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("댓글 좋아요 버튼 판단", "True!!!");
+//                                btn_comment_like.setSelected(!btn_comment_like.isSelected());
+                                commentLikeCheck = true;
+                                returnBoolean(position);
                             }
+                            else {
+                                Log.d("댓글 좋아요 버튼 판단", "False!!!");
+                                commentLikeCheck = false;
+                                returnBoolean(position);
+                            }
+                        } else {
+                            Log.d("CommunityCommentFragment", "get failed with ", task.getException());
                         }
                     }
                 });
+    }
+
+    // 댓글 좋아요 판단 후 결과 return
+    @Override
+    public boolean returnBoolean(int position) {
+        if(commentLikeCheck == true) {
+            return true;
+        }
+        else { return false; }
     }
 
     // 더보기 클릭 시 버튼 활성화 여부 판단 메소드
