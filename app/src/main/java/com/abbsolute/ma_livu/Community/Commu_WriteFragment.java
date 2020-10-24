@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
+import com.abbsolute.ma_livu.Login.LoginActivity;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -119,8 +120,6 @@ public class Commu_WriteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.commu_write_fragment, container, false);
-        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-//        ((HomeActivity)getActivity()).setOnBackPressedListener(this);
         context=container.getContext();
 
         et_title = view.findViewById(R.id.et_title);
@@ -189,7 +188,7 @@ public class Commu_WriteFragment extends Fragment {
                 if(image_list.size()== 5){
                     Toast.makeText(context, "사진은 최대 5장 입니다.", Toast.LENGTH_SHORT).show();
                 }else{
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("image/*");
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                     startActivityForResult(intent.createChooser(intent, "Select Picture"), IMAGE_REQUEST_CODE);
@@ -248,49 +247,51 @@ public class Commu_WriteFragment extends Fragment {
         btn_commu_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (firebaseAuth.getCurrentUser() != null) {
-                    like_count  = 0;
-                    save_count = 0;
-                    comment_count = 0;
+                if(isFilled()) {
+                    if (firebaseAuth.getCurrentUser() != null) {
+                        like_count = 0;
+                        save_count = 0;
+                        comment_count = 0;
 
-                    // 게시글 작성 시간 받아오기
-                    long now = System.currentTimeMillis();
-                    dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    date = Calendar.getInstance();
+                        // 게시글 작성 시간 받아오기
+                        long now = System.currentTimeMillis();
+                        dateform = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        date = Calendar.getInstance();
 
-                    Map<String, Object> data = new HashMap<>();
-                    data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
-                    data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());//이메일
-                    data.put(FirebaseID.category, category); //카테고리
-                    data.put(FirebaseID.title, et_title.getText().toString()); // 제목
-                    data.put(FirebaseID.content, et_content.getText().toString()); //내용
-                    data.put(FirebaseID.commu_date, dateform.format(date.getTime())); // 작성시간
-                    data.put(FirebaseID.Nickname,str_nickname); // 작성자 닉네임
-                    data.put(FirebaseID.commu_like_count, like_count); //좋아요
-                    data.put(FirebaseID.commu_save_count, save_count); //스크랩수
-                    data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
-                    data.put("hot",false);//핫게시글 선정 여부
+                        Map<String, Object> data = new HashMap<>();
+                        data.put(FirebaseID.documentID, firebaseAuth.getCurrentUser().getUid()); // FirebaseID 라는 클래스에서 선언한 필드이름에 , 사용자 UID를 저장
+                        data.put(FirebaseID.Email, firebaseAuth.getCurrentUser().getEmail());//이메일
+                        data.put(FirebaseID.category, category); //카테고리
+                        data.put(FirebaseID.title, et_title.getText().toString()); // 제목
+                        data.put(FirebaseID.content, et_content.getText().toString()); //내용
+                        data.put(FirebaseID.commu_date, dateform.format(date.getTime())); // 작성시간
+                        data.put(FirebaseID.Nickname, str_nickname); // 작성자 닉네임
+                        data.put(FirebaseID.commu_like_count, like_count); //좋아요
+                        data.put(FirebaseID.commu_save_count, save_count); //스크랩수
+                        data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
+                        data.put("hot", false);//핫게시글 선정 여부
 
-                    //파이어 스토리지 사진 올리기
-                    for(Uri image:image_list){
-                        uploadFile(image,image_turn);
-                        image_turn++;
-                    }
-
-                    //이미지 설명 넣기
-                    EditText[] commu_explain = {commu_img_explain1,commu_img_explain2,commu_img_explain3,commu_img_explain4,commu_img_explain5};
-                    for(int i=0; i<5; i++){
-                        if(!(commu_explain[i].getText().toString().equals(""))){
-                            data.put((FirebaseID.commu_img_explain)+i,commu_explain[i].getText().toString());
+                        //파이어 스토리지 사진 올리기
+                        for (Uri image : image_list) {
+                            uploadFile(image, image_turn);
+                            image_turn++;
                         }
-                    }
 
-                    // 저장 위치 변경
-                    firestore.collection(FirebaseID.Community).document(category)
-                            .collection("sub_Community").document(et_title.getText().toString())
-                            .set(data, SetOptions.merge());
+                        //이미지 설명 넣기
+                        EditText[] commu_explain = {commu_img_explain1, commu_img_explain2, commu_img_explain3, commu_img_explain4, commu_img_explain5};
+                        for (int i = 0; i < 5; i++) {
+                            if (!(commu_explain[i].getText().toString().equals(""))) {
+                                data.put((FirebaseID.commu_img_explain) + i, commu_explain[i].getText().toString());
+                            }
+                        }
+
+                        // 저장 위치 변경
+                        firestore.collection(FirebaseID.Community).document(category)
+                                .collection("sub_Community").document(et_title.getText().toString())
+                                .set(data, SetOptions.merge());
+                    }
+                    ((HomeActivity) getActivity()).setFragment(50);
                 }
-                ((HomeActivity) getActivity()).setFragment(50);
             }
         });
 
@@ -306,21 +307,54 @@ public class Commu_WriteFragment extends Fragment {
 
     }
 
+    private boolean isFilled() {
+        if(category == null){
+            Toast.makeText(context,"카테고리 설정하세요",Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(et_title.getText().toString().equals("")){
+            Toast.makeText(context,"제목 입력하세요",Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(et_content.getText().toString().equals("")){
+            Toast.makeText(context,"내용 입력하세요",Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
     //사진 셋팅하기
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == IMAGE_REQUEST_CODE ){
             image = data.getData();
             ClipData clipData = data.getClipData();
-            if(clipData == null){
+            if(clipData == null){ // 이미지가 한장 선택됐을 때
                 urione =data.getData();
                 image_list.add(urione);
                 if (img1.getDrawable() == null) {
                     img1.setImageURI(urione);
                     commu_img_explain1.setVisibility(View.VISIBLE);
                     remove1.setVisibility(View.VISIBLE);
+                }else if(img2.getDrawable() == null){
+                    img2.setImageURI(urione);
+                    commu_img_explain2.setVisibility(View.VISIBLE);
+                    remove2.setVisibility(View.VISIBLE);
+                }else if(img3.getDrawable() == null){
+                    img3.setImageURI(urione);
+                    commu_img_explain3.setVisibility(View.VISIBLE);
+                    remove3.setVisibility(View.VISIBLE);
+                }else if(img4.getDrawable() == null){
+                    img4.setImageURI(urione);
+                    commu_img_explain4.setVisibility(View.VISIBLE);
+                    remove4.setVisibility(View.VISIBLE);
+                }else {
+                    img5.setImageURI(urione);
+                    commu_img_explain5.setVisibility(View.VISIBLE);
+                    remove5.setVisibility(View.VISIBLE);
                 }
-            }else {
+
+            } else { // 이미지가 여러장 선택됐을 때
                 for (int i = 0; i <clipData.getItemCount(); i++) {
                     if (i < clipData.getItemCount()) {
                         urione = clipData.getItemAt(i).getUri();

@@ -200,19 +200,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                     fragmentTransaction.hide(homeFragment).commit();
                 }
                 fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
-// =======
-//                 fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
-//                 break;
-//             case 3:
-//                 fragmentTransaction.replace(R.id.main_frame, alarmFragment).commit();
-//                 break;
-//             case 4:
-//                 fragmentTransaction.replace(R.id.main_frame, guestBookFragment);
-//                 fragmentTransaction.commit();
-//                 break;
-//             case 5:
-//                 fragmentTransaction.replace(R.id.main_frame, guestBookWriteFragment);
-// >>>>>>> cheer-up
                 fragmentTransaction.commit();
                 break;
 
