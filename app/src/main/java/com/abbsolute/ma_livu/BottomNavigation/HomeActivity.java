@@ -18,8 +18,7 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
@@ -68,9 +67,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private int myPageCategoryIndex;  //  마이페이지 카테고리 인덱스
     private String email;
 
-    private GuestBookFragment guestBookFragment;
-    private GuestBookWriteFragment guestBookWriteFragment;
-
     private int count;
     //todoList관련 뒤로가기 이벤트
     @Override
@@ -96,10 +92,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
         //타이틀 프래그먼트
         titleFragment = new TitleFragment();
-
-        //방명록 프래그먼트
-        guestBookFragment = new GuestBookFragment();
-        guestBookWriteFragment = new GuestBookWriteFragment();
 
         /// alarm 프래그먼트들//
 //        alarmFragmentAllLook=new AlarmFragmentAllLook();
@@ -140,10 +132,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         payFragment = new payFragment();
         informationSetFragment = new informationSetFragment();
         activeFragment = new activeFragment();
-
-        guestBookFragment = new GuestBookFragment();
-        guestBookWriteFragment = new GuestBookWriteFragment();
-
 
        // setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
 
@@ -188,20 +176,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
                 break;
-            case 4:
-                if(!homeFragment.isHidden()){
-                    fragmentTransaction.hide(homeFragment).commit();
-                }
-                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
-                fragmentTransaction.commit();
-                break;
-            case 5:
-                if(!homeFragment.isHidden()){
-                    fragmentTransaction.hide(homeFragment).commit();
-                }
-                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
-                fragmentTransaction.commit();
-                break;
+
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
             case 50:
