@@ -8,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.abbsolute.ma_livu.Home.GuestBook.CommentAdapter;
-import com.abbsolute.ma_livu.Home.GuestBook.CommentItem;
-import com.abbsolute.ma_livu.Home.GuestBook.OnItemClick;
+
 import com.abbsolute.ma_livu.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 

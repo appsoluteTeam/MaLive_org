@@ -50,7 +50,6 @@ public class informationSetFragment extends Fragment implements View.OnClickList
     private static int approveNum;
     private static String email;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    public static Stack<Fragment> fragmentStack;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fm;
     private Button btn_back;
@@ -89,10 +88,6 @@ public class informationSetFragment extends Fragment implements View.OnClickList
         btn_logout.setOnClickListener(this);
         cancel.setOnClickListener(this);
         btn_back.setOnClickListener(this);
-
-        //back버튼 적용 위해 stack에 담아둔 fragment
-        fragmentStack = HomeActivity.fragmentStack;
-
 
         return view;
     }
@@ -177,20 +172,6 @@ public class informationSetFragment extends Fragment implements View.OnClickList
                                 }
                             });
 
-                    //firestore AlarmFragment 디비 삭제
-                    firestore.collection("AlarmFragment").document(email)
-                            .delete()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                }
-                            });
-
                     //내가 쓴 글 지우기
                     final String[] communityCategory = {"how_do","what_do","what_eat"};
 
@@ -234,8 +215,7 @@ public class informationSetFragment extends Fragment implements View.OnClickList
 
                 break;
             case R.id.btn_back:
-                Fragment nextFragment = fragmentStack.pop();
-                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
+                getFragmentManager().popBackStack();
                 break;
         }
     }

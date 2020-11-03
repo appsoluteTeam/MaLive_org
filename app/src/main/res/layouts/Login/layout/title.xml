@@ -193,20 +193,6 @@
                             android:layout_weight="1">
 
                             <Button
-                                android:id="@+id/newToday"
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"
-                                android:layout_gravity="bottom|right"
-                                android:layout_weight="1"
-                                android:background="@drawable/bluecircle" />
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <Button
                                 android:id="@+id/newRoom"
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"
@@ -245,16 +231,6 @@
                             android:gravity="center"
                             android:onClick="onClick"
                             android:text="출석"
-                            android:textColor="@color/button_selector" />
-
-                        <TextView
-                            android:id="@+id/todayBtn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:onClick="onClick"
-                            android:text="투데이"
                             android:textColor="@color/button_selector" />
 
                         <TextView

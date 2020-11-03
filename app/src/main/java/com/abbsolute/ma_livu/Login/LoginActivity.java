@@ -153,9 +153,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 informationSetFragment = new informationSetFragment(email);
                                 homeFragment = new HomeFragment(email);
                                 activeFragment = new activeFragment(email);
-
-
-
+                                
                                 finish();
                             }
                             Toast.makeText(LoginActivity.this,"로그인 성공",Toast.LENGTH_SHORT).show();

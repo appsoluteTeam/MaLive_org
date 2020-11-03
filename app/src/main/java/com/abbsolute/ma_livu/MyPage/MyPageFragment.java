@@ -44,8 +44,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     //reCyclerView 관련 변수
     private static RecyclerPostAdapter mAdapter = null;
 
-    public static Stack<Fragment> fragmentStack;
-
     private MyPageDataListener dataListener;
     private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, todo;
     private TextView nickname, textView_email;
@@ -232,11 +230,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         /* myPage fragment 처음 */
         view = inflater.inflate(R.layout.fragment_mypage, container, false);
 
-        //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
-//        ((HomeActivity) getActivity()).setOnBackPressedListener(this);
-
-        Log.d("Mypage-Email", email);
-
         /* 정보설정*/
         btnMyPage_informationSet = view.findViewById(R.id.btnMyPage_informationSet);
 
@@ -280,23 +273,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         trash_percent.setText(String.valueOf(trash_complete % 100));
         etc_percent.setText(String.valueOf(etc_complete % 100));
 
-
-        //firestore TODOList 디비 삭제
-        firestore.collection("ToDoList").document("0914@naver.com")
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("delte TODO", "delteTODO");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
-
-
         return view;
     }
 
@@ -311,9 +287,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
             case R.id.btnMyPage_pay://결제
                 dataListener.myPageDataSet(1);
                 break;
-//            case R.id.btnMyPage_active://활동
-//                dataListener.myPageDataSet(2);
-//                break;
             case R.id.btnMyPage_informationSet://정보 설정
                 dataListener.myPageDataSet(4);
                 break;
@@ -441,7 +414,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         firestore.collection(FirebaseID.myPage).document(email).collection(FirebaseID.savedPosts)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
+                        @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
 //                     내가 저장한 글 불러오기

@@ -18,8 +18,7 @@ import com.abbsolute.ma_livu.Community.CommunityFragment;
 
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookFragment;
-import com.abbsolute.ma_livu.Home.GuestBook.GuestBookWriteFragment;
+
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
@@ -38,7 +37,6 @@ import java.util.Stack;
 public class HomeActivity extends AppCompatActivity implements MyPageDataListener, DataListener{
 
     //fragment저장할 stack
-    public static Stack<Fragment> fragmentStack;
 
     private FrameLayout main_frame;
     private FrameLayout unity_frame;
@@ -68,17 +66,12 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private int myPageCategoryIndex;  //  마이페이지 카테고리 인덱스
     private String email;
 
-    private GuestBookFragment guestBookFragment;
-    private GuestBookWriteFragment guestBookWriteFragment;
-
     private int count;
     //todoList관련 뒤로가기 이벤트
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        fragmentStack = new Stack<>();
 
         //main_frame
         main_frame = findViewById(R.id.main_frame);
@@ -96,10 +89,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
 
         //타이틀 프래그먼트
         titleFragment = new TitleFragment();
-
-        //방명록 프래그먼트
-        guestBookFragment = new GuestBookFragment();
-        guestBookWriteFragment = new GuestBookWriteFragment();
 
         /// alarm 프래그먼트들//
 //        alarmFragmentAllLook=new AlarmFragmentAllLook();
@@ -141,10 +130,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         informationSetFragment = new informationSetFragment();
         activeFragment = new activeFragment();
 
-        guestBookFragment = new GuestBookFragment();
-        guestBookWriteFragment = new GuestBookWriteFragment();
-
-
        // setFragment(0); // 첫번째 프래그먼트 화면을 뭘로 띄어 줄 지
 
         getSupportFragmentManager().beginTransaction().add(R.id.unity_frame,homeFragment).commit();
@@ -169,7 +154,8 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame, hotCommunityFragment).commit();
                 break;
             case 2:
@@ -177,43 +163,18 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.main_frame,myPageFragment).commit();
+
+                //가장최신의 stack을 pop 해준다..mypage를 또 팝해주는꼴
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.main_frame, myPageFragment).commit();
                 break;
             case 3:
                 main_frame.setVisibility(View.VISIBLE);
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-                fragmentManager.popBackStackImmediate(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
-                break;
-            case 4:
-                if(!homeFragment.isHidden()){
-                    fragmentTransaction.hide(homeFragment).commit();
-                }
-                fragmentTransaction.replace(R.id.main_frame,guestBookFragment);
-                fragmentTransaction.commit();
-                break;
-            case 5:
-                if(!homeFragment.isHidden()){
-                    fragmentTransaction.hide(homeFragment).commit();
-                }
-                fragmentTransaction.replace(R.id.main_frame,guestBookWriteFragment);
-// =======
-//                 fragmentTransaction.replace(R.id.main_frame, myPageFragment).commit();
-//                 break;
-//             case 3:
-//                 fragmentTransaction.replace(R.id.main_frame, alarmFragment).commit();
-//                 break;
-//             case 4:
-//                 fragmentTransaction.replace(R.id.main_frame, guestBookFragment);
-//                 fragmentTransaction.commit();
-//                 break;
-//             case 5:
-//                 fragmentTransaction.replace(R.id.main_frame, guestBookWriteFragment);
-// >>>>>>> cheer-up
-                fragmentTransaction.commit();
                 break;
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
@@ -226,15 +187,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case 52:
                 fragmentTransaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null).commit();
                 break;
-
-            //투두 프래그먼트로 이동
-//            case 100:
-//                fragmentTransaction.replace(R.id.main_frame, toDoFragment);
-//                main_frame.bringToFront();
-//                main_frame.setVisibility(View.VISIBLE);
-//                fragmentTransaction.commit();
-//                break;
-
             case 201:
                 fragmentTransaction.replace(R.id.main_frame,alarmFragment);
                 fragmentTransaction.commit();
@@ -269,9 +221,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
             case R.id.btnMyPage_active:
                 setMyPageFragment(2);
                 break;
-//            case R.id.btnMyPage_friend:
-//                setMyPageFragment(3);
-//                break;
             case R.id.btnMyPage_informationSet:
                 setMyPageFragment(4);
                 break;
@@ -283,7 +232,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     public void setMyPageFragment(int myPageCategoryIndex){
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentStack.push(myPageFragment);
         switch (myPageCategoryIndex){
             case 0:
                 fragmentTransaction.replace(R.id.main_frame,titleFragment);

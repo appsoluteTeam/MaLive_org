@@ -16,12 +16,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class activeMySavedPostsFragment extends Fragment {
     private View view;
@@ -61,17 +63,7 @@ public class activeMySavedPostsFragment extends Fragment {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Fragment nextFragment = fragmentStack.pop();
-//                fragmentTransaction.replace(R.id.main_frame, nextFragment).commit();
-                activeFragment activeFragment = new activeFragment();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("nickname", str_nickname);
-                bundle.putString("MyPost_count", String.valueOf(myPost_count));
-                bundle.putString("MyComment_count", String.valueOf(myComment_count));
-                activeFragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.main_frame, activeFragment).commit();
+                fm.popBackStack();
             }
         });
 
@@ -107,6 +99,7 @@ public class activeMySavedPostsFragment extends Fragment {
         adapter.setOnItemClickListener(new RecyclerPostAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
+
                 postItemListView item = adapter.getItem(position);
 
                 // CommunityPostsFragment로 데이터 넘기기

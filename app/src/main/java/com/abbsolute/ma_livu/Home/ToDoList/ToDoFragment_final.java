@@ -1,11 +1,17 @@
 package com.abbsolute.ma_livu.Home.ToDoList;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
@@ -39,6 +45,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static android.content.ContentValues.TAG;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class ToDoFragment_final extends Fragment {
 
@@ -428,6 +435,33 @@ public class ToDoFragment_final extends Fragment {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+
+        //todo:팝업 톨 얻었다고 띄우기
+        View dialogView = getLayoutInflater().inflate(R.layout.custom_popup, null);
+        TextView popup_title = dialogView.findViewById(R.id.popup_title);
+        TextView popup_detail = dialogView.findViewById(R.id.popup_detail);
+        ImageView popup_image = dialogView.findViewById(R.id.popup_image);
+
+        popup_title.setText("톨 증정");
+        popup_detail.setText("10톨을 받았어요!");
+        popup_image.setImageResource(R.drawable.profile);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setView(dialogView);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setGravity(Gravity.TOP);
+
+        DisplayMetrics dm = getContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+        int width = dm.widthPixels; //디바이스 화면 너비
+        int height = dm.heightPixels; //디바이스 화면 높이
+
+        WindowManager.LayoutParams params = alertDialog.getWindow().getAttributes();
+        params.copyFrom(alertDialog.getWindow().getAttributes());
+        params.width = 200;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+       // alertDialog.getWindow().setAttributes(params);
+        alertDialog.show();
 
 
         //최근문서 바꾸기

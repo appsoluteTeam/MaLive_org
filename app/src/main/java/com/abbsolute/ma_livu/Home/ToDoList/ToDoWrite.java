@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -189,14 +191,12 @@ public class ToDoWrite extends Fragment {
         });
 
         /* 등록버튼 눌렀을 때 */
-        // 그리고.. 카테고리가 선택되지 않았을 때, 날짜가 선택되지 않았을 때, 세부사항이 null이 아닐 때만 넘어가게 해줘야한다.
+        //카테고리가 선택되었을 때, 날짜가 선택되었을 때, 세부사항이 null이 아닐 때만 넘어가게 해줘야한다.
 
         //현재 시간 초단위까지 나오는 format type
         java.text.SimpleDateFormat format = new java.text.SimpleDateFormat( "yyyy-MM-dd HH:mm:ss");
         String format_time = format.format(calendar.getTime());
 
-
-//        String todo_date = Integer.toString(todo_year) + "." + Integer.toString(todo_month) + "." + Integer.toString(todo_day);
 
         write_todo = view.findViewById(R.id.write_todo);
         btn_todo_store = view.findViewById(R.id.btn_todo_store);
@@ -229,7 +229,6 @@ public class ToDoWrite extends Fragment {
                     //firebase에 저장할 listview
                     ToDoList_Info toDoList_info = new ToDoList_Info(todo_date,format_time,str_category,detail_content,false);
 
-                    Log.d("todo_date", str_category + detail_content + todo_date + format_time);
                     //파이어스토어 저장
                     String id = firebaseAuth.getCurrentUser().getEmail();
 
@@ -250,6 +249,11 @@ public class ToDoWrite extends Fragment {
                                     Log.w("ToDoWrite", "Error writing document", e);
                                 }
                             });
+
+                    //문서값 비어있지 않게 하기 위해 필드 임의로 하나 추가(탈퇴시 필드가 하나도 없으면 firestore삭제가 안되기 때문)
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("tmp",null);
+                    firestore.collection(FirebaseID.ToDoLists).document(id).set(data,SetOptions.merge());
 
                     //fragment 변경
                     ToDoFragment_final toDoFragment_final = new ToDoFragment_final();
