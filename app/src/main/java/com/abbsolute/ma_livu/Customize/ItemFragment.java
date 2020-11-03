@@ -11,8 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.Home.HomeFragment;
 import com.abbsolute.ma_livu.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Comment;
+
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +43,8 @@ public class ItemFragment extends Fragment implements AccessoryAdapter.ItemClick
     RecyclerView.LayoutManager layoutManager;
     AccessoryAdapter itemRecyclerAdapter;
     private HomeFragment homeFragment;
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     UnityItem[] sample = {
             new UnityItem(0,"모자",2,0),
@@ -110,7 +122,14 @@ public class ItemFragment extends Fragment implements AccessoryAdapter.ItemClick
         Toast.makeText(getContext(),"item 클릭됨",Toast.LENGTH_LONG).show();
         //  mListener.onButtonClicked(item.getName());
         homeFragment.AssignEquipment(item);
+        saveItem(item);
+    }
 
+    public void saveItem(UnityItem item){
+        String id = firebaseAuth.getCurrentUser().getEmail();
+        DocumentReference db = firestore.collection("Customize")
+                .document(id);
+        db.update("items", FieldValue.arrayUnion(item.getItemMap()));
     }
 
 }
