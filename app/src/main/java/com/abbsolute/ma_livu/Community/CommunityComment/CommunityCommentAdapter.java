@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,10 +87,10 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                 // 버튼이 눌리지 않은 상태를 기본으로 설정
                 v.setSelected(!v.isSelected());
                 if(v.isSelected()) {
-                    holder.commu_comment_like.setText(Integer.toString(like_count+1));
+                    holder.commu_comment_like.setText(String.valueOf(like_count+1));
                     callback.commentLike(position);
                 } else {
-                    holder.commu_comment_like.setText(Integer.toString(like_count-1));
+                    holder.commu_comment_like.setText(String.valueOf(like_count-1));
                     callback.commentDislike(position);
                 }
             }

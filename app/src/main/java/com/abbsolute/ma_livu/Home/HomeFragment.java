@@ -19,7 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.abbsolute.ma_livu.Alarm.PopupFragment;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
+//체크
+//import com.abbsolute.ma_livu.Customize.ColorFragment;
 import com.abbsolute.ma_livu.Customize.ColorFragment;
 import com.abbsolute.ma_livu.Customize.FaceFragment;
 import com.abbsolute.ma_livu.Customize.ItemFragment;
@@ -33,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.unity3d.player.UnityPlayer;
 
@@ -56,8 +60,8 @@ public class HomeFragment extends Fragment {
 
     //출석체크 관련 변수
     private String beforeCalendar;
-    private LinearLayout layout_checkin;
-    private TextView at_close_button;
+//    private LinearLayout layout_checkin;
+//    private Button at_close_button;
 
     //파이어스토에 저장하기 위한 변수
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -72,27 +76,27 @@ public class HomeFragment extends Fragment {
         HomeFragment.email = email;
     }
 
+//    // FCM Topic test
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        FirebaseMessaging.getInstance().subscribeToTopic("FCM");
+//    }
+
     @Nullable
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mUnityPlayer = new UnityPlayer(getActivity());
 
         view = inflater.inflate(R.layout.fragment_home,container,false);
         //하단 탭 바에있는 4개의 항목에 대해 이것을 수행하여 listener를 초기화한다
   //      ((HomeActivity)getActivity()).setOnBackPressedListener(this);
-        layout_checkin = view.findViewById(R.id.layout_checkin);
-        at_close_button = view.findViewById(R.id.at_close_button);
+
+//        layout_checkin = view.findViewById(R.id.layout_checkin);
+//        at_close_button = (Button) view.findViewById(R.id.at_close_button);
 
         attendance_check();
 
-//        go_GuestBook = view.findViewById(R.id.go_GuestBook);
-//        go_GuestBook.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ((HomeActivity)getActivity()).setFragment(4);
-//            }
-//        });
         go_Todo=view.findViewById(R.id.go_Todo);
         go_Todo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,20 +147,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-        // 여기서부터 유니티
+// 체크!!
+//         여기서부터 유니티
         this.fl_forUnity = view.findViewById(R.id.fl_forUnity);
         this.fl_forUnity.addView(mUnityPlayer.getView(),
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         mUnityPlayer.requestFocus();
         mUnityPlayer.windowFocusChanged(true);//First fix Line
 
-        at_close_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layout_checkin.setVisibility(View.GONE);
-            }
-        });
+//        at_close_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                layout_checkin.setVisibility(View.GONE);
+//            }
+//        });
 
 
 
@@ -211,14 +215,21 @@ public class HomeFragment extends Fragment {
         Log.d("beforeCalendar",beforeCalendar);
 
         if(beforeCalendar.equals(currentCalendar)) {//둘의 날짜가 같으면 중복인것임...
-            layout_checkin.setVisibility(View.GONE);
+//            layout_checkin.setVisibility(View.GONE);
             Toast.makeText(getContext(),"마지막 접속 하고 하루 안지났음!",Toast.LENGTH_LONG).show();
         }else{//두 값이 다르면 중복이 아님 -> 즉 출석체크 해줘야한다.
             //todo: 출첵 팝업창(dialog)띄어주고(완료), 파이어스토어 저장(완료)
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable()  {
                 public void run() { // 시간 지난 후 실행할 코딩
-                    layout_checkin.setVisibility(View.VISIBLE);
+//                    layout_checkin.setVisibility(View.VISIBLE);
+
+                    // 출석 팝업 띄우기
+                    Bundle bundle = new Bundle();
+                    bundle.putString("popup", "popup_checkin");
+                    PopupFragment e = PopupFragment.getInstance();
+                    e.setArguments(bundle);
+                    e.show(getFragmentManager(), "dialog");
                 }
             }, 3000); // 0.3초후
             firestore.collection(FirebaseID.Attendance).document(email)
