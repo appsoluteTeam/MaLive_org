@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abbsolute.ma_livu.Alarm.PopupFragment;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
@@ -508,6 +509,12 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
 
                                     //todo:getRecentPayDocument() 호출,팝업창 띄어줌(칭호알림:새로운칭호를획득했어요)
 
+                                    // 칭호 팝업 띄우기
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("popup", "popup_title");
+                                    PopupFragment e = PopupFragment.getInstance();
+                                    e.setArguments(bundle);
+                                    e.show(getFragmentManager(), "dialog");
                                 }
                             } else {}
                         } else {
@@ -619,7 +626,16 @@ public class TitleFragment extends Fragment implements View.OnClickListener {
                 });
 
 
-        //todo: 팝업창 톨증정(nn톨을 받았어요)
+            //todo: 팝업창 톨증정(nn톨을 받았어요)
+
+            // 톨 팝업 띄우기
+            Bundle bundle = new Bundle();
+            bundle.putString("popup", "popup_gettoll");
+            bundle.putInt("toll", 400);
+            PopupFragment e = PopupFragment.getInstance();
+            e.setArguments(bundle);
+            e.show(getFragmentManager(), "dialog");
+
         //최근문서 바꾸기
         Map<String,Object> payMap = new HashMap<>();
         payMap.put(FirebaseID.recentDocument,order);
