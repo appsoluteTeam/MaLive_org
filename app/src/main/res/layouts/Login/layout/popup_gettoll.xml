@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_background">
+
+    <LinearLayout
+        android:id="@+id/layout_popup"
+        android:layout_width="180dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:background="@drawable/popup_background"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/button_background_mint"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/PopUp_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="톨을 받았어요"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/PopUp_title2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="MALIVE MONEY"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_toll"
+            android:layout_width="130dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/popup_gettoll" />
+
+        <TextView
+            android:id="@+id/PopUp_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:text="보상으로"
+            android:textColor="@android:color/black"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/toll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="nn"
+                android:textColor="#4BB6CF"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="톨을 받았어요!"
+                android:textColor="#000000"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_popup_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="#FFFFFF"
+            android:text="닫기" />
+
+    </LinearLayout>
+
+</FrameLayout>
