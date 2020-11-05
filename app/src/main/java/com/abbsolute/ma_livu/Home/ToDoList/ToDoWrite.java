@@ -269,17 +269,5 @@ public class ToDoWrite extends Fragment {
         return view;
     }
 
-    //todo: firebase에 저장, todo프래그먼트로 전환
-    public void setFragment(int n){
-        switch (n){
-            case 1://빨래
-                break;
-            case 2://청소
-                break;
-            case 3://쓰레기
-                break;
-            case 4://기타
-                break;
-        }
-    }
+
 }

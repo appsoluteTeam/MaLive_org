@@ -97,11 +97,6 @@ public class HomeFragment extends Fragment {
         go_Todo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("TODO CLick","todo");
-                SharedPreferences sharedPreferences=getContext().getSharedPreferences("pref2", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("upload",0);
-                editor.commit();
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });
