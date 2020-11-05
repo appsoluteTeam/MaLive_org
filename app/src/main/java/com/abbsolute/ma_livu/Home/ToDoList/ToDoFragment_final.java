@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abbsolute.ma_livu.Alarm.PopupFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.google.firebase.firestore.DocumentReference;
@@ -437,31 +438,40 @@ public class ToDoFragment_final extends Fragment {
                 });
 
         //todo:팝업 톨 얻었다고 띄우기
-        View dialogView = getLayoutInflater().inflate(R.layout.custom_popup, null);
-        TextView popup_title = dialogView.findViewById(R.id.popup_title);
-        TextView popup_detail = dialogView.findViewById(R.id.popup_detail);
-        ImageView popup_image = dialogView.findViewById(R.id.popup_image);
+        // 톨 팝업 띄우기
+        Bundle bundle = new Bundle();
+        bundle.putString("popup", "popup_gettoll");
+        bundle.putInt("toll", 10);
+        PopupFragment e = PopupFragment.getInstance();
+        e.setArguments(bundle);
+        e.show(getFragmentManager(), "dialog");
 
-        popup_title.setText("톨 증정");
-        popup_detail.setText("10톨을 받았어요!");
-        popup_image.setImageResource(R.drawable.profile);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setView(dialogView);
-
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setGravity(Gravity.TOP);
-
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
-        int width = dm.widthPixels; //디바이스 화면 너비
-        int height = dm.heightPixels; //디바이스 화면 높이
-
-        WindowManager.LayoutParams params = alertDialog.getWindow().getAttributes();
-        params.copyFrom(alertDialog.getWindow().getAttributes());
-        params.width = 200;
-        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
-       // alertDialog.getWindow().setAttributes(params);
-        alertDialog.show();
+////      <  지수언니 톨 팝업 구현부분 >
+//        View dialogView = getLayoutInflater().inflate(R.layout.custom_popup, null);
+//        TextView popup_title = dialogView.findViewById(R.id.popup_title);
+//        TextView popup_detail = dialogView.findViewById(R.id.popup_detail);
+//        ImageView popup_image = dialogView.findViewById(R.id.popup_image);
+//
+//        popup_title.setText("톨 증정");
+//        popup_detail.setText("10톨을 받았어요!");
+//        popup_image.setImageResource(R.drawable.profile);
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setView(dialogView);
+//
+//        final AlertDialog alertDialog = builder.create();
+//        alertDialog.getWindow().setGravity(Gravity.TOP);
+//
+//        DisplayMetrics dm = getContext().getResources().getDisplayMetrics(); //디바이스 화면크기를 구하기위해
+//        int width = dm.widthPixels; //디바이스 화면 너비
+//        int height = dm.heightPixels; //디바이스 화면 높이
+//
+//        WindowManager.LayoutParams params = alertDialog.getWindow().getAttributes();
+//        params.copyFrom(alertDialog.getWindow().getAttributes());
+//        params.width = 200;
+//        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//       // alertDialog.getWindow().setAttributes(params);
+//        alertDialog.show();
 
 
         //최근문서 바꾸기

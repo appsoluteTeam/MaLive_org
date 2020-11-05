@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbsolute.ma_livu.Alarm.PopupFragment;
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
@@ -325,6 +326,13 @@ public class Hot_CommunityFragment extends Fragment {
                     }
                 });
 
+        // 톨 팝업 띄우기
+        Bundle bundle = new Bundle();
+        bundle.putString("popup", "popup_gettoll");
+        bundle.putInt("toll", 500);
+        PopupFragment e = PopupFragment.getInstance();
+        e.setArguments(bundle);
+        e.show(getFragmentManager(), "dialog");
 
         //최근문서 바꾸기
         Map<String,Object> payMap = new HashMap<>();
