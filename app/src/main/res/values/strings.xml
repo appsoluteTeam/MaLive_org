@@ -43,4 +43,7 @@
     //친구
     <string name="friend">친구</string>
 
+    //푸시 알림
+    <string name="default_notification_channel_id">말리브 알림</string>
+
 </resources>
