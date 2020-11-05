@@ -13,7 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Alarm.PopupFragment;
+
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.MyPage.payItemListView;
 import com.google.firebase.firestore.DocumentReference;
@@ -60,6 +62,7 @@ public class ToDoFragment_final extends Fragment {
     private boolean delete_todo;
 
     private Button btn_addTodo;
+    private Button btn_back;
     public ToDoListCustomDialog customDialog;
 
     //pay관련 변수들
@@ -87,6 +90,7 @@ public class ToDoFragment_final extends Fragment {
 
         todoList = new ArrayList<ToDoList_Info>();
         btn_addTodo = view.findViewById(R.id.btn_addTodo);
+        btn_back = view.findViewById(R.id.btn_back);
         recyclerView = view.findViewById(R.id.todo_recyclerview);
 
         fm = getFragmentManager();
@@ -218,6 +222,13 @@ public class ToDoFragment_final extends Fragment {
                 fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_frame, toDoWrite);
                 fragmentTransaction.commit();
+            }
+        });
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((HomeActivity)getActivity()).setFragment(0);
             }
         });
 

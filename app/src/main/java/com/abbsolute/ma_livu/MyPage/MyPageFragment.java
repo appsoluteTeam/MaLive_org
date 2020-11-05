@@ -45,7 +45,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
     private static RecyclerPostAdapter mAdapter = null;
 
     private MyPageDataListener dataListener;
-    private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active, todo;
+    private Button btn_back, btnMyPage_informationSet, btnMyPage_title, btnMyPage_pay, btnMyPage_active;
     private TextView nickname, textView_email;
     private ProgressBar clean_progressBar, wash_progressBar, trash_progressBar, etc_progressBar;
     private TextView clean_percent, wash_percent, trash_percent, etc_percent;
@@ -233,7 +233,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
         /* 정보설정*/
         btnMyPage_informationSet = view.findViewById(R.id.btnMyPage_informationSet);
 
-        todo = view.findViewById(R.id.todo_mypage);
 
         /* 칭호, 결제, 활동, 친구 아이디값 찾기 */
         btnMyPage_title = view.findViewById(R.id.btnMyPage_title);
@@ -316,15 +315,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener {
                         fragmentTransaction.addToBackStack(null);
                         fragmentTransaction.commit();
             }
-        });
-
-        //임시로 만든 투두 버튼
-        todo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToDoFragment_final toDoFragment_final = new ToDoFragment_final();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame, toDoFragment_final).commit();            }
         });
 
     }

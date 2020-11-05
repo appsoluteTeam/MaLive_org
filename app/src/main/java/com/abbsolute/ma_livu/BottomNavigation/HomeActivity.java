@@ -22,6 +22,7 @@ import com.abbsolute.ma_livu.Community.Hot_CommunityFragment;
 
 import com.abbsolute.ma_livu.Home.HomeFragment;
 
+import com.abbsolute.ma_livu.Home.ToDoList.ToDoFragment_final;
 import com.abbsolute.ma_livu.MyPage.DataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageDataListener;
 import com.abbsolute.ma_livu.MyPage.MyPageFragment;
@@ -50,6 +51,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
     private CommunityPostsFragment communityPostsFragment;
     private MyPageFragment myPageFragment;
     private AlarmFragment alarmFragment;
+    private ToDoFragment_final toDoFragment;
 
     private TitleFragment titleFragment;
     private payFragment payFragment;
@@ -80,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
         homeFragment = new HomeFragment();
         myPageFragment = new MyPageFragment();
         alarmFragment = new AlarmFragment();
+        toDoFragment = new ToDoFragment_final();
 
         //커뮤니티 프래그먼트
         hotCommunityFragment = new Hot_CommunityFragment();
@@ -146,8 +149,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(homeFragment.isHidden()) {
                     fragmentTransaction.show(homeFragment).commit();
                 }
-       //         fragmentTransaction.replace(R.id.main_frame, homeFragment).commit();
-
                 break;
             case 1:
                 main_frame.setVisibility(View.VISIBLE);
@@ -163,8 +164,6 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 if(!homeFragment.isHidden()){
                     fragmentTransaction.hide(homeFragment).commit();
                 }
-
-                //가장최신의 stack을 pop 해준다..mypage를 또 팝해주는꼴
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame, myPageFragment).commit();
                 break;
@@ -175,6 +174,13 @@ public class HomeActivity extends AppCompatActivity implements MyPageDataListene
                 }
                 fragmentManager.popBackStack(null,FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.main_frame,alarmFragment).commit();
+                break;
+
+            case 100:
+                main_frame.setVisibility(View.VISIBLE);
+                main_frame.bringToFront();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.main_frame,toDoFragment).commit();
                 break;
 
             // 커뮤니티 프래그먼트에서 버튼 눌렀을 때
