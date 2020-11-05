@@ -22,6 +22,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
+
             <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="20dp"
@@ -33,12 +35,12 @@
                 android:visibility="visible" />
 
             <ImageButton
-                android:id="@+id/btn_commu_upload"
+                android:id="@+id/btn_commu_search"
                 android:layout_width="20dp"
                 android:layout_height="25dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="28dp"
-                android:layout_marginRight="75dp"
+                android:layout_marginRight="30dp"
                 android:background="@drawable/icon_search"
                 app:srcCompat="@drawable/icon_search" />
 
@@ -49,10 +51,11 @@
                 android:layout_gravity="right"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="28dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="80dp"
                 android:background="@drawable/icon_write" />
 
             <LinearLayout
+                android:id="@+id/coomu_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">

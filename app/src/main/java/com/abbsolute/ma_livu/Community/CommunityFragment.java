@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -40,10 +41,10 @@ public class CommunityFragment extends Fragment {
 
     private View view;
     private View view1,view2,view3;
-    private ImageButton btn_commu_write,btn_back;
+    private ImageButton btn_commu_write,btn_back,btn_commu_search;
     private Button btn_what_eat,btn_what_do,btn_how_do;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-
+    private SearchView searchView;
     // 정렬
     private ImageButton btn_commu_sort;
     private LinearLayout layout_commu_sort;
@@ -56,7 +57,6 @@ public class CommunityFragment extends Fragment {
     private ArrayList<bringData> arrayList;
 
     private String title,content,category,date,writer,likeCount,saveCount,img1;
-
 
     // 정렬 라디오 버튼 관련
     private RadioButton commu_sort_date, commu_sort_like, commu_sort_save;
@@ -74,6 +74,7 @@ public class CommunityFragment extends Fragment {
         btn_how_do=(Button)view.findViewById(R.id.how_do);
         btn_commu_write =(ImageButton)view.findViewById(R.id.btn_commu_write);
         btn_back = (ImageButton)view.findViewById(R.id.btn_back);
+        btn_commu_search=(ImageButton)view.findViewById(R.id.btn_commu_search);
         view1=view.findViewById(R.id.view_what_eat);view1.setVisibility(View.VISIBLE);
         view2=view.findViewById(R.id.view_what_do);view2.setVisibility(View.INVISIBLE);
         view3=view.findViewById(R.id.view_howdo);view3.setVisibility(View.INVISIBLE);
@@ -118,14 +119,21 @@ public class CommunityFragment extends Fragment {
                         callRecycler(2);
                         break;
                     case R.id.btn_commu_write: // 작성하기 아이콘 클릭
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                         Commu_WriteFragment Commu_WriteFragment = new Commu_WriteFragment();
-                        transaction.replace(R.id.main_frame, Commu_WriteFragment).addToBackStack(null);
-                        transaction.commit();
+                        fragmentTransaction.replace(R.id.main_frame, Commu_WriteFragment).addToBackStack(null);
+                        fragmentTransaction.commit();
                         break;
                     case R.id.btn_back: // 뒤로가기 아이콘 클릭
                         getFragmentManager().popBackStack();
                         break;
+                    case R.id.btn_commu_search:
+                        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        SearchFragment searchFragment = new SearchFragment();
+                        fragmentTransaction.replace(R.id.main_frame, searchFragment).addToBackStack(null);
+                        fragmentTransaction.commit();
+                        break;
+
                 }
             }
         };
@@ -136,6 +144,7 @@ public class CommunityFragment extends Fragment {
         btn_commu_write.setOnClickListener(onClickListener);
         btn_back.setOnClickListener(onClickListener);
         btn_commu_sort.setOnClickListener(onClickListener);
+        btn_commu_search.setOnClickListener(onClickListener);
 
         return view;
     }
