@@ -104,7 +104,7 @@ public class SearchFragment<adapter> extends Fragment {
                                     if (content.contains(query) || nickname.contains(query) || title.contains(query)) {
                                         String documentID = (String)document.getId();
                                         String category = (String) document.get("category");
-                                        Object date = document.get("commu_date");
+                                        String date = (String)document.get("commu_date");
                                         String writer = (String) document.get("nickname");
                                         Object likeCount = document.get("commu_like_count");
                                         Object saveCount = document.get("commu_save_count");
@@ -117,7 +117,7 @@ public class SearchFragment<adapter> extends Fragment {
                                         } else {
                                             Url = null;
                                         }
-                                        bringData data = new bringData((String)documentID, (String)title, (String)category,(String) content, (String)date, (String)writer, (String)likeCount, (String) saveCount,(String) Url);
+                                        bringData data = new bringData(documentID,title, category,content,date,writer, (String)likeCount, (String) saveCount,Url);
 
                                         arrayList.add(data);
                                         setRecycler();
