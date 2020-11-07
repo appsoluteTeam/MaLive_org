@@ -11,7 +11,6 @@ public class bringData {
     private String content;
     private String date;
     private String category;
-
     private String writer;
     private String likeCount;
     private String saveCount;
