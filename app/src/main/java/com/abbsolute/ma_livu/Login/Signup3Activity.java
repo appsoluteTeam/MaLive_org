@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.abbsolute.ma_livu.BottomNavigation.HomeActivity;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
@@ -35,12 +36,13 @@ public class Signup3Activity extends AppCompatActivity {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private String email,password,nickname;
 
+    characterAdapter adapter;
+    ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup3);
-
-        btn_next3= findViewById(R.id.btn_next3);
 
 
         //파이어스토어 도큐먼트 이름 넘겨받기
@@ -48,6 +50,11 @@ public class Signup3Activity extends AppCompatActivity {
         email = intent.getStringExtra("email");
         password = intent.getStringExtra("password");
         nickname=intent.getStringExtra("nickname");
+
+
+        viewPager =(ViewPager)findViewById(R.id.viewPager);
+        adapter=new characterAdapter(this);
+        viewPager.setAdapter(adapter);
 
         btn_back=(ImageButton)findViewById(R.id.btn_backkey);
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +64,7 @@ public class Signup3Activity extends AppCompatActivity {
             }
         });
 
+        btn_next3= findViewById(R.id.btn_next3);
         btn_next3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

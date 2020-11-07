@@ -11,9 +11,8 @@
         android:id="@+id/tv_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
         android:text="당신의 \n캐릭터를 골라주세요"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,26 +22,40 @@
         android:id="@+id/btn_backkey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginLeft="56dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
         android:background="#FFFFFF"
         android:src="@drawable/back_key"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"  />
+        app:layout_constraintTop_toTopOf="parent" />
 
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/tv_top"
+        app:layout_constraintRight_toRightOf="@id/tv_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_top" />
 
     <Button
         android:id="@+id/btn_next3"
         android:layout_width="160dp"
         android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/button_background"
         android:stateListAnimator="@null"
         android:text="다음"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
