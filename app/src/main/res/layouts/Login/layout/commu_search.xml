@@ -1,23 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/commu_search"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="18dp"
-        android:layout_marginRight="20dp"
-        android:visibility="visible"
-        />
+        android:layout_marginTop="12dp"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="18dp"
+            android:layout_height="28dp"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/back_key"
+            android:visibility="visible" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/commu_search"
+            style="@style/searchStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="7"
+            android:background="@drawable/grey_line"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@null" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/search_community_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="#F1F1F1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_search_community"
