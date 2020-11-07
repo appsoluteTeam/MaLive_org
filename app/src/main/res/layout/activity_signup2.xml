@@ -44,7 +44,8 @@
         android:hint="최대 10자까지 입력 가능합니다"
         android:inputType="textPersonName"
         android:maxLength="10"
-        app:layout_constraintStart_toStartOf="@+id/tv_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_top" />
 
     <TextView

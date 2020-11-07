@@ -14,7 +14,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginLeft="56dp"
         android:layout_marginTop="56dp"
-        android:text="당신의 \n성향을 골라주세요"
+        android:text="당신의 \n캐릭터를 골라주세요"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_backkey" />
@@ -31,88 +31,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"  />
 
-    <RadioGroup
-        android:id="@+id/rg_test1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_top"
-        app:layout_constraintTop_toBottomOf="@+id/tv_top">
-
-        <RadioButton
-            android:id="@+id/radioButton5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="#90DCEE"
-            android:text="집에서 오랜 시간 보내요" />
-
-        <RadioButton
-            android:id="@+id/radioButton6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:buttonTint="#90DCEE"
-            android:text="밖에서 오랜 시간 보내요"
-            app:layout_constraintStart_toStartOf="@+id/rg_test1"
-            tools:layout_editor_absoluteY="305dp" />
-
-    </RadioGroup>
-
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="280dp"
-        android:layout_height="0.3dp"
-        android:background="#4682B4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/rg_test1"
-        app:layout_constraintTop_toBottomOf="@+id/rg_test1"
-        app:layout_constraintVertical_bias="0.115" />
-
-    <RadioGroup
-        android:id="@+id/rg_test2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view">
-
-        <RadioButton
-            android:id="@+id/radioButton7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:buttonTint="#90DCEE"
-            android:text="누워있는 편이에요"
-            app:layout_constraintStart_toStartOf="@+id/view"
-            app:layout_constraintTop_toBottomOf="@+id/view" />
-
-        <RadioButton
-            android:id="@+id/radioButton8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:buttonTint="#90DCEE"
-            android:text="움직이는 편이에요"
-            app:layout_constraintStart_toStartOf="@+id/radioButton7"
-            app:layout_constraintTop_toBottomOf="@+id/radioButton7" />
-
-    </RadioGroup>
 
     <Button
         android:id="@+id/btn_next3"
         android:layout_width="160dp"
         android:layout_height="45dp"
-        android:layout_marginTop="60dp"
         android:background="@drawable/button_background"
         android:stateListAnimator="@null"
         android:text="다음"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rg_test2" />
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
