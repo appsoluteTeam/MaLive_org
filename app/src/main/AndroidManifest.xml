@@ -1,21 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.abbsolute.ma_livu">
+    <!-- 인터넷 허가 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- 카메라 사용되는 permission -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
 
     <application
+        android:largeHeap="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Login.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Login.SignupActivity" />
+        <activity android:name=".Login.Signup2Activity" />
+        <activity android:name=".Login.Signup3Activity" />
+        <activity android:name=".Login.FindpwdActivity" />
+        <activity android:name=".Login.Login2Activity" />
+        <activity android:name=".Login.LoginActivity">
+        </activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".BottomNavigation.HomeActivity" />
+
+<!--        &lt;!&ndash; firebase messaging&ndash;&gt;-->
+<!--        <service android:name=".Firebase.MyFirebaseMessagingService"-->
+<!--            android:exported="false"-->
+<!--            android:directBootAware="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+
+<!--        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"-->
+<!--            android:resource="@drawable/icon_malive2" />-->
+
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
+<!--            android:value="@string/default_notification_channel_id" />-->
+
     </application>
 
 </manifest>

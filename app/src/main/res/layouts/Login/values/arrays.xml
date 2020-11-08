@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="title_todo_image">
+        <item>@drawable/clean1</item>
+        <item>@drawable/clean2</item>
+        <item>@drawable/clean3</item>
+        <item>@drawable/clean4</item>
+        <item>@drawable/wash1</item>
+        <item>@drawable/wash2</item>
+        <item>@drawable/wash3</item>
+        <item>@drawable/wash4</item>
+        <item>@drawable/trash1</item>
+        <item>@drawable/trash2</item>
+        <item>@drawable/trash3</item>
+        <item>@drawable/trash4</item>
+        <item>@drawable/todo1</item>
+        <item>@drawable/todo2</item>
+        <item>@drawable/todo3</item>
+    </array>
+
+    <array name="title_attendance_image">
+        <item>@drawable/attendance1</item>
+        <item>@drawable/attendance2</item>
+        <item>@drawable/attendance3</item>
+    </array>
+
+    <array name="title_room_image">
+        <item>@drawable/room1</item>
+        <item>@drawable/room2</item>
+        <item>@drawable/room3</item>
+        <item>@drawable/room4</item>
+
+    </array>
+</resources>

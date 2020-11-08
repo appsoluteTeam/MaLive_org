@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="searchStyle">searchStyle
+        <item name="searchIcon">@drawable/icon_search</item>
+    </style>
+</resources>
