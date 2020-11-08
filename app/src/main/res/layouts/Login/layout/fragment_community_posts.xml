@@ -62,8 +62,6 @@
                 android:gravity="center"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:padding="5dp"
-
-                android:padding="5dp"
                 android:text="뭐 먹지?"
                 android:textColor="#000000"
                 android:textSize="9sp" />
