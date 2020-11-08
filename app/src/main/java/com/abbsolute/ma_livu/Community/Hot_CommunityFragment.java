@@ -47,7 +47,7 @@ public class Hot_CommunityFragment extends Fragment {
     private ImageButton btn_commu_write;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-    private Button btn_today_post,btn_today_room;
+    private Button btn_today_post;
     private View view1,view2;
     private String[] categoryarray={"what_eat","what_do","how_do"};
 
@@ -75,10 +75,8 @@ public class Hot_CommunityFragment extends Fragment {
         btn_more_text=view.findViewById(R.id.btn_more_text);
         btn_commu_write=(ImageButton)view.findViewById(R.id.btn_commu_write);
         btn_today_post=(Button)view.findViewById(R.id.btn_today_post);
-        btn_today_room=(Button)view.findViewById(R.id.btn_today_room);
 
         view1=view.findViewById(R.id.view_today_post);view1.setVisibility(View.VISIBLE);
-        view2=view.findViewById(R.id.view_today_room);view2.setVisibility(View.INVISIBLE);
 
 
         //버튼리스너 생성
@@ -90,10 +88,6 @@ public class Hot_CommunityFragment extends Fragment {
                         view1.setVisibility(View.VISIBLE);
                         view2.setVisibility(view.INVISIBLE);
                         callRecycler(0);
-                        break;
-                    case R.id.btn_today_room:
-                        view2.setVisibility(View.VISIBLE);
-                        view1.setVisibility(view.INVISIBLE);
                         break;
                     case R.id.btn_more_text: // 더많은글보기 아이콘 클릭
                         ((HomeActivity)getActivity()).setFragment(50);
@@ -107,7 +101,6 @@ public class Hot_CommunityFragment extends Fragment {
         btn_today_post.setOnClickListener(onClickListener);
         btn_more_text.setOnClickListener(onClickListener);
         btn_commu_write.setOnClickListener(onClickListener);
-        btn_today_room.setOnClickListener(onClickListener);
 
         return view;
     }
