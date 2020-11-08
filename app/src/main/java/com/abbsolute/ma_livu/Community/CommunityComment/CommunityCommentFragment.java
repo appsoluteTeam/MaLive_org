@@ -129,23 +129,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
-
-                // 받은 데이터 다시 넘겨주기
-                Bundle bundle = new Bundle();
-                bundle.putString("Category", category);
-                bundle.putString("Title", title);
-                bundle.putString("Content", content);
-                bundle.putString("Date", posts_date);
-                bundle.putString("Writer", writer);
-                communityPostsFragment.setArguments(bundle);
-
-                // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityPostsFragment).addToBackStack(null);
-                transaction.commit();
-            */
                 getFragmentManager().popBackStack();
             }
 
@@ -189,7 +172,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                 refresh();
             }
         });
-
 
         // DB의 데이터 불러와 어레이리스트에 넣기
         arrayList = new ArrayList<>();
@@ -359,7 +341,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         transaction.replace(R.id.main_frame, communityCommentCommentFragment).addToBackStack(null);
         transaction.commit();
      }
-
 
 
     // 댓글 삭제 메소드

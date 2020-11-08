@@ -1,6 +1,7 @@
 package com.abbsolute.ma_livu.Community;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class CommunityFragment extends Fragment {
     private Button btn_what_eat,btn_what_do,btn_how_do;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private SearchView searchView;
+
     // 정렬
     private ImageButton btn_commu_sort;
     private LinearLayout layout_commu_sort;
@@ -137,7 +139,6 @@ public class CommunityFragment extends Fragment {
                 }
             }
         };
-
         btn_what_eat.setOnClickListener(onClickListener);
         btn_what_do.setOnClickListener(onClickListener);
         btn_how_do.setOnClickListener(onClickListener);
@@ -184,6 +185,7 @@ public class CommunityFragment extends Fragment {
                 bundle.putString("Date", item.getDate());
                 bundle.putString("Category", item.getCategory());
                 bundle.putString("Writer",item.getWriter());
+                bundle.putString("documentID",item.getDocumentID());
 
                 fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 CommunityPostsFragment communityPostsFragment = new CommunityPostsFragment();
