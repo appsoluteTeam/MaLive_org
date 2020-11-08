@@ -166,7 +166,7 @@
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/button_event_like_s" />
+                    android:background="@drawable/button_event_like" />
 
                 <TextView
                     android:id="@+id/commu_comment_comment_like"

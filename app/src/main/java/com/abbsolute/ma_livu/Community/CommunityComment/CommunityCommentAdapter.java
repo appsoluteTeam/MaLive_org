@@ -1,5 +1,7 @@
 package com.abbsolute.ma_livu.Community.CommunityComment;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -48,11 +53,61 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         holder.commu_comment_like.setText(arrayList.get(position).getComment_like());
         holder.commu_comment_comment_count.setText(arrayList.get(position).getComment_count());
 
-        // 이 유저가 댓글에 '좋아요' 버튼을 눌렀었는지 판단
-        callback.checkLikePressed(position);
-        if( callback.returnBoolean(position) == true) {
-//            holder.btn_comment_like.setSelected(! holder.btn_comment_like.isSelected());
-        }
+//         이 유저가 댓글에 '좋아요' 버튼을 눌렀었는지 판단
+//        Log.d("position,boolean",String.valueOf(position) + "/" + String.valueOf(callback.checkLikePressed(position)));
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+        String category = callback.getCategory();
+        String title = callback.getTitle();
+
+        String email = firebaseAuth.getCurrentUser().getEmail();;
+
+        firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+                .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
+                .collection("comment_Like").document(email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @SuppressLint("LongLogTag")
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d("댓글 좋아요 버튼 판단", "True!!!");
+
+                                holder.btn_comment_like.setSelected(true);
+//                                returnBoolean(position);
+                            }
+                            else {
+                                Log.d("댓글 좋아요 버튼 판단", "False!!!");
+                                holder.btn_comment_like.setSelected(false);
+//                                returnBoolean(position);
+                            }
+                        } else {
+                            Log.d("CommunityCommentFragment", "get failed with ", task.getException());
+                        }
+                    }
+                });
+//        if( callback.checkLikePressed(position) == true) {
+//            holder.btn_comment_like.setSelected(true);
+//            Log.d("댓글 좋아요 값 넘어왔어요!", "True!!!");
+//        } else {
+//            Log.d("댓글 좋아요 값 넘어왔어요!", "fasle!!!");
+////            holder.btn_comment_like.setSelected(false);
+//        }
+
+//        callback.checkLikePressed(position);
+
+//        if( callback.returnBoolean(position) == true) {
+//            holder.btn_comment_like.setSelected(true);
+//            Log.d("댓글 좋아요 값 넘어왔어요!", "True!!!");
+//        } else {
+//            Log.d("댓글 좋아요 값 넘어왔어요!", "fasle!!!");
+//            holder.btn_comment_like.setSelected(false);
+//        }
+
 
         // '삭제' 버튼 클릭 시 데이터 삭제하기
         holder.btn_commu_delete.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +139,6 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                 int like_count;
                 like_count = Integer.parseInt(holder.commu_comment_like.getText().toString());
 
-                // 버튼이 눌리지 않은 상태를 기본으로 설정
                 v.setSelected(!v.isSelected());
                 if(v.isSelected()) {
                     holder.commu_comment_like.setText(String.valueOf(like_count+1));

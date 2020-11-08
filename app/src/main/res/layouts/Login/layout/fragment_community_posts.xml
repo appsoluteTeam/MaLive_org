@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFFFFF"
     android:orientation="vertical">
 
     <FrameLayout
@@ -56,9 +57,11 @@
                 android:ellipsize="marquee"
 
                 android:focusable="true"
+
                 android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:padding="5dp"
 
                 android:padding="5dp"
                 android:text="뭐 먹지?"
@@ -251,12 +254,10 @@
 
                     <ImageButton
                         android:id="@+id/btn_commu_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_marginRight="5dp"
-                        android:background="#FFFFFF"
-                        android:src="@drawable/button_event_like_m"
-                        android:text="좋아요" />
+                        android:background="@drawable/button_event_like" />
 
                     <TextView
                         android:id="@+id/commu_like_count"
@@ -266,11 +267,10 @@
 
                     <ImageButton
                         android:id="@+id/btn_commu_save"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_marginRight="5dp"
-                        android:background="#FFFFFF"
-                        app:srcCompat="@drawable/button_event_save" />
+                        android:background="@drawable/button_event_save" />
 
                     <TextView
                         android:id="@+id/commu_save_count"
@@ -280,11 +280,10 @@
 
                     <ImageButton
                         android:id="@+id/btn_commu_comment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_marginRight="5dp"
-                        android:background="#FFFFFF"
-                        android:src="@drawable/icon_comment"
+                        android:background="@drawable/icon_comment"
                         android:text="댓글" />
 
                     <TextView

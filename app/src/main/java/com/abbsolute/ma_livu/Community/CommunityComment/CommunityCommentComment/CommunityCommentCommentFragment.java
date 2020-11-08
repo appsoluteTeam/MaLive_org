@@ -68,7 +68,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
     private TextView commentname, commentdate, commentcomment, commentlike, commentcommentcount, recommentCount;
     private EditText recomment;
 
-    private Button btn_back, btn_insert, btn_comment_like;
+    private Button btn_back, btn_insert;
 
     private static int count;
     private static int comment_like_count;
@@ -110,14 +110,9 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
 
         btn_back = view.findViewById(R.id.btn_back);
         btn_insert = view.findViewById(R.id.btn_comment_comment_insert);
-        btn_comment_like = view.findViewById(R.id.btn_comment_like);
-
         commentname = view.findViewById(R.id.CommentName);
         commentdate = view.findViewById(R.id.CommentDate);
         commentcomment = view.findViewById(R.id.Comment);
-        commentlike = view.findViewById(R.id.commu_comment_like);
-        commentcommentcount = view.findViewById(R.id.commu_comment_comment_count);
-
         recomment = view.findViewById(R.id.WriteComment);
         recommentCount = view.findViewById(R.id.comment_comment_count);
 
@@ -128,43 +123,20 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
             commentName = getArguments().getString("CommentName");
             commentDate = getArguments().getString("CommentDate");
             commentComment = getArguments().getString("CommentComment");
-            commentLike = getArguments().getString("CommentLike");
-            commentLikeCheck = getArguments().getBoolean("CommentLikeCheck");
-        }
 
-        Toast.makeText(this.getContext(), "CommentLike " + commentLikeCheck, Toast.LENGTH_SHORT).show();
+        }
 
         // CommunityCommentFragment에서 받아온 텍스트 데이터 set
         commentname.setText(commentName);
         commentdate.setText(commentDate);
         commentcomment.setText(commentComment);
-        commentlike.setText(commentLike);
+//        commentlike.setText(commentLike);
 
-        if(commentLikeCheck == true) {
-            btn_comment_like.setSelected(!btn_comment_like.isSelected());
-        } else {
-            btn_comment_like.setSelected(btn_comment_like.isSelected());
-        }
 
         // '뒤로가기' 버튼 눌렀을 시
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                CommunityCommentFragment communityCommentFragment = new CommunityCommentFragment();
-
-                // 받은 데이터 다시 넘겨주기
-                Bundle bundle = new Bundle();
-                bundle.putString("Category", category);
-                bundle.putString("Title", title);
-                bundle.putBoolean("CommentLikeCheck", commentLikeCheck);
-                communityCommentFragment.setArguments(bundle);
-
-                // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityCommentFragment).addToBackStack(null);
-                transaction.commit();
-            */
                 getFragmentManager().popBackStack();
             }
 
@@ -205,31 +177,6 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
             }
         });
 
-        btn_comment_like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 현재의 좋아요 갯수 받아오기
-                int like_count;
-                like_count = Integer.parseInt(commentLike);
-
-                // 버튼이 눌리지 않은 상태를 기본으로 설정
-                if(v.isSelected() == true) {
-//                    v.setSelected(v.isSelected());
-                }
-                else {
-                }
-                //TODO 구현한거 아님 걍 복붙한 코드
-//                v.setSelected(!v.isSelected());
-//                if(v.isSelected()) {
-//                    commu_comment_like.setText(Integer.toString(like_count+1));
-//                    callback.commentLike(position);
-//                } else {
-//                    holder.commu_comment_like.setText(Integer.toString(like_count-1));
-//                    callback.commentDislike(position);
-//                }
-            }
-        });
-
         // DB의 데이터 불러와 어레이리스트에 넣기
         arrayList = new ArrayList<>();
         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -260,8 +207,7 @@ public class CommunityCommentCommentFragment extends Fragment implements CommuCo
                                 count =  adapter.getItemCount();
                                 // 맨 위에 표시되는 전체 답글 수
                                 recommentCount.setText(Integer.toString(count));
-                                // 리사이클러뷰에 표시되는 전체 답글 수
-                                commentcommentcount.setText(Integer.toString(count));
+
                                 // CommunityCommentFragment에 전체 답글 수 넘겨주기 위해 Firestore에 데이터 추가
                                 commentCount();
 
