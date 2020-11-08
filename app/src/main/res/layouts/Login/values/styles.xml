@@ -2,5 +2,7 @@
 <resources>
 
 
-
+    <style name="searchStyle">searchStyle
+        <item name="searchIcon">@drawable/icon_search</item>
+    </style>
 </resources>

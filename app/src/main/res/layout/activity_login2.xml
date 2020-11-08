@@ -48,15 +48,17 @@
         android:layout_width="160dp"
         android:layout_height="45dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/button_background"
         android:stateListAnimator="@null"
         android:text="로그인"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_wanning4"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="@+id/tv_wanning4"
-        app:layout_constraintTop_toBottomOf="@+id/tv_wanning4" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_wanning4"
+        app:layout_constraintVertical_bias="0.48" />
 
     <Button
         android:id="@+id/btn_findpwd"
