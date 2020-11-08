@@ -105,15 +105,6 @@
             android:layout_height="wrap_content"
             android:text="투두리스트" />
 
-        <Button
-            android:id="@+id/go_customize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="커스텀"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintTop_toBottomOf="@+id/go_Todo" />
-
     </LinearLayout>
 
 </FrameLayout>

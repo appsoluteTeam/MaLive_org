@@ -105,50 +105,50 @@ public class HomeFragment extends Fragment {
                 ((HomeActivity)getActivity()).setFragment(100);
             }
         });
-        LinearLayout floatingBtns = view.findViewById(R.id.customize_floating_buttons);
-        Button goCustomize = view.findViewById(R.id.go_customize);
-        goCustomize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mUnityPlayer.UnitySendMessage("SceneManager", "LoadCustomizeScene","");
-                floatingBtns.setVisibility(View.VISIBLE);
-            }
-        });
+//        LinearLayout floatingBtns = view.findViewById(R.id.customize_floating_buttons);
+//        Button goCustomize = view.findViewById(R.id.go_customize);
+//        goCustomize.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mUnityPlayer.UnitySendMessage("SceneManager", "LoadCustomizeScene","");
+//                floatingBtns.setVisibility(View.VISIBLE);
+//            }
+//        });
 
         //customize listners
-        colorBtt = floatingBtns.findViewById(R.id.btn_fragment);
-        accessoryBtt = floatingBtns.findViewById(R.id.accessory_btn);
-        expressionBtt = floatingBtns.findViewById(R.id.expression_btn);
-        colorBtt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                ColorBottom bottomSheet = new ColorBottom();
-//                bottomSheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
-                ColorFragment colorFragment = new ColorFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,colorFragment).commit();
-            }
-        });
-        accessoryBtt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-           //     ItemBottom bottomSheet = new ItemBottom();
-                ItemFragment itemFragment = new ItemFragment();
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,itemFragment).commit();
-           //     bottomSheet.show(getFragmentManager(), "bottomSheet");
-
-            }
-        });
-        expressionBtt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FaceFragment faceFragment = new FaceFragment();
-                moveCameraToFace();
-                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,faceFragment).commit();
-
-            }
-        });
-
-
+//        colorBtt = floatingBtns.findViewById(R.id.btn_fragment);
+//        accessoryBtt = floatingBtns.findViewById(R.id.accessory_btn);
+//        expressionBtt = floatingBtns.findViewById(R.id.expression_btn);
+//        colorBtt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                ColorBottom bottomSheet = new ColorBottom();
+////                bottomSheet.show(getActivity().getSupportFragmentManager(), "bottomSheet");
+//                ColorFragment colorFragment = new ColorFragment();
+//                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,colorFragment).commit();
+//            }
+//        });
+//        accessoryBtt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//           //     ItemBottom bottomSheet = new ItemBottom();
+//                ItemFragment itemFragment = new ItemFragment();
+//                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,itemFragment).commit();
+//           //     bottomSheet.show(getFragmentManager(), "bottomSheet");
+//
+//            }
+//        });
+//        expressionBtt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                FaceFragment faceFragment = new FaceFragment();
+//                moveCameraToFace();
+//                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.customize_frame,faceFragment).commit();
+//
+//            }
+//        });
+//
+//
         // 여기서부터 유니티
         this.fl_forUnity = view.findViewById(R.id.fl_forUnity);
         this.fl_forUnity.addView(mUnityPlayer.getView(),
@@ -284,6 +284,5 @@ public class HomeFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
-
 
 }

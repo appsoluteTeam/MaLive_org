@@ -47,23 +47,9 @@ public class ItemFragment extends Fragment implements AccessoryAdapter.ItemClick
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     UnityItem[] sample = {
-            new UnityItem(0,"모자",2,0),
-            new UnityItem(1,"헤드셋",2,0),
-            new UnityItem(2,"가방",2,0),
-            new UnityItem(2,"신발",3,0),
-            new UnityItem(2,"옷",4,0),
-            new UnityItem(2,"장갑",5,0),
-            new UnityItem(2,"짜장면",6,0),
-            new UnityItem(3,"귀도리",2,0),
-            new UnityItem(4,"목도리",2,0),
-            new UnityItem(9,"코트",2,0),
-            new UnityItem(10,"블레이저",3,0),
-            new UnityItem(11,"첼시부츠",4,0),
-            new UnityItem(12,"가디건",5,0),
-            new UnityItem(13,"탕수육",3,0),
-            new UnityItem(14,"치킨",3,0),
-            new UnityItem(14,"치킨",3,0) ,
-            new UnityItem(14,"치킨",3,0)
+            new UnityItem(1,"모자",0,0),
+            new UnityItem(1,"안경",1,0),
+            new UnityItem(1,"목도리",2,0)
     };
 
     public ItemFragment() {
@@ -119,9 +105,8 @@ public class ItemFragment extends Fragment implements AccessoryAdapter.ItemClick
 
     @Override
     public void onItemClick(View view, UnityItem item) {
-        Toast.makeText(getContext(),"item 클릭됨",Toast.LENGTH_LONG).show();
-        //  mListener.onButtonClicked(item.getName());
         homeFragment.AssignEquipment(item);
+
         saveItem(item);
     }
 
