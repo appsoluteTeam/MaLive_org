@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbsolute.ma_livu.Community.Commu_WriteFragment;
 import com.abbsolute.ma_livu.Community.CommunityComment.CommunityCommentComment.CommunityCommentCommentFragment;
-import com.abbsolute.ma_livu.Community.CommunityPostsFragment;
 import com.abbsolute.ma_livu.Firebase.FirebaseID;
 import com.abbsolute.ma_livu.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,8 +61,8 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     private Calendar date;
 
     private static int count, like_count, comment_count, num=0;
-    private static boolean commentLikeCheck = false;
-    private boolean iscommentLikeCheck;
+    private static boolean commentLikeCheck;
+
     private TextView CommentCount, CommentName, CommentDate;
     private ImageView CommentIcon;
     private EditText Comment;
@@ -71,7 +70,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
 
     private static String str_nickname, email;
     private String category, title, writer, content, posts_date,commentLikeCount, currentDate;
-//    private ArrayList<String> LikeUser;
 
     public CommunityCommentFragment(){};
     public CommunityCommentFragment(String email) {
@@ -122,7 +120,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
             writer = getArguments().getString("Writer");
             content = getArguments().getString("Content");
             posts_date = getArguments().getString("Date");
-            iscommentLikeCheck = getArguments().getBoolean("CommentLikeCheck");
         }
 
         // '뒤로가기' 버튼 눌렀을 시
@@ -248,36 +245,52 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         return view;
     }
 
-    // 댓글 좋아요 판단 메소드
-    @Override
-    public void checkLikePressed(int position) {
-                firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
-                .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
-                .collection("comment_Like").document(email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @SuppressLint("LongLogTag")
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d("댓글 좋아요 버튼 판단", "True!!!");
-//                                btn_comment_like.setSelected(!btn_comment_like.isSelected());
-                                commentLikeCheck = true;
-                                returnBoolean(position);
-                            }
-                            else {
-                                Log.d("댓글 좋아요 버튼 판단", "False!!!");
-                                commentLikeCheck = false;
-                                returnBoolean(position);
-                            }
-                        } else {
-                            Log.d("CommunityCommentFragment", "get failed with ", task.getException());
-                        }
-                    }
-                });
+    public String getCategory(){
+        return category;
     }
+    public String getTitle(){
+        return title;
+    }
+//    // 댓글 좋아요 판단 메소드
+//    @Override
+//    public boolean checkLikePressed(int position) {
+//
+//                final boolean check;
+//                firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
+//                .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
+//                .collection("comment_Like").document(email)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @SuppressLint("LongLogTag")
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                Log.d("댓글 좋아요 버튼 판단", "True!!!");
+//                                commentLikeCheck = true;
+//                                returnBoolean(position);
+//                                return;
+//                            }
+//                            else {
+//                                Log.d("댓글 좋아요 버튼 판단", "False!!!");
+//                                commentLikeCheck = false;
+//                                returnBoolean(position);
+//                            }
+//                            Log.d("commentLikiecheck-before",String.valueOf(commentLikeCheck));
+//                        } else {
+//                            Log.d("CommunityCommentFragment", "get failed with ", task.getException());
+//                        }
+//                        return commentLikeCheck;
+//                    }
+//                });
+//
+////               Log.d("commentLikiecheck-after",String.valueOf(commentLikeCheck));
+////                return commentLikeCheck;
+//    }
+
+
+
 
     // 댓글 좋아요 판단 후 결과 return
     @Override
@@ -334,6 +347,12 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
                     .collection("comment_Like").document(email);
             data2.delete();
         }
+    }
+
+    @Override
+    public boolean checkLikePressed(int position) {
+
+        return false;
     }
 
     // 대댓글 메소드
