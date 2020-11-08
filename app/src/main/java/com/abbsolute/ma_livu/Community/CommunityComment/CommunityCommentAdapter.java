@@ -53,9 +53,6 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
         holder.commu_comment_like.setText(arrayList.get(position).getComment_like());
         holder.commu_comment_comment_count.setText(arrayList.get(position).getComment_count());
 
-//         이 유저가 댓글에 '좋아요' 버튼을 눌렀었는지 판단
-//        Log.d("position,boolean",String.valueOf(position) + "/" + String.valueOf(callback.checkLikePressed(position)));
-
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -64,6 +61,7 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
 
         String email = firebaseAuth.getCurrentUser().getEmail();;
 
+        //         이 유저가 댓글에 '좋아요' 버튼을 눌렀었는지 판단
         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                 .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
                 .collection("comment_Like").document(email)
@@ -76,38 +74,17 @@ public class CommunityCommentAdapter extends RecyclerView.Adapter<CommunityComme
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d("댓글 좋아요 버튼 판단", "True!!!");
-
                                 holder.btn_comment_like.setSelected(true);
-//                                returnBoolean(position);
                             }
                             else {
                                 Log.d("댓글 좋아요 버튼 판단", "False!!!");
                                 holder.btn_comment_like.setSelected(false);
-//                                returnBoolean(position);
                             }
                         } else {
                             Log.d("CommunityCommentFragment", "get failed with ", task.getException());
                         }
                     }
                 });
-//        if( callback.checkLikePressed(position) == true) {
-//            holder.btn_comment_like.setSelected(true);
-//            Log.d("댓글 좋아요 값 넘어왔어요!", "True!!!");
-//        } else {
-//            Log.d("댓글 좋아요 값 넘어왔어요!", "fasle!!!");
-////            holder.btn_comment_like.setSelected(false);
-//        }
-
-//        callback.checkLikePressed(position);
-
-//        if( callback.returnBoolean(position) == true) {
-//            holder.btn_comment_like.setSelected(true);
-//            Log.d("댓글 좋아요 값 넘어왔어요!", "True!!!");
-//        } else {
-//            Log.d("댓글 좋아요 값 넘어왔어요!", "fasle!!!");
-//            holder.btn_comment_like.setSelected(false);
-//        }
-
 
         // '삭제' 버튼 클릭 시 데이터 삭제하기
         holder.btn_commu_delete.setOnClickListener(new View.OnClickListener() {
