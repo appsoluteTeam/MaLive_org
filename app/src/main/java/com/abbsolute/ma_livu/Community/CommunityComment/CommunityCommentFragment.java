@@ -233,46 +233,6 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
     public String getTitle(){
         return title;
     }
-//    // 댓글 좋아요 판단 메소드
-//    @Override
-//    public boolean checkLikePressed(int position) {
-//
-//                final boolean check;
-//                firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
-//                .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment())
-//                .collection("comment_Like").document(email)
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @SuppressLint("LongLogTag")
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot document = task.getResult();
-//                            if (document.exists()) {
-//                                Log.d("댓글 좋아요 버튼 판단", "True!!!");
-//                                commentLikeCheck = true;
-//                                returnBoolean(position);
-//                                return;
-//                            }
-//                            else {
-//                                Log.d("댓글 좋아요 버튼 판단", "False!!!");
-//                                commentLikeCheck = false;
-//                                returnBoolean(position);
-//                            }
-//                            Log.d("commentLikiecheck-before",String.valueOf(commentLikeCheck));
-//                        } else {
-//                            Log.d("CommunityCommentFragment", "get failed with ", task.getException());
-//                        }
-//                        return commentLikeCheck;
-//                    }
-//                });
-//
-////               Log.d("commentLikiecheck-after",String.valueOf(commentLikeCheck));
-////                return commentLikeCheck;
-//    }
-
-
-
 
     // 댓글 좋아요 판단 후 결과 return
     @Override

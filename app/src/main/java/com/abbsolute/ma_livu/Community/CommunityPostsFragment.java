@@ -50,6 +50,7 @@ public class CommunityPostsFragment extends Fragment {
     // 값 받아오는 변수들
     private String title, writer, content, date, category, commentCount, saveCount, likeCount, likebtnEmail,documentID;
     private TextView commu_title, commu_writer, commu_date, commu_content, commu_category, commu_like_count, commu_save_count, commu_comment_count;
+    private Button btn_delete;
     private ImageButton btn_back;
     private ImageButton btn_commu_like, btn_commu_save, btn_commu_comment,btn_more;
     private ImageView get_commu_img1, get_commu_img2, get_commu_img3,get_commu_img4,get_commu_img5;
@@ -80,6 +81,7 @@ public class CommunityPostsFragment extends Fragment {
         commu_comment_count = view.findViewById(R.id.commu_comment_count);
 
         btn_back = view.findViewById(R.id.btn_back);
+        btn_delete = view.findViewById(R.id.btn_delete);
         btn_commu_like = view.findViewById(R.id.btn_commu_like);
         btn_commu_save = view.findViewById(R.id.btn_commu_save);
         btn_commu_comment = view.findViewById(R.id.btn_commu_comment);
@@ -306,7 +308,6 @@ public class CommunityPostsFragment extends Fragment {
     }
 
     public boolean checkUser(String documentID) {
-
         if(firebaseAuth.getCurrentUser() !=null){
             String uid = firebaseAuth.getCurrentUser().getUid();
             if(documentID == uid) {
