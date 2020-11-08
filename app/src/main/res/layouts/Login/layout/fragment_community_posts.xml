@@ -31,7 +31,7 @@
         <ImageButton
             android:id="@+id/btn_more"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_gravity="right|center_vertical"
             android:layout_marginTop="4dp"
             android:layout_marginRight="30dp"
@@ -124,8 +124,9 @@
                         app:srcCompat="@drawable/bluecircle" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_weight="3"
                         android:gravity="center|left"
                         android:orientation="vertical">
 
@@ -146,6 +147,15 @@
                             android:gravity="center"
                             android:text="2020.01.01" />
                     </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_delete"
+                        android:layout_width="60dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/half_round_border"
+                        android:text="삭제"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -252,8 +262,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_commu_like"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/button_event_like" />
 
@@ -265,8 +275,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_commu_save"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/button_event_save" />
 
@@ -278,8 +288,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_commu_comment"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_marginRight="5dp"
                         android:background="@drawable/icon_comment"
                         android:text="댓글" />
