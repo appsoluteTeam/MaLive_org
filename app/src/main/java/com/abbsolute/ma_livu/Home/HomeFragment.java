@@ -105,6 +105,7 @@ public class HomeFragment extends Fragment {
             }
         });
         LinearLayout floatingBtns = view.findViewById(R.id.customize_floating_buttons);
+        /*
         Button goCustomize = view.findViewById(R.id.go_customize);
         goCustomize.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +114,7 @@ public class HomeFragment extends Fragment {
                 floatingBtns.setVisibility(View.VISIBLE);
             }
         });
-
+*/
         //customize listners
         colorBtt = floatingBtns.findViewById(R.id.btn_fragment);
         accessoryBtt = floatingBtns.findViewById(R.id.accessory_btn);
