@@ -6,7 +6,9 @@ public interface CommuCommentOnItemClick {
         void deleteItem(int position);
         void reportItem(int position);
         void goCommunityCommentComment(int position);
-        void checkLikePressed(int position);
+        boolean checkLikePressed(int position);
         boolean checkUser(int position);
         boolean returnBoolean(int position);
+        String getCategory();
+        String getTitle();
 }
