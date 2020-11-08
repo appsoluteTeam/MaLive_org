@@ -16,15 +16,17 @@
 
         <Button
             android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="닫기" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:background="@drawable/icon_image_remove" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_margin="30dp"
+            android:layout_margin="10dp"
             android:layout_weight="0.5"
             android:text="TO DO LIST"
             android:textColor="#1C1C1C"

@@ -97,18 +97,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_margin="40dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginRight="40dp"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/go_Todo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/icon_todo" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="40dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"

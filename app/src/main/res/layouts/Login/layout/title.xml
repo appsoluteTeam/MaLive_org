@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:hint="칭호 없음"
                     android:textColor="@android:color/black"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -198,7 +198,8 @@
                                 android:layout_height="10dp"
                                 android:layout_gravity="bottom|right"
                                 android:layout_weight="1"
-                                android:background="@drawable/bluecircle" />
+                                android:background="@drawable/bluecircle"
+                                android:visibility="invisible" />
                         </FrameLayout>
 
                     </LinearLayout>
