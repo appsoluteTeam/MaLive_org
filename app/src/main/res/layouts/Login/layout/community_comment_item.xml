@@ -153,8 +153,8 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
@@ -164,11 +164,11 @@
                     android:id="@+id/btn_comment_like"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/button_event_like_s" />
+                    android:background="@drawable/button_event_like" />
 
                 <TextView
                     android:id="@+id/commu_comment_like"
-                    android:layout_width="10dp"
+                    android:layout_width="15dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="0" />
@@ -182,11 +182,11 @@
                     android:id="@+id/btn_commu_comment_comment"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/comment_s" />
+                    android:background="@drawable/icon_comment" />
 
                 <TextView
                     android:id="@+id/commu_comment_comment_count"
-                    android:layout_width="wrap_content"
+                    android:layout_width="15dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="0" />
