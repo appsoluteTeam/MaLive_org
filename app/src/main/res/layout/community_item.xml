@@ -17,7 +17,7 @@
         android:layout_marginBottom="3dp"
         android:background="@drawable/editfinish"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,17 +35,17 @@
                     android:layout_height="30dp"
                     android:padding="2dp"
                     android:text="나는 오늘 몇시에 자서 몇시에 일어날까?"
-                    android:textSize="20dp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/commu_content"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="58dp"
                     android:maxLength="100"
                     android:padding="2dp"
                     android:text="This homemade pasta recipe is our new favorite cooking project! Lately, Jack and I have been spending even more time than usual in the kitchen, experimenting with bread, baked goods, and even okonomiyaki. But we keep coming back to homemade pasta. It’s super fun to make together, and it only requires a handful of basic ingredients. Of course, the fact that it’s absolutely delicious doesn’t hurt either. 🙂"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

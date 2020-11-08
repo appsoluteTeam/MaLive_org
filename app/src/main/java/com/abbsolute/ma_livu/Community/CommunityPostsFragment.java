@@ -48,10 +48,10 @@ public class CommunityPostsFragment extends Fragment {
     private static String email;
 
     // 값 받아오는 변수들
-    private String title, writer, content, date, category, commentCount, saveCount, likeCount, likebtnEmail;
+    private String title, writer, content, date, category, commentCount, saveCount, likeCount, likebtnEmail,documentID;
     private TextView commu_title, commu_writer, commu_date, commu_content, commu_category, commu_like_count, commu_save_count, commu_comment_count;
-    private Button btn_back;
-    private ImageButton btn_commu_like, btn_commu_save, btn_commu_comment;
+    private ImageButton btn_back;
+    private ImageButton btn_commu_like, btn_commu_save, btn_commu_comment,btn_more;
     private ImageView get_commu_img1, get_commu_img2, get_commu_img3,get_commu_img4,get_commu_img5;
     private TextView get_commu_explain1,get_commu_explain2,get_commu_explain3,get_commu_explain4,get_commu_explain5;
 
@@ -100,12 +100,15 @@ public class CommunityPostsFragment extends Fragment {
             content = getArguments().getString("Content");
             date = getArguments().getString("Date");
             category = getArguments().getString("Category");
+            documentID = getArguments().getString("documentID");
         }
+
         commu_title.setText(title);
         commu_title.setSelected(true);
         commu_writer.setText(writer);
         commu_content.setText(content);
         commu_date.setText(date);
+
         if (category.equals("what_eat")) {
             commu_category.setText("뭐 먹지?");
         }else if (category.equals("what_do")) {
@@ -113,7 +116,6 @@ public class CommunityPostsFragment extends Fragment {
         }else if(category.equals("how_do")){
             commu_category.setText("어떻게 하지?");
         }
-
 
         // firestore에서 댓글 개수, 사진 정보 가져오기
         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -198,19 +200,20 @@ public class CommunityPostsFragment extends Fragment {
                     }
                 });
 
+        /*더보기 버튼 눌렀을 때 */
+        btn_more= (ImageButton) view.findViewById(R.id.btn_more);
+        btn_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         // '뒤로가기' 버튼 눌렀을 시
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
-/*
-                transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                CommunityFragment communityFragment = new CommunityFragment();
-
-                // 버튼 누르면 화면 전환
-                transaction.replace(R.id.main_frame, communityFragment).addToBackStack(null);
-                transaction.commit();
- */
             }
         });
 
@@ -229,7 +232,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_like_count.setText(Integer.toString(like_count + 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_like_count, String.valueOf(like_count + 1));
+                        data.update(FirebaseID.commu_like_count, like_count + 1);
 
                         // 좋아요 버튼을 누른 사람들의 이메일값 저장
                         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -240,7 +243,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_like_count.setText(Integer.toString(like_count - 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_like_count, String.valueOf(like_count - 1));
+                        data.update(FirebaseID.commu_like_count, like_count - 1);
 
                         // 좋아요 버튼 취소 시 저장된 이메일 값 삭제
                         DocumentReference data2 = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -265,7 +268,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_save_count.setText(Integer.toString(save_count + 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_save_count, String.valueOf(save_count + 1));
+                        data.update(FirebaseID.commu_save_count, save_count + 1);
                     }
                     postsSave();
 
@@ -273,7 +276,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_save_count.setText(Integer.toString(save_count - 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_save_count, String.valueOf(save_count - 1));
+                        data.update(FirebaseID.commu_save_count, save_count - 1);
                     }
                 }
             }
@@ -300,6 +303,22 @@ public class CommunityPostsFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public boolean checkUser(String documentID) {
+
+        if(firebaseAuth.getCurrentUser() !=null){
+            String uid = firebaseAuth.getCurrentUser().getUid();
+            if(documentID == uid) {
+                return true;
+            }
+            // 다르면 신고기능만 활성화
+            else {
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
     public void postsSave () {

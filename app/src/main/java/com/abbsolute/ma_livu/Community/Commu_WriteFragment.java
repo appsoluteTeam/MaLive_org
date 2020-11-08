@@ -265,9 +265,9 @@ public class Commu_WriteFragment extends Fragment {
                         data.put(FirebaseID.title, et_title.getText().toString()); // 제목
                         data.put(FirebaseID.content, et_content.getText().toString()); //내용
                         data.put(FirebaseID.commu_date, dateform.format(date.getTime())); // 작성시간
-                        data.put(FirebaseID.Nickname, str_nickname); // 작성자 닉네임
-                        data.put(FirebaseID.commu_like_count, like_count); //좋아요
-                        data.put(FirebaseID.commu_save_count, save_count); //스크랩수
+                        data.put(FirebaseID.Nickname,str_nickname); // 작성자 닉네임
+                        data.put(FirebaseID.commu_like_count, (Integer)like_count); //좋아요
+                        data.put(FirebaseID.commu_save_count, (Integer)save_count); //스크랩수
                         data.put(FirebaseID.commu_comment_count, comment_count); //덧글수
                         data.put("hot", false);//핫게시글 선정 여부
 
