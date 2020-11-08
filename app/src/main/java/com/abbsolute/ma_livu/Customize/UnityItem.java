@@ -1,5 +1,8 @@
 package com.abbsolute.ma_livu.Customize;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UnityItem {
     private int id;
     private String name;
@@ -39,5 +42,13 @@ public class UnityItem {
 
     public void setIsPossessed(int isPossessed) {
         this.isPossessed = isPossessed;
+    }
+
+
+    public Map<String,Object> getItemMap(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        map.put("type",type);
+        return map;
     }
 }

@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -88,7 +89,12 @@ public class Signup3Activity extends AppCompatActivity {
                                 userMap.put(FirebaseID.Nickname,nickname);
 
                                 firestore.collection(FirebaseID.user).document(email).set(userMap,SetOptions.merge());
+
+                                DocumentReference db = firestore.collection("Customize")
+                                        .document(email);
+                                db.set(new HashMap<String, Object>());
                                 finish();
+
                             }
                             // 회원가입 성공
                             Intent intent = new Intent(Signup3Activity.this, LoginActivity.class);
@@ -98,5 +104,6 @@ public class Signup3Activity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 }
