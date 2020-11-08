@@ -229,7 +229,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_like_count.setText(Integer.toString(like_count + 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_like_count, String.valueOf(like_count + 1));
+                        data.update(FirebaseID.commu_like_count, like_count + 1);
 
                         // 좋아요 버튼을 누른 사람들의 이메일값 저장
                         firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -240,7 +240,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_like_count.setText(Integer.toString(like_count - 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_like_count, String.valueOf(like_count - 1));
+                        data.update(FirebaseID.commu_like_count, like_count - 1);
 
                         // 좋아요 버튼 취소 시 저장된 이메일 값 삭제
                         DocumentReference data2 = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
@@ -265,7 +265,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_save_count.setText(Integer.toString(save_count + 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_save_count, String.valueOf(save_count + 1));
+                        data.update(FirebaseID.commu_save_count, save_count + 1);
                     }
                     postsSave();
 
@@ -273,7 +273,7 @@ public class CommunityPostsFragment extends Fragment {
                     commu_save_count.setText(Integer.toString(save_count - 1));
                     if (firebaseAuth.getCurrentUser() != null) {
                         DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title);
-                        data.update(FirebaseID.commu_save_count, String.valueOf(save_count - 1));
+                        data.update(FirebaseID.commu_save_count, save_count - 1);
                     }
                 }
             }

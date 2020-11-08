@@ -87,11 +87,10 @@ public class SearchFragment<adapter> extends Fragment {
     }
 
     private void searchData(String allCategory, String query) {
+        arrayList.clear();
         firestore.collection("Community").document(allCategory).collection("sub_Community")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
-
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.getResult() != null) {
@@ -112,12 +111,12 @@ public class SearchFragment<adapter> extends Fragment {
 
                                         Log.d("출력", "내용 " + content + " 닉네임 " + nickname + " 제목" + title);
 
-                                        if ((String) document.get("Url0") != null) {
+                                        if ((String)document.get("Url0") != null) {
                                             Url = (String) document.get("Url0");
                                         } else {
                                             Url = null;
                                         }
-                                        bringData data = new bringData(documentID,title, category,content,date,writer, (String)likeCount, (String) saveCount,Url);
+                                        bringData data = new bringData(documentID,title, category,content,date,writer,String.valueOf(likeCount),String.valueOf(saveCount),Url);
 
                                         arrayList.add(data);
                                         setRecycler();
@@ -128,17 +127,14 @@ public class SearchFragment<adapter> extends Fragment {
                                 }
 
                             }
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 });
 
     }
 
-
-
-
     private void setRecycler() {
-
 
         recycler_search_community = (RecyclerView) view.findViewById(R.id.recycler_search_community);
         recycler_search_community.setHasFixedSize(true);

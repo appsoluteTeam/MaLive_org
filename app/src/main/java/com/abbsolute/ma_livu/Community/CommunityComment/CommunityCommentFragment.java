@@ -309,7 +309,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
-            data.update(FirebaseID.commu_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())+1));
+            data.update(FirebaseID.commu_comment_like,Integer.parseInt(arrayList.get(position).getComment_like())+1);
         }
         // 좋아요 버튼을 누른 사람들의 이메일값 저장
         if (firebaseAuth.getCurrentUser() != null) {
@@ -326,7 +326,7 @@ public class CommunityCommentFragment extends Fragment implements CommuCommentOn
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
                     .collection(FirebaseID.Community_Comment).document(arrayList.get(position).getComment());
-            data.update(FirebaseID.commu_comment_like, String.valueOf(Integer.parseInt(arrayList.get(position).getComment_like())));
+            data.update(FirebaseID.commu_comment_like, Integer.parseInt(arrayList.get(position).getComment_like()));
         }
         if (firebaseAuth.getCurrentUser() != null) {
             DocumentReference data2 = firestore.collection(FirebaseID.Community).document(category).collection("sub_Community").document(title)
