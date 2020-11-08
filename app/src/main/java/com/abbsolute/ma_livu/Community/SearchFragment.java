@@ -87,6 +87,7 @@ public class SearchFragment<adapter> extends Fragment {
     }
 
     private void searchData(String allCategory, String query) {
+        adapter= new CommunityAdapter(this.arrayList);
         arrayList.clear();
         firestore.collection("Community").document(allCategory).collection("sub_Community")
                 .get()
@@ -125,7 +126,6 @@ public class SearchFragment<adapter> extends Fragment {
                                         Log.d("출력", "검색 결과가 없습니다.");
                                     }
                                 }
-
                             }
                             adapter.notifyDataSetChanged();
                         }
@@ -138,8 +138,8 @@ public class SearchFragment<adapter> extends Fragment {
 
         recycler_search_community = (RecyclerView) view.findViewById(R.id.recycler_search_community);
         recycler_search_community.setHasFixedSize(true);
-        adapter = new CommunityAdapter(this.arrayList);
         layoutManager = new LinearLayoutManager(getActivity());
+        adapter= new CommunityAdapter(this.arrayList);
 
         recycler_search_community.scrollToPosition(0);
         recycler_search_community.setItemAnimator(new DefaultItemAnimator());
